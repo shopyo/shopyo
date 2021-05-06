@@ -33,7 +33,7 @@ setup(
     description="Highly Modular Web Framework. Built For Big. Built on top of Flask with Django advantages",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
-    url="https://github.com/Abdur-RahmaanJ/shopyo",  # Optional
+    url="https://github.com/shopyo/shopyo",  # Optional
     author="Abdur-Rahmaan Janhangeer",  # Optional
     author_email="arj.python@gmail.com",  # Optional
     # Classifiers help users find your project by categorizing it.
@@ -79,8 +79,8 @@ setup(
     .read()
     .split("\n"),  # Optional
     project_urls={  # Optional
-        "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopyo/issues",
-        "Source": "https://github.com/Abdur-RahmaanJ/shopyo/",
+        "Bug Reports": "https://github.com/shopyo/shopyo/issues",
+        "Source": "https://github.com/shopyo/shopyo/",
     },
     entry_points={
         "console_scripts": [
