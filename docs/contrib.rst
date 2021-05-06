@@ -19,14 +19,16 @@ Setup Instructions
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
 
-#. Make sure ``git`` is installed on your computer and ``python version 3.6`` or higher is installed. You can run the following command to check if git is installed and which python version you have. If either commands gives error then it means you need to install that software
+#. Make sure ``git`` is installed on your computer and ``python version 3.6`` or higher is installed (we recommend
+``python 3.9``). You can run the following command to check if git is installed and which python version you have.
+If either commands gives error then it means you need to install that software
 
    .. code-block:: bash
 
       git --version
       python --version
 
-#. Fork repo. To do so go to the `shopyo repo <https://github.com/Abdur-rahmaanJ/shopyo>`_ and press the fork button
+#. Fork repo. To do so go to the `shopyo repo <https://github.com/shopyo/shopyo>`_ and press the fork button
 #. Clone the repo by running:
 
    .. code-block:: bash
@@ -90,19 +92,28 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
       ``env`` is the name of virtual environment that you setup in step 5 above.
       Make sure to always activate this ``env`` when working on ``shopyo``. If you are using
       `VS Code <https://code.visualstudio.com/>`__  then you can also add the ``"python.pythonPath"`` by creating a ``.vscode``
-      folder at the root level and adding ``setting.json`` file to it with the content below.
+      folder at the root level and adding ``settings.json`` file to it with the content below.
       You need to replace the path with your own path to the virtual environment's ``python.exe``
-      file and the example below is for a path in Windows OS hence the double backward slash.
+      You can copy the below json to ``settings.json`` file depending on your OS.
       Now you can create a new terminal with virtual environment activated in VS Code using ``Ctrl`` + ``Shift`` + ````` (*control
       plus shift plus backtick character*).
       In addition, if you want to deactivate the virtual environment, run ``deactivate`` in command line
 
+      For Windows OS:
+
       .. code-block:: json
 
          {
-            "python.pythonPath": "c:\\path\\to\\shopyo\\env\\Scripts\\python.exe"
+            "python.pythonPath": "${workspaceFolder}/env/Scripts/python.exe"
          }
 
+      For Unix/MacOS
+
+      .. code-block:: json
+
+         {
+            "python.pythonPath": "${workspaceFolder}/env/bin/python"
+         }
 
 #. Run:
 
@@ -110,7 +121,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
       python -m pip install -U pip
       python -m pip install -e .
-      python -m pip install -r requirments/dev.txt
+      python -m pip install -r requirements/dev.txt
 
    .. note::
       This should start installing the packages required for shopyo app and might take a few seconds.
@@ -121,7 +132,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
    .. code-block:: bash
 
       cd <your/local/cloned/repo/path/here> # not needed if you are already inside your cloned shopyo directory
-      git remote add upstream https://github.com/Abdur-rahmaanJ/shopyo.git
+      git remote add upstream https://github.com/shopyo/shopyo
 
 #. Once upstream is setup, you can fetch the latest changes made to shopyo repo. Make sure to do this every time before you make branch to work on a feature. Run:
 
@@ -149,14 +160,7 @@ If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-time
 
    .. code-block:: bash
 
-      shopyo run
-
-   .. note::
-      The above ``run`` command can also be run as follows:
-
-      .. code-block:: bash
-
-         python manage.py run
+      python manage.py rundebug
 
 #. The app should now be running on IP ``127.0.0.1`` at port ``5000``. You can go to http://localhost:5000/ or http://127.0.0.1:5000/. For the home page it will say ``SITE UNDER CONSTRUCTION``.  Go to http://localhost:5000/login/. Login with email ``admin@domain.com`` and password ``pass``
 
@@ -220,7 +224,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
          python -m pip install flake8
 
       In addition, if you are using `VS Code <https://code.visualstudio.com/>`__
-      then you can create a ``.vscode`` folder at the root level and add ``setting.json``
+      then you can create a ``.vscode`` folder at the root level and add ``settings.json``
       file to it with the following content. This way it auto detects the
       linting errors for you
 
@@ -230,13 +234,24 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
             "python.linting.flake8Enabled": true
          }
 
-      If you have already created the ``setting.json`` file as mentioned in :ref:`setup` step 6,
+      If you have already created the ``settings.json`` file as mentioned in :ref:`setup` step 5,
       then your json file will look similar to one below
+
+      For Windows OS:
 
       .. code-block:: json
 
          {
-            "python.pythonPath": "c:\\path\\to\\shopyo\\env\\Scripts\\python.exe",
+            "python.pythonPath": "${workspaceFolder}/env/Scripts/python.exe",
+            "python.linting.flake8Enabled": true
+         }
+
+      For Unix/MacOS
+
+      .. code-block:: json
+
+         {
+            "python.pythonPath": "${workspaceFolder}/env/bin/python",
             "python.linting.flake8Enabled": true
          }
 
