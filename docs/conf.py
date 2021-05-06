@@ -65,9 +65,9 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 html_context = {
     "project_links": [
         "Source Code",
-        "https://github.com/Abdur-rahmaanJ/shopyo",
+        "https://github.com/shopyo/shopyo",
         "Issue Tracker",
-        "https://github.com/Abdur-rahmaanJ/shopyo/issues",
+        "https://github.com/shopyo/shopyo/issues",
     ]
 }
 html_logo = "shopyo.png"
@@ -81,7 +81,7 @@ html_sidebars = {
 #
 html_theme = "alabaster"
 html_theme_options = {
-    "github_repo": "Abdur-rahmaanJ/shopyo",
+    "github_repo": "shopyo/shopyo",
     "fixed_sidebar": "true",
 }
 
