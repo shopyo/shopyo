@@ -34,7 +34,7 @@ setup(
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
     url="https://github.com/shopyo/shopyo",  # Optional
-    author="Abdur-Rahmaan Janhangeer",  # Optional
+    author="Abdur-Rahmaan Janhangeer & the community",  # Optional
     author_email="arj.python@gmail.com",  # Optional
     # Classifiers help users find your project by categorizing it.
     #
