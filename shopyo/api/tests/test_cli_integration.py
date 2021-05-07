@@ -11,11 +11,9 @@ pytestmark = pytest.mark.cli_integration
 
 @pytest.mark.usefixtures("restore_cwd")
 def test_initialise_after_new(tmp_path):
-    """run shopyo new inside a tmp directory foo,
-    create a venv, install the shopyo.tar.gz dependencies,
-    run `shopyo new` and then run `shopyo initialise`.
+    """run shopyo new inside a tmp directory foo, create a venv, install the
+    shopyo.tar.gz dependencies, then run `shopyo initialise`.
     """
-
     # go one level up to the cwd so we are are the root where
     # setup.py exits
     os.chdir("../")
@@ -25,6 +23,7 @@ def test_initialise_after_new(tmp_path):
     dist_path = os.path.join(os.getcwd(), "dist")
     shopyo_dist_name = f"shopyo-{__version__}.tar.gz"
     project_path = tmp_path / "foo"
+    print(project_path)
     # copy the shopyo dist to the test project path
     copytree(dist_path, os.path.join(project_path, "dist"))
     # change cwd to that of test project
