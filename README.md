@@ -44,7 +44,7 @@ It is recommended to use a venv in root folder.
 
 If for dev install dev_requirements.txt also. 
 
-`python -m pip install -r dev_requirements.txt`
+`python -m pip install -r requirements/dev.txt`
 
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
