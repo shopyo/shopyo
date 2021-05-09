@@ -7,15 +7,9 @@ https://github.com/pypa/sampleproject
 python setup.py publish to publish
 
 """
-
-# Always prefer setuptools over distutils
 from setuptools import setup
-
-# from setuptools import find_packages
-
 import os
 import sys
-from shopyo import __version__  # thanks gunicorn
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -24,9 +18,6 @@ if sys.argv[-1] == "publish":  # requests
     os.system("twine upload dist/* --skip-existing")
     sys.exit()
 
-# Get the long description from the README file
-with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
-    long_description = f.read()
 setup(
     name="shopyo",  # Required
     version=__version__,  # Required
@@ -77,14 +68,5 @@ setup(
         os.path.join(here, "requirements.txt"), encoding="utf-8"
     )
     .read()
-    .split("\n"),  # Optional
-    project_urls={  # Optional
-        "Bug Reports": "https://github.com/shopyo/shopyo/issues",
-        "Source": "https://github.com/shopyo/shopyo/",
-    },
-    entry_points={
-        "console_scripts": [
-            "shopyo=shopyo.api.cli:cli"
-        ]
-    },
+    .split("\n")
 )
