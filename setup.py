@@ -2,16 +2,17 @@
 See:
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
-
-
 python setup.py publish to publish
-
 """
+
+# Always prefer setuptools over distutils
 from setuptools import setup
+
+# from setuptools import find_packages
+
 import os
 import sys
-
-from shopyo import __version__
+from shopyo import __version__  # thanks gunicorn
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,14 +21,17 @@ if sys.argv[-1] == "publish":  # requests
     os.system("twine upload dist/* --skip-existing")
     sys.exit()
 
+# Get the long description from the README file
+with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+    long_description = f.read()
 setup(
     name="shopyo",  # Required
     version=__version__,  # Required
     description="Highly Modular Web Framework. Built For Big. Built on top of Flask with Django advantages",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
-    url="https://github.com/shopyo/shopyo",  # Optional
-    author="Abdur-Rahmaan Janhangeer & the community",  # Optional
+    url="https://github.com/Abdur-RahmaanJ/shopyo",  # Optional
+    author="Abdur-Rahmaan Janhangeer",  # Optional
     author_email="arj.python@gmail.com",  # Optional
     # Classifiers help users find your project by categorizing it.
     #
@@ -70,5 +74,14 @@ setup(
         os.path.join(here, "requirements.txt"), encoding="utf-8"
     )
     .read()
-    .split("\n")
+    .split("\n"),  # Optional
+    project_urls={  # Optional
+        "Bug Reports": "https://github.com/Abdur-RahmaanJ/shopyo/issues",
+        "Source": "https://github.com/Abdur-RahmaanJ/shopyo/",
+    },
+    entry_points={
+        "console_scripts": [
+            "shopyo=shopyo.api.cli:cli"
+        ]
+    },
 )
