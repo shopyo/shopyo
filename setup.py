@@ -11,6 +11,8 @@ from setuptools import setup
 import os
 import sys
 
+from shopyo import __version__
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 if sys.argv[-1] == "publish":  # requests
