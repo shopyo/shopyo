@@ -461,8 +461,11 @@ def shopyo_cli():
                 printinfo()
                 from app import app
                 app.run(debug=False)
+        else:
+            cli()
     else:
         cli()
+        print('rendebug, runserver')
 
 
 if __name__ == '__main__':
