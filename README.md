@@ -2,12 +2,12 @@
 
 <h1 align="center">
   <br>
-  <a href="https://github.com/Abdur-rahmaanJ"><img src="https://github.com/Abdur-rahmaanJ/shopyo/blob/dev/github_banner.png" alt="shopyo" width="" height=""></a>
+  <a href="https://github.com/shopyo"><img src="https://github.com/shopyo/shopyo/blob/dev/github_banner.png" alt="shopyo" width="" height=""></a>
   
   
 </h1>
 
-[![Codecov](https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/Abdur-rahmaanJ/shopyo) ![Tests](https://github.com/Abdur-rahmaanJ/shopyo/actions/workflows/tests.yaml/badge.svg) [![PyPI version shields.io](https://img.shields.io/pypi/v/shopyo.svg)](https://pypi.python.org/pypi/shopyo/) [![Documentation Status](https://readthedocs.org/projects/shopyo/badge/?version=latest)](https://shopyo.readthedocs.io/en/latest/?badge=latest)
+[![Codecov](https://codecov.io/gh/Abdur-rahmaanJ/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/Abdur-rahmaanJ/shopyo) ![Tests](https://github.com/shopyo/shopyo/actions/workflows/tests.yaml/badge.svg) [![PyPI version shields.io](https://img.shields.io/pypi/v/shopyo.svg)](https://pypi.python.org/pypi/shopyo/) [![Documentation Status](https://readthedocs.org/projects/shopyo/badge/?version=latest)](https://shopyo.readthedocs.io/en/latest/?badge=latest)
 
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
@@ -49,13 +49,13 @@ If for dev install dev_requirements.txt also.
 go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
 
-![](https://github.com/Abdur-rahmaanJ/shopyo/blob/dev/comparison.png)
+![](https://github.com/shopyo/shopyo/blob/dev/comparison.png)
 
 * Not framework docs but docs for the project you are building.
 
 # First time contributing?
 
-We have a 100% first-timers friendly policy. Check out the [testimonials](https://github.com/Abdur-rahmaanJ/shopyo/discussions/307).
+We have a 100% first-timers friendly policy. Check out the [testimonials](https://github.com/shopyo/shopyo/discussions/307).
 
 # Big??
 
@@ -157,7 +157,7 @@ Support team if you are stuck
 
 ## Supporters
 
-[![Stargazers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/stars/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/stargazers)
+[![Stargazers repo roster for @shopyo/shopyo](https://reporoster.com/stars/shopyo/shopyo)](https://github.com/shopyo/shopyo/stargazers)
 
-[![Forkers repo roster for @abdur-rahmaanj/shopyo](https://reporoster.com/forks/abdur-rahmaanj/shopyo)](https://github.com/abdur-rahmaanj/shopyo/network/members)
+[![Forkers repo roster for @shopyo/shopyo](https://reporoster.com/forks/shopyo/shopyo)](https://github.com/shopyo/shopyo/network/members)
 
