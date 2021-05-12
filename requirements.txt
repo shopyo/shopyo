@@ -9,3 +9,4 @@ marshmallow-sqlalchemy==0.23.1
 flask-mailman==0.2.2
 flask-admin==1.5.7
 SQLAlchemy<1.4
+furo==2021.4.11b34
