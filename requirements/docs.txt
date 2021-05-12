@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements/docs.in
 #
-alabaster==0.7.12
+furo==2021.4.11b34
     # via sphinx
 babel==2.9.0
     # via sphinx
