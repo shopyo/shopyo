@@ -14,4 +14,3 @@ flask-mailman==0.2.3
 flask-admin==1.5.7
 SQLAlchemy<1.4
 Werkzeug==1.0.1
-furo==2021.4.11b34
