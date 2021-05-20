@@ -27,6 +27,7 @@ The ecommerce part has been offloaded to
    Views <views>
    The Init File <init>
    Commandline <commandline>
+   Run Existing Project <existing>
    Shopyoapi <shopyoapi>
    Docs <docs>
    Testing <testing>

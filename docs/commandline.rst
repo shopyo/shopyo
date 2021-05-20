@@ -11,8 +11,7 @@ shopyo
 
 .. _shopyo usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -27,8 +26,7 @@ in production mode you can run
 
 .. _shopyo options:
 
-Options
-=======
+*Options*
 
 .. option:: --version
 
@@ -45,8 +43,7 @@ clean
 
 .. _shopyo clean usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -63,8 +60,7 @@ removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
 
 .. _shopyo clean options:
 
-Options
-=======
+*Options*
 
 .. option:: -v, --verbose
 
@@ -80,8 +76,7 @@ Initialise
 
 .. _shopyo initialise usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -98,8 +93,7 @@ This command need to be run only once before running the project
 
 .. _shopyo initialise options:
 
-Options
-=======
+**Options**
 
 .. option:: -v, --verbose
 
@@ -114,8 +108,7 @@ run
 
 .. _shopyo run usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -142,8 +135,7 @@ or ``FLASK_DEBUG=1``.
 .. _shopyo run options:
 
 
-Options
-=======
+*Options*
 
 .. option:: -h, --host <host>
 
@@ -191,8 +183,7 @@ rundebug
 
 .. _shopyo rundebug usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -213,8 +204,7 @@ runserver
 
 .. _shopyo runserver usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -235,8 +225,7 @@ createmodule
 
 .. _shopyo createmodule usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -255,31 +244,33 @@ If box ``BOXNAME`` does not exist, it is created.
 
 If ``MODULENAME`` already exists, an error is thrown and command is terminated.
 
-.. _shopyo createmodule options:
+.. code:: bash
 
-Options
-=======
+   shopyo createmodule dumpling # modules/dumpling
+   shopyo createmodule box__plate/dumpling # modules/box__plate/dumpling
 
-.. option:: -v, --verbose
 
-   Show all hidden outputs in terminal
+startbox
+********
 
-.. option:: --help
+*Usage*
 
-   Show the command usage/help message and exit
+.. code:: bash
 
-Arguments
-=========
+   shopyo startbox [OPTIONS] BOXNAME [BOXNAME]
 
-.. object:: BOXNAME
+or
 
-   | `Optional argument`
-   | The name of box to create the module in. Must start with ``box__``, otherwise error is thrown.
+.. code:: bash
 
-.. object:: MODULENAME
+   shopyo startbox [OPTIONS] BOXNAME [BOXNAME]
 
-   | `Required argument`
-   | the name of module to be created. Must not start with ``box__``, otherwise error is thrown.
+Creates an empty box
+
+.. code:: bash
+
+   shopyo startbox api # modules/box__api
+
 
 
 collectstatic
@@ -287,8 +278,7 @@ collectstatic
 
 .. _shopyo collectstatic usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -337,8 +327,7 @@ For the modules structure shown above:
 
 .. _shopyo collectstatic options:
 
-Options
-=======
+*Options*
 
 .. option:: -v, --verbose
 
@@ -350,8 +339,7 @@ Options
 
 .. _shopyo collectstatic arguments:
 
-Arguments
-=========
+*Arguments*
 
 .. object:: SRC
 
@@ -363,8 +351,7 @@ new
 
 .. _shopyo new usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -373,7 +360,7 @@ Usage
 Creates a new shopyo project.
 
 By default it will create the project(folder) of same name as the parent
-folder. If ``PROJNAME`` is provided, it will create ``PROJNAME/PROJNAME``
+folder. If ``PROJNAME`` is provided ``shopyo new somename``, it will create ``PROJNAME/PROJNAME``
 under parent folder
 
 For Example, say your current working directory is ``/path/to/blog``. Assuming you have
@@ -439,8 +426,7 @@ You now have a complete Flask based blog application
 
 .. _shopyo new options:
 
-Options
-=======
+*Options*
 
 .. option:: -v, --verbose
 
@@ -452,8 +438,7 @@ Options
 
 .. _shopyo new arguments:
 
-Arguments
-=========
+*Arguments*
 
 .. object:: PROJNAME
 
@@ -466,8 +451,7 @@ db
 
 .. _shopyo db usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
@@ -491,8 +475,7 @@ routes
 
 .. _shopyo routes usage:
 
-Usage
-=====
+*Usage*
 
 .. code:: bash
 
