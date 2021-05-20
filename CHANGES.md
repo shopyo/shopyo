@@ -1,3 +1,7 @@
+## Unreleased
+
+* add changelog link to `setup.cfg` so that it shows on Shopyo PyPi page
+
 ## Version 4.1.2
 
 Released 2021-05-19
@@ -9,8 +13,7 @@ Released 2021-05-19
 
 Released 2021-05-10
 
-* Fixed `python maanage.py COMMAND` not working for any commands other than `rundebug` or `initilaise`
-commands as explained in #13 
+* Fixed `python maanage.py COMMAND` not working for any commands other than `rundebug` or `initilaise` commands as explained in #13
 
 ## Version 4.1.0
 
