@@ -5,14 +5,15 @@ the `auth` blueprint.
 These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `auth` module
 """
-from flask import url_for
-from flask import request
-import pytest
-import os
 import json
+import os
 import threading
-from modules.box__default.auth.models import User
+
+import pytest
+from flask import request
+from flask import url_for
 from flask_login import current_user
+from modules.box__default.auth.models import User
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.dirname(dirpath)
@@ -192,18 +193,14 @@ class TestAuthEndpoints:
 
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_do_not_allow_email_resend_for_confirmed(self, test_client):
-        response = test_client.get(
-            url_for("auth.resend"), follow_redirects=True
-        )
+        response = test_client.get(url_for("auth.resend"), follow_redirects=True)
 
         assert response.status_code == 200
         assert request.path == url_for("dashboard.index")
 
     @pytest.mark.usefixtures("login_unconfirmed_user")
     def test_valid_resend_email_confirmation(self, test_client, capfd):
-        response = test_client.get(
-            url_for("auth.resend"), follow_redirects=True
-        )
+        response = test_client.get(url_for("auth.resend"), follow_redirects=True)
 
         # Not very happy with this solution. Need a better
         # way to wait for the email thread to join with main
@@ -221,9 +218,7 @@ class TestAuthEndpoints:
 
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_confirmed_user_is_redirected_to_dashboard(self, test_client):
-        response = test_client.get(
-            url_for("auth.unconfirmed"), follow_redirects=True
-        )
+        response = test_client.get(url_for("auth.unconfirmed"), follow_redirects=True)
 
         assert response.status_code == 200
         assert request.path == url_for("dashboard.index")
@@ -241,7 +236,7 @@ class TestAuthEndpoints:
     def test_login_for_dashboard_renders(self, test_client):
         response = test_client.get(url_for("auth.login"))
 
-        response.status_code == 200
+        assert response.status_code == 200
         assert b"Login" in response.data
         assert b"submit" in response.data
 
@@ -252,7 +247,7 @@ class TestAuthEndpoints:
             follow_redirects=True,
         )
 
-        response.status_code == 200
+        assert response.status_code == 200
         assert request.path == url_for("auth.login")
         assert b"please check your user id and password" in response.data
 
@@ -282,9 +277,7 @@ class TestAuthEndpoints:
 
     @pytest.mark.usefixtures("login_non_admin_user")
     def test_current_user_logout(self, test_client):
-        response = test_client.get(
-            url_for("auth.logout"), follow_redirects=True
-        )
+        response = test_client.get(url_for("auth.logout"), follow_redirects=True)
 
         assert response.status_code == 200
         assert request.path == url_for("auth.login")

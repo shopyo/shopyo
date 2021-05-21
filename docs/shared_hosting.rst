@@ -66,6 +66,3 @@ go to setup python app then restart app
 go to your url
 
 go to url/dashboard for login
-
-
-

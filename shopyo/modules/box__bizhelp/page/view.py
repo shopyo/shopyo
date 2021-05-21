@@ -6,13 +6,11 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
-
 from flask_login import login_required
-
-from shopyo.api.forms import flash_errors
 
 from .forms import PageForm
 from .models import Page
+from shopyo.api.forms import flash_errors
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}
@@ -73,11 +71,11 @@ def check_pagecontent():
         form = PageForm()
         if not form.validate_on_submit():
             flash_errors(form)
-            return redirect(url_for("{}.dashboard".format(module_name)))
+            return redirect(url_for(f"{module_name}.dashboard"))
         toaddpage = Page(
             slug=form.slug.data,
             content=form.content.data,
             title=form.title.data,
         )
         toaddpage.insert()
-        return redirect(url_for("{}.dashboard".format(module_name)))
+        return redirect(url_for(f"{module_name}.dashboard"))

@@ -1,8 +1,10 @@
 import importlib
 import os
+
 import click
 
-from shopyo.api.constants import SEP_CHAR, SEP_NUM
+from shopyo.api.constants import SEP_CHAR
+from shopyo.api.constants import SEP_NUM
 
 
 def autoload_models(verbose=False):
@@ -27,9 +29,7 @@ def autoload_models(verbose=False):
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
                 try:
-                    to_load_submodel = "modules.{}.{}.models".format(
-                        folder, sub_folder
-                    )
+                    to_load_submodel = f"modules.{folder}.{sub_folder}.models"
                     importlib.import_module(to_load_submodel)
                     if verbose:
                         click.echo(f"[x] imported {to_load_submodel}")
@@ -38,7 +38,7 @@ def autoload_models(verbose=False):
                         click.echo(f"[ ] {e}")
         else:
             try:
-                to_load = "modules.{}.models".format(folder)
+                to_load = f"modules.{folder}.models"
                 importlib.import_module(to_load)
                 if verbose:
                     click.echo(f"[x] imported {to_load}")

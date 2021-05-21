@@ -2,10 +2,11 @@
 file: api/tests/conftest.py
 All pytest fixtures local only to the api/tests are placed here
 """
-import pytest
 import os
 import shutil
 import tempfile
+
+import pytest
 
 
 @pytest.fixture

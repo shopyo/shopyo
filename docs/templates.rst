@@ -11,13 +11,13 @@ Developing a template
 
 Please see the `Modules section <modules.html>`_ on how to structure a module.
 
-Having said that, this is the base file we are extending from. 
+Having said that, this is the base file we are extending from.
 
 
 .. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
    :language: html
    :linenos:
-   :lines: 1-19
+   :lines: 1-18
 
 
 It includes:
@@ -31,10 +31,10 @@ Here is the contact form using the base:
 .. literalinclude:: ../shopyo/modules/box__bizhelp/contact/templates/contact/contact_form.html
    :language: html
    :linenos:
-   :lines: 1-53
+   :lines: 1-52
 
 
-If you extend the base template, you will be able to use the 
+If you extend the base template, you will be able to use the
 notification mechanism used for shopyo api
 
 
@@ -56,7 +56,7 @@ here is a demo on returning template vars:
 
 .. code:: python
 
-  # 
+  #
   # ...
   @module_blueprint.route('/abc')
   def somefunc():
@@ -86,4 +86,3 @@ yo_render simplifies your life
           'fruit': 'mango'
       }
       return yo_render('blogus/render_demo.html', context)
-

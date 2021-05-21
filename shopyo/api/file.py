@@ -1,6 +1,7 @@
 import os
 import shutil
 import uuid
+
 import click
 
 # from werkzeug.utils import secure_filename
@@ -16,7 +17,7 @@ def tryrmcache(dir_name, verbose=False):
     """
     # directory_list = list()
     is_removed = False
-    for root, dirs, files in os.walk(dir_name, topdown=False):
+    for root, dirs, _ in os.walk(dir_name, topdown=False):
         for name in dirs:
             # directory_list.append(os.path.join(root, name))
             if name == "__pycache__":
@@ -100,7 +101,7 @@ def trycopytree(source, dest, verbose=False):
     try:
         shutil.copytree(source, dest)
         if verbose:
-            print("[x] done copying {} to {}".format(source, dest))
+            print(f"[x] done copying {source} to {dest}")
     except Exception as e:
         print(f"[ ] unable to copy directory tree. {e}")
 
@@ -123,7 +124,7 @@ def trycopy(source, dest, verbose=False):
     try:
         shutil.copy(source, dest)
         if verbose:
-            print("[x] done copying {} to {}".format(source, dest))
+            print(f"[x] done copying {source} to {dest}")
     except Exception as e:
         print(f"[ ] unable to copy file. {e}")
 
@@ -199,7 +200,7 @@ def get_folders(path):
 
 def unique_filename(fname):
     prepended = str(uuid.uuid4()).replace("-", "_")[:10]
-    return "{}_{}".format(prepended, fname)
+    return f"{prepended}_{fname}"
 
 
 def delete_file(path):

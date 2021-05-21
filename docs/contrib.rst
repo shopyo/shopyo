@@ -126,6 +126,12 @@ If either commands gives error then it means you need to install that software
    .. note::
       This should start installing the packages required for shopyo app and might take a few seconds.
 
+#. Setup pre-commit to make sure the style is consistent
+
+   .. code-block:: bash
+
+      pre-commit install
+
 
 #. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
 
@@ -363,4 +369,3 @@ In ``__main__.py`` don't forget to update dev_requirements.txt
 💬 Community: Discord
 ---------------------
 Join the Discord community `Discord Group <https://discord.com/invite/k37Ef6w>`_
-

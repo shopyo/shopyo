@@ -1,13 +1,16 @@
 import os
+
 import pytest
 from click.testing import CliRunner
+
 from shopyo.api.cli import cli
-from shopyo.api.constants import SEP_CHAR, SEP_NUM
+from shopyo.api.constants import SEP_CHAR
+from shopyo.api.constants import SEP_NUM
 
 pytestmark = pytest.mark.cli_unit
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def cli_runner():
     """Fixture that returns a helper function to run the shopyo cli."""
     runner = CliRunner()
@@ -43,9 +46,7 @@ class TestCliCreateBox:
 
         assert result.exit_code == 0
         assert os.path.exists(os.path.join("modules", "box__foo"))
-        assert os.path.exists(
-            os.path.join("modules", "box__foo", "box_info.json")
-        )
+        assert os.path.exists(os.path.join("modules", "box__foo", "box_info.json"))
         assert expected in result.output
 
 
@@ -67,10 +68,7 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
         result = runner.invoke(cli, ["clean", "-v"])
-        expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
-        )
+        expected_out = "[x] all tables dropped\n[x] __pycache__ successfully deleted\n"
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
         )
@@ -104,10 +102,7 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner()
         result = runner.invoke(cli, ["clean", "-v"])
-        expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
-        )
+        expected_out = "[x] all tables dropped\n[x] __pycache__ successfully deleted\n"
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
         )
@@ -148,9 +143,7 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner()
         result = runner.invoke(cli, ["clean", "-v"])
-        expected_out = (
-            "[x] all tables dropped\n" "[x] __pycache__ successfully deleted\n"
-        )
+        expected_out = "[x] all tables dropped\n[x] __pycache__ successfully deleted\n"
         expected_err_shopyo_db = (
             f"[ ] unable to delete {os.path.join(tmpdir, 'shopyo.db')}"
         )
@@ -366,11 +359,8 @@ class TestCliClean:
 
 @pytest.mark.usefixtures("restore_cwd")
 class TestCliNew:
-
     @pytest.mark.parametrize("proj,parent", [("", "foo"), ("bar", "")])
-    def test_new_projname_already_exists(
-        self, cli_runner, proj, parent, tmp_path
-    ):
+    def test_new_projname_already_exists(self, cli_runner, proj, parent, tmp_path):
         name = proj or parent
         parent_path = tmp_path / parent
         proj_path = parent_path / name
@@ -378,8 +368,7 @@ class TestCliNew:
         os.chdir(parent_path)
         result = cli_runner("new", proj)
         expected_out = (
-            f"[ ] Error: Unable to create new project. Path {proj_path}"
-            " exits"
+            f"[ ] Error: Unable to create new project. Path {proj_path} exits"
         )
 
         assert result.exit_code == 1
@@ -426,26 +415,12 @@ class TestCliNew:
         assert os.path.exists(os.path.join(name, name, "__init__.py"))
         assert os.path.exists(os.path.join(name, name, "cli.py"))
         assert os.path.exists(os.path.join(name, "docs"))
-        assert os.path.exists(
-            os.path.join(name, "docs", "conf.py")
-        )
-        assert os.path.exists(
-            os.path.join(name, "docs", "_static")
-        )
-        assert os.path.exists(
-            os.path.join(
-                name, "docs", "_static", "custom.css"
-            )
-        )
-        assert os.path.exists(
-            os.path.join(name, "docs", "Makefile")
-        )
-        assert os.path.exists(
-            os.path.join(name, "docs", "index.rst")
-        )
-        assert os.path.exists(
-            os.path.join(name, "docs", "docs.rst")
-        )
+        assert os.path.exists(os.path.join(name, "docs", "conf.py"))
+        assert os.path.exists(os.path.join(name, "docs", "_static"))
+        assert os.path.exists(os.path.join(name, "docs", "_static", "custom.css"))
+        assert os.path.exists(os.path.join(name, "docs", "Makefile"))
+        assert os.path.exists(os.path.join(name, "docs", "index.rst"))
+        assert os.path.exists(os.path.join(name, "docs", "docs.rst"))
         assert not os.path.exists(os.path.join(name, name, "__main__.py"))
         assert not os.path.exists(os.path.join(name, name, "api"))
         assert not os.path.exists(os.path.join(name, name, ".tox"))
@@ -466,7 +441,6 @@ class TestCliInitialise:
 
 @pytest.mark.usefixtures("fake_foo_proj")
 class TestCliCreateModule:
-
     @pytest.mark.parametrize("mod", ["box_bar", "box__foo"])
     def test_create_invalid_modulename_with_box_prefix(self, cli_runner, mod):
         result = cli_runner("createmodule", mod)
@@ -496,8 +470,8 @@ class TestCliCreateModule:
             ("foo", "box__default"),
             ("foo", ""),
             ("baz", "box__default"),
-            ("demo", "box__default")
-        ]
+            ("demo", "box__default"),
+        ],
     )
     def test_create_existing_module(self, cli_runner, mod, box, tmpdir):
         result = cli_runner("createmodule", mod, box)
@@ -535,7 +509,7 @@ class TestCliCreateModule:
             ("store", ""),  # create module
             ("store", "box__ecommerce"),  # create submodule and also box
             ("marketplace", "box__default"),  # create submodule but not box
-        ]
+        ],
     )
     def test_create_valid_modules(self, cli_runner, fake_foo_proj, mod, box):
         result = cli_runner("createmodule", mod, box)
@@ -546,9 +520,7 @@ class TestCliCreateModule:
         assert os.path.exists(os.path.join(module_path, "templates"))
         assert os.path.exists(os.path.join(module_path, "templates", mod))
         assert os.path.exists(
-            os.path.join(
-                module_path, "templates", mod, "blocks", "sidebar.html"
-            )
+            os.path.join(module_path, "templates", mod, "blocks", "sidebar.html")
         )
         assert os.path.exists(
             os.path.join(module_path, "templates", mod, "dashboard.html")
@@ -568,9 +540,7 @@ class TestCliCreateModule:
         assert os.path.exists(os.path.join(module_path, "global.py"))
 
     @pytest.mark.parametrize("opt", ["-v", "--verbose"])
-    def test_create_valid_module_with_verbose(
-        self, cli_runner, fake_foo_proj, opt
-    ):
+    def test_create_valid_module_with_verbose(self, cli_runner, fake_foo_proj, opt):
         result = cli_runner("createmodule", "store", opt)
         module_path = os.path.join(fake_foo_proj, "modules", "store")
         expected_out1 = "[x] Successfully created"
@@ -584,7 +554,6 @@ class TestCliCreateModule:
 
 @pytest.mark.usefixtures("fake_foo_proj")
 class TestCliCollectstatic:
-
     def test_collectstatic_with_default_src(self, cli_runner):
         result = cli_runner("collectstatic")
         expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n\n"
@@ -608,7 +577,7 @@ class TestCliCollectstatic:
             ("box__default\\foo", "box__default/foo/foo.css"),
             ("modules/bar", "bar/bar.css"),
             ("modules\\box__default/foo", "box__default/foo/foo.css"),
-        ]
+        ],
     )
     def test_collectstatic_with_valid_arg(self, src, expected, cli_runner):
         result = cli_runner("collectstatic", src)

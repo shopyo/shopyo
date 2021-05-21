@@ -4,16 +4,17 @@
 
 """
 import datetime
-from sqlalchemy.ext.hybrid import hybrid_property
+
+from flask import current_app
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
+from init import db
 from init import login_manager
 from itsdangerous import URLSafeTimedSerializer
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-from flask import current_app
 
-from init import db
 from shopyo.api.models import PkModel
 
 role_user_bridge = db.Table(
@@ -34,7 +35,7 @@ role_user_bridge = db.Table(
 
 
 class AnonymousUser(AnonymousUserMixin):
-    """ Anonymous user class """
+    """Anonymous user class"""
 
     def __init__(self):
         self.username = "guest"
@@ -96,7 +97,7 @@ class User(UserMixin, PkModel):
 
     @password.setter
     def password(self, plaintext):
-        #the default hashing method is pbkdf2:sha256
+        # the default hashing method is pbkdf2:sha256
         self._password = generate_password_hash(plaintext)
 
     def check_password(self, password):
@@ -104,9 +105,7 @@ class User(UserMixin, PkModel):
 
     def generate_confirmation_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(
-            self.email, salt=current_app.config["PASSWORD_SALT"]
-        )
+        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
 
     def confirm_token(self, token, expiration=3600):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])

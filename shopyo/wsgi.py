@@ -7,12 +7,12 @@
 import sys
 
 #
-## The "/home/appinv" below specifies your home
-## directory -- the rest should be the directory you uploaded your Flask
-## code to underneath the home directory.  So if you just ran
-## "git clone git@github.com/myusername/myproject.git"
-## ...or uploaded files to the directory "myproject", then you should
-## specify "/home/appinv/myproject"
+# The "/home/appinv" below specifies your home
+# directory -- the rest should be the directory you uploaded your Flask
+# code to underneath the home directory.  So if you just ran
+# "git clone git@github.com/myusername/myproject.git"
+# ...or uploaded files to the directory "myproject", then you should
+# specify "/home/appinv/myproject"
 # on shell do pwd to get a path like this:'/home2/folder/shopyo/shopyo' set path to this
 path = ""
 if path not in sys.path:

@@ -1,5 +1,5 @@
-import re
 import os
+import re
 
 from wtforms.validators import ValidationError
 
@@ -50,15 +50,14 @@ def is_valid_slug(text):
 
 
 def is_valid_url(url):
-    protocol = r'^((?:http|ftp)s?://)?'
-    domain = (r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?'
-              + r'|localhost)')
-    ipv4 = (r'(?:25[0-5]|2[0-4]\d|[0-1]?\d?\d)(?:\.(?:25[0-5]|2[0-4]\d|'
-            + r'[0-1]?\d?\d)){3}')
-    ipv6 = r'([a-f0-9:]+:+)+[a-f0-9]+'
-    port = r'(?::\d+)?(?:/?|[/?]\S+)$'
-    url_regex = re.compile(protocol + domain + "|" + ipv4 + "|" + ipv6
-                           + port, re.IGNORECASE)
+    protocol = r"^((?:http|ftp)s?://)?"
+    domain = r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|localhost)"
+    ipv4 = r"(?:25[0-5]|2[0-4]\d|[0-1]?\d?\d)(?:\.(?:25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}"
+    ipv6 = r"([a-f0-9:]+:+)+[a-f0-9]+"
+    port = r"(?::\d+)?(?:/?|[/?]\S+)$"
+    url_regex = re.compile(
+        protocol + domain + "|" + ipv4 + "|" + ipv6 + port, re.IGNORECASE
+    )
     return url_regex.match(url) is not None
 
 
@@ -74,24 +73,24 @@ def require_if_default_address(form, field):
 
     if form.diffAddress.data is False:
         if is_empty_str(field.data):
-            raise ValidationError("{} cannot be empty!".format(field.label))
+            raise ValidationError(f"{field.label} cannot be empty!")
 
 
 def require_if_diff_address(form, field):
     if form.diffAddress.data is True:
         if is_empty_str(field.data):
-            raise ValidationError("{} cannot be empty!".format(field.label))
+            raise ValidationError(f"{field.label} cannot be empty!")
 
 
 def require_if_apply_coupon(form, field):
 
     if form.applyCoupon.data is True:
         if is_empty_str(field.data):
-            raise ValidationError("{} cannot be empty!".format(field.label))
+            raise ValidationError(f"{field.label} cannot be empty!")
 
 
 def require_if_create_account(form, field):
 
     if form.createAccount.data is True:
         if is_empty_str(field.data):
-            raise ValidationError("{} cannot be empty!".format(field.label))
+            raise ValidationError(f"{field.label} cannot be empty!")

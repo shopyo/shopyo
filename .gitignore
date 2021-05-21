@@ -125,7 +125,7 @@ shopyo/migrations/
 .vscode
 workspace.code-workspace
 
-# uploads 
+# uploads
 shopyo/static/uploads/
 
 # modules in static since present in modules

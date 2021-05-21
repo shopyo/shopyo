@@ -5,14 +5,15 @@ the `admin` blueprint.
 These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `admin` blueprint.
 """
-import os
 import json
+import os
+
 import pytest
 from flask import request
 from flask import url_for
 from modules.box__default.auth.models import Role
-from modules.box__default.auth.models import User
 from modules.box__default.auth.models import role_user_bridge
+from modules.box__default.auth.models import User
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

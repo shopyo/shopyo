@@ -1,23 +1,26 @@
-import click
 import os
 import sys
 from pathlib import Path
-from shutil import copytree, ignore_patterns
+from shutil import copytree
+from shutil import ignore_patterns
+from subprocess import PIPE
+from subprocess import run
 
+import click
 from flask.cli import FlaskGroup
 from flask.cli import pass_script_info
-from subprocess import run
-from subprocess import PIPE
+
 from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
-from shopyo.api.cmd_helper import _upload_data
 from shopyo.api.cmd_helper import _create_box
 from shopyo.api.cmd_helper import _create_module
+from shopyo.api.cmd_helper import _upload_data
+from shopyo.api.constants import SEP_CHAR
+from shopyo.api.constants import SEP_NUM
 from shopyo.api.database import autoload_models
-from shopyo.api.constants import SEP_CHAR, SEP_NUM
+from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
-from shopyo.api.info import printinfo
 
 
 def _create_shopyo_app(info):
@@ -28,28 +31,26 @@ def _create_shopyo_app(info):
     except Exception:
         return None
 
-    config_name = info.data.get('config') or "development"
+    config_name = info.data.get("config") or "development"
 
     return create_app(config_name=config_name)
 
 
 @click.group(cls=FlaskGroup, create_app=_create_shopyo_app)
-@click.option(
-    '--config', default="development", help="Flask app configuration type"
-)
+@click.option("--config", default="development", help="Flask app configuration type")
 @pass_script_info
 def cli(info, **parmams):
     """CLI for shopyo"""
     printinfo()
     config_name = parmams["config"]
-    info.data['config'] = config_name
+    info.data["config"] = config_name
     # os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
     # os.environ["FLASK_ENV"] = config_name
 
 
 @cli.command("startbox", with_appcontext=False)
 @click.argument("boxname")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def create_box(boxname, verbose):
     """creates ``box`` with ``box_info.json``.
 
@@ -58,10 +59,7 @@ def create_box(boxname, verbose):
     path = os.path.join("modules", boxname)
 
     if os.path.exists(os.path.join("modules", boxname)):
-        click.echo(
-            f"[ ] unable to create. Box {path} already exists!",
-            err=True
-        )
+        click.echo(f"[ ] unable to create. Box {path} already exists!", err=True)
         sys.exit(1)
 
     _create_box(boxname, verbose=verbose)
@@ -70,7 +68,7 @@ def create_box(boxname, verbose):
 @cli.command("createmodule", with_appcontext=False)
 @click.argument("modulename")
 @click.argument("boxname", required=False, default="")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def create_module(modulename, boxname, verbose):
     """
     create a module ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
@@ -140,7 +138,7 @@ def create_module(modulename, boxname, verbose):
 
 @cli.command("collectstatic", with_appcontext=False)
 @click.argument("src", required=False, type=click.Path(), default="modules")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def collectstatic(src, verbose):
     """Copies ``static/`` in ``modules/`` or ``modules/SRC`` into
     ``/static/modules/``
@@ -182,7 +180,7 @@ def collectstatic(src, verbose):
 
 
 @cli.command("clean")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def clean(verbose):
     """removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
     ``db`` if present
@@ -191,7 +189,7 @@ def clean(verbose):
 
 
 @cli.command("initialise")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def initialise(verbose):
     """
     Creates ``db``, ``migration/``, adds default users, add settings
@@ -244,7 +242,7 @@ def initialise(verbose):
 
 @cli.command("new", with_appcontext=False)
 @click.argument("projname", required=False, default="")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def new(projname, verbose):
     """Creates a new shopyo project.
 
@@ -258,7 +256,6 @@ def new(projname, verbose):
     from shopyo.__init__ import __version__
     from shopyo.api.file import trymkfile
     from shopyo.api.file import trymkdir
-    from shopyo.api.file import trycopy
     from shopyo.api.cli_content import get_tox_ini_content
     from shopyo.api.cli_content import get_dev_req_content
     from shopyo.api.cli_content import get_gitignore_content
@@ -288,8 +285,7 @@ def new(projname, verbose):
 
         if os.path.exists(project_path):
             click.echo(
-                f"[ ] Error: Unable to create new project. Path {project_path}"
-                " exits"
+                f"[ ] Error: Unable to create new project. Path {project_path} exits"
             )
             sys.exit(1)
 
@@ -323,7 +319,8 @@ def new(projname, verbose):
 
     # copy the shopyo/shopyo content to the new project
     copytree(
-        src_shopyo_shopyo, project_path,
+        src_shopyo_shopyo,
+        project_path,
         ignore=ignore_patterns(
             "__main__.py",
             "api",
@@ -338,78 +335,74 @@ def new(projname, verbose):
             "*.pyc",
             "sphinx_source",
             "config.json",
-            "pyproject.toml"
-        )
+            "pyproject.toml",
+        ),
     )
 
     # create requirements.txt in root
     trymkfile(
         os.path.join(root_proj_path, "requirements.txt"),
         f"shopyo=={__version__}\n",
-        verbose=verbose
+        verbose=verbose,
     )
 
     # copy the dev_requirement.txt in root
     trymkfile(
         os.path.join(root_proj_path, "dev_requirements.txt"),
         get_dev_req_content(),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # copy the tox.ini in root
     trymkfile(
         os.path.join(root_proj_path, "tox.ini"),
         get_tox_ini_content(projname),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # create MANIFEST.in needed for tox
     trymkfile(
         os.path.join(root_proj_path, "MANIFEST.in"),
         get_manifest_ini_content(projname),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # create README.md in root
     trymkfile(
         os.path.join(root_proj_path, "README.md"),
         f"# Welcome to {projname}",
-        verbose=verbose
+        verbose=verbose,
     )
 
     # create .gitignore in root
     trymkfile(
         os.path.join(root_proj_path, ".gitignore"),
         get_gitignore_content(),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # create pytest.ini
     trymkfile(
         os.path.join(root_proj_path, "pytest.ini"),
         get_pytest_ini_content(),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # create setup.py
     trymkfile(
         os.path.join(root_proj_path, "setup.py"),
         get_setup_py_content(projname),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # override the __init__.py file
     trymkfile(
-        os.path.join(project_path, "__init__.py"),
-        get_init_content(),
-        verbose=verbose
+        os.path.join(project_path, "__init__.py"), get_init_content(), verbose=verbose
     )
 
     # add cli.py for users to add their own cli
     trymkfile(
-        os.path.join(project_path, "cli.py"),
-        get_cli_content(projname),
-        verbose=verbose
+        os.path.join(project_path, "cli.py"), get_cli_content(projname), verbose=verbose
     )
 
     sphinx_src = os.path.join(root_proj_path, "docs")
@@ -420,30 +413,26 @@ def new(projname, verbose):
     trymkfile(
         os.path.join(sphinx_src, "conf.py"),
         get_sphinx_conf_py(projname),
-        verbose=verbose
+        verbose=verbose,
     )
     # create _static sphinx folder
     trymkdir(os.path.join(sphinx_src, "_static"), verbose=verbose)
-    trymkfile(
-        os.path.join(sphinx_src, "_static", "custom.css"), "", verbose=verbose
-    )
+    trymkfile(os.path.join(sphinx_src, "_static", "custom.css"), "", verbose=verbose)
     # create sphinx Makefile inside docs
     trymkfile(
-        os.path.join(sphinx_src, "Makefile"),
-        get_sphinx_makefile(),
-        verbose=verbose
+        os.path.join(sphinx_src, "Makefile"), get_sphinx_makefile(), verbose=verbose
     )
     # create index page
     trymkfile(
         os.path.join(sphinx_src, "index.rst"),
         get_index_rst_content(projname),
-        verbose=verbose
+        verbose=verbose,
     )
     # create docs page
     trymkfile(
         os.path.join(sphinx_src, "docs.rst"),
         get_docs_rst_content(projname),
-        verbose=verbose
+        verbose=verbose,
     )
 
     click.echo(f"[x] Project {projname} created successfully!\n")
@@ -452,21 +441,23 @@ def new(projname, verbose):
 def shopyo_cli():
     arguments = sys.argv[1:]
     if len(arguments) > 0:
-        if arguments[0] in ['rundebug', 'runserver']:
-            if arguments[0] == 'rundebug':
+        if arguments[0] in ["rundebug", "runserver"]:
+            if arguments[0] == "rundebug":
                 printinfo()
                 from app import app
+
                 app.run(debug=True)
-            elif arguments[0] == 'runserver':
+            elif arguments[0] == "runserver":
                 printinfo()
                 from app import app
+
                 app.run(debug=False)
         else:
             cli()
     else:
         cli()
-        print('rendebug, runserver')
+        print("rendebug, runserver")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     shopyo_cli()
