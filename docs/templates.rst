@@ -17,7 +17,7 @@ Having said that, this is the base file we are extending from.
 .. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
    :language: html
    :linenos:
-   :lines: 1-19
+   :lines: 1-18
 
 
 It includes:
@@ -31,7 +31,7 @@ Here is the contact form using the base:
 .. literalinclude:: ../shopyo/modules/box__bizhelp/contact/templates/contact/contact_form.html
    :language: html
    :linenos:
-   :lines: 1-53
+   :lines: 1-52
 
 
 If you extend the base template, you will be able to use the
