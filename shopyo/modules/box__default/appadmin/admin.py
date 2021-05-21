@@ -3,13 +3,11 @@ from functools import wraps
 from flask import flash
 from flask import redirect
 from flask import url_for
-
 from flask_login import current_user
-
 from init import login_manager
-from shopyo.api.html import notify_warning
-
 from modules.box__default.auth.models import User
+
+from shopyo.api.html import notify_warning
 
 login_manager.login_view = "auth.login"
 login_manager.login_message = notify_warning("Please login for access")

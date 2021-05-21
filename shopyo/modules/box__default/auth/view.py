@@ -1,28 +1,28 @@
+import datetime
 import json
 import os
-import datetime
+
 from flask import Blueprint
+from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import render_template
-from flask import url_for
-from flask import current_app
 from flask import request
+from flask import url_for
 from flask_login import current_user
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 from sqlalchemy import func
 
+from .email import send_async_email
+from .forms import LoginForm
+from .forms import RegistrationForm
+from .models import User
 from shopyo.api.html import notify_danger
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
 from shopyo.api.security import get_safe_redirect
-
-from .models import User
-from .email import send_async_email
-from .forms import LoginForm
-from .forms import RegistrationForm
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -66,9 +66,7 @@ def register():
             subject = "Please confirm your email"
             context.update({"token": token, "user": user})
             send_async_email(email, subject, template, **context)
-            flash(
-                notify_success("A confirmation email has been sent via email.")
-            )
+            flash(notify_success("A confirmation email has been sent via email."))
 
         return redirect(url_for("dashboard.index"))
 
@@ -125,9 +123,7 @@ def login():
     if login_form.validate_on_submit():
         email = login_form.email.data
         password = login_form.password.data
-        user = User.query.filter(
-            func.lower(User.email) == func.lower(email)
-        ).first()
+        user = User.query.filter(func.lower(User.email) == func.lower(email)).first()
         if user is None or not user.check_password(password):
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("auth.login"))

@@ -22,8 +22,8 @@ def notify(message, alert_type="primary"):
     None
     """
     alert = """
-    <div class="shopyo-alert alert alert-{alert_type} alert-dismissible fade show" role="alert"
-        style="opacity: 0.98;">
+    <div class="shopyo-alert alert alert-{alert_type} alert-dismissible
+        fade show" role="alert" style="opacity: 0.98;">
       {message}
 
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -34,7 +34,7 @@ def notify(message, alert_type="primary"):
         message=message, alert_type=alert_type
     )
 
-    scriptFade = """ 
+    scriptFade = """
     <script>
           setTimeout(function() {
             $('#flashed-messages').fadeOut('fast');

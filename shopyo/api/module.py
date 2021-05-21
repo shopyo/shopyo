@@ -31,7 +31,7 @@ class ModuleHelp:
 
     def render(self, filename, **kwargs):
         """
-        .render('file.html') renders file.html found in module/templates/module/file.html
+        renders file.html found in module/templates/module/file.html
         """
         return render_template(
             "{}/{}".format(self.info["module_name"], filename), **kwargs
@@ -58,7 +58,7 @@ class ModuleHelp:
 
         print(module_parent, module_parent)
         if module_parent.startswith("box__"):
-            boxormodule = "{}/{}".format(module_parent, module_folder)
+            boxormodule = f"{module_parent}/{module_folder}"
         else:
             boxormodule = module_folder
         return get_static(boxormodule=boxormodule, filename=filename)

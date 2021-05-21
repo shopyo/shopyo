@@ -1,6 +1,7 @@
 -r tests.in
 -r docs.in
 pip-tools
+pre-commit
 flake8
 black
 isort

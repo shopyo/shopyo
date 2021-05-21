@@ -1,6 +1,6 @@
+import re
 import subprocess
 import sys
-import re
 from pathlib import Path
 
 from .api.info import printinfo
@@ -16,8 +16,8 @@ def is_venv():
 
 
 def is_valid_name(name):
-    notallowedpattern = r'[_\.]+'
-    allowedpattern = r'^[\w+\.]+$'
+    notallowedpattern = r"[_\.]+"
+    allowedpattern = r"^[\w+\.]+$"
     isallowed = re.match(allowedpattern, name)
     isnotallowed = re.match(notallowedpattern, name)
 

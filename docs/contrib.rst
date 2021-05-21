@@ -363,4 +363,3 @@ In ``__main__.py`` don't forget to update dev_requirements.txt
 💬 Community: Discord
 ---------------------
 Join the Discord community `Discord Group <https://discord.com/invite/k37Ef6w>`_
-

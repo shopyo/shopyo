@@ -3,8 +3,8 @@
 <h1 align="center">
   <br>
   <a href="https://github.com/shopyo"><img src="https://github.com/shopyo/shopyo/blob/dev/github_banner.png" alt="shopyo" width="" height=""></a>
-  
-  
+
+
 </h1>
 
 [![Codecov](https://codecov.io/gh/shopyo/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/shopyo/shopyo) ![Tests](https://github.com/shopyo/shopyo/actions/workflows/tests.yaml/badge.svg) [![PyPI version shields.io](https://img.shields.io/pypi/v/shopyo.svg)](https://pypi.python.org/pypi/shopyo/) [![Documentation Status](https://readthedocs.org/projects/shopyo/badge/?version=latest)](https://shopyo.readthedocs.io/en/latest/?badge=latest)
@@ -20,7 +20,7 @@ E-commerce modules transferred to [ShopCube](https://github.com/shopyo/shopcube)
 
 # What?
 
-Your next-level modular web framework. Headless support coming soon. 
+Your next-level modular web framework. Headless support coming soon.
 
 Built on top of Flask, it offers most Django features, sometimes a tidbit more with far more flexibility.
 
@@ -38,11 +38,11 @@ python manage.py initialise
 python manage.py rundebug
 ```
 
-It is recommended to use a venv in root folder. 
+It is recommended to use a venv in root folder.
 
 `python -m venv venv`
 
-If for dev install dev_requirements.txt also. 
+If for dev install dev_requirements.txt also.
 
 `python -m pip install -r requirements/dev.txt`
 
@@ -59,7 +59,7 @@ We have a 100% first-timers friendly policy. Check out the [testimonials](https:
 
 # Big??
 
-Powered by apps / modules. Add as many as you like. 
+Powered by apps / modules. Add as many as you like.
 
 Apps are not enough, organise them in boxes and get the ultimate order you need.
 
@@ -100,7 +100,7 @@ We did not hardcode our choices. Our APIS are incremental. You can always use ba
 
 # Plug & Play
 
-The modules are put by copy paste. No blueprint codes to write. 
+The modules are put by copy paste. No blueprint codes to write.
 
 # Contribute
 
@@ -142,8 +142,8 @@ We include some custom apps to get started and act as a demo:
 Support team if you are stuck
 
 - [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) - arj.python@gmail.com
-- [Nathan](https://github.com/blips5) - 
-- [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk 
+- [Nathan](https://github.com/blips5) -
+- [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk
 - [Shamsuddin Rehmani](https://github.com/rehmanis) - rehmani@usc.edu
 
 
@@ -160,4 +160,3 @@ Support team if you are stuck
 [![Stargazers repo roster for @shopyo/shopyo](https://reporoster.com/stars/shopyo/shopyo)](https://github.com/shopyo/shopyo/stargazers)
 
 [![Forkers repo roster for @shopyo/shopyo](https://reporoster.com/forks/shopyo/shopyo)](https://github.com/shopyo/shopyo/network/members)
-

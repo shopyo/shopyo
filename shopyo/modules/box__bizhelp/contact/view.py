@@ -4,13 +4,12 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
-
 from flask_login import login_required
-
-from shopyo.api.html import notify_success
 
 from .forms import ContactForm
 from .models import ContactMessage
+from shopyo.api.forms import flash_errors
+from shopyo.api.html import notify_success
 
 contact_blueprint = Blueprint(
     "contact",
@@ -42,9 +41,7 @@ def validate_message():
         email = form.email.data
         message = form.message.data
 
-        contact_message = ContactMessage(
-            name=name, email=email, message=message
-        )
+        contact_message = ContactMessage(name=name, email=email, message=message)
         contact_message.insert()
         flash(notify_success("Message submitted!"))
         return redirect(url_for("contact.index"))

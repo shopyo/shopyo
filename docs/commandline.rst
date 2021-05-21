@@ -18,7 +18,7 @@ shopyo
    shopyo [OPTIONS] COMMAND [ARGS]...
 
 CLI management for shopyo cli. For Example, to run the app
-in production mode you can run 
+in production mode you can run
 
 .. code:: bash
 

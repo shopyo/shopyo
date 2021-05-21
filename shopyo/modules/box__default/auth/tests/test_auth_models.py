@@ -2,20 +2,21 @@
 This file (test_auth_models.py) contains the units tests for
 the all `auth` module's models.
 """
-import pytest
 import datetime as dt
+
+import pytest
 from freezegun import freeze_time
-from modules.box__default.auth.models import User
-from modules.box__default.auth.models import Role
 from modules.box__default.auth.models import AnonymousUser
+from modules.box__default.auth.models import Role
 from modules.box__default.auth.models import role_user_bridge
-from modules.box__default.auth.tests.factories import UserFactory
+from modules.box__default.auth.models import User
 from modules.box__default.auth.tests.factories import RoleFactory
+from modules.box__default.auth.tests.factories import UserFactory
 from sqlalchemy.exc import IntegrityError
 
 
 class TestAuthFactory:
-    """ Test all Model Factories in Auth """
+    """Test all Model Factories in Auth"""
 
     def test_user_factory(self):
         user = UserFactory()
@@ -38,7 +39,7 @@ class TestAuthFactory:
 
 
 class TestAnonymousUser:
-    """ tests app's anonymous users characteristics """
+    """tests app's anonymous users characteristics"""
 
     def test_anonymous_user_is_admin(self):
         user = AnonymousUser()
@@ -90,7 +91,7 @@ class TestAnonymousUser:
 
 
 class TestUser:
-    """ Test User model """
+    """Test User model"""
 
     def test_get_user_by_id(self):
         user = User.create(email="foo@bar.com", password="pass")
@@ -183,7 +184,7 @@ class TestUser:
 
 
 class TestRole:
-    """ Test Role model """
+    """Test Role model"""
 
     def test_get_role_by_id(self):
         role = Role.create(name="buyer")
@@ -198,7 +199,7 @@ class TestRole:
 
 
 class TestUserRoleRelation:
-    """ Test User and Role model relationship """
+    """Test User and Role model relationship"""
 
     def test_user_can_have_many_roles(self):
         user = UserFactory()

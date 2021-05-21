@@ -1,25 +1,27 @@
 """
 Helper utility functions for commandline api
 """
-import os
-import sys
-import click
-import re
 import importlib
 import json
+import os
+import re
+import sys
+
+import click
 from flask import current_app
 
+from shopyo.api.cli_content import get_dashboard_html_content
+from shopyo.api.cli_content import get_global_py_content
+from shopyo.api.cli_content import get_module_view_content
+from shopyo.api.constants import SEP_CHAR
+from shopyo.api.constants import SEP_NUM
 from shopyo.api.file import get_folders
 from shopyo.api.file import trycopytree
+from shopyo.api.file import trymkdir
+from shopyo.api.file import trymkfile
 from shopyo.api.file import tryrmcache
 from shopyo.api.file import tryrmfile
 from shopyo.api.file import tryrmtree
-from shopyo.api.file import trymkdir
-from shopyo.api.file import trymkfile
-from shopyo.api.constants import SEP_CHAR, SEP_NUM
-from shopyo.api.cli_content import get_dashboard_html_content
-from shopyo.api.cli_content import get_module_view_content
-from shopyo.api.cli_content import get_global_py_content
 
 
 def _clean(verbose=False):
@@ -42,7 +44,7 @@ def _clean(verbose=False):
     """
     click.echo("Cleaning...")
     click.echo(SEP_CHAR * SEP_NUM)
-    db = current_app.extensions['sqlalchemy'].db
+    db = current_app.extensions["sqlalchemy"].db
     db.drop_all()
     db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
 
@@ -100,9 +102,7 @@ def _collectstatic(target_module="modules", verbose=False):
         # add the modules folder to start of target_module incase it is not
         # already present in the path
         if target_module_start != "modules":
-            target_module = (
-                os.path.join("modules", target_module)
-            )
+            target_module = os.path.join("modules", target_module)
 
     # get the full path for modules (the src). Defaults to ./modules
     modules_path = os.path.join(root_path, target_module)
@@ -125,9 +125,7 @@ def _collectstatic(target_module="modules", verbose=False):
             box_path = os.path.join(modules_path, folder)
             for subfolder in get_folders(box_path):
                 module_name = subfolder
-                module_static_folder = os.path.join(
-                    box_path, subfolder, "static"
-                )
+                module_static_folder = os.path.join(box_path, subfolder, "static")
                 if not os.path.exists(module_static_folder):
                     continue
                 module_in_static_dir = os.path.join(
@@ -136,11 +134,7 @@ def _collectstatic(target_module="modules", verbose=False):
 
                 # copy from ./modules/<box__name>/<submodule> to
                 # ./static/modules
-                trycopytree(
-                    module_static_folder,
-                    module_in_static_dir,
-                    verbose=verbose
-                )
+                trycopytree(module_static_folder, module_in_static_dir, verbose=verbose)
         else:
             path_split = ""
 
@@ -151,27 +145,17 @@ def _collectstatic(target_module="modules", verbose=False):
                 path_split = path_split[1]
 
             if folder.lower() == "static":
-                module_static_folder = os.path.join(
-                    modules_path, folder
-                )
+                module_static_folder = os.path.join(modules_path, folder)
                 module_name = path_split
             else:
-                module_static_folder = os.path.join(
-                    modules_path, folder, "static"
-                )
+                module_static_folder = os.path.join(modules_path, folder, "static")
                 module_name = os.path.join(path_split, folder)
 
             if not os.path.exists(module_static_folder):
                 continue
-            module_in_static_dir = os.path.join(
-                modules_path_in_static, module_name
-            )
+            module_in_static_dir = os.path.join(modules_path_in_static, module_name)
             tryrmtree(module_in_static_dir, verbose=verbose)
-            trycopytree(
-                module_static_folder,
-                module_in_static_dir,
-                verbose=verbose
-            )
+            trycopytree(module_static_folder, module_in_static_dir, verbose=verbose)
 
     click.echo("")
 
@@ -187,9 +171,7 @@ def _upload_data(verbose=False):
             continue
         if folder.startswith("box__"):
             # boxes
-            for sub_folder in os.listdir(
-                os.path.join(root_path, "modules", folder)
-            ):
+            for sub_folder in os.listdir(os.path.join(root_path, "modules", folder)):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
@@ -206,9 +188,7 @@ def _upload_data(verbose=False):
         else:
             # apps
             try:
-                upload = importlib.import_module(
-                    f"modules.{folder}.upload"
-                )
+                upload = importlib.import_module(f"modules.{folder}.upload")
                 upload.upload(verbose=verbose)
             except ImportError as e:
                 if verbose:
@@ -225,16 +205,12 @@ def _create_box(boxname, verbose=False):
     info_json = {
         "display_string": boxname.capitalize(),
         "box_name": boxname,
-        "author": {
-            "name": "",
-            "website": "",
-            "mail": ""
-        }
+        "author": {"name": "", "website": "", "mail": ""},
     }
 
     box_info = os.path.join(base_path, "box_info.json")
 
-    with open(box_info, 'w', encoding='utf-8') as f:
+    with open(box_info, "w", encoding="utf-8") as f:
         json.dump(info_json, f, indent=4, sort_keys=True)
 
     if verbose:
@@ -275,23 +251,15 @@ def _create_module(modulename, base_path=None, verbose=False):
     test_func_path = os.path.join(
         base_path, "tests", f"test_{modulename}_functional.py"
     )
-    test_models_path = os.path.join(
-        base_path, "tests", f"test_{modulename}_models.py"
-    )
+    test_models_path = os.path.join(base_path, "tests", f"test_{modulename}_models.py")
     test_func_content = "# Please add your functional tests to this file.\n"
     test_model_content = "# Please add your models tests to this file.\n"
-    trymkfile(
-        test_func_path, test_func_content, verbose=verbose
-    )
-    trymkfile(
-        test_models_path, test_model_content, verbose=verbose
-    )
+    trymkfile(test_func_path, test_func_content, verbose=verbose)
+    trymkfile(test_models_path, test_model_content, verbose=verbose)
 
     # create view.py, forms.py and model.py files inside the module
     trymkfile(
-        os.path.join(base_path, "view.py"),
-        get_module_view_content(),
-        verbose=verbose
+        os.path.join(base_path, "view.py"), get_module_view_content(), verbose=verbose
     )
     trymkfile(os.path.join(base_path, "forms.py"), "", verbose=verbose)
     trymkfile(os.path.join(base_path, "models.py"), "", verbose=verbose)
@@ -303,14 +271,10 @@ def _create_module(modulename, base_path=None, verbose=False):
         "type": "show",
         "fa-icon": "fa fa-store",
         "url_prefix": f"/{modulename}",
-        "author": {
-            "name": "",
-            "website": "",
-            "mail": ""
-        }
+        "author": {"name": "", "website": "", "mail": ""},
     }
     info_json_path = os.path.join(base_path, "info.json")
-    with open(info_json_path, 'w', encoding='utf-8') as f:
+    with open(info_json_path, "w", encoding="utf-8") as f:
         json.dump(info_json, f, indent=4, sort_keys=True)
 
     if verbose:
@@ -326,12 +290,10 @@ def _create_module(modulename, base_path=None, verbose=False):
     trymkfile(
         os.path.join(base_path, "templates", modulename, "dashboard.html"),
         get_dashboard_html_content(),
-        verbose=verbose
+        verbose=verbose,
     )
 
     # create the global.py files inside the module
     trymkfile(
-        os.path.join(base_path, "global.py"),
-        get_global_py_content(),
-        verbose=verbose
+        os.path.join(base_path, "global.py"), get_global_py_content(), verbose=verbose
     )

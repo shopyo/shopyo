@@ -1,8 +1,10 @@
-from shutil import copytree
-import subprocess
-import pytest
-import sys
 import os
+import subprocess
+import sys
+from shutil import copytree
+
+import pytest
+
 from shopyo import __version__
 
 
@@ -39,18 +41,10 @@ def test_initialise_after_new(tmp_path):
         python_env = os.path.join(os.getcwd(), "env", "Scripts", "python")
         shopyo_env = os.path.join(os.getcwd(), "env", "Scripts", "shopyo")
     # update pip of venv
-    subprocess.check_call(
-        [python_env, "-m", "pip", "install", "--upgrade", "pip"]
-    )
+    subprocess.check_call([python_env, "-m", "pip", "install", "--upgrade", "pip"])
     # install the shopyo package from dist added earlier
     subprocess.check_call(
-        [
-            python_env,
-            "-m",
-            "pip",
-            "install",
-            os.path.join("dist", shopyo_dist_name)
-        ]
+        [python_env, "-m", "pip", "install", os.path.join("dist", shopyo_dist_name)]
     )
     # run shopyo help command followed by new command
     subprocess.check_call(["shopyo", "--help"])
@@ -58,9 +52,7 @@ def test_initialise_after_new(tmp_path):
     # change the cwd to the newly created shopyo project
     os.chdir(os.path.join(project_path, "foo"))
     # initialise the project
-    subprocess.check_call(
-        [shopyo_env, "initialise"]
-    )
+    subprocess.check_call([shopyo_env, "initialise"])
 
     assert os.path.exists("shopyo.db")
     assert os.path.exists("migrations")

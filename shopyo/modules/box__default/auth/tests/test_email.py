@@ -5,7 +5,6 @@ user email confirmation
 """
 import pytest
 from flask_mailman import EmailMessage
-
 from modules.box__default.auth.email import _send_email_helper
 from modules.box__default.auth.email import send_async_email
 from modules.box__default.auth.models import User

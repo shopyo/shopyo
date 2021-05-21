@@ -1,9 +1,11 @@
-from app import create_app
-from shopyo.api.file import tryrmtree
-import pytest
 import os
 import shutil
+
+import pytest
 from app import app as _app
+from app import create_app
+
+from shopyo.api.file import tryrmtree
 
 
 @pytest.fixture

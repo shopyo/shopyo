@@ -2,11 +2,11 @@
 This file email.py contains functions for sending
 text and html rendered emails asynchronously
 """
-
-from flask_mailman import EmailMultiAlternatives
-from flask import render_template
 from threading import Thread
+
 from flask import current_app
+from flask import render_template
+from flask_mailman import EmailMultiAlternatives
 
 
 def _send_email_helper(app, msg):

@@ -1,5 +1,6 @@
-import json
 import datetime
+import json
+
 from app import app
 from modules.box__default.auth.models import User
 
@@ -16,11 +17,9 @@ def add_admin(email, password):
 
 
 def upload(verbose=False):
-    with open("config.json", "r") as config:
+    with open("config.json") as config:
         config = json.load(config)
-        add_admin(
-            config["admin_user"]["email"], config["admin_user"]["password"]
-        )
+        add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
 
         if verbose:
             print("[x] Added Admin User")

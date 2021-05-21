@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
-
-# from wtforms.validators import Length
-# from wtforms.fields.html5 import EmailField
 from wtforms import StringField
 from wtforms import TextAreaField
 from wtforms.validators import DataRequired
 
 from shopyo.api.validators import verify_slug
+
+# from wtforms.validators import Length
+# from wtforms.fields.html5 import EmailField
 
 
 class PageForm(FlaskForm):

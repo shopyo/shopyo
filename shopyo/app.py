@@ -1,31 +1,31 @@
 import importlib
-import os
 import json
-import jinja2
+import os
 import sys
+
+import jinja2
+from config import app_config
 from flask import Flask
-from flask import send_from_directory
 from flask import redirect
-from flask import url_for
 from flask import request
-from flask_login import current_user
-from flask_wtf.csrf import CSRFProtect
+from flask import send_from_directory
+from flask import url_for
 from flask_admin import Admin
-from flask_admin.contrib import sqla as flask_admin_sqla
 from flask_admin import AdminIndexView
 from flask_admin import expose
+from flask_admin.contrib import sqla as flask_admin_sqla
 from flask_admin.menu import MenuLink
-
-from modules.box__default.settings.helpers import get_setting
-from modules.box__default.settings.models import Settings
-from config import app_config
-
+from flask_login import current_user
+from flask_wtf.csrf import CSRFProtect
 from init import db
 from init import login_manager
 from init import ma
-from init import migrate
 from init import mail
+from init import migrate
 from init import modules_path
+from modules.box__default.settings.helpers import get_setting
+from modules.box__default.settings.models import Settings
+
 from shopyo.api.file import trycopy
 
 #
@@ -57,13 +57,13 @@ class MyAdminIndexView(AdminIndexView):
     def index(self):
         if not current_user.is_authenticated and current_user.is_admin:
             return redirect(url_for("auth.login"))
-        return super(MyAdminIndexView, self).index()
+        return super().index()
 
     @expose("/dashboard")
     def indexs(self):
         if not current_user.is_authenticated and current_user.is_admin:
             return redirect(url_for("auth.login"))
-        return super(MyAdminIndexView, self).index()
+        return super().index()
 
 
 #
@@ -127,9 +127,7 @@ def create_app(config_name="development"):
         index_view=MyAdminIndexView(),
     )
     admin.add_view(DefaultModelView(Settings, db.session))
-    admin.add_link(
-        MenuLink(name="Logout", category="", url="/auth/logout?next=/admin")
-    )
+    admin.add_link(MenuLink(name="Logout", category="", url="/auth/logout?next=/admin"))
 
     #
     # dev static
@@ -152,20 +150,16 @@ def create_app(config_name="development"):
 
         if folder.startswith("box__"):
             # boxes
-            for sub_folder in os.listdir(
-                os.path.join(base_path, "modules", folder)
-            ):
+            for sub_folder in os.listdir(os.path.join(base_path, "modules", folder)):
                 if sub_folder.startswith("__"):  # ignore __pycache__
                     continue
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
                 try:
                     sys_mod = importlib.import_module(
-                        "modules.{}.{}.view".format(folder, sub_folder)
+                        f"modules.{folder}.{sub_folder}.view"
                     )
-                    app.register_blueprint(
-                        getattr(sys_mod, "{}_blueprint".format(sub_folder))
-                    )
+                    app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
                 except AttributeError:
                     pass
                     # print(
@@ -174,7 +168,7 @@ def create_app(config_name="development"):
                     # )
                 try:
                     mod_global = importlib.import_module(
-                        "modules.{}.{}.global".format(folder, sub_folder)
+                        f"modules.{folder}.{sub_folder}.global"
                     )
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
@@ -185,20 +179,14 @@ def create_app(config_name="development"):
         else:
             # apps
             try:
-                mod = importlib.import_module("modules.{}.view".format(folder))
-                app.register_blueprint(
-                    getattr(mod, "{}_blueprint".format(folder))
-                )
+                mod = importlib.import_module(f"modules.{folder}.view")
+                app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
             except AttributeError:
                 pass
                 # print("[ ] Blueprint skipped:", e)
             try:
-                mod_global = importlib.import_module(
-                    "modules.{}.global".format(folder)
-                )
-                available_everywhere_entities.update(
-                    mod_global.available_everywhere
-                )
+                mod_global = importlib.import_module(f"modules.{folder}.global")
+                available_everywhere_entities.update(mod_global.available_everywhere)
             except ImportError:
                 # print(e)
                 pass

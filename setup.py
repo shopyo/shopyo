@@ -7,9 +7,10 @@ https://github.com/pypa/sampleproject
 python setup.py publish to publish
 
 """
-from setuptools import setup
 import os
 import sys
+
+from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -19,9 +20,7 @@ if sys.argv[-1] == "publish":  # requests
     sys.exit()
 
 setup(
-    install_requires=open(
-        os.path.join(here, "requirements.txt"), encoding="utf-8"
-    )
+    install_requires=open(os.path.join(here, "requirements.txt"), encoding="utf-8")
     .read()
     .split("\n")
 )

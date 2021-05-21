@@ -1,6 +1,6 @@
-import sys
-import subprocess
 import argparse
+import subprocess
+import sys
 
 parser = argparse.ArgumentParser(description="Publish commands")
 parser.add_argument("commit_message", help="commit message")
@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 build_docs = ["sphinx-build", "-b", "html", "sphinx_source", "docs"]
 add_all = ["git", "add", "*"]
-commit = ["git", "commit", "-m", "{}".format(args.commit_message)]
+commit = ["git", "commit", "-m", f"{args.commit_message}"]
 push_github = ["git", "push", "origin", "dev"]
 push_pypi = [sys.executable, "setup.py", "publish"]
 

@@ -5,9 +5,8 @@ from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import render_template
-from modules.box__default.auth.decorators import check_confirmed
-
 from flask_login import login_required
+from modules.box__default.auth.decorators import check_confirmed
 
 from shopyo.api.html import notify_success
 
@@ -26,9 +25,7 @@ all_info = {}
 def index():
     context = {}
 
-    for folder in os.listdir(
-        os.path.join(current_app.config["BASE_DIR"], "modules")
-    ):
+    for folder in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
         if folder.startswith("__"):
             continue
         elif folder.startswith("box__"):

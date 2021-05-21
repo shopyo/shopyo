@@ -4,10 +4,11 @@ from wtforms import PasswordField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
 from wtforms.validators import Email
+from wtforms.validators import EqualTo
 from wtforms.validators import InputRequired
 from wtforms.validators import Length
-from wtforms.validators import EqualTo
 from wtforms.validators import ValidationError
+
 from .models import User
 
 
@@ -25,7 +26,7 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    """ Registration Form """
+    """Registration Form"""
 
     email = EmailField(
         "email_label",
