@@ -114,22 +114,6 @@ We follow a 100% first-timers friendly policy.
 
 👉 Link: [shopyo.readthedocs.io/](https://shopyo.readthedocs.io/en/latest/)
 
-# By default
-
-We include some custom apps to get started and act as a demo:
-
-- ecommerce
-- appointment
-- pages
-- contact
-
-# 🍜 Test it out!
-
-| Info | Value |
-|---|---|
-| Link | [shopyo.pythonanywhere.com/dashboard](http://shopyo.pythonanywhere.com/dashboard) |
-| Credentials | User: admin@domain.com - password: pass |
-
 # Who uses Shopyo?
 
 | site name | description
@@ -145,18 +129,3 @@ Support team if you are stuck
 - [Nathan](https://github.com/blips5) -
 - [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk
 - [Shamsuddin Rehmani](https://github.com/rehmanis) - rehmani@usc.edu
-
-
-
-## 🍳 In Action
-
-![](screenshots/theme_boogle.png)
-![](screenshots/theme_mistrello.png)
-![](screenshots/module_demo.png)
-![](screenshots/checkout.png)
-
-## Supporters
-
-[![Stargazers repo roster for @shopyo/shopyo](https://reporoster.com/stars/shopyo/shopyo)](https://github.com/shopyo/shopyo/stargazers)
-
-[![Forkers repo roster for @shopyo/shopyo](https://reporoster.com/forks/shopyo/shopyo)](https://github.com/shopyo/shopyo/network/members)
