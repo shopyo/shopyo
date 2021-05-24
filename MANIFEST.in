@@ -1,14 +1,9 @@
-include requirements.txt
-include dev_requirements.txt
-exclude config.json
 exclude github_banner.png
-recursive-include shopyo *
-recursive-exclude shopyo/migrations *
-recursive-exclude shopyo/instance *
-recursive-exclude shopyo/static/modules *
-recursive-exclude shopyo/static/uploads *
-recursive-exclude shopyo/static/uploads *
-recursive-exclude shopyo/static/modules *
-recursive-exclude shopyo/.tox *
-recursive-exclude __pycache__ *
+exclude requirements
+exclude setup.py
+exclude .tox
+exclude publish.py
+recursive-exclude shopyo
+recursive-include shopyo/api *
+recursive-exclude shopyo/api/tests *
 recursive-exclude screenshots *
