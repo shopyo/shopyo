@@ -3,9 +3,8 @@ import os
 
 from flask import current_app
 from flask import url_for
-
-from shopyo.modules.box__default.settings.helpers import get_setting
-from shopyo.modules.box__default.settings.models import Settings
+from modules.box__default.settings.helpers import get_setting
+from modules.box__default.settings.models import Settings
 
 
 def get_active_theme_dir():

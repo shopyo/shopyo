@@ -13,14 +13,14 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from flask_login import login_required
+from init import db
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import User
 from sqlalchemy import exists
 
 from .admin import admin_required
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
-from shopyo.init import db
-from shopyo.modules.box__default.auth.models import Role
-from shopyo.modules.box__default.auth.models import User
 
 # from config import Config
 

@@ -11,10 +11,9 @@ import os
 import pytest
 from flask import request
 from flask import url_for
-
-from shopyo.modules.box__default.auth.models import Role
-from shopyo.modules.box__default.auth.models import role_user_bridge
-from shopyo.modules.box__default.auth.models import User
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import role_user_bridge
+from modules.box__default.auth.models import User
 
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

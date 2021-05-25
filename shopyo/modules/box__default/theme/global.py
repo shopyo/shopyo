@@ -2,9 +2,8 @@ import json
 import os
 
 from flask import url_for
-
-from shopyo.init import themes_path
-from shopyo.modules.box__default.settings.helpers import get_setting
+from init import themes_path
+from modules.box__default.settings.helpers import get_setting
 
 
 def get_front_theme_dir():

@@ -6,14 +6,13 @@ import datetime as dt
 
 import pytest
 from freezegun import freeze_time
+from modules.box__default.auth.models import AnonymousUser
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import role_user_bridge
+from modules.box__default.auth.models import User
+from modules.box__default.auth.tests.factories import RoleFactory
+from modules.box__default.auth.tests.factories import UserFactory
 from sqlalchemy.exc import IntegrityError
-
-from shopyo.modules.box__default.auth.models import AnonymousUser
-from shopyo.modules.box__default.auth.models import Role
-from shopyo.modules.box__default.auth.models import role_user_bridge
-from shopyo.modules.box__default.auth.models import User
-from shopyo.modules.box__default.auth.tests.factories import RoleFactory
-from shopyo.modules.box__default.auth.tests.factories import UserFactory
 
 
 class TestAuthFactory:

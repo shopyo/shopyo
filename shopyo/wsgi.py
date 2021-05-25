@@ -18,7 +18,7 @@ path = ""
 if path not in sys.path:
     sys.path.insert(0, path)
 #
-from shopyo.app import app as application  # noqa
+from app import app as application  # noqa
 
 #
 # NB -- many Flask guides suggest you use a file called run.py; that's

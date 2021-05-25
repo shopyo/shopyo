@@ -1,8 +1,8 @@
 import json
 
-from shopyo.app import app
-from shopyo.init import db
-from shopyo.modules.box__default.settings.models import Settings
+from app import app
+from init import db
+from modules.box__default.settings.models import Settings
 
 
 def add_setting(name, value):
