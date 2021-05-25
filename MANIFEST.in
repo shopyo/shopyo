@@ -1,6 +1,4 @@
 exclude github_banner.png
-exclude requirements
-exclude setup.py
 exclude .tox
 exclude publish.py
 recursive-exclude shopyo
