@@ -24,7 +24,6 @@ Your next-level modular web framework. Headless support coming soon.
 
 Built on top of Flask, it offers most Django features, sometimes a tidbit more with far more flexibility.
 
-It ships with common business needs by default
 
 # Have a go!
 
