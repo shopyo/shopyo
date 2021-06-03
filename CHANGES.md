@@ -1,6 +1,6 @@
 ## Unreleased
 
-* Fix the import issues that was causing #37. Now `shopyo new` command will not work but this is moved to [shopyo-factory](https://github.com/shopyo/shopyo-factory)
+* Fix the import issues that was causing [#37](https://github.com/shopyo/shopyo/issues/37). Now `shopyo new` command will not work but this is moved to [shopyo-factory](https://github.com/shopyo/shopyo-factory)
 * add changelog link to `setup.cfg` so that it shows on Shopyo PyPi page
 
 ## Version 4.1.2
