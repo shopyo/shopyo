@@ -1,4 +1,4 @@
-from modules.box__default.settings.models import Settings
+from .models import Settings
 
 
 def get_setting(name):

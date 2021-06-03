@@ -8,11 +8,12 @@ import json
 import os
 
 import pytest
-from app import create_app
 from flask import url_for
-from init import db as _db
-from modules.box__default.auth.models import User
-from modules.box__default.settings.models import Settings
+
+from shopyo.app import create_app
+from shopyo.init import db as _db
+from shopyo.modules.box__default.auth.models import User
+from shopyo.modules.box__default.settings.models import Settings
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v

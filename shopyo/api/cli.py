@@ -27,8 +27,10 @@ def _create_shopyo_app(info):
     sys.path.insert(0, os.getcwd())
 
     try:
-        from app import create_app
-    except Exception:
+        from shopyo.app import create_app
+    except Exception as e:
+        print("here")
+        print(e)
         return None
 
     config_name = info.data.get("config") or "development"
@@ -44,8 +46,8 @@ def cli(info, **parmams):
     printinfo()
     config_name = parmams["config"]
     info.data["config"] = config_name
-    # os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
-    # os.environ["FLASK_ENV"] = config_name
+    os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
+    os.environ["FLASK_ENV"] = config_name
 
 
 @cli.command("startbox", with_appcontext=False)
