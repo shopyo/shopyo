@@ -14,12 +14,10 @@ certifi==2020.12.5
     # via requests
 chardet==4.0.0
     # via requests
-colorama==0.4.4
-    # via sphinx
 docutils==0.16
     # via sphinx
 furo==2021.4.11b34
-    # via -r requirements/docs.in
+    # via -r docs.in
 idna==2.10
     # via requests
 imagesize==1.2.0
@@ -44,7 +42,7 @@ soupsieve==2.2.1
     # via beautifulsoup4
 sphinx==3.5.4
     # via
-    #   -r requirements/docs.in
+    #   -r docs.in
     #   furo
 sphinxcontrib-applehelp==1.0.2
     # via sphinx
@@ -58,7 +56,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.4
     # via sphinx
-urllib3==1.26.4
+urllib3==1.26.5
     # via requests
 
 # The following packages are considered to be unsafe in a requirements file:
