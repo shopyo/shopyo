@@ -4,7 +4,6 @@ import os
 import sys
 
 import jinja2
-from config import app_config
 from flask import Flask
 from flask import redirect
 from flask import request
@@ -17,14 +16,6 @@ from flask_admin.contrib import sqla as flask_admin_sqla
 from flask_admin.menu import MenuLink
 from flask_login import current_user
 from flask_wtf.csrf import CSRFProtect
-from init import db
-from init import login_manager
-from init import ma
-from init import mail
-from init import migrate
-from init import modules_path
-from modules.box__default.settings.helpers import get_setting
-from modules.box__default.settings.models import Settings
 
 from shopyo.api.file import trycopy
 
@@ -70,7 +61,6 @@ class MyAdminIndexView(AdminIndexView):
 # secrets files
 #
 
-
 try:
     if not os.path.exists("config.json"):
         trycopy("config_demo.json", "config.json")
@@ -87,6 +77,16 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 
 
 def create_app(config_name="development"):
+
+    from shopyo.config import app_config
+    from shopyo.init import db
+    from shopyo.init import login_manager
+    from shopyo.init import ma
+    from shopyo.init import mail
+    from shopyo.init import migrate
+    from shopyo.init import modules_path
+    from shopyo.modules.box__default.settings.helpers import get_setting
+    from shopyo.modules.box__default.settings.models import Settings
 
     app = Flask(__name__, instance_relative_config=True)
 
@@ -157,40 +157,37 @@ def create_app(config_name="development"):
                     continue
                 try:
                     sys_mod = importlib.import_module(
-                        f"modules.{folder}.{sub_folder}.view"
+                        f"shopyo.modules.{folder}.{sub_folder}.view"
                     )
                     app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
                 except AttributeError:
+                    # print(f"[ ] {e}")
                     pass
-                    # print(
-                    #     " x Blueprint skipped:",
-                    #     "modules.{}.{}.view".format(folder, sub_folder),
-                    # )
                 try:
                     mod_global = importlib.import_module(
-                        f"modules.{folder}.{sub_folder}.global"
+                        f"shopyo.modules.{folder}.{sub_folder}.global"
                     )
                     available_everywhere_entities.update(
                         mod_global.available_everywhere
                     )
                 except ImportError:
+                    # print(f"[ ] {e}")
                     pass
 
         else:
             # apps
             try:
-                mod = importlib.import_module(f"modules.{folder}.view")
+                mod = importlib.import_module(f"shopyo.modules.{folder}.view")
                 app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
             except AttributeError:
                 pass
                 # print("[ ] Blueprint skipped:", e)
             try:
-                mod_global = importlib.import_module(f"modules.{folder}.global")
+                mod_global = importlib.import_module(f"shopyo.modules.{folder}.global")
                 available_everywhere_entities.update(mod_global.available_everywhere)
             except ImportError:
-                # print(e)
+                # print(f"[ ] {e}")
                 pass
-
     #
     # custom templates folder
     #

@@ -1,4 +1,4 @@
-from init import db
+from shopyo.init import db
 
 
 class Appointments(db.Model):
