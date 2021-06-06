@@ -1,6 +1,6 @@
 import datetime
 
-from init import db
+from shopyo.init import db
 
 
 class Image(db.Model):
