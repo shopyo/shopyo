@@ -179,7 +179,7 @@ def _upload_data(verbose=False):
 
                 try:
                     upload = importlib.import_module(
-                        f"modules.{folder}.{sub_folder}.upload"
+                        f"shopyo.modules.{folder}.{sub_folder}.upload"
                     )
                     upload.upload(verbose=verbose)
                 except ImportError as e:
@@ -188,7 +188,7 @@ def _upload_data(verbose=False):
         else:
             # apps
             try:
-                upload = importlib.import_module(f"modules.{folder}.upload")
+                upload = importlib.import_module(f"shopyo.modules.{folder}.upload")
                 upload.upload(verbose=verbose)
             except ImportError as e:
                 if verbose:

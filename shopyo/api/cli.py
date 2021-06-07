@@ -446,12 +446,12 @@ def shopyo_cli():
         if arguments[0] in ["rundebug", "runserver"]:
             if arguments[0] == "rundebug":
                 printinfo()
-                from app import app
+                from shopyo.app import app
 
                 app.run(debug=True)
             elif arguments[0] == "runserver":
                 printinfo()
-                from app import app
+                from shopyo.app import app
 
                 app.run(debug=False)
         else:

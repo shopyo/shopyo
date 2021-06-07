@@ -29,7 +29,7 @@ def autoload_models(verbose=False):
                 elif sub_folder.endswith(".json"):  # box_info.json
                     continue
                 try:
-                    to_load_submodel = f"modules.{folder}.{sub_folder}.models"
+                    to_load_submodel = f"shopyo.modules.{folder}.{sub_folder}.models"
                     importlib.import_module(to_load_submodel)
                     if verbose:
                         click.echo(f"[x] imported {to_load_submodel}")
@@ -38,7 +38,7 @@ def autoload_models(verbose=False):
                         click.echo(f"[ ] {e}")
         else:
             try:
-                to_load = f"modules.{folder}.models"
+                to_load = f"shopyo.modules.{folder}.models"
                 importlib.import_module(to_load)
                 if verbose:
                     click.echo(f"[x] imported {to_load}")
