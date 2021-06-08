@@ -1,5 +1,4 @@
 {
-    "environment": "development",
     "admin_user": {
       "email": "admin@domain.com",
       "password": "pass"

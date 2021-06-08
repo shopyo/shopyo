@@ -1,5 +1,5 @@
 """
-All initialisations like db = SQLAlchemy in this file
+All initializations like db = SQLAlchemy in this file
 """
 import os
 
@@ -8,6 +8,7 @@ from flask_mailman import Mail
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 
 root_path = os.path.dirname(os.path.abspath(__file__))  # don't remove
 static_path = os.path.join(root_path, "static")  # don't remove
@@ -19,3 +20,4 @@ ma = Marshmallow()
 login_manager = LoginManager()
 migrate = Migrate()
 mail = Mail()
+csrf = CSRFProtect()
