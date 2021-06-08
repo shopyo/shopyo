@@ -1,19 +1,17 @@
 import datetime
 import json
 
-from shopyo.app import app
 from shopyo.modules.box__default.auth.models import User
 
 
 def add_admin(email, password):
-    with app.app_context():
-        user = User()
-        user.email = email
-        user.password = password
-        user.is_admin = True
-        user.is_email_confirmed = True
-        user.email_confirm_date = datetime.datetime.now()
-        user.save()
+    user = User()
+    user.email = email
+    user.password = password
+    user.is_admin = True
+    user.is_email_confirmed = True
+    user.email_confirm_date = datetime.datetime.now()
+    user.save()
 
 
 def upload(verbose=False):

@@ -21,20 +21,11 @@ from shopyo.api.database import autoload_models
 from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
+from shopyo.app import create_app
 
 
 def _create_shopyo_app(info):
-    sys.path.insert(0, os.getcwd())
-
-    try:
-        from shopyo.app import create_app
-    except Exception as e:
-        print("here")
-        print(e)
-        return None
-
     config_name = info.data.get("config") or "development"
-
     return create_app(config_name=config_name)
 
 
@@ -446,14 +437,14 @@ def shopyo_cli():
         if arguments[0] in ["rundebug", "runserver"]:
             if arguments[0] == "rundebug":
                 printinfo()
-                from shopyo.app import app
+                from shopyo.app import create_app
 
-                app.run(debug=True)
+                create_app("development").run(debug=True)
             elif arguments[0] == "runserver":
                 printinfo()
-                from shopyo.app import app
+                from shopyo.app import create_app
 
-                app.run(debug=False)
+                create_app("production").run(debug=False)
         else:
             cli()
     else:

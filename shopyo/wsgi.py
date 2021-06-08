@@ -6,6 +6,8 @@
 #
 import sys
 
+from shopyo.app import create_app
+
 #
 # The "/home/appinv" below specifies your home
 # directory -- the rest should be the directory you uploaded your Flask
@@ -18,7 +20,9 @@ path = ""
 if path not in sys.path:
     sys.path.insert(0, path)
 #
-from shopyo.app import app as application  # noqa
+
+
+application = create_app("production")
 
 #
 # NB -- many Flask guides suggest you use a file called run.py; that's
