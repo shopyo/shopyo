@@ -35,7 +35,7 @@ in production mode you can run
 .. option:: --config <CONFIG NAME>
 
    By default config is set to "development". Other available configurations are
-   "testing" and "production". For commands `createmodule`_ , `collectstatic`_
+   "testing" and "production". For commands `startapp`_ , `collectstatic`_
    and `new`_ this options has no affect.
 
 clean
@@ -53,7 +53,7 @@ or
 
 .. code:: bash
 
-   manage.py clean [OPTIONS]
+   python manage.py clean [OPTIONS]
 
 removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
 ``db`` if present
@@ -86,7 +86,7 @@ or
 
 .. code:: bash
 
-   manage.py initialise [OPTIONS]
+   python manage.py initialise [OPTIONS]
 
 Creates ``db``, ``migration/``, adds default users, add settings.
 This command need to be run only once before running the project
@@ -118,7 +118,7 @@ or
 
 .. code:: bash
 
-   manage.py run [OPTIONS]
+   python manage.py run [OPTIONS]
 
 Run a local development server.
 
@@ -193,7 +193,7 @@ or
 
 .. code:: bash
 
-   manage.py rundebug [OPTIONS]
+   python manage.py rundebug [OPTIONS]
 
 Run a local development server.
 
@@ -214,40 +214,61 @@ or
 
 .. code:: bash
 
-   manage.py runserver [OPTIONS]
+   python manage.py runserver [OPTIONS]
 
 Run a local development server.
 
 same as ``app.run(debug=False)``
 
-createmodule
-************
+startapp
+********
 
-.. _shopyo createmodule usage:
+.. _shopyo startapp usage:
 
 *Usage*
 
 .. code:: bash
 
-   shopyo createmodule [OPTIONS] MODULENAME [BOXNAME]
+   shopyo startapp [OPTIONS] MODULENAME [BOXNAME]
 
 or
 
 .. code:: bash
 
-   manage.py createmodule [OPTIONS] MODULENAME [BOXNAME]
+   python manage.py startapp [OPTIONS] MODULENAME [BOXNAME]
 
-create a module ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
+create a module/app ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
 provided, create the module inside ``modules/BOXNAME.``
 
 If box ``BOXNAME`` does not exist, it is created.
-
 If ``MODULENAME`` already exists, an error is thrown and command is terminated.
+
+Running ``shopyo startapp demo`` will create the following:
 
 .. code:: bash
 
-   shopyo createmodule dumpling # modules/dumpling
-   shopyo createmodule box__plate/dumpling # modules/box__plate/dumpling
+   modules/demo/
+   ├── forms.py
+   ├── global.py
+   ├── info.json
+   ├── models.py
+   ├── static
+   ├── templates
+   │   └── demo
+   │       ├── blocks
+   │       │   └── sidebar.html
+   │       └── dashboard.html
+   ├── tests
+   │   ├── test_demo_functional.py
+   │   └── test_demo_models.py
+   └── view.py
+
+Example usage with box:
+
+.. code:: bash
+
+   # create module `dumpling` inside `box__plate`
+   shopyo startapp dumpling box__plate
 
 
 startbox
@@ -269,7 +290,7 @@ Creates an empty box
 
 .. code:: bash
 
-   shopyo startbox api # modules/box__api
+   shopyo startbox box__api
 
 
 
@@ -288,42 +309,41 @@ or
 
 .. code:: bash
 
-   manage.py collectstatic [OPTIONS] [SRC]
+   python manage.py collectstatic [OPTIONS] [SRC]
 
 Copies ``static/`` in ``modules/`` or ``modules/SRC`` into ``/static/modules/``
 
 .. code:: bash
 
-   .
-   └── modules/
-      └── box__default/
-            ├── auth/
-            │   └── static
-            └── appadmin/
-               └── static
+   modules/
+   └── box__default/
+       ├── auth/
+       │   └── static
+       └── appadmin/
+            └── static
 
 For the modules structure shown above:
 
-   to collect static in only one module, run either of two commands:
+* to collect static in only one module, run either of two commands:
 
-   .. code:: bash
+.. code:: bash
 
-      $ shopyo collectstatic box__default/auth
-      $ shopyo collectstatic modules/box__default/auth
+   $ shopyo collectstatic box__default/auth
+   $ shopyo collectstatic modules/box__default/auth
 
-   to collect static in all modules inside a box, run either of two commands below:
+* to collect static in all modules inside a box, run either of two commands below:
 
-   .. code:: bash
+.. code:: bash
 
-      $ shopyo collectstatic box__default
-      $ shopyo collectstatic modules/box__default
+   $ shopyo collectstatic box__default
+   $ shopyo collectstatic modules/box__default
 
-   to collect static in all modules run either of the two commands below:
+* to collect static in all modules run either of the two commands below:
 
-   .. code:: bash
+.. code:: bash
 
-      $ shopyo collectstatic
-      $ shopyo collectstatic modules
+   $ shopyo collectstatic
+   $ shopyo collectstatic modules
 
 .. _shopyo collectstatic options:
 
@@ -375,38 +395,38 @@ the following blog project is created
 
 .. code:: bash
 
-   .
-   └── blog
-      ├── env
-      ├── blog
-      │   ├── docs
-      │   ├── modules
-      │   │   └── ...
-      │   ├── __init__.py
-      │   ├── sphinx_source
-      │   │   └── ...
-      │   ├── static
-      │   │   └── ...
-      │   ├── tests
-      │   │   └── ...
-      │   ├── .test.prod.env
-      │   ├── __init__.py
-      │   ├── app.py
-      │   ├── cli.py
-      │   ├── config.py
-      │   ├── config_demo.json
-      │   ├── conftest.py
-      │   ├── init.py
-      │   ├── manage.py
-      │   └── wsgi.py
-      ├── .gitignore
-      ├── dev_requirements.txt
-      ├── MANIFEST.in
-      ├── pytest.ini
-      ├── README.md
-      ├── requirements.txt
-      ├── setup.py
-      └── tox.ini
+
+   blog
+   ├── env
+   ├── blog
+   │   ├── docs
+   │   ├── modules
+   │   │   └── ...
+   │   ├── __init__.py
+   │   ├── sphinx_source
+   │   │   └── ...
+   │   ├── static
+   │   │   └── ...
+   │   ├── tests
+   │   │   └── ...
+   │   ├── .test.prod.env
+   │   ├── __init__.py
+   │   ├── app.py
+   │   ├── cli.py
+   │   ├── config.py
+   │   ├── config_demo.json
+   │   ├── conftest.py
+   │   ├── init.py
+   │   ├── manage.py
+   │   └── wsgi.py
+   ├── .gitignore
+   ├── dev_requirements.txt
+   ├── MANIFEST.in
+   ├── pytest.ini
+   ├── README.md
+   ├── requirements.txt
+   ├── setup.py
+   └── tox.ini
 
 Some files are omitted above but the general structure is as shown above. Now
 you can initialise your project by running:
