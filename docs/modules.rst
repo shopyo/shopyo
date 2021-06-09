@@ -18,36 +18,35 @@ where the ``app.py`` and ``modules/`` reside), run
 
 .. code:: bash
 
-   shopyo createmodule [OPTIONS] MODULENAME [BOXNAME]
+   shopyo startapp [OPTIONS] MODULENAME [BOXNAME]
 
 or you can do
 
 .. code:: bash
 
-   python manage.py createmodule [OPTIONS] MODULENAME [BOXNAME]
+   python manage.py startapp [OPTIONS] MODULENAME [BOXNAME]
 
 
-For example if you run ``shopyo createmodule product``, it will auto create
+For example if you run ``shopyo startapp product``, it will auto create
 the following module structure inside ``modules/``
 
 .. code:: none
 
-   .
-   └── product/
-      ├── static/
-      ├── templates/product/
-      │   ├── blocks
-      │   │   └── sidebar.html
-      │   └── dashboard.html
-      ├── tests/
-      │   ├── test_product_functional.py
-      │   └── test_product_models.py
-      ├── forms.py
-      ├── global.py # optional
-      ├── info.json
-      ├── models.py
-      ├── upload.py # optional
-      └── view.py
+   modules/product/
+   ├── forms.py
+   ├── global.py
+   ├── info.json
+   ├── models.py
+   ├── static
+   ├── templates
+   │   └── demo
+   │       ├── blocks
+   │       │   └── sidebar.html
+   │       └── dashboard.html
+   ├── tests
+   │   ├── test_demo_functional.py
+   │   └── test_demo_models.py
+   └── view.py
 
 
 In case you want to group modules together in a particular subcategory, you can
@@ -55,7 +54,7 @@ create modules inside a box. For example first run
 
 .. code:: bash
 
-   shopyo createmodule product box__ecommerce
+   shopyo startapp product box__ecommerce
 
 This will create the box ``box__ecommerce`` if it does not exist and then create the module
 ``product`` insides it. If now you want another module, for example, ``marketplace`` inside ``box__ecommerce``,
@@ -63,23 +62,22 @@ then you can run:
 
 .. code:: bash
 
-   shopyo createmodule marketplace box__ecommerce
+   shopyo startapp marketplace box__ecommerce
 
 With this your modules structure will look like this:
 
 
 .. code:: none
 
-   .
-   └── modules/
-       ├── box__ecommerce/
-       │   ├── product/
-       │   └── marketplace/
-       └── ...
+   modules/
+   ├── box__ecommerce/
+   │   ├── product/
+   │   └── marketplace/
+   └── ...
 
-You can now acces the ``/product`` and ``/marketplace`` endpoints
+You can now access the ``/product`` and ``/marketplace`` endpoints
 
-See :ref:`createmodule` for more details on command usage. You might find the
+See :ref:`startapp` for more details on command usage. You might find the
 EuroPython talk under the `Education Section <education.html>`_ insightful
 
 

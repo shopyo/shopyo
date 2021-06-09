@@ -58,23 +58,14 @@ def create_box(boxname, verbose):
     _create_box(boxname, verbose=verbose)
 
 
-@cli.command("createmodule", with_appcontext=False)
+@cli.command("startapp", with_appcontext=False)
 @click.argument("modulename")
 @click.argument("boxname", required=False, default="")
 @click.option("--verbose", "-v", is_flag=True, default=False)
 def create_module(modulename, boxname, verbose):
     """
-    create a module ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
+    create a module/app ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
     provided, creates the module inside ``modules/BOXNAME.``
-
-    \b
-    If box ``BOXNAME`` does not exist, it is created.
-    If ``MODULENAME`` already exists, an error is thrown and command is
-    terminated.
-
-    structure of modules created is as follows:
-
-        <add module/box directory tree here>
 
     BOXNAME the name of box to create the MODULENAME in. Must start with
     ``box__``, otherwise error is thrown
@@ -82,6 +73,30 @@ def create_module(modulename, boxname, verbose):
     MODULENAME the name of module to be created. Must not start with
     ``box__``, otherwise error is thrown
 
+    \b
+    If box ``BOXNAME`` does not exist, it is created.
+    If ``MODULENAME`` already exists, an error is thrown and command is
+    terminated.
+
+    Following structure of module  is created inside `modules` when running
+    `shopyo startapp demo`
+
+        \b
+        demo/
+        ├── forms.py
+        ├── global.py
+        ├── info.json
+        ├── models.py
+        ├── static
+        ├── templates
+        │   └── demo
+        │       ├── blocks
+        │       │   └── sidebar.html
+        │       └── dashboard.html
+        ├── tests
+        │   ├── test_demo_functional.py
+        │   └── test_demo_models.py
+        └── view.py
     """
     if boxname != "" and not boxname.startswith("box__"):
         click.echo(

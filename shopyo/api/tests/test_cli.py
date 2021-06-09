@@ -440,10 +440,10 @@ class TestCliInitialise:
 
 
 @pytest.mark.usefixtures("fake_foo_proj")
-class TestCliCreateModule:
+class TestCliStartapp:
     @pytest.mark.parametrize("mod", ["box_bar", "box__foo"])
     def test_create_invalid_modulename_with_box_prefix(self, cli_runner, mod):
-        result = cli_runner("createmodule", mod)
+        result = cli_runner("startapp", mod)
         expected_out = (
             f"[ ] Invalid MODULENAME '{mod}'. MODULENAME cannot start"
             " with box_ prefix\n"
@@ -454,7 +454,7 @@ class TestCliCreateModule:
 
     @pytest.mark.parametrize("box", ["box_bar", "boxfoo", "foo"])
     def test_create_module_with_invalid_box_name(self, cli_runner, box):
-        result = cli_runner("createmodule", "demo", box)
+        result = cli_runner("startapp", "demo", box)
         expected_out = (
             f"[ ] Invalid BOXNAME '{box}'. "
             "BOXNAME should start with 'box__' prefix\n"
@@ -474,7 +474,7 @@ class TestCliCreateModule:
         ],
     )
     def test_create_existing_module(self, cli_runner, mod, box, tmpdir):
-        result = cli_runner("createmodule", mod, box)
+        result = cli_runner("startapp", mod, box)
         expected_out = (
             f"[ ] Unable to create module '{mod}'. "
             f"MODULENAME already exists inside modules/ at"
@@ -484,7 +484,7 @@ class TestCliCreateModule:
         assert expected_out in result.output
 
     def test_create_modulename_not_alphanumeric(self, cli_runner):
-        result = cli_runner("createmodule", "my(demo)mod")
+        result = cli_runner("startapp", "my(demo)mod")
         expected_out = (
             "[ ] Error: MODULENAME is not valid, please use alphanumeric "
             "and underscore only\n"
@@ -494,7 +494,7 @@ class TestCliCreateModule:
         assert expected_out in result.output
 
     def test_create_boxname_not_alphanumeric(self, cli_runner):
-        result = cli_runner("createmodule", "mod", "box__?.game")
+        result = cli_runner("startapp", "mod", "box__?.game")
         expected_out = (
             "[ ] Error: BOXNAME is not valid, please use alphanumeric "
             "and underscore only\n"
@@ -512,7 +512,7 @@ class TestCliCreateModule:
         ],
     )
     def test_create_valid_modules(self, cli_runner, fake_foo_proj, mod, box):
-        result = cli_runner("createmodule", mod, box)
+        result = cli_runner("startapp", mod, box)
         module_path = os.path.join(fake_foo_proj, "modules", box, mod)
 
         assert result.exit_code == 0
@@ -541,7 +541,7 @@ class TestCliCreateModule:
 
     @pytest.mark.parametrize("opt", ["-v", "--verbose"])
     def test_create_valid_module_with_verbose(self, cli_runner, fake_foo_proj, opt):
-        result = cli_runner("createmodule", "store", opt)
+        result = cli_runner("startapp", "store", opt)
         module_path = os.path.join(fake_foo_proj, "modules", "store")
         expected_out1 = "[x] Successfully created"
         expected_out2 = "created with content"
