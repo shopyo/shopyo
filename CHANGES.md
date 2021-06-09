@@ -1,6 +1,8 @@
 ## Unreleased
 
 * Rename `createmodule` cmd to `startapp` to mimic Django
+* Move the `config.json` creation to inside `create_app`. Remove environment key from `config.json` as all Flask related config should either be in `config.py`, `.env` or `.flaskenv`
+* Clean up `app.py` with functions for each `create_app` task and remove app creation inside `app.py`
 * Fix the import issues that was causing [#37](https://github.com/shopyo/shopyo/issues/37). Now `shopyo new` command will not work but this is moved to [shopyo-factory](https://github.com/shopyo/shopyo-factory)
 * add changelog link to `setup.cfg` so that it shows on Shopyo PyPi page
 
