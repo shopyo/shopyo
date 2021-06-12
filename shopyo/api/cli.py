@@ -446,27 +446,6 @@ def new(projname, verbose):
     click.echo(f"[x] Project {projname} created successfully!\n")
 
 
-"""def shopyo_cli():
-    arguments = sys.argv[1:]
-    if len(arguments) > 0:
-        if arguments[0] in ["rundebug", "runserver"]:
-            if arguments[0] == "rundebug":
-                printinfo()
-                from shopyo.app import create_app
-
-                create_app("development").run(debug=True)
-            elif arguments[0] == "runserver":
-                printinfo()
-                from shopyo.app import create_app
-
-                create_app("production").run(debug=False)
-        else:
-            shopyo_cli
-    else:
-        shopyo_cli
-        print("rendebug, runserver")"""
-
-
 @cli.command("rundebug", with_appcontext=False)
 def rundebug():
     """runs the shopyo flask app in development mode"""
