@@ -446,26 +446,33 @@ def new(projname, verbose):
     click.echo(f"[x] Project {projname} created successfully!\n")
 
 
-def shopyo_cli():
-    arguments = sys.argv[1:]
-    if len(arguments) > 0:
-        if arguments[0] in ["rundebug", "runserver"]:
-            if arguments[0] == "rundebug":
-                printinfo()
-                from shopyo.app import create_app
+@cli.command("rundebug", with_appcontext=False)
+def rundebug():
+    """runs the shopyo flask app in development mode"""
+    app_path = os.path.join(os.getcwd(), "app.py")
 
-                create_app("development").run(debug=True)
-            elif arguments[0] == "runserver":
-                printinfo()
-                from shopyo.app import create_app
+    if not os.path.exists(app_path):
+        click.secho(f"Unable to find `app.py` in {os.getcwd()}", fg="red")
+        sys.exit(1)
 
-                create_app("production").run(debug=False)
-        else:
-            cli()
-    else:
-        cli()
-        print("rendebug, runserver")
+    os.environ["FLASK_APP"] = "app:create_app('development')"
+    os.environ["FLASK_ENV"] = "development"
+    run(["flask", "run"])
+
+
+@cli.command("runserver", with_appcontext=False)
+def runserver():
+    """runs the shopyo flask app in production mode"""
+    app_path = os.path.join(os.getcwd(), "app.py")
+
+    if not os.path.exists(app_path):
+        click.secho(f"Unable to find `app.py` in {os.getcwd()}", fg="red")
+        sys.exit(1)
+
+    os.environ["FLASK_APP"] = "app:create_app('production')"
+    os.environ["FLASK_ENV"] = "production"
+    run(["flask", "run"])
 
 
 if __name__ == "__main__":
-    shopyo_cli()
+    cli()
