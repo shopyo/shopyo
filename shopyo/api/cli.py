@@ -446,7 +446,7 @@ def new(projname, verbose):
     click.echo(f"[x] Project {projname} created successfully!\n")
 
 
-def rundebug_helper(mode=""):
+def run_helper(mode=""):
     """helper function for rundebug and runserver"""
     app_path = os.path.join(os.getcwd(), "app.py")
 
@@ -462,13 +462,13 @@ def rundebug_helper(mode=""):
 @cli.command("rundebug", with_appcontext=False)
 def rundebug():
     """runs the shopyo flask app in development mode"""
-    rundebug_helper("development")
+    run_helper("development")
 
 
 @cli.command("runserver", with_appcontext=False)
 def runserver():
     """runs the shopyo flask app in production mode"""
-    rundebug_helper("production")
+    run_helper("production")
 
 
 if __name__ == "__main__":
