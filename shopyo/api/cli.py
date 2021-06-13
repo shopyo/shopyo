@@ -447,7 +447,7 @@ def new(projname, verbose):
 
 
 def run_helper(mode=""):
-    """helper function for rundebug and runserver"""
+    """helper function"""
     app_path = os.path.join(os.getcwd(), "app.py")
 
     if not os.path.exists(app_path):
