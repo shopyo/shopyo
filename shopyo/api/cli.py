@@ -14,6 +14,7 @@ from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
 from shopyo.api.cmd_helper import _create_box
 from shopyo.api.cmd_helper import _create_module
+from shopyo.api.cmd_helper import _run_app
 from shopyo.api.cmd_helper import _upload_data
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
@@ -449,29 +450,13 @@ def new(projname, verbose):
 @cli.command("rundebug", with_appcontext=False)
 def rundebug():
     """runs the shopyo flask app in development mode"""
-    app_path = os.path.join(os.getcwd(), "app.py")
-
-    if not os.path.exists(app_path):
-        click.secho(f"Unable to find `app.py` in {os.getcwd()}", fg="red")
-        sys.exit(1)
-
-    os.environ["FLASK_APP"] = "app:create_app('development')"
-    os.environ["FLASK_ENV"] = "development"
-    run(["flask", "run"])
+    _run_app("development")
 
 
 @cli.command("runserver", with_appcontext=False)
 def runserver():
     """runs the shopyo flask app in production mode"""
-    app_path = os.path.join(os.getcwd(), "app.py")
-
-    if not os.path.exists(app_path):
-        click.secho(f"Unable to find `app.py` in {os.getcwd()}", fg="red")
-        sys.exit(1)
-
-    os.environ["FLASK_APP"] = "app:create_app('production')"
-    os.environ["FLASK_ENV"] = "production"
-    run(["flask", "run"])
+    _run_app("production")
 
 
 if __name__ == "__main__":
