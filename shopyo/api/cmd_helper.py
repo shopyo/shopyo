@@ -6,6 +6,7 @@ import json
 import os
 import re
 import sys
+from subprocess import run
 
 import click
 from flask import current_app
@@ -297,3 +298,16 @@ def _create_module(modulename, base_path=None, verbose=False):
     trymkfile(
         os.path.join(base_path, "global.py"), get_global_py_content(), verbose=verbose
     )
+
+
+def _run_app(mode):
+    """helper command for running shopyo flask app in debug/production mode"""
+    app_path = os.path.join(os.getcwd(), "app.py")
+
+    if not os.path.exists(app_path):
+        click.secho(f"Unable to find `app.py` in {os.getcwd()}", fg="red")
+        sys.exit(1)
+
+    os.environ["FLASK_APP"] = f"app:create_app('{mode}')"
+    os.environ["FLASK_ENV"] = mode
+    run(["flask", "run"])
