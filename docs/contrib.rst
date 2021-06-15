@@ -19,9 +19,7 @@ Setup Instructions
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
 
-#. Make sure ``git`` is installed on your computer and ``python version 3.6`` or higher is installed (we recommend
-``python 3.9``). You can run the following command to check if git is installed and which python version you have.
-If either commands gives error then it means you need to install that software
+#. Make sure ``git`` is installed on your computer and ``python version 3.6`` or higher is installed (we recommend ``python 3.9``). You can run the following command to check if git is installed and which python version you have. If either commands gives error then it means you need to install that software
 
    .. code-block:: bash
 
