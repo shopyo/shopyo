@@ -1,2 +1,4 @@
 sphinx
 furo
+sphinx-tabs
+sphinx-autobuild

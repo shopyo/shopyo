@@ -3,174 +3,105 @@
 Contributing to Shopyo
 ======================
 
-
 Shopyo is built using Flask but mimics Django so that you get to use plug and play modules,
-to contribute, it's nice to know Flask well. Here are some resources which might help you:
-
-Resources
-----------
-
-Please see the `Education <education.html>`_ section to see what you need to learn before contributing.
-
-.. _setup:
-
-Setup Instructions
--------------------
+to contribute, it's nice to know Flask well.
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
 
-#. Make sure ``git`` is installed on your computer and ``python version 3.6`` or higher is installed (we recommend ``python 3.9``). You can run the following command to check if git is installed and which python version you have. If either commands gives error then it means you need to install that software
+.. _setup:
 
-   .. code-block:: bash
+First time setup
+----------------
+-   Download and install the `latest version of git`_.
+-   Configure git with your `username`_ and `email`_.
 
-      git --version
-      python --version
+    .. code-block:: text
 
-#. Fork repo. To do so go to the `shopyo repo <https://github.com/shopyo/shopyo>`_ and press the fork button
-#. Clone the repo by running:
+        $ git config --global user.name 'your name'
+        $ git config --global user.email 'your email'
 
-   .. code-block:: bash
+-   Make sure you have a `GitHub account`_.
+-   Fork Shopyo to your GitHub account by clicking the `Fork`_ button.
+-   `Clone`_ the main repository locally.
 
-      git clone https://github.com/<replace with your github username>/shopyo.git.
+    .. code-block:: text
 
-   .. note::
+        $ git clone https://github.com/shopyo/shopyo
+        $ cd shopyo
 
-       You can also get the clone link by clicking the green ``code`` button on your cloned shopyo repo page.
-#. Next run:
+-   Add your fork as a remote to push your work to. Replace
+    ``{username}`` with your username. This names the remote "fork", the
+    default Shopyo remote is "origin".
 
-   .. code-block:: bash
+    .. code-block:: text
 
-      cd <your/local/cloned/repo/path/here>
+        git remote add fork https://github.com/{username}/shopyo
 
-   .. note::
-       The above command should be ``cd shopyo`` if you cloned using the git command above
+-   Create a virtualenv.
 
-#. Setup the python `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ based on your Operating System
+    .. tabs::
 
-   For Windows OS you can do this by running:
+       .. group-tab:: Linux/macOS
 
-   .. code-block:: bash
+          .. code-block:: text
 
-      py -m pip install --upgrade pip
-      py -m venv env # you can replace env with another name that you like. For example, py -m venv shopyo-env
+             $ python3 -m venv env
+             $ . env/bin/activate
 
-   For Linux and MacOS you can do this by running:
+       .. group-tab:: Windows
 
-   .. code-block:: bash
+          .. code-block:: text
 
-      python3 -m pip install --user --upgrade pip
-      python3 -m venv env # you can replace env with another name that you like. For example, python3 -m venv shopyo-env
+             > py -3 -m venv env
+             > env\Scripts\activate
 
-   .. note::
-      visit `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ for more details
+-   Upgrade pip and setuptools.
 
+    .. code-block:: text
 
-#. Activate the `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_ as follows:
+        $ python -m pip install --upgrade pip setuptools
 
-   For Windows OS you can do this by running:
+-   Install the development dependencies, then install Shopyo in editable
+    mode.
 
-   .. code-block:: bash
+    .. code-block:: text
 
-      .\env\Scripts\activate
+        $ pip install -r requirements/dev.txt && pip install -e .
 
-   For Linux and MacOS you can do this by running:
+-   Install the `pre-commit`_ hooks.
 
-   .. code-block:: bash
+    .. code-block:: text
 
-      source env/bin/activate
+        $ pre-commit install
 
-   Now you should see something like:
+-   Now initialize the app by running:
 
-   .. code-block:: bash
+    .. code-block:: text
 
-      (env) </my/path/to/shopyo>
+        $ cd shopyo
+        $ shopyo initialise
 
+-   Check if the shopyo app runs properly:
 
-   .. note::
-      ``env`` is the name of virtual environment that you setup in step 5 above.
-      Make sure to always activate this ``env`` when working on ``shopyo``. If you are using
-      `VS Code <https://code.visualstudio.com/>`__  then you can also add the ``"python.pythonPath"`` by creating a ``.vscode``
-      folder at the root level and adding ``settings.json`` file to it with the content below.
-      You need to replace the path with your own path to the virtual environment's ``python.exe``
-      You can copy the below json to ``settings.json`` file depending on your OS.
-      Now you can create a new terminal with virtual environment activated in VS Code using ``Ctrl`` + ``Shift`` + ````` (*control
-      plus shift plus backtick character*).
-      In addition, if you want to deactivate the virtual environment, run ``deactivate`` in command line
+    .. code-block:: text
 
-      For Windows OS:
+        $ shopyo rundebug
 
-      .. code-block:: json
+-   Go to the link http://127.0.0.1:5000/ and you should see ``SITE UNDER CONSTRUCTION``. Go to
+    http://127.0.0.1:5000/auth/login and then you can access the dashboard by logging in
+    with email ``admin@domain.com`` and password ``pass``
 
-         {
-            "python.pythonPath": "${workspaceFolder}/env/Scripts/python.exe"
-         }
-
-      For Unix/MacOS
-
-      .. code-block:: json
-
-         {
-            "python.pythonPath": "${workspaceFolder}/env/bin/python"
-         }
-
-#. Run:
-
-   .. code-block:: bash
-
-      python -m pip install -U pip
-      python -m pip install -e .
-      python -m pip install -r requirements/dev.txt
-
-   .. note::
-      This should start installing the packages required for shopyo app and might take a few seconds.
-
-#. Setup pre-commit to make sure the style is consistent
-
-   .. code-block:: bash
-
-      pre-commit install
+.. _latest version of git: https://git-scm.com/downloads
+.. _username: https://docs.github.com/en/github/using-git/setting-your-username-in-git
+.. _email: https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address
+.. _GitHub account: https://github.com/join
+.. _Fork: https://github.com/shopyo/shopyo/fork
+.. _Clone: https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork
+.. _pre-commit: https://pre-commit.com/
 
 
-#. Next we need to setup an upstream which will allow you to update your local shopyo repo to match the owner's shopyo repo in case of any changes. You only need to do this once. To setup an upstream you do:
-
-   .. code-block:: bash
-
-      cd <your/local/cloned/repo/path/here> # not needed if you are already inside your cloned shopyo directory
-      git remote add upstream https://github.com/shopyo/shopyo
-
-#. Once upstream is setup, you can fetch the latest changes made to shopyo repo. Make sure to do this every time before you make branch to work on a feature. Run:
-
-   .. code-block:: bash
-
-      git fetch upstream
-      git pull upstream dev
-
-#. Now initialize the app by running:
-
-   .. code-block:: bash
-
-      cd shopyo
-      # so now your path should be something like <your path>/shopyo/shopyo
-      shopyo initialise
-
-   .. note::
-      The above ``initialise`` command can also be run as follows:
-
-      .. code-block:: bash
-
-         python manage.py initialise
-
-#. To start the app, run:
-
-   .. code-block:: bash
-
-      python manage.py rundebug
-
-#. The app should now be running on IP ``127.0.0.1`` at port ``5000``. You can go to http://localhost:5000/ or http://127.0.0.1:5000/. For the home page it will say ``SITE UNDER CONSTRUCTION``.  Go to http://localhost:5000/login/. Login with email ``admin@domain.com`` and password ``pass``
-
-
-Making a Pull Request
----------------------
+Start coding
+------------
 Make sure you have setup the repo as explained in :ref:`setup` before making Pull Request (PR)
 
 #. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 10
