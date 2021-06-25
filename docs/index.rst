@@ -17,8 +17,7 @@ The ecommerce part has been offloaded to
 .. toctree::
    :maxdepth: 9
 
-   Setting up Shopyo <setup>
-   Education section <education>
+   Basic Usage <usage>
    Contributing to Shopyo <contrib>
    Modules/Apps <modules>
    Assets <assets>
@@ -32,6 +31,7 @@ The ecommerce part has been offloaded to
    Docs <docs>
    Testing <testing>
    Deploy on shared hosting <shared_hosting>
+   Education section <education>
 
 Indices and tables
 ==================

@@ -4,7 +4,7 @@ Run Existing Project
 .. toctree::
    :titlesonly:
 
-To run an existing project, cd in the folder containing the manage.py.
+To run an existing project, cd in the folder containing the ``manage.py``.
 
 Run
 

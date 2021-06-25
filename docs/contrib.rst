@@ -7,6 +7,9 @@ Shopyo is built using Flask but mimics Django so that you get to use plug and pl
 to contribute, it's nice to know Flask well.
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
+The contribution guide has been adopted from the version used by `Flask`_.
+
+.. _Flask: https://github.com/pallets/flask
 
 .. _setup:
 
@@ -30,8 +33,8 @@ First time setup
         $ cd shopyo
 
 -   Add your fork as a remote to push your work to. Replace
-    ``{username}`` with your username. This names the remote "fork", the
-    default Shopyo remote is "origin".
+    ``{username}`` with your username. This names the remote ``fork``. The
+    default Shopyo remote is ``origin``.
 
     .. code-block:: text
 

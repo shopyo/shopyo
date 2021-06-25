@@ -3,19 +3,28 @@
 Documentation
 =============
 
-Sphinx is included in dev_requirements.txt .
-To build the docs run
+``Sphinx`` is included in ``requirements/dev.txt``. Make sure to install it before
+running these command as explained in :ref:`Contributing to Shopyo`
+(i.e ``pip install -r requirements/dev.txt``)
 
-.. code:: bash
 
-    cd docs
-    sphinx-build -b html -E . _build
+-   To build the docs from source folder ``docs`` to destination folder ``docs/_build``, run
 
-You can also build the docs by using the Sphinx Makefile as follows
+    .. code:: text
 
-.. code:: bash
+        $ sphinx-build -b html -E docs docs/_build
 
-    cd docs
-    make html
+-   You can also build the docs by using the Sphinx Makefile as follows
 
-To view the docs, open ``_build/html/index.html`` in your browser
+    .. code:: text
+
+        $ cd docs
+        $ make html
+
+-   To view the docs, open ``docs/_build/html/index.html`` in your browser
+
+-   If you want the doc to auto build upon changes, use the ``sphinx-autobuild`` command intead:
+
+    .. code:: text
+
+        $ sphinx-autobuild docs docs/_build
