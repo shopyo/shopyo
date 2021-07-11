@@ -5,35 +5,48 @@ Testing
     :titlesonly:
 
 
-For `pytests <https://docs.pytest.org/en/stable/example/simple.html>`__, run all tests inside ``shopyo/shopyo`` directory
+We use `pytest`_ testing framework. If running tests using pytests make sure your are inside
+``shopyo/shopyo`` directory
 
-.. code:: bash
+-   To run all tests,
 
-    # tests with compact output
-    python -m pytest .
+    .. code:: bash
 
-    # test with verbose output
-    python -m pytest -v
+        $ pytest
 
+-   To run with more output use the verbose flag
 
-Alternatively, you can run your tests via `tox <https://tox.readthedocs.io/en/latest/>`_.
+    .. code:: bash
 
-run all tests, for all supported Python interpreters
+        $ pytest -v
 
-.. code:: bash
+-   To run tests in only a particular file or function:
 
-    tox
+    .. code:: bash
 
+        $ pytest -k test_cli.py
 
-run all tests, on Python 3.8 only
+Alternatively, you can run your tests via `tox`_
 
-.. code:: bash
+-   To run the complete test suit on all suported python interpretatos,
+    (``python 3.6``, ``python 3.7``, ``python 3.8``, ``python 3.9``
+    and test ``sphinx`` docs build):
 
-    tox -e py38
+    .. code:: bash
 
+        $ tox
 
-run all only the `test_home_page` test, on Python 3.9 only
+-   To run all tests only with Python 3.8 only:
 
-.. code:: bash
+    .. code:: bash
 
-    tox -e py39 -- -k test_shop_home_page
+        $ tox -e py38
+
+-   run all only the ``TestCliStartapp`` test class with Python 3.9:
+
+    .. code:: bash
+
+        $ tox -e py39 -- -k TestCliStartapp
+
+.. _pytest: https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html#commit-your-changes
+.. _tox: https://tox.readthedocs.io/en/latest/

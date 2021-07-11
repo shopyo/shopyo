@@ -7,10 +7,12 @@ Shopyo is built using Flask but mimics Django so that you get to use plug and pl
 to contribute, it's nice to know Flask well.
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
-The contribution guide has been adopted from the version used by `Flask`_.
+Feel free to join our `discord group`_ to ask if you ge stuck or would just like to char
+
+This contribution guide has been adopted from the version used by `Flask`_.
 
 .. _Flask: https://github.com/pallets/flask
-
+.. _discord group: https://discord.com/invite/k37Ef6w
 .. _setup:
 
 First time setup
@@ -40,7 +42,7 @@ First time setup
 
         git remote add fork https://github.com/{username}/shopyo
 
--   Create a virtualenv.
+-   Create a virtualenv and actiave the `virtual environment`_:
 
     .. tabs::
 
@@ -58,20 +60,20 @@ First time setup
              > py -3 -m venv env
              > env\Scripts\activate
 
--   Upgrade pip and setuptools.
+-   Upgrade pip and setuptools:
 
     .. code-block:: text
 
         $ python -m pip install --upgrade pip setuptools
 
 -   Install the development dependencies, then install Shopyo in editable
-    mode.
+    mode:
 
     .. code-block:: text
 
         $ pip install -r requirements/dev.txt && pip install -e .
 
--   Install the `pre-commit`_ hooks.
+-   Install the `pre-commit`_ hooks:
 
     .. code-block:: text
 
@@ -101,184 +103,124 @@ First time setup
 .. _Fork: https://github.com/shopyo/shopyo/fork
 .. _Clone: https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork
 .. _pre-commit: https://pre-commit.com/
+.. _virtual environment: https://docs.python.org/3/tutorial/venv.html
 
-
-Start coding
-------------
+Pull Requests
+-------------
 Make sure you have setup the repo as explained in :ref:`setup` before making Pull Request (PR)
 
-#. Let say you are excited about a feature you want to work on. You need to first create a separate branch and work on that branch. To check which branch you are currently on run ``git branch``. Most likely you will see ``dev`` branch colored green or marked to tell you that you are on ``dev`` branch. Before creating a new branch from ``dev`` make sure you have fetched latest changes as mentioned in :ref:`setup` step 10
-#. To create a branch and switch to that branch you run:
+-   Create a branch for the issue you would like to work on:
 
-   .. code-block:: bash
+    .. code-block:: bash
 
-      git checkout -b <name of branch>
-      # example: git checkout -b add-form-validation
+        $ git fetch origin
+        $ git checkout -b <your-branch-name> origin/dev
 
-   .. note::
-       You can do the above using 2 separate commands if that makes it easier:
+    .. note::
 
-       .. code-block:: bash
+        As a sanity check, you can run ``git branch`` to see the current branch you are on
 
-          # First create a new branch from current branch
-          git branch <name of branch>
+-   Make sure to write tests for any new featues you add. To run the whole testsuite, see
+    the command below. This many take a while. See `Testing <testing.html>`_ for useful
+    commands such as running only the tests that you wrote for example.
 
-          # Next switch to this new branch
-          git checkout <name of branch to switch to>
+    .. code-block:: bash
 
-#. After git checkout command above, run ``git branch`` to make sure you are not working on ``dev`` branch but are on the newly created branch.
-#. Now you can start working on the feature for which you want to make PR
-#. Add tests for any new features that you add.
-#. Run the following to make sure all the existing and new tests pass. Check the `Testing <testing.html>`_ section for more details
+            $ tox
 
-   .. code-block:: bash
+-   Using your favorite editor, make your changes, `committing as you go`_.
 
-      python -m pytest .
+    .. code-block:: bash
 
-#. [*Optional Step*] Make sure to bump the version number in file ``shopyo/__init__.py`` as follows:
-    * small fixes: ``_._.x``, (example ``3.4.6`` to ``3.4.7``)
-    * feature, many fixes etc: ``_.x.0``, (example ``3.4.6`` to ``3.5.0``)
-    * big feature, breaking change etc ``x.0.0`` (example ``3.4.6`` to ``4.0.0``)
+        $ git add <filenames to commit>
+        $ git commit -m "<put commit message here>"
 
-#. Check that there are no linting errors according to ``flake8``. To do so you can run
+-   Commiting files will run the `pre-commit`_ hook, which includes some style checks. In case
+    the checks fail, it will not allow you to commit and mention the errors and there line numbers.
+    Most of the time, the `pre-commit`_ hook will automatically fix the style errors so you will
+    need to run the ``git commit`` command again. For the example below, after running ``git commit``,
+    the `pre-commit`_ for ``flake8`` failed. In this case, remove the unsued import in ``shopyo/app.y``
+    and commit again
 
-   .. code-block:: bash
+    .. code-block:: bash
 
-      flake8 <path of file that you want to check>
+        $ git commit -m "test commit"
+        pyupgrade................................................................Passed
+        Reorder Python imports...................................................Passed
+        black....................................................................Passed
+        flake8...................................................................Failed
+        - hook id: flake8
+        - exit code: 1
 
-      # example to check the linting error for test_dashboard.py file
-      # assuming you are in shopyo/shopyo directory, run
-      flake8 ./modules/box__default/dashboard/tests/test_dashboard.py
+        shopyo/app.py:2:1: F401 'json' imported but unused
 
-   .. note::
-      If the command above returns without any output, then there are no
-      linting errors, otherwise it will tell you the line number and type
-      of linting error.
-      If typing ``flake8`` gives error related to command not found, then you
-      do not have ``flake8`` installed and it can be installed as follows:
+        fix UTF-8 byte order marker..............................................Passed
+        Trim Trailing Whitespace.................................................Passed
+        Fix End of Files.........................................................Passed
+        Check Yaml...........................................(no files to check)Skipped
+        Debug Statements (Python)................................................Passed
+        Check for added large files..............................................Passed
 
-      .. code-block:: bash
+-   Push your commits to your fork on GitHub.
 
-         python -m pip install flake8
+    .. code-block:: bash
 
-      In addition, if you are using `VS Code <https://code.visualstudio.com/>`__
-      then you can create a ``.vscode`` folder at the root level and add ``settings.json``
-      file to it with the following content. This way it auto detects the
-      linting errors for you
+        $ git push --set-upstream fork your-branch-name
 
-      .. code-block:: json
+-   `Create a pull request`_. You should see the PR link in the terminal after you succesfully push
+    your commits. Link to the issue being addressed with ``fixes #123`` in the
+    pull request. See `example PR`_. To create
 
-         {
-            "python.linting.flake8Enabled": true
-         }
-
-      If you have already created the ``settings.json`` file as mentioned in :ref:`setup` step 5,
-      then your json file will look similar to one below
-
-      For Windows OS:
-
-      .. code-block:: json
-
-         {
-            "python.pythonPath": "${workspaceFolder}/env/Scripts/python.exe",
-            "python.linting.flake8Enabled": true
-         }
-
-      For Unix/MacOS
-
-      .. code-block:: json
-
-         {
-            "python.pythonPath": "${workspaceFolder}/env/bin/python",
-            "python.linting.flake8Enabled": true
-         }
-
-#. Once you are happy with the changes you made you can double check the changed files by running:
-
-   .. code-block:: bash
-
-      git status
-
-#. Next add the changes as required
-
-   .. code-block:: bash
-
-       git add . # to add all changes
-       git add <file1 name> <file2 name> # to only add desired files
-
-#. Commit the changes. For the commit messages, follow the guidelines `here <https://udacity.github.io/git-styleguide/>`__
-
-   .. code-block:: bash
-
-      git commit -m "<put your commit message here>"
-
-#. Finally push the committed changes from local repository to a remote repository (the one you forked)
-
-   .. code-block:: bash
-
-      git push origin <the current branch name>
-
-#. You can now make a PR. When you go to your forked repo or the owner's repo you will see a ``compare & pull request`` button. Click on it and mention the changes you made. Look at the `past PRs <https://github.com/Abdur-rahmaanJ/shopyo/pulls?q=is%3Apr+is%3Aclosed>`_ for examples of what to mention when submitting a PR. If a PR closes an issue, add ``Fixes #<issue number>``, as seen `here <https://github.com/Abdur-rahmaanJ/shopyo/pull/95>`_
-#. [*Optional Step*] If you want you can request reviews when submitting PR.
-#. [*Optional Step*] Add your country flag in readme after accepted PR.
-
-.. note::
-   At times when you do git status after fetching the latest changes it might say something like: ``Your branch is ahead of 'origin/dev`` which mean that your forked branch does not have the latest local changes and does not match the owner's repo. To push the latest changes to your forked repo, run:
-
-   .. code-block:: bash
-
-      git push origin head
+.. _committing as you go: https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html#commit-your-changes
+.. _Create a pull request: https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request
+.. _example PR: https://github.com/shopyo/shopyo/pull/55
 
 
 Setup Mail Dev Environment (Optional)
 -------------------------------------
 
-If you have Node.js, use the `maildev <https://github.com/maildev/maildev>`_ package. Install it using
+-   If you have Node.js, use the `maildev <https://github.com/maildev/maildev>`_ package. Install it using
 
+    .. code-block:: bash
 
-   .. code-block:: bash
+        $ npm install -g maildev
 
-      npm install -g maildev
+-   Then serve it using
 
+    .. code-block:: bash
 
-Then serve it using
+        $ maildev
 
+-   Dev configs for this setup are:
 
-   .. code-block:: bash
+    .. code-block:: python
 
-      maildev
+        # shopyo/shopyo/config.py
+        class DevelopmentConfig(Config):
+            """Configurations for development"""
 
+            ENV = "development"
+            DEBUG = True
+            LOGIN_DISABLED = False
+            # control email confirmation for user registration
+            EMAIL_CONFIRMATION_DISABLED = False
+            # flask-mailman configs
+            MAIL_SERVER = 'localhost'
+            MAIL_PORT = 1025
+            MAIL_USE_TLS = False
+            MAIL_USE_SSL = False
+            MAIL_USERNAME = '' # os.environ.get("MAIL_USERNAME")
+            MAIL_PASSWORD = '' # os.environ.get("MAIL_PASSWORD")
+            MAIL_DEFAULT_SENDER = 'ma@mail.com' # os.environ.get("MAIL_DEFAULT_SENDER")
 
-Dev configs for this setup:
-
-   .. code-block:: python
-
-      class DevelopmentConfig(Config):
-          """Configurations for development"""
-
-          ENV = "development"
-          DEBUG = True
-          LOGIN_DISABLED = False
-          # control email confirmation for user registration
-          EMAIL_CONFIRMATION_DISABLED = False
-          # flask-mailman configs
-          MAIL_SERVER = 'localhost'
-          MAIL_PORT = 1025
-          MAIL_USE_TLS = False
-          MAIL_USE_SSL = False
-          MAIL_USERNAME = '' # os.environ.get("MAIL_USERNAME")
-          MAIL_PASSWORD = '' # os.environ.get("MAIL_PASSWORD")
-          MAIL_DEFAULT_SENDER = 'ma@mail.com' # os.environ.get("MAIL_DEFAULT_SENDER")
-
-Go to http://127.0.0.1:1080 where it serves it's web interface by default. See mails arrive in your inbox!
+-   Go to http://127.0.0.1:1080 where it serves it's web interface by default. See mails arrive in your inbox!
 
 Contributing to package
 -----------------------
 
-* run ``pip install -e .`` # if you did not
-* test ``shopyo <your options>``
-
-If you want a system wide tests run ``python setup.py sdist`` then ``python -m pip install path/to/shopyo-x.x.x.tar.gz`` where shopyo-... is found in dist/
+-   run ``pip install -e .`` # if you did not
+-   test ``shopyo <your options>``
+-   If you want a system wide tests run ``python setup.py sdist`` then ``python -m pip install path/to/shopyo-x.x.x.tar.gz`` where shopyo-... is found in dist/
 
 Maintainers notes
 -----------------
@@ -297,7 +239,3 @@ Maintainers notes
     python setup.py publish
 
 In ``__main__.py`` don't forget to update dev_requirements.txt
-
-💬 Community: Discord
----------------------
-Join the Discord community `Discord Group <https://discord.com/invite/k37Ef6w>`_
