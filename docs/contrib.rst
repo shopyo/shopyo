@@ -3,11 +3,11 @@
 Contributing to Shopyo
 ======================
 
-Shopyo is built using Flask but mimics Django so that you get to use plug and play modules,
-to contribute, it's nice to know Flask well.
+Shopyo is built using Flask but mimics Django so that you get to use plug and play modules.
+To contribute, it's nice to know Flask well.
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
-Feel free to join our `discord group`_ to ask if you ge stuck or would just like to char
+Feel free to join our `discord group`_ if you ge stuck or would just like to chat and say hi.
 
 This contribution guide has been adopted from the version used by `Flask`_.
 
@@ -42,7 +42,7 @@ First time setup
 
         git remote add fork https://github.com/{username}/shopyo
 
--   Create a virtualenv and actiave the `virtual environment`_:
+-   Create a virtualenv and activate the `virtual environment`_:
 
     .. tabs::
 
@@ -66,8 +66,7 @@ First time setup
 
         $ python -m pip install --upgrade pip setuptools
 
--   Install the development dependencies, then install Shopyo in editable
-    mode:
+-   Install the development dependencies and Shopyo requirements in editable mode:
 
     .. code-block:: text
 
@@ -118,11 +117,12 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
     .. note::
 
-        As a sanity check, you can run ``git branch`` to see the current branch you are on
+        As a sanity check, you can run ``git branch`` to see the current branch you are on in case
+        your terminal is not setup to show the current branch.
 
 -   Make sure to write tests for any new featues you add. To run the whole testsuite, see
     the command below. This many take a while. See `Testing <testing.html>`_ for useful
-    commands such as running only the tests that you wrote for example.
+    commands such as to run only the tests that you wrote for example.
 
     .. code-block:: bash
 
@@ -139,7 +139,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
     the checks fail, it will not allow you to commit and mention the errors and there line numbers.
     Most of the time, the `pre-commit`_ hook will automatically fix the style errors so you will
     need to run the ``git commit`` command again. For the example below, after running ``git commit``,
-    the `pre-commit`_ for ``flake8`` failed. In this case, remove the unsued import in ``shopyo/app.y``
+    the `pre-commit`_ for ``flake8`` failed. In this case, after remove the unsued import in ``shopyo/app.y``
     and commit again
 
     .. code-block:: bash
