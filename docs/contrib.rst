@@ -7,7 +7,7 @@ Shopyo is built using Flask but mimics Django so that you get to use plug and pl
 To contribute, it's nice to know Flask well.
 
 If you want to contribute, go ahead, we ❤️ it. We follow a 💯 % first-timers-friendly policy.
-Feel free to join our `discord group`_ if you ge stuck or would just like to chat and say hi.
+Feel free to join our `discord group`_ if you get stuck or would just like to chat and say hi.
 
 This contribution guide has been adopted from the version used by `Flask`_.
 
@@ -120,8 +120,8 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
         As a sanity check, you can run ``git branch`` to see the current branch you are on in case
         your terminal is not setup to show the current branch.
 
--   Make sure to write tests for any new featues you add. To run the whole testsuite, see
-    the command below. This many take a while. See `Testing <testing.html>`_ for useful
+-   Make sure to write tests for any new features you add. To run the whole test suite, see
+    the command below. This may take a while. See `Testing <testing.html>`_ for useful
     commands such as to run only the tests that you wrote for example.
 
     .. code-block:: bash
@@ -135,11 +135,11 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
         $ git add <filenames to commit>
         $ git commit -m "<put commit message here>"
 
--   Commiting files will run the `pre-commit`_ hook, which includes some style checks. In case
-    the checks fail, it will not allow you to commit and mention the errors and there line numbers.
+-   Committing files will run the `pre-commit`_ hook, which includes some style checks. In case
+    the checks fail, it will not allow you to commit and mention the errors and their line numbers.
     Most of the time, the `pre-commit`_ hook will automatically fix the style errors so you will
     need to run the ``git commit`` command again. For the example below, after running ``git commit``,
-    the `pre-commit`_ for ``flake8`` failed. In this case, after remove the unsued import in ``shopyo/app.y``
+    the `pre-commit`_ for ``flake8`` failed. In this case, remove the unused import in ``shopyo/app.y``
     and commit again
 
     .. code-block:: bash
@@ -167,9 +167,9 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 
         $ git push --set-upstream fork your-branch-name
 
--   `Create a pull request`_. You should see the PR link in the terminal after you succesfully push
+-   `Create a pull request`_. You should see the PR link in the terminal after you successfully push
     your commits. Link to the issue being addressed with ``fixes #123`` in the
-    pull request. See `example PR`_. To create
+    pull request. See `example PR`_.
 
 .. _committing as you go: https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html#commit-your-changes
 .. _Create a pull request: https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request
@@ -218,9 +218,24 @@ Setup Mail Dev Environment (Optional)
 Contributing to package
 -----------------------
 
--   run ``pip install -e .`` # if you did not
--   test ``shopyo <your options>``
--   If you want a system wide tests run ``python setup.py sdist`` then ``python -m pip install path/to/shopyo-x.x.x.tar.gz`` where shopyo-... is found in dist/
+-   Install the Shopyo requirements in editable mode if you did not already.
+
+    .. code-block:: bash
+
+        $ pip install -e .
+
+-   Test to see if shopyo cli works. Example run
+
+    .. code-block:: bash
+
+        $ shopyo --help
+
+-   If you want a system wide tests run the following under the Shopyo repository
+
+    .. code-block:: bash
+
+        $ python setup.py sdist
+        $ python -m pip install dist/shopyo-4.1.2.tar.gz
 
 Maintainers notes
 -----------------
@@ -232,10 +247,10 @@ Maintainers notes
    :linenos:
    :lines: 1-2
 
-* to publish to pypi, run
+* To publish to `PyPi`_, run
 
 .. code:: bash
 
     python setup.py publish
 
-In ``__main__.py`` don't forget to update dev_requirements.txt
+.. _PyPi: https://pypi.org/
