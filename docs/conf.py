@@ -44,6 +44,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.napoleon",
+    "sphinx_tabs.tabs",
 ]
 
 # autosectionlabel_prefix_document = True
