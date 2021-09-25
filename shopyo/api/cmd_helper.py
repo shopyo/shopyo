@@ -200,12 +200,12 @@ def _upload_data(verbose=False):
 
 def _create_box(boxname, verbose=False):
 
-    base_path = os.path.join("modules", boxname)
+    base_path = os.path.join("modules", f"box__{boxname}")
     trymkdir(base_path, verbose=verbose)
 
     info_json = {
         "display_string": boxname.capitalize(),
-        "box_name": boxname,
+        "box_name": f"box__{boxname}",
         "author": {"name": "", "website": "", "mail": ""},
     }
 

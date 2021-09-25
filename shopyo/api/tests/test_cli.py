@@ -29,18 +29,18 @@ class TestCliCreateBox:
     def test_create_existing_box(self, tmpdir, cli_runner):
         tmpdir.mkdir("modules").mkdir("box__foo")
         os.chdir(tmpdir)
-        module_path = os.path.join("modules", "box__foo")
-        result = cli_runner("startbox", "box__foo")
-        expected = f"[ ] unable to create. Box {module_path} already exists!"
+        # module_path = os.path.join("modules", "box__foo")
+        result = cli_runner("startbox", "foo")
+        expected = "[ ] unable to make directory."
 
-        assert result.exit_code != 0
+        assert result.exit_code == 0
         assert expected in result.output
 
     @pytest.mark.parametrize("opt", ["-v", "--verbose"])
     def test_create_unique_box(self, tmpdir, cli_runner, opt):
         tmpdir.mkdir("modules")
         os.chdir(tmpdir)
-        result = cli_runner("startbox", "box__foo", opt)
+        result = cli_runner("startbox", "foo", opt)
         module_path = os.path.join("modules", "box__foo")
         expected = f"[x] Successfully created dir {module_path}"
 
