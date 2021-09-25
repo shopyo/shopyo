@@ -292,6 +292,23 @@ Creates an empty box
 
    shopyo startbox box__api
 
+createmodule
+************
+
+*Usage*
+
+.. code:: bash
+
+   shopyo createmodule apple
+
+creates modules/apple
+
+
+.. code:: bash
+
+   shopyo createmodule pear box__default
+
+creates modules/box__default/pear
 
 
 collectstatic
