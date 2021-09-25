@@ -7,7 +7,7 @@
 
 </h1>
 
-[![Downloads](https://pepy.tech/badge/shopyo)](https://pepy.tech/project/shopyo) [![Codecov](https://codecov.io/gh/shopyo/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/shopyo/shopyo) ![Tests](https://github.com/shopyo/shopyo/actions/workflows/tests.yaml/badge.svg) [![PyPI version shields.io](https://img.shields.io/pypi/v/shopyo.svg)](https://pypi.python.org/pypi/shopyo/) [![Documentation Status](https://readthedocs.org/projects/shopyo/badge/?version=latest)](https://shopyo.readthedocs.io/en/latest/?badge=latest) 
+[![Downloads](https://pepy.tech/badge/shopyo)](https://pepy.tech/project/shopyo) [![Codecov](https://codecov.io/gh/shopyo/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/shopyo/shopyo) ![Tests](https://github.com/shopyo/shopyo/actions/workflows/tests.yaml/badge.svg) [![PyPI version shields.io](https://img.shields.io/pypi/v/shopyo.svg)](https://pypi.python.org/pypi/shopyo/) [![Documentation Status](https://readthedocs.org/projects/shopyo/badge/?version=latest)](https://shopyo.readthedocs.io/en/latest/?badge=latest)
 
 
 Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
@@ -57,6 +57,15 @@ go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 # First time contributing?
 
 We have a 100% first-timers friendly policy. Check out the [testimonials](https://github.com/shopyo/shopyo/discussions/307).
+
+# Who uses Shopyo?
+
+| site name | description
+|:---:|:---:|
+|Maurilearn.com|Elearning platform|
+|Linkolearn.com|Learn By links|
+|FlaskCon.com|Conference soft|
+
 
 # Big??
 
@@ -115,12 +124,7 @@ We follow a 100% first-timers friendly policy.
 
 👉 Link: [shopyo.readthedocs.io/](https://shopyo.readthedocs.io/en/latest/)
 
-# Who uses Shopyo?
 
-| site name | description
-|:---:|:---:|
-|Maurilearn.com|Elearning platform|
-|Linkolearn.com|Learn By links|
 
 # 📞 Contact
 
