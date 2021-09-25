@@ -33,7 +33,7 @@ class TestCliCreateBox:
         result = cli_runner("startbox", "foo")
         expected = "[ ] unable to make directory."
 
-        assert result.exit_code == 0
+        assert result.exit_code != 0
         assert expected in result.output
 
     @pytest.mark.parametrize("opt", ["-v", "--verbose"])
@@ -507,8 +507,8 @@ class TestCliStartapp:
         "mod,box",
         [
             ("store", ""),  # create module
-            ("store", "box__ecommerce"),  # create submodule and also box
-            ("marketplace", "box__default"),  # create submodule but not box
+            ("store", "ecommerce"),  # create submodule and also box
+            ("marketplace", "default"),  # create submodule but not box
         ],
     )
     def test_create_valid_modules(self, cli_runner, fake_foo_proj, mod, box):
