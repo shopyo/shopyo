@@ -34,7 +34,7 @@ all project scafolding and pre-included modules such as authentication, admin, t
     $ shopyo rundebug
 
 This creates a Flask app ``blog``, initialises it and then runs it at http://localhost:5000/.
-For the home page it will say ``SITE UNDER CONSTRUCTION`` which will be the home page of your app (see
+For the home page it will say ``Shopyo is now running!`` which will be the home page of your app (see
 ``blog/blog/modules/www/view.py`` and ``blog/static/themes/front/blogus/index.html``).
 To access the dashboard, go to http://localhost:5000/auth/login and login with email
 ``admin@domain.com`` and password ``pass``
