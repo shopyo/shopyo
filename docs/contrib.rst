@@ -27,11 +27,11 @@ First time setup
 
 -   Make sure you have a `GitHub account`_.
 -   Fork Shopyo to your GitHub account by clicking the `Fork`_ button.
--   `Clone`_ the main repository locally.
+-   `Clone`_ the main repository locally (make sure to have your `SSH authentication`_ setup!)
 
     .. code-block:: text
 
-        $ git clone https://github.com/shopyo/shopyo
+        $ git clone git@github.com:shopyo/shopyo.git
         $ cd shopyo
 
 -   Add your fork as a remote to push your work to. Replace
@@ -40,7 +40,7 @@ First time setup
 
     .. code-block:: text
 
-        git remote add fork https://github.com/{username}/shopyo
+        git remote add fork git@github.com:{username}/shopyo.git
 
 -   Create a virtualenv and activate the `virtual environment`_:
 
@@ -103,6 +103,7 @@ First time setup
 .. _Clone: https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#step-2-create-a-local-clone-of-your-fork
 .. _pre-commit: https://pre-commit.com/
 .. _virtual environment: https://docs.python.org/3/tutorial/venv.html
+.. _SSH authentication: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 Pull Requests
 -------------
@@ -139,7 +140,7 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
     the checks fail, it will not allow you to commit and mention the errors and their line numbers.
     Most of the time, the `pre-commit`_ hook will automatically fix the style errors so you will
     need to run the ``git commit`` command again. For the example below, after running ``git commit``,
-    the `pre-commit`_ for ``flake8`` failed. In this case, remove the unused import in ``shopyo/app.y``
+    the `pre-commit`_ for ``flake8`` failed. In this case, remove the unused import in ``shopyo/app.py``
     and commit again
 
     .. code-block:: bash
