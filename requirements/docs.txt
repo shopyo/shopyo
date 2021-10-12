@@ -4,79 +4,86 @@
 #
 #    pip-compile requirements/docs.in
 #
-alabaster==0.7.12
+alabaster
     # via sphinx
-babel==2.9.0
+babel
     # via sphinx
-beautifulsoup4==4.9.3
+beautifulsoup4
     # via furo
-certifi==2020.12.5
+certifi
     # via requests
-chardet==4.0.0
+chardet
     # via requests
-colorama==0.4.4
+colorama
     # via
     #   sphinx
     #   sphinx-autobuild
-docutils==0.16
+docutils
     # via
     #   sphinx
     #   sphinx-tabs
-furo==2021.4.11b34
+furo
     # via -r requirements/docs.in
-idna==2.10
+idna
     # via requests
-imagesize==1.2.0
+imagesize
     # via sphinx
-jinja2==2.11.3
-    # via sphinx
-livereload==2.6.3
+jinja2
+livereload
     # via sphinx-autobuild
-markupsafe==1.1.1
+markupsafe
     # via jinja2
-packaging==20.9
+packaging
     # via sphinx
-pygments==2.8.1
+pygments
     # via
     #   sphinx
     #   sphinx-tabs
-pyparsing==2.4.7
+pyparsing
     # via packaging
-pytz==2021.1
+pytz
     # via babel
-requests==2.25.1
+requests
     # via sphinx
-six==1.16.0
+six
     # via livereload
-snowballstemmer==2.1.0
+snowballstemmer
     # via sphinx
-soupsieve==2.2.1
+soupsieve
     # via beautifulsoup4
-sphinx-autobuild==2021.3.14
+sphinx-autobuild
     # via -r requirements/docs.in
-sphinx-tabs==3.1.0
+sphinx-tabs
     # via -r requirements/docs.in
-sphinx==3.5.4
+sphinx
     # via
     #   -r requirements/docs.in
     #   furo
     #   sphinx-autobuild
     #   sphinx-tabs
-sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-applehelp
+
     # via sphinx
-sphinxcontrib-devhelp==1.0.2
+sphinxcontrib-devhelp
+
     # via sphinx
-sphinxcontrib-htmlhelp==1.0.3
+sphinxcontrib-htmlhelp
+
     # via sphinx
-sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-jsmath
+
     # via sphinx
-sphinxcontrib-qthelp==1.0.3
+sphinxcontrib-qthelp
+
     # via sphinx
-sphinxcontrib-serializinghtml==1.1.4
+sphinxcontrib-serializinghtml
+
     # via sphinx
-tornado==6.1
+tornado
+
     # via livereload
-urllib3==1.26.5
+urllib3
+
     # via requests
 
 # The following packages are considered to be unsafe in a requirements file:

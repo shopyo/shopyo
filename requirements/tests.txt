@@ -4,44 +4,43 @@
 #
 #    pip-compile requirements/tests.in
 #
-attrs==20.3.0
-    # via pytest
-coverage==5.5
+attrs    # via pytest
+coverage
     # via -r requirements/tests.in
-factory-boy==3.2.0
+factory-boy
     # via -r requirements/tests.in
-faker==8.1.0
+faker
     # via factory-boy
-freezegun==1.1.0
+freezegun
     # via -r requirements/tests.in
-iniconfig==1.1.1
+iniconfig
     # via pytest
-packaging==20.9
+packaging
     # via pytest
-pluggy==0.13.1
+pluggy
     # via pytest
-py==1.10.0
+py
     # via pytest
-pyparsing==2.4.7
+pyparsing
     # via packaging
-pytest-dotenv==0.5.2
+pytest-dotenv
     # via -r requirements/tests.in
-pytest-order==0.11.0
+pytest-order
     # via -r requirements/tests.in
-pytest==6.2.3
+pytest
     # via
     #   -r requirements/tests.in
     #   pytest-dotenv
     #   pytest-order
-python-dateutil==2.8.1
+python-dateutil
     # via
     #   faker
     #   freezegun
-python-dotenv==0.17.0
+python-dotenv
     # via pytest-dotenv
-six==1.15.0
+six
     # via python-dateutil
-text-unidecode==1.3
+text-unidecode
     # via faker
-toml==0.10.2
+toml
     # via pytest

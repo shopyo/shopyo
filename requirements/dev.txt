@@ -4,194 +4,187 @@
 #
 #    pip-compile requirements/dev.in
 #
-alabaster==0.7.12
+alabaster
     # via sphinx
-appdirs==1.4.4
+appdirs
     # via
     #   black
     #   virtualenv
-atomicwrites==1.4.0
+atomicwrites
     # via pytest
-attrs==20.3.0
+attrs
     # via pytest
-babel==2.9.0
+babel
     # via sphinx
-beautifulsoup4==4.9.3
+beautifulsoup4
     # via furo
-black==20.8b1
-    # via -r requirements/dev.in
-certifi==2020.12.5
-    # via requests
-cfgv==3.3.0
-    # via pre-commit
-chardet==4.0.0
-    # via requests
-click==7.1.2
-    # via
+black    # via -r requirements/dev.in
+certifi    # via requests
+cfgv    # via pre-commit
+chardet    # via requests
+click    # via
     #   black
     #   pip-tools
-codecov==2.1.11
-    # via -r requirements/dev.in
-colorama==0.4.4
-    # via
+codecov    # via -r requirements/dev.in
+colorama    # via
     #   pytest
     #   sphinx
     #   sphinx-autobuild
     #   tox
-coverage==5.5
+coverage
     # via
     #   -r requirements\tests.in
     #   codecov
-distlib==0.3.1
+distlib
     # via virtualenv
-docutils==0.16
+docutils
     # via
     #   sphinx
     #   sphinx-tabs
-factory-boy==3.2.0
+factory-boy
     # via -r requirements\tests.in
-faker==8.1.0
+faker
     # via factory-boy
-filelock==3.0.12
+filelock
     # via
     #   tox
     #   virtualenv
-flake8==3.9.1
+flake8
     # via -r requirements/dev.in
-freezegun==1.1.0
+freezegun
     # via -r requirements\tests.in
-furo==2021.4.11b34
+furo
     # via -r requirements\docs.in
-identify==2.2.4
+identify
     # via pre-commit
-idna==2.10
+idna
     # via requests
-imagesize==1.2.0
+imagesize
     # via sphinx
-iniconfig==1.1.1
+iniconfig
     # via pytest
-isort==5.8.0
+isort
     # via -r requirements/dev.in
-jinja2==2.11.3
+jinja2
     # via sphinx
-livereload==2.6.3
+livereload
     # via sphinx-autobuild
-markupsafe==1.1.1
+markupsafe
     # via jinja2
-mccabe==0.6.1
+mccabe
     # via flake8
-mypy-extensions==0.4.3
+mypy-extensions
     # via black
-nodeenv==1.6.0
+nodeenv
     # via pre-commit
-packaging==20.9
+packaging
     # via
     #   pytest
     #   sphinx
     #   tox
-pathspec==0.8.1
+pathspec
     # via black
-pep517==0.10.0
+pep517
     # via pip-tools
-pip-tools==6.1.0
+pip-tools
     # via -r requirements/dev.in
-pluggy==0.13.1
+pluggy
     # via
     #   pytest
     #   tox
-pre-commit==2.12.1
+pre-commit
     # via -r requirements/dev.in
-py==1.10.0
+py
     # via
     #   pytest
     #   tox
-pycodestyle==2.7.0
+pycodestyle
     # via flake8
-pyflakes==2.3.1
+pyflakes
     # via flake8
-pygments==2.8.1
+pygments
     # via
     #   sphinx
     #   sphinx-tabs
-pyparsing==2.4.7
+pyparsing
     # via packaging
-pytest-dotenv==0.5.2
+pytest-dotenv
     # via -r requirements\tests.in
-pytest-order==0.11.0
+pytest-order
     # via -r requirements\tests.in
-pytest==6.2.3
+pytest
     # via
     #   -r requirements\tests.in
     #   pytest-dotenv
     #   pytest-order
-python-dateutil==2.8.1
+python-dateutil
     # via
     #   faker
     #   freezegun
-python-dotenv==0.17.0
+python-dotenv
     # via pytest-dotenv
-pytz==2021.1
+pytz
     # via babel
-pyyaml==5.4.1
+pyyaml
     # via pre-commit
-regex==2021.4.4
+regex
     # via black
-requests==2.25.1
+requests
     # via
     #   codecov
     #   sphinx
-six==1.15.0
+six
     # via
     #   livereload
     #   python-dateutil
     #   tox
     #   virtualenv
-snowballstemmer==2.1.0
+snowballstemmer
     # via sphinx
-soupsieve==2.2.1
+soupsieve
     # via beautifulsoup4
-sphinx-autobuild==2021.3.14
+sphinx-autobuild
     # via -r requirements\docs.in
-sphinx-tabs==3.1.0
+sphinx-tabs
     # via -r requirements\docs.in
-sphinx==3.5.4
+sphinx
     # via
     #   -r requirements\docs.in
     #   furo
     #   sphinx-autobuild
     #   sphinx-tabs
-sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-applehelp
     # via sphinx
-sphinxcontrib-devhelp==1.0.2
+sphinxcontrib-devhelp
     # via sphinx
-sphinxcontrib-htmlhelp==1.0.3
+sphinxcontrib-htmlhelp
     # via sphinx
-sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-jsmath
     # via sphinx
-sphinxcontrib-qthelp==1.0.3
+sphinxcontrib-qthelp
     # via sphinx
-sphinxcontrib-serializinghtml==1.1.4
+sphinxcontrib-serializinghtml
     # via sphinx
-text-unidecode==1.3
+text-unidecode
     # via faker
-toml==0.10.2
+toml
     # via
     #   black
     #   pep517
     #   pre-commit
     #   pytest
     #   tox
-tornado==6.1
+tornado
     # via livereload
-tox==3.23.0
+tox
     # via -r requirements/dev.in
-typed-ast==1.4.3
+typed-ast
     # via black
-typing-extensions==3.7.4.3
+typing-extensions
     # via black
-urllib3==1.26.5
+urllib3
     # via requests
-virtualenv==20.4.3
+virtualenv
     # via
     #   pre-commit
     #   tox
