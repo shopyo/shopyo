@@ -91,7 +91,7 @@ First time setup
 
         $ shopyo rundebug
 
--   Go to the link http://127.0.0.1:5000/ and you should see ``SITE UNDER CONSTRUCTION``. Go to
+-   Go to the link http://127.0.0.1:5000/ and you should see ``Shopyo is now running!``. Go to
     http://127.0.0.1:5000/auth/login and then you can access the dashboard by logging in
     with email ``admin@domain.com`` and password ``pass``
 
