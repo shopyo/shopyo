@@ -201,8 +201,8 @@ def clean(verbose, clear_migration, clear_db):
 
 @cli.command("initialise")
 @click.option("--verbose", "-v", is_flag=True, default=False)
-@click.option("--clear-migration", "clear_migration", "-cm", is_flag=True, default=True)
-@click.option("--clear-db", "clear_db", "-cdb", is_flag=True, default=True)
+@click.option("--clear-migration//--no-clear-migration", "clear_migration", "-cm", is_flag=True, default=True)
+@click.option("--clear-db//--no-clear-db", "clear_db", "-cdb", is_flag=True, default=True)
 @click.option("--verbose", "-v", is_flag=True, default=False)
 def initialise(verbose, clear_migration, clear_db):
     """
