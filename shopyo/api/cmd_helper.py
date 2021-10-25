@@ -25,7 +25,7 @@ from shopyo.api.file import tryrmfile
 from shopyo.api.file import tryrmtree
 
 
-def _clean(verbose=False):
+def _clean(verbose=False, clear_migration=True, clear_db=True):
     """
     Deletes shopyo.db and migrations/ if present in current working directory.
     Deletes all __pycache__ folders starting from current working directory
@@ -46,15 +46,19 @@ def _clean(verbose=False):
     click.echo("Cleaning...")
     click.echo(SEP_CHAR * SEP_NUM)
     db = current_app.extensions["sqlalchemy"].db
-    db.drop_all()
-    db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
+
+    if clear_db:
+        db.drop_all()
+        db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
 
     if verbose:
         click.echo("[x] all tables dropped")
 
     tryrmcache(os.getcwd(), verbose=verbose)
     tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
-    tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=verbose)
+
+    if clear_migration:
+        tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=verbose)
 
     click.echo("")
 
