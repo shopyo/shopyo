@@ -175,6 +175,24 @@ class TestCliClean:
         assert os.path.exists(path1)
         assert os.path.exists(path2)
 
+    def test_clean_on_skip_shopyo_db_file(self, tmpdir, flask_app):
+        """
+        run `shopyo clean2 -v` on the following test directory:
+
+        <some-unique-tmpdir>/
+            shopyo.db
+        """
+        shopyo_db = tmpdir.join("shopyo.db")
+        shopyo_db.write("content")
+        os.chdir(tmpdir)
+        runner = flask_app.test_cli_runner()
+        result = runner.invoke(cli, ["clean", "--no-clear-db", "-v"])
+        part_expected_out = "[ ] db clearing skipped"
+
+        assert result.exit_code == 0
+        assert os.path.exists(shopyo_db) is True
+        assert part_expected_out in result.output
+
     def test_clean_on_shopyo_db_file(self, tmpdir, flask_app):
         """
         run `shopyo clean2 -v` on the following test directory:
@@ -198,6 +216,29 @@ class TestCliClean:
         assert result.exit_code == 0
         assert os.path.exists(shopyo_db) is False
         assert expected_out in result.output
+
+    def test_clean_on_skip_migration_folder(self, tmpdir, flask_app):
+        """
+        run `shopyo clean2 -v` on the following test directory:
+
+        <some-unique-tmpdir>/
+            migrations/
+                env.py
+                alembic.ini
+        """
+        migrations_path = tmpdir.mkdir("migrations")
+        env = migrations_path.join("env.py")
+        alembic = migrations_path.join("alembic.ini")
+        env.write("content-env")
+        alembic.write("content-alembic")
+        os.chdir(tmpdir)
+        runner = flask_app.test_cli_runner(mix_stderr=False)
+        result = runner.invoke(cli, ["clean", "--no-clear-migration", "-v"])
+        part_expected_out = "[ ] migration folder delete skipped"
+
+        assert result.exit_code == 0
+        assert os.path.exists(migrations_path) is True
+        assert part_expected_out in result.stdout
 
     def test_clean_on_migration_folder(self, tmpdir, flask_app):
         """

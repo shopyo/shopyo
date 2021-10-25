@@ -51,16 +51,20 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
         db.drop_all()
         db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
 
-    if verbose:
-        click.echo("[x] all tables dropped")
+        tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
+        if verbose:
+            click.echo("[x] all tables dropped")
+    elif clear_db is False:
+        if verbose:
+            click.echo("[ ] db clearing skipped")
 
     tryrmcache(os.getcwd(), verbose=verbose)
-    tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
 
     if clear_migration:
         tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=verbose)
-
-    click.echo("")
+    elif clear_migration is False:
+        if verbose:
+            click.echo("[ ] migration folder delete skipped")
 
 
 def _collectstatic(target_module="modules", verbose=False):
