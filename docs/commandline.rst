@@ -70,6 +70,14 @@ removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
 
    Show the command usage/help message and exit
 
+.. option:: --clear-migration / --no-clear-migration
+
+   Whether or not to clear migration folder, by default true, even without flag
+
+.. option:: --clear-db / --no-clear-db
+
+   Whether or not to clear db, by default true, even without flag
+
 
 Initialise
 **********
@@ -89,7 +97,8 @@ or
    python manage.py initialise [OPTIONS]
 
 Creates ``db``, ``migration/``, adds default users, add settings.
-This command need to be run only once before running the project
+This command need to be run only once before running the project.
+You can also skip migration folder deleting and db clearing.
 
 .. _shopyo initialise options:
 
@@ -102,6 +111,14 @@ This command need to be run only once before running the project
 .. option:: --help
 
    Show the command usage/help message and exit
+
+.. option:: --clear-migration / --no-clear-migration
+
+   Whether or not to clear migration folder, by default true, even without flag
+
+.. option:: --clear-db / --no-clear-db
+
+   Whether or not to clear db, by default true, even without flag
 
 run
 ***

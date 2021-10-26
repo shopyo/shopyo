@@ -35,6 +35,8 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
     ----------
         - verbose: flag to indicate whether to print to result of clean to
             stdout or not.
+        - clear_migration: flag to indicate if migration folder is to be deleted or not
+        - clear_db: flag indicating if db is to be cleared or not
         - db: db to be cleaned
 
     Returns
