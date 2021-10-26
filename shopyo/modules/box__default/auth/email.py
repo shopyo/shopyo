@@ -26,8 +26,7 @@ def _send_email_helper(app, msg):
             or current_app.config["MAIL_PASSWORD"] is None
         ):
             print(
-                "\nShopyo Error: MAIL_USERNAME, and/or MAIL_PASSWORD"
-                " not configured\n"
+                "\nShopyo Error: MAIL_USERNAME, and/or MAIL_PASSWORD not configured\n"
             )
             return
 

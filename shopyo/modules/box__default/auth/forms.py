@@ -15,7 +15,7 @@ from .models import User
 class LoginForm(FlaskForm):
     email = EmailField(
         "email",
-        [DataRequired(), Email(message=("Not a valid email address."))],
+        [DataRequired(), Email(message="Not a valid email address.")],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     password = PasswordField(
@@ -30,7 +30,7 @@ class RegistrationForm(FlaskForm):
 
     email = EmailField(
         "email_label",
-        [DataRequired(), Email(message=("Not a valid email address."))],
+        [DataRequired(), Email(message="Not a valid email address.")],
     )
 
     password = PasswordField(

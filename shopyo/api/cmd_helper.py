@@ -25,7 +25,7 @@ from shopyo.api.file import tryrmfile
 from shopyo.api.file import tryrmtree
 
 
-def _clean(verbose=False):
+def _clean(verbose=False, clear_migration=True, clear_db=True):
     """
     Deletes shopyo.db and migrations/ if present in current working directory.
     Deletes all __pycache__ folders starting from current working directory
@@ -35,6 +35,8 @@ def _clean(verbose=False):
     ----------
         - verbose: flag to indicate whether to print to result of clean to
             stdout or not.
+        - clear_migration: flag to indicate if migration folder is to be deleted or not
+        - clear_db: flag indicating if db is to be cleared or not
         - db: db to be cleaned
 
     Returns
@@ -46,17 +48,25 @@ def _clean(verbose=False):
     click.echo("Cleaning...")
     click.echo(SEP_CHAR * SEP_NUM)
     db = current_app.extensions["sqlalchemy"].db
-    db.drop_all()
-    db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
 
-    if verbose:
-        click.echo("[x] all tables dropped")
+    if clear_db:
+        db.drop_all()
+        db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
+
+        tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
+        if verbose:
+            click.echo("[x] all tables dropped")
+    elif clear_db is False:
+        if verbose:
+            click.echo("[ ] db clearing skipped")
 
     tryrmcache(os.getcwd(), verbose=verbose)
-    tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
-    tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=verbose)
 
-    click.echo("")
+    if clear_migration:
+        tryrmtree(os.path.join(os.getcwd(), "migrations"), verbose=verbose)
+    elif clear_migration is False:
+        if verbose:
+            click.echo("[ ] migration folder delete skipped")
 
 
 def _collectstatic(target_module="modules", verbose=False):

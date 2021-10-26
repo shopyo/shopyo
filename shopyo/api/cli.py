@@ -101,8 +101,7 @@ def create_module(modulename, boxname, verbose):
     """
     if boxname != "" and not boxname.startswith("box__"):
         click.echo(
-            f"[ ] Invalid BOXNAME '{boxname}'. "
-            "BOXNAME should start with 'box__' prefix"
+            f"[ ] Invalid BOXNAME '{boxname}'. BOXNAME should start with 'box__' prefix"
         )
         sys.exit(1)
 
@@ -189,24 +188,45 @@ def collectstatic(src, verbose):
 
 
 @cli.command("clean")
+@click.option(
+    "--clear-migration/--no-clear-migration",
+    "clear_migration",
+    "-cm",
+    is_flag=True,
+    default=True,
+)
+@click.option(
+    "--clear-db/--no-clear-db", "clear_db", "-cdb", is_flag=True, default=True
+)
 @click.option("--verbose", "-v", is_flag=True, default=False)
-def clean(verbose):
+def clean(verbose, clear_migration, clear_db):
     """removes ``__pycache__``, ``migrations/``, ``shopyo.db`` files and drops
     ``db`` if present
     """
-    _clean(verbose=verbose)
+    _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
 
 
 @cli.command("initialise")
 @click.option("--verbose", "-v", is_flag=True, default=False)
-def initialise(verbose):
+@click.option(
+    "--clear-migration/--no-clear-migration",
+    "clear_migration",
+    "-cm",
+    is_flag=True,
+    default=True,
+)
+@click.option(
+    "--clear-db/--no-clear-db", "clear_db", "-cdb", is_flag=True, default=True
+)
+@click.option("--verbose", "-v", is_flag=True, default=False)
+def initialise(verbose, clear_migration, clear_db):
     """
     Creates ``db``, ``migration/``, adds default users, add settings
     """
     click.echo("initializing...")
 
     # drop db, remove mirgration/ and shopyo.db
-    _clean(verbose=verbose)
+    _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
 
     # load all models available inside modules
     autoload_models(verbose=verbose)
@@ -315,8 +335,7 @@ def new(projname, verbose):
 
         if os.path.exists(root_proj_path):
             click.echo(
-                "[ ] Error: Unable to create new project. Path "
-                f"{root_proj_path} exits"
+                f"[ ] Error: Unable to create new project. Path {root_proj_path} exits"
             )
             sys.exit(1)
 
