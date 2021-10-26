@@ -205,17 +205,19 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner()
         result = runner.invoke(cli, ["clean", "-v"])
-        expected_out = (
-            "[x] all tables dropped\n"
-            "[ ] __pycache__ doesn't exist\n"
-            f"[x] file '{os.path.join(tmpdir, 'shopyo.db')}' "
-            "successfully deleted\n"
-            f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
+        expected_out1 = "[x] all tables dropped"
+        expected_out2 = "[ ] __pycache__ doesn't exist"
+        expected_out3 = (
+            f"[x] file '{os.path.join(tmpdir, 'shopyo.db')}' successfully deleted"
         )
+        expected_out4 = f"[ ] unable to delete {os.path.join(tmpdir, 'migrations')}"
 
         assert result.exit_code == 0
         assert os.path.exists(shopyo_db) is False
-        assert expected_out in result.output
+        assert expected_out1 in result.output
+        assert expected_out2 in result.output
+        assert expected_out3 in result.output
+        assert expected_out4 in result.output
 
     def test_clean_on_skip_migration_folder(self, tmpdir, flask_app):
         """
@@ -308,17 +310,21 @@ class TestCliClean:
         os.chdir(shopyo_path)
         runner = flask_app.test_cli_runner()
         result = runner.invoke(cli, ["clean", option])
-        expected_out = (
-            "[x] all tables dropped\n"
-            "[x] __pycache__ successfully deleted\n"
-            f"[x] file '{os.path.join(shopyo_path, 'shopyo.db')}' "
-            "successfully deleted\n"
-            f"[x] folder '{os.path.join(shopyo_path, 'migrations')}' "
-            "successfully deleted\n"
+        expected_out1 = "[x] all tables dropped"
+        expected_out2 = "[x] __pycache__ successfully deleted"
+        expected_out3 = (
+            f"[x] file '{os.path.join(shopyo_path, 'shopyo.db')}' successfully deleted"
+        )
+        expected_out4 = (
+            f"[x] folder '{os.path.join(shopyo_path, 'migrations')}' successfully"
+            " deleted\n"
         )
 
         assert result.exit_code == 0
-        assert expected_out in result.output
+        assert expected_out1 in result.output
+        assert expected_out2 in result.output
+        assert expected_out3 in result.output
+        assert expected_out4 in result.output
         assert os.path.exists(migrations_path) is False
         assert os.path.exists(pycache_path1) is False
         assert os.path.exists(pycache_path2) is False
@@ -366,7 +372,7 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
         result = runner.invoke(cli, ["clean"])
-        expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expect_out = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n"
 
         assert result.exit_code == 0
         assert expect_out in result.output
@@ -383,7 +389,7 @@ class TestCliClean:
         os.chdir(tmpdir)
         runner = flask_app.test_cli_runner(mix_stderr=False)
         result = runner.invoke(cli, ["clean"])
-        expect_out1 = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n\n"
+        expect_out1 = "Cleaning...\n" + SEP_CHAR * SEP_NUM + "\n"
         expect_out2 = "[x] __pycache__ successfully deleted\n"
         expect_out3 = "[ ] unable to delete"
 
@@ -430,7 +436,7 @@ class TestCliNew:
 
         # create the parent folder for foo and none for bar proj
         temp_proj = tmp_path / parent
-        print(temp_proj)
+        # print(temp_proj)
         temp_proj.mkdir(exist_ok=True)
         # change to the parent folder (in case of bar it tmp_path while for foo
         # it is tmp_path/foo) and run the new command. For foo, there is no
@@ -497,8 +503,7 @@ class TestCliStartapp:
     def test_create_module_with_invalid_box_name(self, cli_runner, box):
         result = cli_runner("startapp", "demo", box)
         expected_out = (
-            f"[ ] Invalid BOXNAME '{box}'. "
-            "BOXNAME should start with 'box__' prefix\n"
+            f"[ ] Invalid BOXNAME '{box}'. BOXNAME should start with 'box__' prefix\n"
         )
 
         assert result.exit_code != 0
@@ -518,7 +523,7 @@ class TestCliStartapp:
         result = cli_runner("startapp", mod, box)
         expected_out = (
             f"[ ] Unable to create module '{mod}'. "
-            f"MODULENAME already exists inside modules/ at"
+            "MODULENAME already exists inside modules/ at"
         )
 
         assert result.exit_code != 0
