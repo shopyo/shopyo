@@ -7,3 +7,4 @@ black
 isort
 codecov
 tox
+commitizen

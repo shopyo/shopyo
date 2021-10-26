@@ -177,6 +177,23 @@ Make sure you have setup the repo as explained in :ref:`setup` before making Pul
 .. _example PR: https://github.com/shopyo/shopyo/pull/55
 
 
+Use commitizen to commit (experimental)
+---------------------------------------
+
+Use
+
+    .. code-block:: bash
+
+        $ cz c
+
+to commit and
+
+    .. code-block:: bash
+
+        $ cz changelog
+
+to generate changelog (for maintainers)
+
 Setup Mail Dev Environment (Optional)
 -------------------------------------
 
