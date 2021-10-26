@@ -1,15 +1,16 @@
 ## Unreleased
 
+### Fix
+
+- **setup.cfg**: fixed project_urls
+- add no-action flag
+- clear migrations folder
+- Improve homepage wording
+
 ### Feat
 
 - release 4.1.3
 - added commitizen to repo
-
-### Fix
-
-- add no-action flag
-- clear migrations folder
-- Improve homepage wording
 
 ## v4.1.2 (2021-05-19)
 
