@@ -101,8 +101,7 @@ def create_module(modulename, boxname, verbose):
     """
     if boxname != "" and not boxname.startswith("box__"):
         click.echo(
-            f"[ ] Invalid BOXNAME '{boxname}'. "
-            "BOXNAME should start with 'box__' prefix"
+            f"[ ] Invalid BOXNAME '{boxname}'. BOXNAME should start with 'box__' prefix"
         )
         sys.exit(1)
 
@@ -336,8 +335,7 @@ def new(projname, verbose):
 
         if os.path.exists(root_proj_path):
             click.echo(
-                "[ ] Error: Unable to create new project. Path "
-                f"{root_proj_path} exits"
+                f"[ ] Error: Unable to create new project. Path {root_proj_path} exits"
             )
             sys.exit(1)
 
