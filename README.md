@@ -33,8 +33,12 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 
 then
 ```
-shopyo new blog
-cd blog/blog
+mkdir blog
+python3.9 -m venv venv
+. venv/bin/activate
+pip install shopyo==4.1.2
+shopyo new
+cd blog
 python manage.py initialise
 python manage.py rundebug
 ```
