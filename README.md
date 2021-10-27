@@ -29,9 +29,6 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 
 # Have a go!
 
-`pip install shopyo`
-
-then
 ```
 mkdir blog
 python3.9 -m venv venv
