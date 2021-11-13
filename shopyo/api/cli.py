@@ -229,8 +229,9 @@ def initialise(verbose, clear_migration, clear_db):
     _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
 
     # load all models available inside modules
-    autoload_models(verbose=verbose)
-
+    cur_path = os.getcwd()
+    autoload_models(verbose=verbose, path=cur_path)
+    os.chdir(cur_path)
     # add a migrations folder to your application.
     click.echo("Creating db...")
     click.echo(SEP_CHAR * SEP_NUM)

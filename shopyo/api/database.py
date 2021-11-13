@@ -7,7 +7,7 @@ from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 
 
-def autoload_models(verbose=False):
+def autoload_models(verbose=False, path=None):
     """
     Auto imports models from modules/ in desired file. Used so that
     flask_migrate does not miss models when migrating
@@ -16,10 +16,12 @@ def autoload_models(verbose=False):
     -------
     None
     """
+    if path is None:
+        path = os.getcwd()
     click.echo("Auto importing models...")
     click.echo(SEP_CHAR * SEP_NUM)
 
-    for folder in os.listdir("modules"):
+    for folder in os.listdir(os.path.join(path, "modules")):
         if folder.startswith("__"):
             continue
         elif folder.startswith("box__"):
