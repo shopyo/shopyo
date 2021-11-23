@@ -417,6 +417,13 @@ By default it will create the project(folder) of same name as the parent
 folder. If ``PROJNAME`` is provided ``shopyo new somename``, it will create ``PROJNAME/PROJNAME``
 under parent folder
 
+
+.. code:: bash
+
+   shopyo new --modules # or -m will add default modules else will create empty project
+
+
+
 For Example, say your current working directory is ``/path/to/blog``. Assuming you have
 created a virtual environment ``env`` and activated it, and installed ``shopyo``.
 Apart from env folder, your cwd should be empty. Then after running:

@@ -190,7 +190,7 @@ def _upload_data(verbose=False):
 
                 try:
                     upload = importlib.import_module(
-                        f"shopyo.modules.{folder}.{sub_folder}.upload"
+                        f"modules.{folder}.{sub_folder}.upload"
                     )
                     upload.upload(verbose=verbose)
                 except ImportError as e:
@@ -199,7 +199,7 @@ def _upload_data(verbose=False):
         else:
             # apps
             try:
-                upload = importlib.import_module(f"shopyo.modules.{folder}.upload")
+                upload = importlib.import_module(f"modules.{folder}.upload")
                 upload.upload(verbose=verbose)
             except ImportError as e:
                 if verbose:
@@ -227,6 +227,8 @@ def _create_box(boxname, verbose=False):
     if verbose:
         click.echo("'box_info.json' content:")
         click.echo(json.dumps(info_json, indent=4, sort_keys=True))
+
+    click.echo(f"{boxname} created!")
 
 
 def _create_module(modulename, base_path=None, verbose=False):

@@ -13,8 +13,7 @@ import pytest
 from flask import request
 from flask import url_for
 from flask_login import current_user
-
-from shopyo.modules.box__default.auth.models import User
+from modules.box__default.auth.models import User
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.dirname(dirpath)

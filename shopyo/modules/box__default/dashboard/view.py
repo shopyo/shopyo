@@ -6,9 +6,9 @@ from flask import current_app
 from flask import flash
 from flask import render_template
 from flask_login import login_required
+from modules.box__default.auth.decorators import check_confirmed
 
 from shopyo.api.html import notify_success
-from shopyo.modules.box__default.auth.decorators import check_confirmed
 
 dashboard_blueprint = Blueprint(
     "dashboard",

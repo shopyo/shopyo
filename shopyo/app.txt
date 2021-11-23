@@ -10,18 +10,20 @@ from flask_admin.menu import MenuLink
 from flask_login import current_user
 
 from shopyo.api.file import trycopy
-from shopyo.config import app_config
-from shopyo.init import csrf
-from shopyo.init import db
-from shopyo.init import login_manager
-from shopyo.init import ma
-from shopyo.init import mail
-from shopyo.init import migrate
-from shopyo.init import modules_path
-from shopyo.modules.box__default.settings.helpers import get_setting
-from shopyo.modules.box__default.settings.models import Settings
-from shopyo.shopyo_admin import DefaultModelView
-from shopyo.shopyo_admin import MyAdminIndexView
+
+
+
+from config import app_config
+from init import csrf
+from init import db
+from init import login_manager
+from init import ma
+from init import mail
+from init import migrate
+from init import modules_path
+from shopyo_admin import DefaultModelView
+from shopyo_admin import MyAdminIndexView
+
 
 
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -93,7 +95,7 @@ def setup_flask_admin(app):
         template_mode="bootstrap4",
         index_view=MyAdminIndexView(),
     )
-    admin.add_view(DefaultModelView(Settings, db.session))
+    # admin.add_view(DefaultModelView(Settings, db.session))
     admin.add_link(MenuLink(name="Logout", category="", url="/auth/logout?next=/admin"))
 
 
@@ -120,14 +122,14 @@ def load_blueprints(app, global_entities):
                     continue
                 try:
                     sys_mod = importlib.import_module(
-                        f"shopyo.modules.{folder}.{sub_folder}.view"
+                        f"modules.{folder}.{sub_folder}.view"
                     )
                     app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
                 except AttributeError:
                     pass
                 try:
                     mod_global = importlib.import_module(
-                        f"shopyo.modules.{folder}.{sub_folder}.global"
+                        f"modules.{folder}.{sub_folder}.global"
                     )
                     global_entities.update(mod_global.available_everywhere)
                 except ImportError:
@@ -136,13 +138,13 @@ def load_blueprints(app, global_entities):
         else:
             # apps
             try:
-                mod = importlib.import_module(f"shopyo.modules.{folder}.view")
+                mod = importlib.import_module(f"modules.{folder}.view")
                 app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
             except AttributeError:
                 # print("[ ] Blueprint skipped:", e)
                 pass
             try:
-                mod_global = importlib.import_module(f"shopyo.modules.{folder}.global")
+                mod_global = importlib.import_module(f"modules.{folder}.global")
                 global_entities.update(mod_global.available_everywhere)
             except ImportError:
                 # print(f"[ ] {e}")
@@ -169,7 +171,7 @@ def setup_theme_paths(app):
 def inject_global_vars(app, global_entities):
     @app.context_processor
     def inject_global_vars():
-        APP_NAME = get_setting("APP_NAME")
+        APP_NAME = 'dwdwefw'
 
         base_context = {
             "APP_NAME": APP_NAME,

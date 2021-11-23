@@ -8,14 +8,14 @@ import datetime
 from flask import current_app
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
+from init import db
+from init import login_manager
 from itsdangerous import URLSafeTimedSerializer
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from shopyo.api.models import PkModel
-from shopyo.init import db
-from shopyo.init import login_manager
 
 role_user_bridge = db.Table(
     "role_user_bridge",

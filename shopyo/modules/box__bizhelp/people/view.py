@@ -8,10 +8,10 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask_login import login_required
+from init import db
+from init import ma
 
 from .models import People
-from shopyo.init import db
-from shopyo.init import ma
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_info = {}

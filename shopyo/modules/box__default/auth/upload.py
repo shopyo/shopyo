@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from shopyo.modules.box__default.auth.models import User
+from modules.box__default.auth.models import User
 
 
 def add_admin(email, password):

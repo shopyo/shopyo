@@ -1,11 +1,10 @@
 """Factories to help in tests."""
 from factory import Sequence
 from factory.alchemy import SQLAlchemyModelFactory
+from init import db
+from modules.box__default.auth.models import Role
+from modules.box__default.auth.models import User
 from sqlalchemy.orm import scoped_session
-
-from shopyo.init import db
-from shopyo.modules.box__default.auth.models import Role
-from shopyo.modules.box__default.auth.models import User
 
 
 class BaseFactory(SQLAlchemyModelFactory):

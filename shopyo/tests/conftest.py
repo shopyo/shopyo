@@ -2,9 +2,9 @@ import os
 import shutil
 
 import pytest
+from app import create_app
 
 from shopyo.api.file import tryrmtree
-from shopyo.app import create_app
 
 # from shopyo.app import app as _app
 

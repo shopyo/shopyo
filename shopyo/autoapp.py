@@ -1,4 +1,5 @@
-from shopyo.app import create_app
+sys.path.append(os.getcwd())
+from app import create_app
 
 
 # CONFIG_JSON_PATH = os.path.dirname(os.path.abspath(__file__))
