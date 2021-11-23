@@ -19,13 +19,17 @@ from shopyo.api.cmd_helper import _upload_data
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 from shopyo.api.database import autoload_models
+from shopyo.api.file import trycopy
 from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
-from shopyo.app import create_app
 
 
 def _create_shopyo_app(info):
+    sys.path.append(os.getcwd())
+    print(":: cwd", os.getcwd())
+    from app import create_app
+
     config_name = info.data.get("config") or "development"
     return create_app(config_name=config_name)
 
@@ -364,6 +368,7 @@ def new(projname, verbose):
             "sphinx_source",
             "config.json",
             "pyproject.toml",
+            "app.txt",
         ),
     )
 
@@ -431,6 +436,11 @@ def new(projname, verbose):
     # add cli.py for users to add their own cli
     trymkfile(
         os.path.join(project_path, "cli.py"), get_cli_content(projname), verbose=verbose
+    )
+
+    # app.py
+    trycopy(
+        os.path.join(src_shopyo_shopyo, "app.txt"), os.path.join(project_path, "app.py")
     )
 
     sphinx_src = os.path.join(root_proj_path, "docs")
