@@ -122,14 +122,14 @@ def load_blueprints(app, global_entities):
                     continue
                 try:
                     sys_mod = importlib.import_module(
-                        f"shopyo.modules.{folder}.{sub_folder}.view"
+                        f"modules.{folder}.{sub_folder}.view"
                     )
                     app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
                 except AttributeError:
                     pass
                 try:
                     mod_global = importlib.import_module(
-                        f"shopyo.modules.{folder}.{sub_folder}.global"
+                        f"modules.{folder}.{sub_folder}.global"
                     )
                     global_entities.update(mod_global.available_everywhere)
                 except ImportError:
@@ -138,13 +138,13 @@ def load_blueprints(app, global_entities):
         else:
             # apps
             try:
-                mod = importlib.import_module(f"shopyo.modules.{folder}.view")
+                mod = importlib.import_module(f"modules.{folder}.view")
                 app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
             except AttributeError:
                 # print("[ ] Blueprint skipped:", e)
                 pass
             try:
-                mod_global = importlib.import_module(f"shopyo.modules.{folder}.global")
+                mod_global = importlib.import_module(f"modules.{folder}.global")
                 global_entities.update(mod_global.available_everywhere)
             except ImportError:
                 # print(f"[ ] {e}")

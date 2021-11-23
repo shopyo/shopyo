@@ -27,7 +27,6 @@ from shopyo.api.validators import is_alpha_num_underscore
 
 def _create_shopyo_app(info):
     sys.path.append(os.getcwd())
-    print(":: cwd", os.getcwd())
     from app import create_app
 
     config_name = info.data.get("config") or "development"
@@ -276,7 +275,8 @@ def initialise(verbose, clear_migration, clear_db):
 @cli.command("new", with_appcontext=False)
 @click.argument("projname", required=False, default="")
 @click.option("--verbose", "-v", is_flag=True, default=False)
-def new(projname, verbose):
+@click.option("--modules", "-m", is_flag=True, default=False)
+def new(projname, verbose, modules):
     """Creates a new shopyo project.
 
     By default it will create the project(folder) of same name as the parent
@@ -285,6 +285,8 @@ def new(projname, verbose):
 
     ``PROJNAME`` is the name of the project that you want to create.
     """
+
+    modules_flag = modules
 
     from shopyo.__init__ import __version__
     from shopyo.api.file import trymkfile
@@ -369,6 +371,7 @@ def new(projname, verbose):
             "config.json",
             "pyproject.toml",
             "app.txt",
+            "modules",
         ),
     )
 
@@ -474,6 +477,15 @@ def new(projname, verbose):
     )
 
     click.echo(f"[x] Project {projname} created successfully!\n")
+
+    if modules_flag:
+        copytree(
+            os.path.join(src_shopyo_shopyo, "modules"),
+            os.path.join(project_path, "modules"),
+        )
+    else:
+        # empty modules folder
+        trymkdir(os.path.join(project_path, "modules"), verbose=verbose)
 
 
 @cli.command("rundebug", with_appcontext=False)

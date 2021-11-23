@@ -6,7 +6,8 @@
 #
 import sys
 
-from shopyo.app import create_app
+sys.path.append(os.getcwd())
+from app import create_app
 
 #
 # The "/home/appinv" below specifies your home
