@@ -13,6 +13,8 @@ from shopyo.api.file import trycopy
 
 
 
+base_path = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, base_path)
 from config import app_config
 from init import csrf
 from init import db
@@ -21,18 +23,18 @@ from init import ma
 from init import mail
 from init import migrate
 from init import modules_path
+
 from shopyo_admin import DefaultModelView
 from shopyo_admin import MyAdminIndexView
 
 
 
-base_path = os.path.dirname(os.path.abspath(__file__))
-
-
 def create_app(config_name="development"):
 
     global_entities = {}
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__,
+        instance_path=os.path.join(base_path, 'instance'),
+        instance_relative_config=True)
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
     create_config_json()
