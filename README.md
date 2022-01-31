@@ -43,7 +43,7 @@ If errors do:
 
 ```
 export FLASK_ENV=development
-export FLASK_APP=app.py       
+export FLASK_APP=app.py
 ```
 
 It is recommended to use a venv in root folder.
