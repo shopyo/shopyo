@@ -4,3 +4,4 @@ factory-boy
 freezegun
 pytest-dotenv
 coverage
+email-validator
