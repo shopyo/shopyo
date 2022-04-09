@@ -22,24 +22,16 @@ from .models import User
 from shopyo.api.html import notify_danger
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
+from shopyo.api.module import ModuleHelp
 from shopyo.api.security import get_safe_redirect
 
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-auth_blueprint = Blueprint(
-    "auth",
-    __name__,
-    url_prefix=module_info["url_prefix"],
-    template_folder="templates",
-)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
 
-@auth_blueprint.route("/register", methods=["GET", "POST"])
+@module_blueprint.route("/register", methods=["GET", "POST"])
 def register():
 
     context = {}
@@ -74,7 +66,7 @@ def register():
     return render_template("auth/register.html", **context)
 
 
-@auth_blueprint.route("/confirm/<token>")
+@module_blueprint.route("/confirm/<token>")
 @login_required
 def confirm(token):
 
@@ -90,7 +82,7 @@ def confirm(token):
     return redirect(url_for("auth.unconfirmed"))
 
 
-@auth_blueprint.route("/resend")
+@module_blueprint.route("/resend")
 @login_required
 def resend():
 
@@ -106,7 +98,7 @@ def resend():
     return redirect(url_for("auth.unconfirmed"))
 
 
-@auth_blueprint.route("/unconfirmed")
+@module_blueprint.route("/unconfirmed")
 @login_required
 def unconfirmed():
     if current_user.is_email_confirmed:
@@ -115,7 +107,7 @@ def unconfirmed():
     return render_template("auth/unconfirmed.html")
 
 
-@auth_blueprint.route("/login", methods=["GET", "POST"])
+@module_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     context = {}
     login_form = LoginForm()
@@ -140,7 +132,7 @@ def login():
     return render_template("auth/login.html", **context)
 
 
-@auth_blueprint.route("/logout", methods=["GET"])
+@module_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
