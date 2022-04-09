@@ -1,9 +1,5 @@
 ## Unreleased
 
-### Feat
-
-- shopyo audit (#90)
-
 ### Refactor
 
 - move email from auth to api (#89)
