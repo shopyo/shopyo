@@ -17,6 +17,7 @@ from shopyo.api.cli_content import get_module_view_content
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 from shopyo.api.file import get_folders
+from shopyo.api.file import last_part_of_path
 from shopyo.api.file import path_exists
 from shopyo.api.file import trycopytree
 from shopyo.api.file import trymkdir
@@ -336,6 +337,8 @@ def _check_modules_path(root_path):
 
 
 def _verify_app(app_path):
+    app_folder = last_part_of_path(app_path)
+
     audit_info = {"path": app_path, "issues": []}
 
     # verify info.json
@@ -346,10 +349,28 @@ def _verify_app(app_path):
             json_data = json.load(f)
 
         to_check_keys = ["module_name", "url_prefix"]
-
+        not_found = []
         for key in to_check_keys:
             if key not in json_data:
-                msg = f"severe: key {key} not found in info.json"
+                not_found.append(key)
+                msg = "severe: key {key} not found in info.json".format(key)
+                audit_info["issues"].append(msg)
+
+        if ("module_name" not in not_found) and ("url_prefix" not in not_found):
+
+            if (json_data["module_name"].strip() == "") or (
+                json_data["url_prefix"].strip() == ""
+            ):
+                msg = (
+                    "sus: module_name and url_prefix in info.json must not be empty"
+                    " ideally"
+                )
+                audit_info["issues"].append(msg)
+
+            if {json_data["module_name"], app_folder} != {app_folder}:
+                msg = """severe: currently module_name "{}" and app_folder "{}" must have the same value""".format(
+                    json_data["module_name"], app_folder
+                )
                 audit_info["issues"].append(msg)
 
     # verify components
@@ -368,6 +389,26 @@ def _verify_app(app_path):
 
     if not path_exists(os.path.join(app_path, "global.py")):
         audit_info["issues"].append("warning: global.py not found")
+
+    return audit_info
+
+
+def _verify_box(box_path):
+    audit_info = {"issues": []}
+
+    # verify box_info.json
+    if not path_exists(os.path.join(box_path, "box_info.json")):
+        audit_info["issues"].append("warning: box_info.json not found")
+    else:
+        with open(os.path.join(box_path, "box_info.json")) as f:
+            json_data = json.load(f)
+
+        to_check_keys = ["box_name"]
+
+        for key in to_check_keys:
+            if key not in json_data:
+                msg = f"severe: key {key} not found in box_info.json"
+                audit_info["issues"].append(msg)
 
     return audit_info
 
@@ -396,6 +437,8 @@ def _check_boxes(root_path):
 
     for b in boxes:
         box_info = {"path": os.path.join(modules_path, b), "apps_issues": []}
+        box_info["issues"] = _verify_box(os.path.join(modules_path, b))["issues"]
+
         for app in get_folders(os.path.join(modules_path, b)):
             app_issues = _verify_app(os.path.join(modules_path, b, app))
             box_info["apps_issues"].append(app_issues)
@@ -424,6 +467,9 @@ def _audit():
 
     for box_issue in boxes_issues:
         click.echo(box_issue["path"])
+        for issue in box_issue["issues"]:
+            click.echo("    " + issue)
+
         for app_issue in box_issue["apps_issues"]:
             click.echo("    " + app_issue["path"])
             for issue in app_issue["issues"]:

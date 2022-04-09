@@ -207,6 +207,10 @@ def path_exists(path):
     return os.path.exists(path)
 
 
+def last_part_of_path(path):
+    return os.path.basename(os.path.normpath(path))
+
+
 def delete_file(path):
     os.remove(path)
 
