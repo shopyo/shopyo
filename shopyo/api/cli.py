@@ -10,6 +10,7 @@ import click
 from flask.cli import FlaskGroup
 from flask.cli import pass_script_info
 
+from shopyo.api.cmd_helper import _audit
 from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
 from shopyo.api.cmd_helper import _create_box
@@ -27,7 +28,13 @@ from shopyo.api.validators import is_alpha_num_underscore
 
 def _create_shopyo_app(info):
     sys.path.append(os.getcwd())
-    from app import create_app
+    try:
+        from app import create_app
+    except ImportError:
+        click.echo(
+            "Cannot find create_app from app. Make sure you are in the right folder!"
+        )
+        sys.exit()
 
     config_name = info.data.get("config") or "development"
     return create_app(config_name=config_name)
@@ -498,6 +505,11 @@ def rundebug():
 def runserver():
     """runs the shopyo flask app in production mode"""
     _run_app("production")
+
+
+@cli.command("audit", with_appcontext=False)
+def audit():
+    _audit()
 
 
 if __name__ == "__main__":

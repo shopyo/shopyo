@@ -203,6 +203,10 @@ def unique_filename(fname):
     return f"{prepended}_{fname}"
 
 
+def path_exists(path):
+    return os.path.exists(path)
+
+
 def delete_file(path):
     os.remove(path)
 

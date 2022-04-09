@@ -17,6 +17,7 @@ from shopyo.api.cli_content import get_module_view_content
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 from shopyo.api.file import get_folders
+from shopyo.api.file import path_exists
 from shopyo.api.file import trycopytree
 from shopyo.api.file import trymkdir
 from shopyo.api.file import trymkfile
@@ -323,3 +324,110 @@ def _run_app(mode):
     os.environ["FLASK_APP"] = f"app:create_app('{mode}')"
     os.environ["FLASK_ENV"] = mode
     run(["flask", "run"])
+
+
+def _check_modules_path(root_path):
+    modules_path = os.path.join(root_path, "modules")
+    if path_exists(modules_path):
+        pass
+    else:
+        click.echo("Modules folder not found!")
+        sys.exit()
+
+
+def _verify_app(app_path):
+    audit_info = {"path": app_path, "issues": []}
+
+    # verify info.json
+    if not path_exists(os.path.join(app_path, "info.json")):
+        audit_info["issues"].append("severe: info.json not found")
+    else:
+        with open(os.path.join(app_path, "info.json")) as f:
+            json_data = json.load(f)
+
+        to_check_keys = ["module_name", "url_prefix"]
+
+        for key in to_check_keys:
+            if key not in json_data:
+                msg = f"severe: key {key} not found in info.json"
+                audit_info["issues"].append(msg)
+
+    # verify components
+
+    if not path_exists(os.path.join(app_path, "templates")):
+        audit_info["issues"].append("warning: templates folder not found")
+
+    if not path_exists(os.path.join(app_path, "view.py")):
+        audit_info["issues"].append("severe: view.py not found")
+
+    if not path_exists(os.path.join(app_path, "forms.py")):
+        audit_info["issues"].append("warning: forms.py not found")
+
+    if not path_exists(os.path.join(app_path, "models.py")):
+        audit_info["issues"].append("warning: models.py not found")
+
+    if not path_exists(os.path.join(app_path, "global.py")):
+        audit_info["issues"].append("warning: global.py not found")
+
+    return audit_info
+
+
+def _check_apps(root_path):
+    issues_found = []
+
+    modules_path = os.path.join(root_path, "modules")
+    apps = get_folders(modules_path)
+    apps = [a for a in apps if not a.startswith("__") and not a.startswith("box__")]
+
+    for app in apps:
+        app_path = os.path.join(modules_path, app)
+        app_issues = _verify_app(app_path)
+        issues_found.append(app_issues)
+
+    return issues_found
+
+
+def _check_boxes(root_path):
+    box_issues = []
+
+    modules_path = os.path.join(root_path, "modules")
+    boxes = get_folders(modules_path)
+    boxes = [b for b in boxes if b.startswith("box__")]
+
+    for b in boxes:
+        box_info = {"path": os.path.join(modules_path, b), "apps_issues": []}
+        for app in get_folders(os.path.join(modules_path, b)):
+            app_issues = _verify_app(os.path.join(modules_path, b, app))
+            box_info["apps_issues"].append(app_issues)
+        box_issues.append(box_info)
+
+    return box_issues
+
+
+def _audit():
+    """
+    checks if modules are corrupted
+    """
+    root_path = os.getcwd()
+    _check_modules_path(root_path)
+    apps_issues = _check_apps(root_path)
+    boxes_issues = _check_boxes(root_path)
+
+    click.echo("Running audit ...")
+
+    click.echo("Checking apps ...")
+    for app_issue in apps_issues:
+        click.echo(app_issue["path"])
+        for issue in app_issue["issues"]:
+            click.echo("    " + issue)
+        click.echo("")
+
+    for box_issue in boxes_issues:
+        click.echo(box_issue["path"])
+        for app_issue in box_issue["apps_issues"]:
+            click.echo("    " + app_issue["path"])
+            for issue in app_issue["issues"]:
+                click.echo("        " + issue)
+        click.echo("")
+
+    click.echo("Audit finished!")
