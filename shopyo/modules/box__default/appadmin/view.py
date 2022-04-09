@@ -21,24 +21,16 @@ from sqlalchemy import exists
 from .admin import admin_required
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
+from shopyo.api.module import ModuleHelp
 
 # from config import Config
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-appadmin_blueprint = Blueprint(
-    "appadmin",
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
 
-@appadmin_blueprint.route("/")
+@module_blueprint.route("/")
 @login_required
 @admin_required
 def user_list():
@@ -53,7 +45,7 @@ def user_list():
     return render_template("appadmin/index.html", **context)
 
 
-@appadmin_blueprint.route("/add", methods=["GET", "POST"])
+@module_blueprint.route("/add", methods=["GET", "POST"])
 @login_required
 @admin_required
 def user_add():
@@ -99,7 +91,7 @@ def user_add():
     return render_template("appadmin/add.html", **context)
 
 
-@appadmin_blueprint.route("/delete/<id>", methods=["GET"])
+@module_blueprint.route("/delete/<id>", methods=["GET"])
 @login_required
 @admin_required
 def admin_delete(id):
@@ -121,7 +113,7 @@ def admin_delete(id):
     return redirect("/appadmin")
 
 
-@appadmin_blueprint.route("/edit/<id>", methods=["GET"])
+@module_blueprint.route("/edit/<id>", methods=["GET"])
 @login_required
 @admin_required
 def admin_edit(id):
@@ -145,7 +137,7 @@ def admin_edit(id):
     return render_template("appadmin/edit.html", **context)
 
 
-@appadmin_blueprint.route("/update", methods=["POST"])
+@module_blueprint.route("/update", methods=["POST"])
 @login_required
 @admin_required
 def admin_update():
@@ -191,7 +183,7 @@ def admin_update():
     return redirect("/appadmin")
 
 
-@appadmin_blueprint.route("/roles")
+@module_blueprint.route("/roles")
 @login_required
 @admin_required
 def roles():
@@ -200,7 +192,7 @@ def roles():
     return render_template("appadmin/roles.html", **context)
 
 
-@appadmin_blueprint.route("/roles/add", methods=["POST"])
+@module_blueprint.route("/roles/add", methods=["POST"])
 @login_required
 @admin_required
 def roles_add():
@@ -214,7 +206,7 @@ def roles_add():
         return redirect(url_for("appadmin.roles"))
 
 
-@appadmin_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
+@module_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
 @login_required
 @admin_required
 def roles_delete(role_id):
@@ -229,7 +221,7 @@ def roles_delete(role_id):
     return redirect(url_for("appadmin.roles"))
 
 
-@appadmin_blueprint.route("/roles/update", methods=["POST"])
+@module_blueprint.route("/roles/update", methods=["POST"])
 @login_required
 @admin_required
 def roles_update():

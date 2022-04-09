@@ -1,0 +1,12 @@
+{
+    "author": {
+        "mail": "",
+        "name": "",
+        "website": ""
+    },
+    "display_string": "Qqq",
+    "fa-icon": "fa fa-store",
+    "module_name": "qqq",
+    "type": "show",
+    "url_prefix": "/qqq"
+}

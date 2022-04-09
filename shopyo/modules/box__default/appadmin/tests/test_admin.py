@@ -21,9 +21,6 @@ module_path = os.path.dirname(dirpath)
 
 module_info = None
 
-with open(os.path.join(module_path, "info.json")) as f:
-    module_info = json.load(f)
-
 
 class TestAdminInvalidAccess:
     """
@@ -44,6 +41,8 @@ class TestAdminInvalidAccess:
     @pytest.mark.parametrize("route", routes_get)
     def test_redirect_if_not_logged_in_get(self, test_client, route, auth):
         auth.logout()
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(
             f"{module_info['url_prefix']}{route}", follow_redirects=True
         )
@@ -54,6 +53,8 @@ class TestAdminInvalidAccess:
     @pytest.mark.parametrize("route", routes_post)
     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
         auth.logout()
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.post(
             f"{module_info['url_prefix']}{route}", follow_redirects=True
         )
@@ -64,6 +65,8 @@ class TestAdminInvalidAccess:
     @pytest.mark.usefixtures("login_non_admin_user")
     @pytest.mark.parametrize("route", routes_get)
     def test_no_admin_access_if_not_admin_get(self, test_client, route):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(
             f"{module_info['url_prefix']}{route}", follow_redirects=True
         )
@@ -75,6 +78,8 @@ class TestAdminInvalidAccess:
     @pytest.mark.usefixtures("login_non_admin_user")
     @pytest.mark.parametrize("route", routes_post)
     def test_no_admin_access_if_not_admin_post(self, test_client, route):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.post(
             f"{module_info['url_prefix']}{route}", follow_redirects=True
         )
@@ -91,6 +96,8 @@ class TestAdminEndpoints:
     """
 
     def test_admin_user_list_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(f"{module_info['url_prefix']}/")
 
         assert response.status_code == 200
@@ -101,6 +108,8 @@ class TestAdminEndpoints:
         assert b"Roles" in response.data
 
     def test_admin_add_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(f"{module_info['url_prefix']}/add")
 
         assert response.status_code == 200
@@ -111,6 +120,8 @@ class TestAdminEndpoints:
         assert b"Admin User" in response.data
 
     def test_admin_add_unique_user_post(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         role1 = Role.create(name="test1-role")
         role2 = Role.create(name="test2-role")
         data = {
@@ -140,6 +151,8 @@ class TestAdminEndpoints:
         assert role2.users[0].email == "test@gmail.com"
 
     def test_admin_add_existing_user_post(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         User.create(email="test@gmail.com", password="pass")
         data = {
             "email": "test@gmail.com",
@@ -161,6 +174,8 @@ class TestAdminEndpoints:
         assert test_users == 1
 
     def test_admin_delete_existing_user_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         user = User(email="test@gmail.com", password="pass")
         role1 = Role(name="test1-role")
         role2 = Role(name="test2-role")
@@ -186,6 +201,8 @@ class TestAdminEndpoints:
         assert test_roles == 2
 
     def test_admin_delete_nonexisting_user_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(
             f"{module_info['url_prefix']}/delete/some_id",
             follow_redirects=True,
@@ -195,6 +212,8 @@ class TestAdminEndpoints:
         assert b"Unable to delete. Invalid user id" in response.data
 
     def test_admin_edit_existing_user_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         user = User.create(email="test@gmail.com", password="pass")
 
         response = test_client.get(
@@ -206,6 +225,8 @@ class TestAdminEndpoints:
         assert b"Edit User" in response.data
 
     def test_admin_edit_nonexisting_user_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(
             f"{module_info['url_prefix']}/edit/some-id", follow_redirects=True
         )
@@ -215,6 +236,8 @@ class TestAdminEndpoints:
         assert request.path == f"{module_info['url_prefix']}/"
 
     def test_admin_update_user_adding_new_roles_to_user(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         user = User.create(email="foo@gmail.com", password="pass")
         role1 = Role.create(name="test1-role")
         role2 = Role.create(name="test2-role")
@@ -245,6 +268,8 @@ class TestAdminEndpoints:
         assert role2.users[0].email == "bar@gmail.com"
 
     def test_admin_update_user_remove_old_roles_from_user(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         user = User(email="foo@gmail.com", password="pass", is_admin=True)
         user.is_admin = True
         role1 = Role(name="test1-role")
@@ -274,12 +299,16 @@ class TestAdminEndpoints:
         assert len(role2.users) == 0
 
     def test_admin_roles_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(f"{module_info['url_prefix']}/roles")
 
         assert response.status_code == 200
         assert b"Roles" in response.data
 
     def test_admin_roles_add_nonexisting_role_post(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.post(
             f"{module_info['url_prefix']}/roles/add",
             data=dict(name="new-role"),
@@ -294,6 +323,8 @@ class TestAdminEndpoints:
         assert role_count == 1
 
     def test_admin_roles_add_existing_role_post(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         Role.create(name="new-role")
 
         response = test_client.post(
@@ -310,6 +341,8 @@ class TestAdminEndpoints:
         assert role_count == 1
 
     def test_admin_roles_delete_nonexisting_role_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.get(
             f"{module_info['url_prefix']}/roles/some-id/delete",
             follow_redirects=True,
@@ -320,6 +353,8 @@ class TestAdminEndpoints:
         assert b"Unable to delete. Invalid role id" in response.data
 
     def test_admin_roles_delete_existing_role_get(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         role1 = Role.create(name="new-role1")
         role2 = Role.create(name="new-role2")
 
@@ -337,6 +372,8 @@ class TestAdminEndpoints:
         assert len(roles) == 1
 
     def test_admin_roles_update_nonexisting_role_post(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         response = test_client.post(
             f"{module_info['url_prefix']}/roles/update",
             data=dict(role_id="some-id"),
@@ -350,6 +387,8 @@ class TestAdminEndpoints:
         assert roles == 0
 
     def test_admin_roles_update_existing_role_post(self, test_client):
+        with open(os.path.join(module_path, "info.json")) as f:
+            module_info = json.load(f)
         new_role = Role.create(name="new-role1")
 
         response = test_client.post(

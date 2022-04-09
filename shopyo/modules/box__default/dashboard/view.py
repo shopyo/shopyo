@@ -9,13 +9,13 @@ from flask_login import login_required
 from modules.box__default.auth.decorators import check_confirmed
 
 from shopyo.api.html import notify_success
+from shopyo.api.module import ModuleHelp
 
-dashboard_blueprint = Blueprint(
-    "dashboard",
-    __name__,
-    template_folder="templates",
-    url_prefix="/dashboard",
-)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
+
+
 all_info = {}
 
 
