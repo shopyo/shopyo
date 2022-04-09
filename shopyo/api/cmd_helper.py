@@ -367,8 +367,9 @@ def _verify_app(app_path):
                 )
                 audit_info["issues"].append(msg)
 
+        if "module_name" not in not_found:
             if {json_data["module_name"], app_folder} != {app_folder}:
-                msg = """severe: currently module_name "{}" and app_folder "{}" must have the same value""".format(
+                msg = """severe: currently module_name "{}" in info.json and app folder "{}" must have the same value""".format(
                     json_data["module_name"], app_folder
                 )
                 audit_info["issues"].append(msg)
