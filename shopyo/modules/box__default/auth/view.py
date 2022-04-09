@@ -15,10 +15,10 @@ from flask_login import login_user
 from flask_login import logout_user
 from sqlalchemy import func
 
-from .email import send_async_email
 from .forms import LoginForm
 from .forms import RegistrationForm
 from .models import User
+from shopyo.api.email import send_async_email
 from shopyo.api.html import notify_danger
 from shopyo.api.html import notify_success
 from shopyo.api.html import notify_warning
