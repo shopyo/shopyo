@@ -478,3 +478,69 @@ def _audit():
         click.echo("")
 
     click.echo("Audit finished!")
+
+
+def _verify_app_name(app_name):
+    if (app_name.startswith("box__")) and (app_name.count("/") != 1):
+        return False
+
+    if app_name.endswith("/"):
+        return False
+
+    return True
+
+
+def name_is_box(app_name):
+    if app_name.startswith("box__"):
+        return True
+
+    return False
+
+
+def _rename_app(old_app_name, new_app_name):
+
+    # box_
+    if old_app_name.startswith("box") and not old_app_name.startswith("box__"):
+        click.echo('Box names start with two __, example: "box__default"')
+        sys.exit()
+    if new_app_name.startswith("box") and not new_app_name.startswith("box__"):
+        click.echo('Box names start with two __, example: "box__default"')
+        sys.exit()
+
+    if (not _verify_app_name(old_app_name)) and (not _verify_app_name(new_app_name)):
+        click.echo('App names should be in the format "app" or "box_name/app"')
+        sys.exit()
+
+    root_path = os.getcwd()
+    modules_path = os.path.join(root_path, "modules")
+
+    if name_is_box(old_app_name):
+        box_name = old_app_name.split("/")[0]
+        if name_is_box(new_app_name):
+            app_part = old_app_name.split("/")[1]
+            app_name = new_app_name.split("/")[1]
+
+        if not path_exists(os.path.join(modules_path, box_name, app_part)):
+            click.echo(f"App {old_app_name} does not exist")
+            sys.exit()
+
+    try:
+        os.rename(
+            os.path.join(modules_path, old_app_name),
+            os.path.join(modules_path, new_app_name),
+        )
+
+        with open(os.path.join(modules_path, new_app_name, "info.json")) as f:
+            json_data = json.load(f)
+
+        with open(os.path.join(modules_path, new_app_name, "info.json"), "w+") as f:
+            if name_is_box(new_app_name):
+                module_name = new_app_name.split("/")[1]
+            else:
+                module_name = new_app_name
+            json_data["module_name"] = module_name
+            json.dump(json_data, f, indent=4)
+
+        click.echo(f"Renamed app {old_app_name} to {new_app_name}")
+    except Exception as e:
+        raise e

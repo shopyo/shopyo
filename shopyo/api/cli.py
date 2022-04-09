@@ -15,6 +15,7 @@ from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
 from shopyo.api.cmd_helper import _create_box
 from shopyo.api.cmd_helper import _create_module
+from shopyo.api.cmd_helper import _rename_app
 from shopyo.api.cmd_helper import _run_app
 from shopyo.api.cmd_helper import _upload_data
 from shopyo.api.constants import SEP_CHAR
@@ -510,6 +511,14 @@ def runserver():
 @cli.command("audit", with_appcontext=False)
 def audit():
     _audit()
+
+
+@cli.command("rename", with_appcontext=False)
+@click.argument("old_name", required=True)
+@click.argument("new_name", required=True)
+@click.option("--verbose", "-v", is_flag=True, default=False)
+def new(old_name, new_name, verbose):
+    _rename_app(old_name, new_name)
 
 
 if __name__ == "__main__":
