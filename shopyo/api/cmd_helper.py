@@ -336,7 +336,7 @@ def _check_modules_path(root_path):
         sys.exit()
 
 
-def _verify_app(app_path):
+def _verify_app(app_path, box_name=None):
     app_folder = last_part_of_path(app_path)
 
     audit_info = {"path": app_path, "issues": []}
@@ -441,7 +441,7 @@ def _check_boxes(root_path):
         box_info["issues"] = _verify_box(os.path.join(modules_path, b))["issues"]
 
         for app in get_folders(os.path.join(modules_path, b)):
-            app_issues = _verify_app(os.path.join(modules_path, b, app))
+            app_issues = _verify_app(os.path.join(modules_path, b, app), box_name=b)
             box_info["apps_issues"].append(app_issues)
         box_issues.append(box_info)
 

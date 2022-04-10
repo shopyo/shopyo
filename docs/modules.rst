@@ -162,12 +162,27 @@ Expects
 
 .. code:: python
 
-    available_everywhere = {
+   # global templates variables in here
+   available_everywhere = {
+      "x": 1
+   } # now x available in all templates
 
-    }
+
+   # global configs in here, defined by profile
+   configs = {
+       "development": {
+           "CONFIG_VAR": "DEVVALUE"
+       },
+       "production": {
+           "CONFIG_VAR": "PRODVALUE"
+       },
+       "testing": {
+           "CONFIG_VAR": "TESTVALUE"
+       }
+   } # these values will load depending on the current config profile
 
 
-Where you pass functions or vars or classes you want to makle available in all templates! Try 'x': 1
+
 
 upload.py
 *********

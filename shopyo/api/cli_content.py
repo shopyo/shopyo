@@ -71,9 +71,24 @@ def get_dashboard_html_content():
 def get_global_py_content():
     content = textwrap.dedent(
         """\
-        available_everywhere = {
 
-        }
+        # global templates variables in here
+        # available_everywhere = {
+        #
+        # }
+
+        # global configs in here, defined by profile
+        # configs = {
+        #     "development": {
+        #         "CONFIG_VAR": "DEVVALUE"
+        #     },
+        #     "production": {
+        #         "CONFIG_VAR": "PRODVALUE"
+        #     },
+        #     "testing": {
+        #         "CONFIG_VAR": "TESTVALUE"
+        #     }
+        # }
         """
     )
 

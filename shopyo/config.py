@@ -1,3 +1,19 @@
+"""
+Specify main configs here
+
+Other configs are specified in module's global.py in like
+configs = {
+   "development": {
+       "CONFIG_VAR": "DEVVALUE"
+   },
+   "production": {
+       "CONFIG_VAR": "PRODVALUE"
+   },
+   "testing": {
+       "CONFIG_VAR": "TESTVALUE"
+   }
+}
+"""
 import os
 
 base_path = os.path.dirname(os.path.abspath(__file__))

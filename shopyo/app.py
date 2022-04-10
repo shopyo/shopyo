@@ -2,6 +2,7 @@ import importlib
 import os
 import sys
 
+import click
 import jinja2
 from flask import Flask
 from flask import send_from_directory
@@ -30,7 +31,8 @@ from shopyo_admin import MyAdminIndexView
 
 def create_app(config_name="development"):
 
-    global_entities = {}
+    global_template_variables = {}
+    global_configs = {}
     app = Flask(
         __name__,
         instance_path=os.path.join(base_path, "instance"),
@@ -42,9 +44,9 @@ def create_app(config_name="development"):
     load_extensions(app)
     setup_flask_admin(app)
     register_devstatic(app)
-    load_blueprints(app, global_entities)
+    load_blueprints(app, config_name, global_template_variables, global_configs)
     setup_theme_paths(app)
-    inject_global_vars(app, global_entities)
+    inject_global_vars(app, global_template_variables)
     return app
 
 
@@ -110,7 +112,12 @@ def register_devstatic(app):
             return send_from_directory(module_static, filename=filename)
 
 
-def load_blueprints(app, global_entities):
+def load_blueprints(app, config_name, global_template_variables, global_configs):
+    """
+    - Registers blueprints
+    - Adds global template objects from modules
+    - Adds global configs from modules
+    """
 
     for folder in os.listdir(os.path.join(base_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__
@@ -134,10 +141,26 @@ def load_blueprints(app, global_entities):
                     mod_global = importlib.import_module(
                         f"modules.{folder}.{sub_folder}.global"
                     )
-                    global_entities.update(mod_global.available_everywhere)
+                    global_template_variables.update(mod_global.available_everywhere)
                 except ImportError:
                     pass
 
+                except AttributeError:
+                    pass
+
+                # load configs
+                try:
+                    mod_global = importlib.import_module(
+                        f"modules.{folder}.{sub_folder}.global"
+                    )
+                    if config_name in mod_global.configs:
+                        global_configs.update(mod_global.configs.get(config_name))
+                except ImportError:
+                    pass
+
+                except AttributeError:
+                    # click.echo('info: config not found in global')
+                    pass
         else:
             # apps
             try:
@@ -146,12 +169,31 @@ def load_blueprints(app, global_entities):
             except AttributeError:
                 # print("[ ] Blueprint skipped:", e)
                 pass
+
+            # global's available everywhere template vars
             try:
                 mod_global = importlib.import_module(f"modules.{folder}.global")
-                global_entities.update(mod_global.available_everywhere)
+                global_template_variables.update(mod_global.available_everywhere)
             except ImportError:
                 # print(f"[ ] {e}")
                 pass
+
+            except AttributeError:
+                pass
+
+            # load configs
+            try:
+                mod_global = importlib.import_module(f"modules.{folder}.global")
+                if config_name in mod_global.configs:
+                    global_configs.update(mod_global.configs.get(config_name))
+            except ImportError:
+                # print(f"[ ] {e}")
+                pass
+            except AttributeError:
+                # click.echo('info: config not found in global')
+                pass
+
+    app.config.update(**global_configs)
 
 
 def setup_theme_paths(app):
@@ -171,7 +213,7 @@ def setup_theme_paths(app):
         app.jinja_loader = my_loader
 
 
-def inject_global_vars(app, global_entities):
+def inject_global_vars(app, global_template_variables):
     @app.context_processor
     def inject_global_vars():
         APP_NAME = "dwdwefw"
@@ -181,6 +223,6 @@ def inject_global_vars(app, global_entities):
             "len": len,
             "current_user": current_user,
         }
-        base_context.update(global_entities)
+        base_context.update(global_template_variables)
 
         return base_context
