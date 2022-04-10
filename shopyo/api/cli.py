@@ -510,6 +510,7 @@ def runserver():
 
 @cli.command("audit", with_appcontext=False)
 def audit():
+    """Audits the project and finds issues"""
     _audit()
 
 
@@ -517,7 +518,8 @@ def audit():
 @click.argument("old_name", required=True)
 @click.argument("new_name", required=True)
 @click.option("--verbose", "-v", is_flag=True, default=False)
-def new(old_name, new_name, verbose):
+def rename(old_name, new_name, verbose):
+    """Renames apps"""
     _rename_app(old_name, new_name)
 
 
