@@ -553,3 +553,33 @@ Shows all routes and methods
 .. note::
 
    This is wrapper around the ``flask routes``  command
+
+
+
+rename
+******
+
+.. _shopyo rename usage:
+
+*Usage*
+
+.. code:: bash
+
+   shopyo rename box__default/auth box__default/auth_
+   shopyo rename auth auth_
+
+Renames app including changing module name in info.json
+
+
+audit
+*****
+
+.. _shopyo audit usage:
+
+*Usage*
+
+.. code:: bash
+
+   shopyo audit
+
+Finds issues with apps as well as with the over all project
