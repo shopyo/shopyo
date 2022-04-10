@@ -50,7 +50,7 @@ snowballstemmer==2.1.0
     # via sphinx
 soupsieve==2.2.1
     # via beautifulsoup4
-sphinx==3.5.4
+sphinx==4.0.2
     # via
     #   -r docs.in
     #   furo
