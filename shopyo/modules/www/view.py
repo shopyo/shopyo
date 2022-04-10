@@ -5,6 +5,7 @@ from flask import Blueprint
 from flask import render_template
 from modules.box__default.settings.helpers import get_setting
 
+from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
 
 # from flask import url_for
@@ -18,22 +19,9 @@ from shopyo.api.templates import yo_render
 # from shopyo.api.enhance import get_setting
 # from modules.box__ecommerce.shop.helpers import get_cart_data
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-
-globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="",
-    url_prefix=module_info["url_prefix"],
-)
-
-
-module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
 
 @module_blueprint.route("/")
@@ -46,7 +34,9 @@ def index():
 
     # return str(module_blueprint.template_folder)
 
-    return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html")
+    # return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html")
+
+    return render_template("www/index.html")
 
 
 @module_blueprint.route("/render_demo")

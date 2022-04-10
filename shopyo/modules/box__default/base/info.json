@@ -1,7 +1,7 @@
 {
-	"display_string": "Base",
-	"type": "hidden",
-	"fa-icon": "fas fa-clock",
-	"url_prefix": "/base",
-	"module_name": "base"
+    "display_string": "Base",
+    "type": "hidden",
+    "fa-icon": "fas fa-clock",
+    "url_prefix": "/base",
+    "module_name": "base"
 }
