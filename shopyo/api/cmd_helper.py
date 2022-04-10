@@ -383,13 +383,13 @@ def _verify_app(app_path):
         audit_info["issues"].append("severe: view.py not found")
 
     if not path_exists(os.path.join(app_path, "forms.py")):
-        audit_info["issues"].append("warning: forms.py not found")
+        audit_info["issues"].append("info: forms.py not found")
 
     if not path_exists(os.path.join(app_path, "models.py")):
-        audit_info["issues"].append("warning: models.py not found")
+        audit_info["issues"].append("info: models.py not found")
 
     if not path_exists(os.path.join(app_path, "global.py")):
-        audit_info["issues"].append("warning: global.py not found")
+        audit_info["issues"].append("info: global.py not found")
 
     return audit_info
 
