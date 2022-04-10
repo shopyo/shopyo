@@ -378,7 +378,6 @@ def new(projname, verbose, modules):
             "sphinx_source",
             "config.json",
             "pyproject.toml",
-            "app.txt",
             "modules",
         ),
     )
@@ -449,10 +448,10 @@ def new(projname, verbose, modules):
         os.path.join(project_path, "cli.py"), get_cli_content(projname), verbose=verbose
     )
 
-    # app.py
-    trycopy(
-        os.path.join(src_shopyo_shopyo, "app.txt"), os.path.join(project_path, "app.py")
-    )
+    # # app.py
+    # trycopy(
+    #     os.path.join(src_shopyo_shopyo, "app.txt"), os.path.join(project_path, "app.py")
+    # )
 
     sphinx_src = os.path.join(root_proj_path, "docs")
 

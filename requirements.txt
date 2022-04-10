@@ -11,3 +11,4 @@ marshmallow-sqlalchemy>=0.26.1
 SQLAlchemy>=1.4.27
 Werkzeug>=2.0.2
 WTForms>=3.0.0
+email-validator>=1.1.3
