@@ -3,7 +3,6 @@ import os
 
 from flask import Blueprint
 from flask import render_template
-from modules.box__default.settings.helpers import get_setting
 
 from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
