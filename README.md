@@ -2,7 +2,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://github.com/shopyo"><img src="https://github.com/shopyo/shopyo/blob/dev/github_banner.png" alt="shopyo" width="" height=""></a>
+  <a href="https://github.com/shopyo"><img src="https://github.com/shopyo/shopyo/blob/dev/assets/github_banner.png" alt="shopyo" width="" height=""></a>
 
 
 </h1>
