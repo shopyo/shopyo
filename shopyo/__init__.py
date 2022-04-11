@@ -1,8 +1,12 @@
-version_info = (4, 4, 1)
+version_info = (4, 4, 2)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.4.2
+
+- Fix email-validator version
 
 4.4.1
 
