@@ -48,5 +48,29 @@ Alternatively, you can run your tests via `tox`_
 
         $ tox -e py39 -- -k TestCliStartapp
 
+
+To generate cov reports, install testing requirements
+
+.. code:: bash
+
+    $ python -m pip install -r requirements/tests.txt
+
+
+Then generate the html files. They appear in shopyo/htmlcov
+
+
+.. code:: bash
+
+    $ coverage html
+
+
+The use http.server to view it in the browser
+
+
+.. code:: bash
+
+    $  python -m http.server 8000 --dir htmlcov
+
+
 .. _pytest: https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html#commit-your-changes
 .. _tox: https://tox.readthedocs.io/en/latest/
