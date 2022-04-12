@@ -522,5 +522,11 @@ def rename(old_name, new_name, verbose):
     _rename_app(old_name, new_name)
 
 
+@cli.command("testok", with_appcontext=False)
+def testok():
+    """Just testing if the cli works"""
+    click.echo("test ok!")
+
+
 if __name__ == "__main__":
     cli()

@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from .api.info import printinfo
+from shopyo.api.info import printinfo
 
 dirpath = Path(__file__).parent.absolute()
 dirpathparent = Path(__file__).parent.parent.absolute()

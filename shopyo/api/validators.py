@@ -67,30 +67,3 @@ def verify_slug(form, field):
         raise ValidationError(
             "Slugs can only contain alphabets, numbers and hyphens (-). eg. good-day-1"
         )
-
-
-def require_if_default_address(form, field):
-
-    if form.diffAddress.data is False:
-        if is_empty_str(field.data):
-            raise ValidationError(f"{field.label} cannot be empty!")
-
-
-def require_if_diff_address(form, field):
-    if form.diffAddress.data is True:
-        if is_empty_str(field.data):
-            raise ValidationError(f"{field.label} cannot be empty!")
-
-
-def require_if_apply_coupon(form, field):
-
-    if form.applyCoupon.data is True:
-        if is_empty_str(field.data):
-            raise ValidationError(f"{field.label} cannot be empty!")
-
-
-def require_if_create_account(form, field):
-
-    if form.createAccount.data is True:
-        if is_empty_str(field.data):
-            raise ValidationError(f"{field.label} cannot be empty!")
