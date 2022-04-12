@@ -20,3 +20,45 @@ class TestValidators:
     def test_is_valid_url(self, url, expected):
         result = validators.is_valid_url(url)
         assert result == expected
+
+    @pytest.mark.parametrize(
+        "string,expected",
+        [
+            ("efwfwefwefwef", True),
+            ("wehfbweur76tr46348tr", True),
+            ("uwfehbuweify2874gr34_____________", True),
+            ("^uefew.", False),
+            ("wefwfwe/wfwefewf/ewfwef", False),
+            ("""%^$^$£%£""£%"£""", False),
+            ("""%^$^$£%£""£%"£__""", False),
+            ("""%^$^$£%£""£%"£wdwqdqwd__""", False),
+            ("""%^$^$£%£""£%"£423423423""", False),
+        ],
+    )
+    def test_is_alpha_num_underscore(self, string, expected):
+        result = validators.is_alpha_num_underscore(string)
+        assert result == expected
+
+    @pytest.mark.parametrize(
+        "string,expected",
+        [(" ", True), ("", True), (" adqwd", False), ("wefwefwef", False)],
+    )
+    def test_is_empty_str(self, string, expected):
+        result = validators.is_empty_str(string)
+        assert result == expected
+
+    @pytest.mark.parametrize(
+        "string,expected",
+        [
+            ("wefwf-wfwefwef-wefwef", True),
+            ("-wefwef-ewfwef-wefwef-wefwef", True),
+            ("-wefefwef-", True),
+            ("-w6ef78wef687ewf6-wefwef-", True),
+            ("---", True),
+            ("/efiewf/", False),
+            ("(ewfewf)", False),
+        ],
+    )
+    def test_is_valid_slug(self, string, expected):
+        result = validators.is_valid_slug(string)
+        assert bool(result) == expected

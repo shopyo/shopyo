@@ -1,18 +1,20 @@
 ## Unreleased
 
+### Fix
+
+- check conditions for app elements naming warnings
+- tests
+- tests
+
 ### Feat
 
+- stricter app audits
 - shopyo audit (#90)
 
 ### Refactor
 
 - move email from auth to api (#89)
 - create assets folder
-
-### Fix
-
-- tests
-- tests
 
 ## v4.2.0 (2021-11-24)
 
