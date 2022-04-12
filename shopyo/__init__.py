@@ -1,8 +1,12 @@
-version_info = (4, 4, 2)
+version_info = (4, 4, 3)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.4.3
+
+- Fix initialise, add SHOPYO_CONFIG_PROFILE env var to denote configuration profiles
 
 4.4.2
 

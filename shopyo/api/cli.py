@@ -27,7 +27,7 @@ from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
 
 
-def _create_shopyo_app(info):
+def _create_shopyo_app():
     sys.path.append(os.getcwd())
     try:
         from app import create_app
@@ -37,7 +37,7 @@ def _create_shopyo_app(info):
         )
         sys.exit()
 
-    config_name = info.data.get("config") or "development"
+    config_name = os.environ.get("SHOPYO_CONFIG_PROFILE") or "development"
     return create_app(config_name=config_name)
 
 

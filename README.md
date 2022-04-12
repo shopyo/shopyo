@@ -33,18 +33,21 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 mkdir blog
 python3.9 -m venv venv
 . venv/bin/activate
-pip install shopyo==4.2.0
+pip install shopyo==4.4.3
 shopyo new -m # add default modules
 cd blog
 shopyo run
 ```
 
-If errors do:
+If errors do (linux, use `set <VAR>` for Windows):
 
 ```
+export SHOPYO_CONFIG_PROFILE=development
 export FLASK_ENV=development
 export FLASK_APP=app.py
 ```
+
+`SHOPYO_CONFIG_PROFILE` is what is defined as keys of `app_config` in `config.py`
 
 It is recommended to use a venv in root folder.
 

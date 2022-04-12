@@ -4,7 +4,18 @@ Commandline Args
 .. toctree::
    :titlesonly:
 
-Various commandline args exist to ease your life.
+Various commandline args are required.
+
+.. code:: bash
+
+   export SHOPYO_CONFIG_PROFILE=development
+   export FLASK_ENV=development
+   export FLASK_APP=app.py
+
+`SHOPYO_CONFIG_PROFILE` is what is defined as keys of `app_config` in `config.py`
+
+The reason we decouple SHOPYO_CONFIG and FLASK_ENV is that FLASK_ENV has implications
+beyond configs and is limited to 3 modes.
 
 shopyo
 ******
