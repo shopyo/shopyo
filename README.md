@@ -34,8 +34,8 @@ mkdir blog
 python3.9 -m venv venv
 . venv/bin/activate
 pip install shopyo==4.4.3
-shopyo new -m # add default modules
 cd blog
+shopyo new -m # add default modules
 shopyo run
 ```
 
