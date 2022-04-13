@@ -30,10 +30,11 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 # Have a go!
 
 ```
-mkdir blog
 python3.9 -m venv venv
 . venv/bin/activate
 pip install shopyo==4.4.3
+
+mkdir blog
 cd blog
 shopyo new -m # add default modules
 shopyo run
