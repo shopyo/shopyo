@@ -336,7 +336,14 @@ def _check_modules_path(root_path):
         sys.exit()
 
 
-def _verify_app(app_path, box_name=None):
+def _url_prefix_exists(url_prefix, found_url_prefixes):
+    for data in found_url_prefixes:
+        if url_prefix == data["url_prefix"]:
+            return {"status": True, "data": data}
+    return {"status": False, "data": dict()}
+
+
+def _verify_app(app_path, found_url_prefixes, box_name=None):
     app_folder = last_part_of_path(app_path)
 
     audit_info = {"path": app_path, "issues": []}
@@ -347,6 +354,10 @@ def _verify_app(app_path, box_name=None):
     else:
         with open(os.path.join(app_path, "info.json")) as f:
             json_data = json.load(f)
+
+        url_prefix_exists_begining = _url_prefix_exists(
+            json_data["url_prefix"], found_url_prefixes
+        )
 
         to_check_keys = ["module_name", "url_prefix"]
         not_found = []
@@ -373,6 +384,21 @@ def _verify_app(app_path, box_name=None):
                     json_data["module_name"], app_folder
                 )
                 audit_info["issues"].append(msg)
+
+        url_prefix_exists = _url_prefix_exists(
+            json_data["url_prefix"], found_url_prefixes
+        )
+
+        if url_prefix_exists["status"] == True:
+            msg = (
+                f"warning: url_prefix '{json_data['url_prefix']}' exists in"
+                f" '{app_path}' and '{url_prefix_exists['data']['path']}'"
+            )
+            audit_info["issues"].append(msg)
+        else:
+            found_url_prefixes.append(
+                {"path": app_path, "url_prefix": json_data["url_prefix"]}
+            )
 
     # verify components
 
@@ -414,7 +440,7 @@ def _verify_box(box_path):
     return audit_info
 
 
-def _check_apps(root_path):
+def _check_apps(root_path, found_url_prefixes):
     issues_found = []
 
     modules_path = os.path.join(root_path, "modules")
@@ -423,13 +449,13 @@ def _check_apps(root_path):
 
     for app in apps:
         app_path = os.path.join(modules_path, app)
-        app_issues = _verify_app(app_path)
+        app_issues = _verify_app(app_path, found_url_prefixes)
         issues_found.append(app_issues)
 
     return issues_found
 
 
-def _check_boxes(root_path):
+def _check_boxes(root_path, found_url_prefixes):
     box_issues = []
 
     modules_path = os.path.join(root_path, "modules")
@@ -441,7 +467,9 @@ def _check_boxes(root_path):
         box_info["issues"] = _verify_box(os.path.join(modules_path, b))["issues"]
 
         for app in get_folders(os.path.join(modules_path, b)):
-            app_issues = _verify_app(os.path.join(modules_path, b, app), box_name=b)
+            app_issues = _verify_app(
+                os.path.join(modules_path, b, app), found_url_prefixes, box_name=b
+            )
             box_info["apps_issues"].append(app_issues)
         box_issues.append(box_info)
 
@@ -452,10 +480,12 @@ def _audit():
     """
     checks if modules are corrupted
     """
+    found_url_prefixes = []
+
     root_path = os.getcwd()
     _check_modules_path(root_path)
-    apps_issues = _check_apps(root_path)
-    boxes_issues = _check_boxes(root_path)
+    apps_issues = _check_apps(root_path, found_url_prefixes)
+    boxes_issues = _check_boxes(root_path, found_url_prefixes)
 
     click.echo("Running audit ...")
 

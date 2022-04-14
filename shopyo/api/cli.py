@@ -21,6 +21,7 @@ from shopyo.api.cmd_helper import _upload_data
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 from shopyo.api.database import autoload_models
+from shopyo.api.file import path_exists
 from shopyo.api.file import trycopy
 from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists
@@ -235,6 +236,9 @@ def initialise(verbose, clear_migration, clear_db):
     Creates ``db``, ``migration/``, adds default users, add settings
     """
     click.echo("initializing...")
+
+    mdoules_path = os.path.join(os.getcwd(), "modules")
+    app_py_path = os.path.join(os.getcwd(), "app.py")
 
     # drop db, remove mirgration/ and shopyo.db
     _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
