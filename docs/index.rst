@@ -27,7 +27,7 @@ The ecommerce part has been offloaded to
    The Init File <init>
    Commandline <commandline>
    Run Existing Project <existing>
-   Shopyoapi <shopyoapi>
+   Shopyo api <shopyoapi>
    Docs <docs>
    Testing <testing>
    Deploy on shared hosting <shared_hosting>
