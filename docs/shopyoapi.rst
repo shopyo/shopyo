@@ -1,7 +1,28 @@
-Shopyoapi
-=========
+Shopyo api
+==========
 
 Shopyo has some api which eases your life
+
+
+api.assets
+------------------
+
+.. automodule:: api.assets
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
+api.constants
+------------------
+
+.. automodule:: api.constants
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
 
 
 api.database
@@ -12,6 +33,17 @@ api.database
     :undoc-members:
     :inherited-members:
     :show-inheritance:
+
+
+api.email
+------------------
+
+.. automodule:: api.email
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
 
 api.enhance
 -----------------
@@ -61,6 +93,17 @@ api.info
     :show-inheritance:
 
 
+api.models
+-----------------
+
+.. automodule:: api.models
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
+
 api.module
 -----------------
 
@@ -71,10 +114,30 @@ api.module
     :show-inheritance:
 
 
+api.security
+-----------------
+
+.. automodule:: api.security
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
 api.templates
 -----------------
 
 .. automodule:: api.templates
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
+api.validators
+-----------------
+
+.. automodule:: api.validators
     :members:
     :undoc-members:
     :inherited-members:
