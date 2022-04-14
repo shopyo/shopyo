@@ -237,9 +237,6 @@ def initialise(verbose, clear_migration, clear_db):
     """
     click.echo("initializing...")
 
-    mdoules_path = os.path.join(os.getcwd(), "modules")
-    app_py_path = os.path.join(os.getcwd(), "app.py")
-
     # drop db, remove mirgration/ and shopyo.db
     _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
 
