@@ -16,6 +16,6 @@ def get_static(boxormodule, filename):
     URL for static file
     """
     if current_app.config["DEBUG"] is True:
-        return url_for("devstatic", boxormodule=boxormodule, filename=filename)
+        return url_for("devstatic", boxormodule=boxormodule, path=filename)
     else:
-        return url_for("static", filename=f"modules/{boxormodule}/{filename}")
+        return url_for("static", path=f"modules/{boxormodule}/{filename}")

@@ -1,8 +1,12 @@
-version_info = (4, 5, 0)
+version_info = (4, 5, 1)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.5.1
+
+- Fix path parameter in api.assets.get_static
 
 4.5.0
 

@@ -105,11 +105,22 @@ def setup_flask_admin(app):
 
 
 def register_devstatic(app):
-    @app.route("/devstatic/<path:boxormodule>/f/<path:filename>")
-    def devstatic(boxormodule, filename):
+    @app.route("/devstatic/<path:boxormodule>/f/<path:path>")
+    def devstatic(boxormodule, path):
         if app.config["DEBUG"]:
-            module_static = os.path.join(modules_path, boxormodule, "static")
-            return send_from_directory(module_static, filename=filename)
+            if boxormodule.startswith("box__"):
+                box = boxormodule.split("/")[0]
+                module = boxormodule.split("/")[1]
+                module_static = os.path.join(
+                    modules_path, box, module, "templates", module, "static"
+                )
+                return send_from_directory(module_static, path=path)
+            else:
+                module = boxormodule
+                module_static = os.path.join(
+                    modules_path, module, "templates", module, "static"
+                )
+                return send_from_directory(module_static, path=path)
 
 
 def load_blueprints(app, config_name, global_template_variables, global_configs):
