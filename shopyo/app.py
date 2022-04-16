@@ -111,15 +111,11 @@ def register_devstatic(app):
             if boxormodule.startswith("box__"):
                 box = boxormodule.split("/")[0]
                 module = boxormodule.split("/")[1]
-                module_static = os.path.join(
-                    modules_path, box, module, "templates", module, "static"
-                )
+                module_static = os.path.join(modules_path, box, module, "static")
                 return send_from_directory(module_static, path=path)
             else:
                 module = boxormodule
-                module_static = os.path.join(
-                    modules_path, module, "templates", module, "static"
-                )
+                module_static = os.path.join(modules_path, module, "static")
                 return send_from_directory(module_static, path=path)
 
 

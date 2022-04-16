@@ -1,8 +1,12 @@
-version_info = (4, 5, 1)
+version_info = (4, 5, 2)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.5.2
+
+- Fix static path
 
 4.5.1
 

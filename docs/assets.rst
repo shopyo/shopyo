@@ -8,7 +8,7 @@ Assets Management
 
    from shopyo.api.assets import get_static
 
-(Important) This assumes asset is in `module/templates/module/static`
+(Important) This assumes asset is in `moduleorbox/static`
 
 In the case of a module in box:
 
