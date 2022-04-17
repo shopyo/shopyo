@@ -367,6 +367,7 @@ def new(projname, verbose, modules):
         project_path,
         ignore=ignore_patterns(
             "__main__.py",
+            "app.txt",
             "api",
             ".tox",
             ".coverage",
