@@ -35,7 +35,10 @@ def index():
 
     # return render_template(get_setting("ACTIVE_FRONT_THEME") + "/index.html")
 
-    return render_template("www/index.html")
+    return render_template("www/index.html", get_static=get_static)
+
+
+from shopyo.api.assets import get_static
 
 
 @module_blueprint.route("/render_demo")

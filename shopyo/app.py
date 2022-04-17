@@ -5,11 +5,11 @@ import sys
 import click
 import jinja2
 from flask import Flask
-from flask import send_from_directory
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_login import current_user
 
+from shopyo.api.assets import register_devstatic
 from shopyo.api.file import trycopy
 
 
@@ -41,7 +41,7 @@ def create_app(config_name="development"):
     create_config_json()
     load_extensions(app)
     setup_flask_admin(app)
-    register_devstatic(app)
+    register_devstatic(app, modules_path)
     load_blueprints(app, config_name, global_template_variables, global_configs)
     setup_theme_paths(app)
     inject_global_vars(app, global_template_variables)
@@ -91,21 +91,6 @@ def setup_flask_admin(app):
     )
     # admin.add_view(DefaultModelView(Settings, db.session))
     admin.add_link(MenuLink(name="Logout", category="", url="/auth/logout?next=/admin"))
-
-
-def register_devstatic(app):
-    @app.route("/devstatic/<path:boxormodule>/f/<path:path>")
-    def devstatic(boxormodule, path):
-        if app.config["DEBUG"]:
-            if boxormodule.startswith("box__"):
-                box = boxormodule.split("/")[0]
-                module = boxormodule.split("/")[1]
-                module_static = os.path.join(modules_path, box, module, "static")
-                return send_from_directory(module_static, path=path)
-            else:
-                module = boxormodule
-                module_static = os.path.join(modules_path, module, "static")
-                return send_from_directory(module_static, path=path)
 
 
 def load_blueprints(app, config_name, global_template_variables, global_configs):

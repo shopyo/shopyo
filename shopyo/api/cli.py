@@ -23,6 +23,7 @@ from shopyo.api.constants import SEP_NUM
 from shopyo.api.database import autoload_models
 from shopyo.api.file import path_exists
 from shopyo.api.file import trycopy
+from shopyo.api.file import tryrmtree
 from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
@@ -491,6 +492,8 @@ def new(projname, verbose, modules):
             os.path.join(src_shopyo_shopyo, "modules"),
             os.path.join(project_path, "modules"),
         )
+        tryrmtree(os.path.join(project_path, "modules", "tests"), verbose=verbose)
+        tryrmtree(os.path.join(project_path, "modules", "box__tests"), verbose=verbose)
     else:
         # empty modules folder
         trymkdir(os.path.join(project_path, "modules"), verbose=verbose)
