@@ -1,8 +1,12 @@
-version_info = (4, 5, 4)
+version_info = (4, 5, 5)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.5.5
+
+- Fix empty static folder for projects not using -m
 
 4.5.4
 
