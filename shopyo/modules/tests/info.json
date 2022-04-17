@@ -1,0 +1,12 @@
+{
+    "author": {
+        "mail": "",
+        "name": "",
+        "website": ""
+    },
+    "display_string": "Tests",
+    "fa-icon": "fa fa-store",
+    "module_name": "tests",
+    "type": "show",
+    "url_prefix": "/tests"
+}
