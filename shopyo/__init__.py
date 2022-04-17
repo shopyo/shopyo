@@ -1,8 +1,12 @@
-version_info = (4, 5, 5)
+version_info = (4, 5, 6)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.5.6
+
+- rm app.txt for new projects
 
 4.5.5
 
