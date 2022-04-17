@@ -196,13 +196,15 @@ def setup_theme_paths(app):
         back_theme_dir = os.path.join(
             app.config["BASE_DIR"], "static", "themes", "back"
         )
-        my_loader = jinja2.ChoiceLoader(
-            [
-                app.jinja_loader,
-                jinja2.FileSystemLoader([front_theme_dir, back_theme_dir]),
-            ]
-        )
-        app.jinja_loader = my_loader
+
+        if os.path.exists(front_theme_dir) and os.path.exists(back_theme_dir):
+            my_loader = jinja2.ChoiceLoader(
+                [
+                    app.jinja_loader,
+                    jinja2.FileSystemLoader([front_theme_dir, back_theme_dir]),
+                ]
+            )
+            app.jinja_loader = my_loader
 
 
 def inject_global_vars(app, global_template_variables):
