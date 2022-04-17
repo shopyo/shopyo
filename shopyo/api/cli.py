@@ -381,6 +381,7 @@ def new(projname, verbose, modules):
             "config.json",
             "pyproject.toml",
             "modules",
+            "static",
         ),
     )
 
@@ -492,11 +493,16 @@ def new(projname, verbose, modules):
             os.path.join(src_shopyo_shopyo, "modules"),
             os.path.join(project_path, "modules"),
         )
+        copytree(
+            os.path.join(src_shopyo_shopyo, "static"),
+            os.path.join(project_path, "static"),
+        )
         tryrmtree(os.path.join(project_path, "modules", "tests"), verbose=verbose)
         tryrmtree(os.path.join(project_path, "modules", "box__tests"), verbose=verbose)
     else:
         # empty modules folder
         trymkdir(os.path.join(project_path, "modules"), verbose=verbose)
+        trymkdir(os.path.join(project_path, "static"), verbose=verbose)
 
 
 @cli.command("rundebug", with_appcontext=False)
