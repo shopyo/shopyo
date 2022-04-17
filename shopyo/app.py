@@ -1,3 +1,14 @@
+"""
+Temporary notice:
+
+Need help?
+
+- Join the discord https://discord.com/invite/k37Ef6w
+- Raise an issue https://github.com/shopyo/shopyo/issues/new/choose
+- Mail maintainers https://github.com/shopyo/shopyo#-contact
+
+Hope it helps! We welcome all questions and even requests for walkthroughs
+"""
 import importlib
 import os
 import sys
