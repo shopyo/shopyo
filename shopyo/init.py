@@ -21,3 +21,12 @@ login_manager = LoginManager()
 migrate = Migrate()
 mail = Mail()
 csrf = CSRFProtect()
+
+
+def load_extensions(app):
+    migrate.init_app(app, db)
+    db.init_app(app)
+    ma.init_app(app)
+    mail.init_app(app)
+    login_manager.init_app(app)
+    csrf.init_app(app)

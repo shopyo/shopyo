@@ -17,11 +17,9 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, base_path)
 from config import app_config
 from init import csrf
-from init import db
-from init import login_manager
-from init import ma
-from init import mail
-from init import migrate
+
+# from init import db
+from init import load_extensions
 from init import modules_path
 
 
@@ -82,15 +80,6 @@ def load_config_from_instance(app, config_name):
 def create_config_json():
     if not os.path.exists("config.json"):
         trycopy("config_demo.json", "config.json")
-
-
-def load_extensions(app):
-    migrate.init_app(app, db)
-    db.init_app(app)
-    ma.init_app(app)
-    mail.init_app(app)
-    login_manager.init_app(app)
-    csrf.init_app(app)
 
 
 def setup_flask_admin(app):

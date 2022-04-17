@@ -1,8 +1,12 @@
-version_info = (4, 5, 2)
+version_info = (4, 5, 3)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.5.3
+
+- Refactor load_extensions to init.py
 
 4.5.2
 
