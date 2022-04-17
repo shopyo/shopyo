@@ -1,8 +1,12 @@
-version_info = (4, 5, 3)
+version_info = (4, 5, 4)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+
+4.5.4
+
+- Refactor move register_devstatic to api
 
 4.5.3
 
