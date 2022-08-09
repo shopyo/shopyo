@@ -1,8 +1,12 @@
-version_info = (4, 5, 7)
+version_info = (4, 5, 8)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.5.8
+
+- fix key error in cmd_helper
+
 4.5.7
 
 - fix verbose=vebose

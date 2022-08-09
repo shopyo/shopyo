@@ -364,7 +364,7 @@ def _verify_app(app_path, found_url_prefixes, box_name=None):
         for key in to_check_keys:
             if key not in json_data:
                 not_found.append(key)
-                msg = "severe: key {key} not found in info.json".format(key)
+                msg = f"severe: key {key} not found in info.json"
                 audit_info["issues"].append(msg)
 
         if ("module_name" not in not_found) and ("url_prefix" not in not_found):
