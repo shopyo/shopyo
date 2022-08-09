@@ -1,8 +1,11 @@
-version_info = (4, 5, 6)
+version_info = (4, 5, 7)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.5.7
+
+- fix verbose=vebose
 
 4.5.6
 
