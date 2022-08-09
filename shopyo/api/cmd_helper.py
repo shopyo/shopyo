@@ -202,7 +202,7 @@ def _upload_data(verbose=False):
             # apps
             try:
                 upload = importlib.import_module(f"modules.{folder}.upload")
-                upload.upload(verbose=verbose)
+                upload.upload()
             except ImportError as e:
                 if verbose:
                     click.echo(f"[ ] {e}")
