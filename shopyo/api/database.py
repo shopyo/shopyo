@@ -2,7 +2,6 @@ import importlib
 import os
 
 import click
-from init import installed_packages
 
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
@@ -48,9 +47,10 @@ def autoload_models(verbose=False):
                     click.echo(f"[ ] {e}")
 
     # installed modules
+    from init import installed_packages
 
     try:
-        for plugin in installed_plugins:
+        for plugin in installed_packages:
             to_load_models = f"{plugin}.models"
             importlib.import_module(to_load_models)
             if verbose:

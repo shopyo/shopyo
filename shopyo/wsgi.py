@@ -4,6 +4,7 @@
 # may need to rename it during the import:
 #
 #
+import os
 import sys
 
 sys.path.append(os.getcwd())
