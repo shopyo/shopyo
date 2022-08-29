@@ -10,6 +10,7 @@ from subprocess import run
 
 import click
 from flask import current_app
+from init import installed_packages
 
 from shopyo.api.cli_content import get_dashboard_html_content
 from shopyo.api.cli_content import get_global_py_content
@@ -170,6 +171,28 @@ def _collectstatic(target_module="modules", verbose=False):
             tryrmtree(module_in_static_dir, verbose=verbose)
             trycopytree(module_static_folder, module_in_static_dir, verbose=verbose)
 
+    # load packages
+
+    for plugin in installed_packages:
+        try:
+            plugin = importlib.import_module(plugin)
+            plugin_folder_path = plugin.view.mhelp.dirpath
+            plugin_static_folder = os.path.join(plugin_folder_path, "static")
+
+            if os.path.exists(plugin_static_folder):
+                plugin_in_static_dir = os.path.join(modules_path_in_static, plugin)
+                tryrmtree(plugin_in_static_dir, verbose=verbose)
+                trycopytree(plugin_static_folder, module_in_static_dir, verbose=verbose)
+            else:
+                if verbose:
+                    click.echo(f"[ ] static folder not found: {plugin_static_folder}")
+
+            if verbose:
+                click.echo(f"[x] collected static from {plugin}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] {e}")
+
     click.echo("")
 
 
@@ -206,6 +229,18 @@ def _upload_data(verbose=False):
             except ImportError as e:
                 if verbose:
                     click.echo(f"[ ] {e}")
+
+    # load packages
+
+    for plugin in installed_packages:
+        try:
+            plugin = importlib.import_module(plugin)
+            plugin.upload()
+            if verbose:
+                click.echo(f"[x] uploaded from {plugin}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] {e}")
 
     click.echo("")
 

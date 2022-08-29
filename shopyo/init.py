@@ -14,6 +14,7 @@ root_path = os.path.dirname(os.path.abspath(__file__))  # don't remove
 static_path = os.path.join(root_path, "static")  # don't remove
 modules_path = os.path.join(root_path, "modules")  # don't remove
 themes_path = os.path.join(static_path, "themes")  # don't remove
+installed_packages = []  # don't remove
 
 db = SQLAlchemy()
 ma = Marshmallow()
