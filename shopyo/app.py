@@ -33,6 +33,7 @@ from init import csrf
 # from init import db
 from init import load_extensions
 from init import modules_path
+from init import installed_packages
 
 
 from shopyo_admin import DefaultModelView
@@ -63,13 +64,7 @@ def create_app(config_name="development"):
 
 
 def load_plugins(app, global_template_variables, global_configs, config_name):
-    discovered_plugins = {
-        name: importlib.import_module(name)
-        for finder, name, ispkg in pkgutil.iter_modules()
-        if name.startswith("shopyo_")
-    }
-    print(discovered_plugins)
-    for plugin in discovered_plugins:
+    for plugin in installed_packages:
         if plugin not in ["shopyo_admin"]:
             try:
                 mod = importlib.import_module(f"{plugin}.view")
