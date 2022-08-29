@@ -1,3 +1,4 @@
+import importlib
 import os
 
 from flask import current_app
@@ -45,6 +46,11 @@ def register_devstatic(app, modules_path):
                 module = boxormodule.split("/")[1]
                 module_static = os.path.join(modules_path, box, module, "static")
                 return send_from_directory(module_static, path=path)
+            if boxormodule.startswith("shopyo_"):
+                plugin = importlib.import_module(boxormodule)
+                plugin_folder_path = plugin.view.mhelp.dirpath
+                plugin_static_folder = os.path.join(plugin_folder_path, "static")
+                return send_from_directory(plugin_static_folder, path=path)
             else:
                 module = boxormodule
                 module_static = os.path.join(modules_path, module, "static")

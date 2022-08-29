@@ -13,6 +13,7 @@ from shopyo.api.assets import get_static
 class ModuleHelp:
     def __init__(self, dunderfile, dundername):
         self.dirpath = os.path.dirname(os.path.abspath(dunderfile))
+        self.template_folder = os.path.join(self.dirpath, "templates")
         self.info = {}
         self._context = {}
 
@@ -23,7 +24,7 @@ class ModuleHelp:
         self.blueprint = Blueprint(
             "{}".format(self.info["module_name"]),
             dundername,
-            template_folder="templates",
+            template_folder=self.template_folder,
             url_prefix=self.info["url_prefix"],
         )
 

@@ -170,6 +170,29 @@ def _collectstatic(target_module="modules", verbose=False):
             tryrmtree(module_in_static_dir, verbose=verbose)
             trycopytree(module_static_folder, module_in_static_dir, verbose=verbose)
 
+    # load packages
+
+    from init import installed_packages
+
+    for plugin in installed_packages:
+        try:
+            plugin_mod = importlib.import_module(plugin)
+            plugin_folder_path = plugin_mod.view.mhelp.dirpath
+            plugin_static_folder = os.path.join(plugin_folder_path, "static")
+
+            if os.path.exists(plugin_static_folder):
+                plugin_in_static_dir = os.path.join(modules_path_in_static, plugin)
+                tryrmtree(plugin_in_static_dir, verbose=verbose)
+                trycopytree(plugin_static_folder, module_in_static_dir, verbose=verbose)
+                if verbose:
+                    click.echo(f"[x] collected static from {plugin}")
+            else:
+                if verbose:
+                    click.echo(f"[ ] static folder not found: {plugin_static_folder}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] statoc {e}")
+
     click.echo("")
 
 
@@ -206,6 +229,20 @@ def _upload_data(verbose=False):
             except ImportError as e:
                 if verbose:
                     click.echo(f"[ ] {e}")
+
+    # load packages
+
+    from init import installed_packages
+
+    for plugin in installed_packages:
+        try:
+            plugin_mod = importlib.import_module(f"{plugin}.upload")
+            plugin_mod.upload()
+            if verbose:
+                click.echo(f"[x] uploaded from {plugin}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] upload info: {e}")
 
     click.echo("")
 
