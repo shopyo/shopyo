@@ -519,9 +519,14 @@ def runserver():
 
 
 @cli.command("audit", with_appcontext=False)
-def audit():
+@click.option("warning", "--show-warning", is_flag=True, default=False)
+@click.option("info", "--show-info", is_flag=True, default=False)
+@click.option("severe", "--show-severe", is_flag=True, default=False)
+def audit(warning, info, severe):
     """Audits the project and finds issues"""
-    _audit()
+    if not (warning or info or severe):
+        warning, info, severe = not warning, not info, not severe
+    _audit(warning, info, severe)
 
 
 @cli.command("rename", with_appcontext=False)
