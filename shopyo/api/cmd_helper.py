@@ -6,7 +6,6 @@ import json
 import os
 import re
 import sys
-from cmath import inf
 from subprocess import run
 
 import click
