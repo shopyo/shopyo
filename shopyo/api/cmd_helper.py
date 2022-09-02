@@ -513,10 +513,11 @@ def _check_boxes(root_path, found_url_prefixes):
     return box_issues
 
 
-def _audit():
+def _audit(warning, info, severe):
     """
     checks if modules are corrupted
     """
+    issue_type = {"warning": warning, "info": info, "severe": severe}
     found_url_prefixes = []
 
     root_path = os.getcwd()
@@ -530,18 +531,21 @@ def _audit():
     for app_issue in apps_issues:
         click.echo(app_issue["path"])
         for issue in app_issue["issues"]:
-            click.echo("    " + issue)
+            if issue_type[issue.split(":")[0]]:
+                click.echo("    " + issue)
         click.echo("")
 
     for box_issue in boxes_issues:
         click.echo(box_issue["path"])
         for issue in box_issue["issues"]:
-            click.echo("    " + issue)
+            if issue_type[issue.split(":")[0]]:
+                click.echo("    " + issue)
 
         for app_issue in box_issue["apps_issues"]:
             click.echo("    " + app_issue["path"])
             for issue in app_issue["issues"]:
-                click.echo("        " + issue)
+                if issue_type[issue.split(":")[0]]:
+                    click.echo("        " + issue)
         click.echo("")
 
     click.echo("Audit finished!")
