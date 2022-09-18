@@ -46,4 +46,17 @@ def autoload_models(verbose=False):
                 if verbose:
                     click.echo(f"[ ] {e}")
 
+    from init import installed_packages
+
+    for package in installed_packages:
+        try:
+
+            to_load = f"{package}.models"
+            importlib.import_module(to_load)
+            if verbose:
+                click.echo(f"[x] imported {to_load}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] {e}")
+
     click.echo("")

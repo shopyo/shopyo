@@ -256,6 +256,8 @@ def initialise(verbose, clear_migration, clear_db):
     # generate an initial migration i.e autodetect changes in the
     # tables (table autodetection is limited. See
     # https://flask-migrate.readthedocs.io/en/latest/ for more details)
+    # load all models available inside modules
+    autoload_models(verbose=verbose)
     click.echo("Migrating db...")
     click.echo(SEP_CHAR * SEP_NUM)
     if verbose:
