@@ -176,8 +176,7 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     print("[ ] error loading template variable", e)
 
                 except AttributeError as e:
-                     print('[ ] error loading template variable', e)
-                     
+                    print("[ ] error loading template variable", e)
 
                 # load configs
                 try:
