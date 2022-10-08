@@ -175,7 +175,6 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                 except ImportError as e:
                     print("[ ] error loading template variable", e)
 
-                     
 
                 # load configs
                 try:
