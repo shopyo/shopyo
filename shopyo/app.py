@@ -173,10 +173,11 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     )
                     global_template_variables.update(mod_global.available_everywhere)
                 except ImportError as e:
-                    print('[ ] error loading template variable', e)
+                    print("[ ] error loading template variable", e)
 
-                except AttributeError:
-                    pass
+                except AttributeError as e:
+                     print('[ ] error loading template variable', e)
+                     
 
                 # load configs
                 try:
@@ -206,10 +207,10 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                 global_template_variables.update(mod_global.available_everywhere)
             except ImportError as e:
                 # print(f"[ ] {e}")
-                print('[ ] error loading template variable', e)
+                print("[ ] error loading template variable", e)
 
             except AttributeError as e:
-                print('[ ] error loading template variable', e)
+                print("[ ] error loading template variable", e)
 
             # load configs
             try:
