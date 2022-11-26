@@ -139,7 +139,7 @@ We follow a 100% first-timers friendly policy.
 
 
 
-# 📞 Contact
+# 📞 Contact (inlcuding in case of vulns)
 
 Support team if you are stuck
 
