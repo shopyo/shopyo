@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from init import db
+from shopyo.api.models import PkModel
 
 
-class Page(db.Model):
+class Page(PkModel):
 
     __tablename__ = "pages"
     id = db.Column(db.Integer, primary_key=True)
@@ -11,14 +11,3 @@ class Page(db.Model):
     title = db.Column(db.String(100))
     slug = db.Column(db.String(100))
     content = db.Column(db.String(1024))
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
