@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from shopyo.api.models import PkModel
+from init import db
 
-languages = {"en": "english", "fr": "french"}
+from shopyo.api.models import PkModel
 
 
 class LangString(PkModel):

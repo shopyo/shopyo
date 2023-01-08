@@ -15,6 +15,8 @@ static_path = os.path.join(root_path, "static")  # don't remove
 modules_path = os.path.join(root_path, "modules")  # don't remove
 themes_path = os.path.join(static_path, "themes")  # don't remove
 
+installed_packages = []
+
 db = SQLAlchemy()
 ma = Marshmallow()
 login_manager = LoginManager()
