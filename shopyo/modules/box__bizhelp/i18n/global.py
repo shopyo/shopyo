@@ -1,7 +1,7 @@
 # global templates variables in here
-# available_everywhere = {
-#
-# }
+from .helpers import langs
+
+available_everywhere = {"get_i18n_langs": langs}
 # global configs in here, defined by profile
 # configs = {
 #     "development": {

@@ -11,24 +11,14 @@ from flask_login import login_required
 from .forms import PageForm
 from .models import Page
 from shopyo.api.forms import flash_errors
+from shopyo.api.module import ModuleHelp
 
-dirpath = os.path.dirname(os.path.abspath(__file__))
-module_info = {}
-
-with open(dirpath + "/info.json") as f:
-    module_info = json.load(f)
-
-globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
-    "{}".format(module_info["module_name"]),
-    __name__,
-    template_folder="templates",
-    url_prefix=module_info["url_prefix"],
-)
+mhelp = ModuleHelp(__file__, __name__)
+globals()[mhelp.blueprint_str] = mhelp.blueprint
+module_blueprint = globals()[mhelp.blueprint_str]
 
 
-module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
-
-module_name = module_info["module_name"]
+module_name = mhelp.info["module_name"]
 
 sidebar = [{"text": "sample", "icon": "fa fa-table", "url": ""}]
 
@@ -53,7 +43,7 @@ def view_page(page_id, slug):
     return render_template("page/view_page.html", **context)
 
 
-@module_blueprint.route(module_info["dashboard"])
+@module_blueprint.route(mhelp.info["dashboard"])
 @login_required
 def dashboard():
     context = {}

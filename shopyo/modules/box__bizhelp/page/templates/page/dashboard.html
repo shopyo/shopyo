@@ -38,11 +38,19 @@
                     <span id="error" type="text" vissiblity='hidden'></span>
                 </div>
                 <div class="field">
+                    {{ form.lang.label }} <br>
+                    <div class="input-group mb-3">
+                        {{ form.lang }}
+                    </div>
+                </div>
+                <div class="field">
                     {{ form.content.label }} <br>
                     <div class="input-group mb-3">
                         {{ form.content }}
                     </div>
                 </div>
+
+
                 <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                 <input type="submit" class="btn btn-info" value="submit">
             </form>
