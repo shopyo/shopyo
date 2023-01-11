@@ -7,6 +7,8 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from flask_login import login_required
+from modules.box__bizhelp.i18n.helpers import get_current_lang
+from modules.box__bizhelp.i18n.helpers import lang_keys
 
 from .forms import PageForm
 from .models import Page
@@ -47,8 +49,14 @@ def index():
 def view_page(slug):
     context = {}
     page = Page.query.filter(Page.slug == slug).first()
+    form = PageForm(obj=page)
 
-    context.update({"page": page})
+    lang_arg = request.args.get("lang", get_current_lang())
+
+    form.content = page.get_content(lang=lang_arg)
+    form.lang.data = lang_arg
+
+    context.update({"page": page, "form": form})
     return render_template("page/view_page.html", **context)
 
 

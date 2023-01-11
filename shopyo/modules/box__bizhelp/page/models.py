@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from flask import session
 from flask import url_for
 from init import db
 from modules.box__bizhelp.i18n.models import LangRecord
@@ -22,19 +23,24 @@ class Page(PkModel):
     def get_strid(self):
         return f"page_{self.slug}"
 
-    def get_content(self, lang):
+    def get_content(self, lang=None):
+        if not lang:
+            lang = session.get("yo_current_lang", "en")
         page = Page.query.get(self.id)
         record = LangRecord.query.filter(
             LangRecord.strid == self.get_strid(), LangRecord.lang == lang
         ).first()
         if record is None:
-            raise Exception("Record is None")
+            return None
 
         return record.string
 
-    def get_url(self, lang="en"):
+    def get_url(self, lang=None):
         if self.slug:
-            return url_for("page.view_page", slug=self.slug)
+            if lang:
+                return url_for("page.view_page", slug=self.slug, lang=lang)
+            else:
+                return url_for("page.view_page", slug=self.slug)
         else:
             return None
 
