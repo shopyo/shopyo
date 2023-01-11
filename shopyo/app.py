@@ -57,10 +57,6 @@ def create_app(config_name="development"):
     load_blueprints(app, config_name, global_template_variables, global_configs)
     setup_theme_paths(app)
     inject_global_vars(app, global_template_variables)
-
-    with app.app_context():
-        session["yo_default_lang"] = "en"
-        session["yo_current_lang"] = "en"
     return app
 
 

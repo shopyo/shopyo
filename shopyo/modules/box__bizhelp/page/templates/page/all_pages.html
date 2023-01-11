@@ -1,4 +1,4 @@
-{% extends "base/main_base.html" %}
+{% extends "base/module_base.html" %}
 
 {% set active_page ='page' %}
 
@@ -14,19 +14,21 @@
 </style>
 
 {% endblock %}
-
+{% block sidebar %}
+{%include 'page/blocks/sidebar.html'%}
+{%endblock%}
 {% block content %}
 
 <div class="list-group">
   {%for page in pages%}
-
-      <a href="{{url_for('page.view_page', page_id=page.id, slug=page.slug)}}">
+      {% if page.get_url() %}
+      <a href="{{ page.get_url() }}">
         <div class="list-group-item">
-          {{page.title}}
+          {{page.title}} | {{ page.get_langs() }}
         </div>
 
       </a>
-
+      {% endif %}
   {%endfor%}
 </div>
 {% endblock %}

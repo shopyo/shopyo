@@ -23,7 +23,7 @@
       <h3>{{page.title}}</h3>
       <hr>
       <div>
-        {{page.content | safe}}
+        {{page.get_content(get_current_lang()) | safe}}
       </div>
     </div>
   </div>

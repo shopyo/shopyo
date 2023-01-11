@@ -25,7 +25,16 @@ sidebar = [{"text": "sample", "icon": "fa fa-table", "url": ""}]
 module_settings = {"sidebar": sidebar}
 
 
-@module_blueprint.route("/")
+@module_blueprint.route(mhelp.info["dashboard"] + "/all")
+def index_all():
+    context = {}
+    pages = Page.query.all()
+
+    context.update({"pages": pages})
+    return render_template("page/all_pages.html", **context)
+
+
+@module_blueprint.route(mhelp.info["dashboard"] + "/edit")
 def index():
     context = {}
     pages = Page.query.all()
@@ -34,10 +43,10 @@ def index():
     return render_template("page/all_pages.html", **context)
 
 
-@module_blueprint.route("/<page_id>/<slug>")
-def view_page(page_id, slug):
+@module_blueprint.route("/s/<slug>", methods=["GET"])
+def view_page(slug):
     context = {}
-    page = Page.query.get(page_id)
+    page = Page.query.filter(Page.slug == slug).first()
 
     context.update({"page": page})
     return render_template("page/view_page.html", **context)
@@ -64,8 +73,8 @@ def check_pagecontent():
             return redirect(url_for(f"{module_name}.dashboard"))
         toaddpage = Page(
             slug=form.slug.data,
-            content=form.content.data,
             title=form.title.data,
         )
-        toaddpage.insert()
+        toaddpage.insert_lang(form.lang.data, form.content.data)
+        toaddpage.save()
         return redirect(url_for(f"{module_name}.dashboard"))

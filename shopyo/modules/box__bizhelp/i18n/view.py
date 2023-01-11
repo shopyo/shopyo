@@ -2,6 +2,7 @@ from flask import session
 from modules.box__bizhelp.i18n.helpers import lang_keys
 
 from shopyo.api.module import ModuleHelp
+from shopyo.api.security import get_safe_redirect
 
 # from flask import render_template
 # from flask import url_for
@@ -24,19 +25,14 @@ def index():
 
 @module_blueprint.route("/set-lang", methods=["GET"])
 def set_lang():
+    set_to_lang = request.args.get("lang", "en")
+    next_url = request.args.get("next", "/")
 
-    try:
-        set_to_lang = request.args["lang"]
-        return_url = request.args["return"]
+    if set_to_lang in lang_keys():
+        session["yo_current_lang"] = set_to_lang
+        session["yo_default_lang"] = set_to_lang
 
-        if set_to_lang in lang_keys():
-            session["yo_current_language"] = set_to_lang
-
-            return redirect(return_url)
-    except KeyError:
-        pass
-
-    return mhelp.info["display_string"]
+        return redirect(get_safe_url(next_url))
 
 
 # If "dashboard": "/dashboard" is set in info.json
