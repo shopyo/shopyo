@@ -11,7 +11,9 @@ Shopyo an Open web framework. It is HIGHLY MODULAR and is built for BIG projects
 
 
 The ecommerce part has been offloaded to
-`ShopCube <https://github.com/shopyo/shopcube>`_
+`ShopCube <https://github.com/shopyo/shopcube>`_.
+
+Useful note on how to `integrate <https://speakerdeck.com/osdotsystem/fast-flask-dev-for-big-codebases>`_  celery and Flask-restx .
 
 
 .. toctree::
