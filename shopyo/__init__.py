@@ -3,6 +3,11 @@ __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.8.0
+
+- box__bizhelp removed
+- i18n and page moved to box__default
+
 4.7.0
 
 - i18n package
