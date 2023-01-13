@@ -23,6 +23,7 @@ from flask_admin.menu import MenuLink
 from flask_login import current_user
 
 from shopyo.api.assets import register_devstatic
+from shopyo.api.debug import is_yo_debug
 from shopyo.api.file import trycopy
 
 
@@ -78,23 +79,27 @@ def load_plugins(app, global_template_variables, global_configs, config_name):
             try:
                 mod_global = importlib.import_module(f"{plugin}.global")
                 global_template_variables.update(mod_global.available_everywhere)
-            except ImportError:
-                print("[ ] Not loading template variable", e)
+            except ImportError as e:
+                if is_yo_debug():
+                    print("[ ] Not loading template variable", e)
 
-            except AttributeError:
-                pass
+            except AttributeError as e:
+                if is_yo_debug():
+                    print("[ ] Not loading template variable", e)
 
             # load configs
             try:
                 mod_global = importlib.import_module(f"{plugin}.global")
                 if config_name in mod_global.configs:
                     global_configs.update(mod_global.configs.get(config_name))
-            except ImportError:
+            except ImportError as e:
                 # print(f"[ ] {e}")
-                print("[ ] Not loading template variable", e)
-            except AttributeError:
+                if is_yo_debug():
+                    print("[ ] Not loading template variable", e)
+            except AttributeError as e:
                 # click.echo('info: config not found in global')
-                print("[ ] Not loading template variable", e)
+                if is_yo_debug():
+                    print("[ ] Not loading template variable", e)
 
 
 def load_config_from_obj(app, config_name):
@@ -148,7 +153,6 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
     - Adds global template objects from modules
     - Adds global configs from modules
     """
-
     for folder in os.listdir(os.path.join(base_path, "modules")):
         if folder.startswith("__"):  # ignore __pycache__
             continue
@@ -165,18 +169,20 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                         f"modules.{folder}.{sub_folder}.view"
                     )
                     app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
-                except AttributeError:
+                except AttributeError as e:
                     pass
                 try:
                     mod_global = importlib.import_module(
                         f"modules.{folder}.{sub_folder}.global"
                     )
                     global_template_variables.update(mod_global.available_everywhere)
-                except ImportError:
-                    print("[ ] skipped", e)
+                except ImportError as e:
+                    if is_yo_debug():
+                        print("[ ] skipped", e)
 
-                except AttributeError:
-                    print("[ ] skipped", e)
+                except AttributeError as e:
+                    if is_yo_debug():
+                        print("[ ] skipped", e)
 
                 # load configs
                 try:
@@ -185,42 +191,49 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     )
                     if config_name in mod_global.configs:
                         global_configs.update(mod_global.configs.get(config_name))
-                except ImportError:
-                    print("[ ] skipped", e)
+                except ImportError as e:
+                    if is_yo_debug():
+                        print("[ ] skipped", e)
 
-                except AttributeError:
+                except AttributeError as e:
                     # click.echo('info: config not found in global')
-                    print("[ ] skipped", e)
+                    if is_yo_debug():
+                        print("[ ] skipped", e)
         else:
             # apps
             try:
                 mod = importlib.import_module(f"modules.{folder}.view")
                 app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
-            except AttributeError:
-                print("[ ] skipped", e)
+            except AttributeError as e:
+                if is_yo_debug():
+                    print("[ ] skipped", e)
 
             # global's available everywhere template vars
             try:
                 mod_global = importlib.import_module(f"modules.{folder}.global")
                 global_template_variables.update(mod_global.available_everywhere)
-            except ImportError:
+            except ImportError as e:
                 # print(f"[ ] {e}")
-                print("[ ] skipped", e)
+                if is_yo_debug():
+                    print("[ ] skipped", e)
 
-            except AttributeError:
-                print("[ ] skipped", e)
+            except AttributeError as e:
+                if is_yo_debug():
+                    print("[ ] skipped", e)
 
             # load configs
             try:
                 mod_global = importlib.import_module(f"modules.{folder}.global")
                 if config_name in mod_global.configs:
                     global_configs.update(mod_global.configs.get(config_name))
-            except ImportError:
+            except ImportError as e:
                 # print(f"[ ] {e}")
-                print("[ ] skipped", e)
-            except AttributeError:
+                if is_yo_debug():
+                    print("[ ] skipped", e)
+            except AttributeError as e:
                 # click.echo('info: config not found in global')
-                print("[ ] skipped", e)
+                if is_yo_debug():
+                    print("[ ] skipped", e)
 
     app.config.update(**global_configs)
 
