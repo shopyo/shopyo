@@ -13,6 +13,7 @@ from flask import url_for
 from init import db as _db
 from modules.box__default.auth.models import User
 from modules.box__default.settings.models import Settings
+from sqlalchemy import event
 
 # run in shopyo/shopyo
 # python -m pytest . or python -m pytest -v
@@ -67,6 +68,14 @@ def flask_app():
 
 
 @pytest.fixture(scope="session")
+def app(request):
+    """
+    Returns session-wide application.
+    """
+    return create_app("testing")
+
+
+@pytest.fixture(scope="session")
 def test_client(flask_app):
     """
     setups up and returns the flask testing app
@@ -107,26 +116,59 @@ def db(test_client, non_admin_user, admin_user, unconfirmed_user):
     _db.drop_all()
 
 
+# @pytest.fixture(scope="function", autouse=True)
+# def db_session(db):
+#     """
+#     Creates a new database session for a test. Note you must use this fixture
+#     if your test connects to db. Autouse is set to true which implies
+#     that the fixture will be setup before each test
+
+#     Here we not only support commit calls but also rollback calls in tests.
+#     """
+#     connection = db.engine.connect()
+#     transaction = connection.begin()
+#     options = dict(bind=connection, binds={})
+#     session = db.create_scoped_session(options=options)
+#     db.session = session
+
+#     yield session
+
+#     transaction.rollback()
+#     connection.close()
+#     session.remove()
 @pytest.fixture(scope="function", autouse=True)
-def db_session(db):
+def db_session(app, db, request):
     """
-    Creates a new database session for a test. Note you must use this fixture
-    if your test connects to db. Autouse is set to true which implies
-    that the fixture will be setup before each test
-
-    Here we not only support commit calls but also rollback calls in tests.
+    Returns function-scoped session.
     """
-    connection = db.engine.connect()
-    transaction = connection.begin()
-    options = dict(bind=connection, binds={})
-    session = db.create_scoped_session(options=options)
-    db.session = session
+    with app.app_context():
+        conn = _db.engine.connect()
+        txn = conn.begin()
 
-    yield session
+        options = dict(bind=conn, binds={})
+        sess = _db._make_scoped_session(options=options)
 
-    transaction.rollback()
-    connection.close()
-    session.remove()
+        # establish  a SAVEPOINT just before beginning the test
+        # (http://docs.sqlalchemy.org/en/latest/orm/session_transaction.html#using-savepoint)
+        sess.begin_nested()
+
+        @event.listens_for(sess(), "after_transaction_end")
+        def restart_savepoint(sess2, trans):
+            # Detecting whether this is indeed the nested transaction of the test
+            if trans.nested and not trans._parent.nested:
+                # The test should have normally called session.commit(),
+                # but to be safe we explicitly expire the session
+                sess2.expire_all()
+                sess.begin_nested()
+
+        _db.session = sess
+        yield sess
+
+        # Cleanup
+        sess.remove()
+        # This instruction rollsback any commit that were executed in the tests.
+        txn.rollback()
+        conn.close()
 
 
 @pytest.fixture
