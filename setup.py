@@ -20,7 +20,9 @@ if sys.argv[-1] == "publish":  # requests
     sys.exit()
 
 setup(
-    install_requires=open(os.path.join(here, "requirements.txt"), encoding="utf-8")
+    install_requires=open(
+        os.path.join(here, "requirements/requirements.txt"), encoding="utf-8"
+    )
     .read()
     .split("\n"),
     url="https://github.com/shopyo/shopyo",

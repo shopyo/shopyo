@@ -8,3 +8,4 @@ isort
 codecov
 tox
 commitizen
+-r requirements.txt
