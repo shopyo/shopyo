@@ -79,8 +79,7 @@ def load_plugins(app, global_template_variables, global_configs, config_name):
                 mod_global = importlib.import_module(f"{plugin}.global")
                 global_template_variables.update(mod_global.available_everywhere)
             except ImportError:
-                # print(f"[ ] {e}")
-                pass
+                print("[ ] Not loading template variable", e)
 
             except AttributeError:
                 pass
@@ -92,10 +91,10 @@ def load_plugins(app, global_template_variables, global_configs, config_name):
                     global_configs.update(mod_global.configs.get(config_name))
             except ImportError:
                 # print(f"[ ] {e}")
-                pass
+                print("[ ] Not loading template variable", e)
             except AttributeError:
                 # click.echo('info: config not found in global')
-                pass
+                print("[ ] Not loading template variable", e)
 
 
 def load_config_from_obj(app, config_name):
@@ -174,10 +173,10 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     )
                     global_template_variables.update(mod_global.available_everywhere)
                 except ImportError:
-                    pass
+                    print("[ ] skipped", e)
 
                 except AttributeError:
-                    pass
+                    print("[ ] skipped", e)
 
                 # load configs
                 try:
@@ -187,19 +186,18 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     if config_name in mod_global.configs:
                         global_configs.update(mod_global.configs.get(config_name))
                 except ImportError:
-                    pass
+                    print("[ ] skipped", e)
 
                 except AttributeError:
                     # click.echo('info: config not found in global')
-                    pass
+                    print("[ ] skipped", e)
         else:
             # apps
             try:
                 mod = importlib.import_module(f"modules.{folder}.view")
                 app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
             except AttributeError:
-                # print("[ ] Blueprint skipped:", e)
-                pass
+                print("[ ] skipped", e)
 
             # global's available everywhere template vars
             try:
@@ -207,10 +205,10 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                 global_template_variables.update(mod_global.available_everywhere)
             except ImportError:
                 # print(f"[ ] {e}")
-                pass
+                print("[ ] skipped", e)
 
             except AttributeError:
-                pass
+                print("[ ] skipped", e)
 
             # load configs
             try:
@@ -219,10 +217,10 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     global_configs.update(mod_global.configs.get(config_name))
             except ImportError:
                 # print(f"[ ] {e}")
-                pass
+                print("[ ] skipped", e)
             except AttributeError:
                 # click.echo('info: config not found in global')
-                pass
+                print("[ ] skipped", e)
 
     app.config.update(**global_configs)
 
