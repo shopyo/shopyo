@@ -31,7 +31,8 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 | 🏢 Scalable | As your app grows, Shopyo caters for your codebase with powerful features. |
 | 🥢 Good practices | Testing, docs etc are covered. Don't make those afterthoughts. |
 | 🔧 Ease your life | We've been there. Awesome utils to ease development. |
-| 🪜 Scaffolding | Don't waste time writing boilerplate code. We've got you covered |
+| 🪜 Scaffolding | Don't waste time writing boilerplate code. We've got you covered. |
+| 🖍️ Theming system | You need theme in your apps? We integrate a default theme system. |
 
 # Features
 
