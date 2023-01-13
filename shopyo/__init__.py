@@ -1,8 +1,13 @@
-version_info = (4, 8, 3)
+version_info = (4, 8, 4)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.8.4
+
+- Implement debug mode
+- Fix docs builds fail
+
 4.8.3
 
 - Fix load erros instead of passing
