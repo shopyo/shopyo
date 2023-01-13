@@ -26,13 +26,6 @@ It includes:
 * space for user-supplied body (block body)
 * notification mechanism on the top right
 
-Here is the contact form using the base:
-
-.. literalinclude:: ../shopyo/modules/box__bizhelp/contact/templates/contact/contact_form.html
-   :language: html
-   :linenos:
-   :lines: 1-52
-
 
 If you extend the base template, you will be able to use the
 notification mechanism used for shopyo api
