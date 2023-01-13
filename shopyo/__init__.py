@@ -1,8 +1,12 @@
-version_info = (4, 8, 0)
+version_info = (4, 8, 1)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.8.1
+
+- Fix import errors
+
 4.8.0
 
 - box__bizhelp removed
