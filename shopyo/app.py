@@ -11,6 +11,7 @@ Hope it helps! We welcome all questions and even requests for walkthroughs
 """
 import importlib
 import os
+import pkgutil
 import sys
 
 import click
@@ -33,6 +34,7 @@ from init import csrf
 # from init import db
 from init import load_extensions
 from init import modules_path
+from init import installed_packages
 
 
 from shopyo_admin import DefaultModelView
@@ -48,6 +50,8 @@ def create_app(config_name="development"):
         instance_path=os.path.join(base_path, "instance"),
         instance_relative_config=True,
     )
+
+    load_plugins(app, global_template_variables, global_configs, config_name)
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
     create_config_json()
@@ -58,6 +62,40 @@ def create_app(config_name="development"):
     setup_theme_paths(app)
     inject_global_vars(app, global_template_variables)
     return app
+
+
+def load_plugins(app, global_template_variables, global_configs, config_name):
+    for plugin in installed_packages:
+        if plugin not in ["shopyo_admin"]:
+            try:
+                mod = importlib.import_module(f"{plugin}.view")
+                app.register_blueprint(getattr(mod, f"{plugin}_blueprint"))
+            except AttributeError:
+                # print("[ ] Blueprint skipped:", e)
+                pass
+
+            # global's available everywhere template vars
+            try:
+                mod_global = importlib.import_module(f"{plugin}.global")
+                global_template_variables.update(mod_global.available_everywhere)
+            except ImportError:
+                # print(f"[ ] {e}")
+                pass
+
+            except AttributeError:
+                pass
+
+            # load configs
+            try:
+                mod_global = importlib.import_module(f"{plugin}.global")
+                if config_name in mod_global.configs:
+                    global_configs.update(mod_global.configs.get(config_name))
+            except ImportError:
+                # print(f"[ ] {e}")
+                pass
+            except AttributeError:
+                # click.echo('info: config not found in global')
+                pass
 
 
 def load_config_from_obj(app, config_name):

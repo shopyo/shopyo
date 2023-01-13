@@ -170,6 +170,29 @@ def _collectstatic(target_module="modules", verbose=False):
             tryrmtree(module_in_static_dir, verbose=verbose)
             trycopytree(module_static_folder, module_in_static_dir, verbose=verbose)
 
+    # load packages
+
+    from init import installed_packages
+
+    for plugin in installed_packages:
+        try:
+            plugin_mod = importlib.import_module(plugin)
+            plugin_folder_path = plugin_mod.view.mhelp.dirpath
+            plugin_static_folder = os.path.join(plugin_folder_path, "static")
+
+            if os.path.exists(plugin_static_folder):
+                plugin_in_static_dir = os.path.join(modules_path_in_static, plugin)
+                tryrmtree(plugin_in_static_dir, verbose=verbose)
+                trycopytree(plugin_static_folder, module_in_static_dir, verbose=verbose)
+                if verbose:
+                    click.echo(f"[x] collected static from {plugin}")
+            else:
+                if verbose:
+                    click.echo(f"[ ] static folder not found: {plugin_static_folder}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] statoc {e}")
+
     click.echo("")
 
 
@@ -206,6 +229,20 @@ def _upload_data(verbose=False):
             except ImportError as e:
                 if verbose:
                     click.echo(f"[ ] {e}")
+
+    # load packages
+
+    from init import installed_packages
+
+    for plugin in installed_packages:
+        try:
+            plugin_mod = importlib.import_module(f"{plugin}.upload")
+            plugin_mod.upload()
+            if verbose:
+                click.echo(f"[x] uploaded from {plugin}")
+        except Exception as e:
+            if verbose:
+                click.echo(f"[ ] upload info: {e}")
 
     click.echo("")
 
@@ -476,10 +513,11 @@ def _check_boxes(root_path, found_url_prefixes):
     return box_issues
 
 
-def _audit():
+def _audit(warning, info, severe):
     """
     checks if modules are corrupted
     """
+    issue_type = {"warning": warning, "info": info, "severe": severe}
     found_url_prefixes = []
 
     root_path = os.getcwd()
@@ -493,18 +531,21 @@ def _audit():
     for app_issue in apps_issues:
         click.echo(app_issue["path"])
         for issue in app_issue["issues"]:
-            click.echo("    " + issue)
+            if issue_type[issue.split(":")[0]]:
+                click.echo("    " + issue)
         click.echo("")
 
     for box_issue in boxes_issues:
         click.echo(box_issue["path"])
         for issue in box_issue["issues"]:
-            click.echo("    " + issue)
+            if issue_type[issue.split(":")[0]]:
+                click.echo("    " + issue)
 
         for app_issue in box_issue["apps_issues"]:
             click.echo("    " + app_issue["path"])
             for issue in app_issue["issues"]:
-                click.echo("        " + issue)
+                if issue_type[issue.split(":")[0]]:
+                    click.echo("        " + issue)
         click.echo("")
 
     click.echo("Audit finished!")

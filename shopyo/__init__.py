@@ -1,8 +1,13 @@
-version_info = (4, 5, 9)
+
+version_info = (4, 6, 0)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.6.0
+
+- Packages added!!!
+
 4.5.9
 
 - fix autoload for packages
