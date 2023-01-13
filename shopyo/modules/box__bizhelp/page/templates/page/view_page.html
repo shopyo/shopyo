@@ -1,31 +1,15 @@
-{% extends "base/main_base.html" %}
-
-{% set active_page ='page' %}
-
-{% block pagehead %}
-<title>{{active_page.capitalize()}}</title>
-<style>
-  .hidden{
-    display: none;
-  }
-  .show{
-    display: inline-block;
-  }
-</style>
-
-{% endblock %}
-
-{% block content %}
-
-<div class="container">
-  <div class="card">
-    <div class="container">
-      <h3>{{page.title}}</h3>
-      <hr>
-      <div>
-        {{page.content | safe}}
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ page.title }}</title>
+</head>
+<body>
+	Demo content page, need to add set lang mechanism by calling `/i18n/set-lang?lang=fr`.
+	<h1>
+		{{ page.title }}
+	</h1>
+	{{ page.get_content() }}
+</body>
+</html>

@@ -17,6 +17,7 @@ import sys
 import click
 import jinja2
 from flask import Flask
+from flask import session
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_login import current_user

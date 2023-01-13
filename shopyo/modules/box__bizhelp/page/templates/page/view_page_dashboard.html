@@ -19,8 +19,8 @@
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h3>New page</h3>
-            <form action="{{url_for('{}.check_pagecontent'.format(module_name))}}" method="POST">
+            <a href="{{ url_for('page.index_all') }}">back</a>
+            <form action="{{url_for('{}.edit_pagecontent'.format(module_name))}}" method="POST">
                 {{ form.title.label }}
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -39,18 +39,19 @@
                 </div>
                 <div class="field">
                     {{ form.lang.label }} <br>
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3" id="lang-drop-wrapper">
                         {{ form.lang }}
                     </div>
                 </div>
                 <div class="field">
                     {{ form.content.label }} <br>
                     <div class="input-group mb-3">
-                        {{ form.content }}
+                        <textarea class="form-control" name="content">{{ form.content }}</textarea>
                     </div>
                 </div>
 
 
+                <input type="hidden" name="page_id" value="{{page.id}}">
                 <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                 <input type="submit" class="btn btn-info" value="submit">
             </form>
@@ -92,6 +93,16 @@ $(document).ready(function() {
         title = title.replace(/[\W_]+/g, " ");
         title = title.replaceAll(" ", "-");
         $('#slug').val(title);
+    });
+
+
+     $("#lang").change(function () {
+      var thisurl = "{{ page.get_dashboard_url() }}";
+        var end = this.value;
+        var firstDropVal = $('#lang').val();
+        // alert(firstDropVal);
+        window.location.replace(thisurl + '?lang='+firstDropVal)
+        // location.reload();
     });
 });
 </script>

@@ -7,6 +7,10 @@ __version__ = ".".join([str(v) for v in version_info])
 
 - Packages added!!!
 
+4.5.9
+
+- fix autoload for packages
+
 4.5.8
 
 - fix key error in cmd_helper

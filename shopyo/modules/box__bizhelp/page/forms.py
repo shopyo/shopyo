@@ -1,4 +1,6 @@
 from flask_wtf import FlaskForm
+from modules.box__bizhelp.i18n.helpers import langs
+from wtforms import SelectField
 from wtforms import StringField
 from wtforms import TextAreaField
 from wtforms.validators import DataRequired
@@ -30,3 +32,4 @@ class PageForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
+    lang = SelectField("Language", choices=[(k, v) for k, v in langs.items()])

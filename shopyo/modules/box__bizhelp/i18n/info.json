@@ -1,0 +1,12 @@
+{
+    "author": {
+        "mail": "",
+        "name": "",
+        "website": ""
+    },
+    "display_string": "I18n",
+    "fa-icon": "fa fa-store",
+    "module_name": "i18n",
+    "type": "show",
+    "url_prefix": "/i18n"
+}

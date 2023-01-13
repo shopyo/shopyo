@@ -22,3 +22,6 @@ Here is a demo of the file:
     login_manager = LoginManager()
     migrate = Migrate()
     mail = Mail()
+
+
+installed_packages is used to define packages you'd like to load. Try 'shopyo-demo' to start then go to /demo
