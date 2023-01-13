@@ -24,7 +24,7 @@ def admin_required(f):
         if current_user.is_admin:
             return f(*args, **kwargs)
         else:
-            flash(notify_warning("You need to be an admin to view this page."))
-            return redirect(url_for("dashboard.index"))
+
+            return redirect("/")
 
     return wrap

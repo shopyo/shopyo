@@ -6,6 +6,7 @@ from flask import current_app
 from flask import flash
 from flask import render_template
 from flask_login import login_required
+from modules.box__default.appadmin.admin import admin_required
 from modules.box__default.auth.decorators import check_confirmed
 
 from shopyo.api.html import notify_success
@@ -22,6 +23,7 @@ all_info = {}
 @dashboard_blueprint.route("/")
 @login_required
 @check_confirmed
+@admin_required
 def index():
     context = {}
 
