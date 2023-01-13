@@ -33,4 +33,5 @@ jobs:
         pip install -r requirements/dev.txt
     - name: Run pytest
       run: |
+        cd shopyo/
         python -m pytest
