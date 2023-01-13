@@ -86,6 +86,10 @@ We have a 100% first-timers friendly policy. Check out the [testimonials](https:
 
 > Thank you! One of the best onboarding experiences I've had. Learned a lot too (Ramon from Codesee.io)
 
+# Glimpse
+
+![](https://github.com/shopyo/shopyo/raw/dev/assets/comparison.png)
+
 # Who uses Shopyo?
 
 |   site name    |    description     |
