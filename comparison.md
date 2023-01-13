@@ -19,5 +19,5 @@
 | Queue                 | 🔴          | 🔴          | 🟢          |
 | Testing               | 🟢          | 🟢          | 🟢          |
 | Project Docs*         | 🟢          | 🔴          | 🔴          |
-| Internationalisation  | 🔴          | 🟢          | 🔴          |
+| Internationalisation  | 🟢          | 🟢          | 🔴          |
 | Caching               | 🔴          | 🟢          | 🟢          |
