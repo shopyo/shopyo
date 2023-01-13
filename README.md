@@ -25,7 +25,7 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 # Why?
 
 | Perk |  |
-|:--:|:--:|
+|:--|:--:|
 | 🥏 No learning  | Does not get into the way, uses common flask-packages. You only need to know Flask. |
 | 🏗️ Architecture | Never think about architecture of your app, just build & integrate extensions. |
 | 🏢 Scalable | As your app grows, Shopyo caters for your codebase with powerful features. |
