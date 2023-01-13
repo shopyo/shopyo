@@ -14,7 +14,7 @@ Must watch: [Shopyo: Your Mega Flask Machine](https://youtu.be/pvwvRi6iMds) (sho
 
 E-commerce modules transferred to [ShopCube](https://github.com/shopyo/shopcube)
 
-**[ [DOCS](https://shopyo.readthedocs.io/en/latest/) | [DISCORD](https://discord.gg/k37Ef6w) | [CONTRIBUTE](https://shopyo.readthedocs.io/en/latest/contrib.htm) | [TWITTER](https://twitter.com/shopyoproject)]**
+**[ [DOCS](https://shopyo.readthedocs.io/en/latest/) | [DISCORD](https://discord.gg/k37Ef6w) | [CONTRIBUTE](https://shopyo.readthedocs.io/en/latest/contrib.html) | [TWITTER](https://twitter.com/shopyoproject)]**
 
 # What?
 
@@ -61,7 +61,7 @@ go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
 
 # First time contributing?
 
-We have a 100% first-timers friendly policy. Check out the [testimonials](https://shopyo.readthedocs.io/en/latest/contrib.html).
+We have a 100% first-timers friendly policy. Check out the [testimonials](https://github.com/shopyo/shopyo/discussions/307).
 
 > Thank you! One of the best onboarding experiences I've had. Learned a lot too (Ramon from Codesee.io)
 
