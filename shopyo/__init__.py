@@ -1,8 +1,13 @@
-version_info = (4, 6, 0)
+version_info = (4, 7, 0)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.7.0
+
+- i18n package
+- page module revamp
+
 4.6.0
 
 - Packages added!!!
