@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from modules.box__bizhelp.i18n.helpers import langs
+from modules.box__default.i18n.helpers import langs
 from wtforms import SelectField
 from wtforms import StringField
 from wtforms import TextAreaField

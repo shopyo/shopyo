@@ -8,8 +8,8 @@ from flask import request
 from flask import url_for
 from flask_login import login_required
 from init import db
-from modules.box__bizhelp.i18n.helpers import get_current_lang
-from modules.box__bizhelp.i18n.helpers import lang_keys
+from modules.box__default.i18n.helpers import get_current_lang
+from modules.box__default.i18n.helpers import lang_keys
 
 from .forms import PageForm
 from .models import Page
