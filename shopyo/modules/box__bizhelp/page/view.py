@@ -7,6 +7,7 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from flask_login import login_required
+from init import db
 from modules.box__bizhelp.i18n.helpers import get_current_lang
 from modules.box__bizhelp.i18n.helpers import lang_keys
 
@@ -36,7 +37,7 @@ def index_all():
     return render_template("page/all_pages.html", **context)
 
 
-@module_blueprint.route(mhelp.info["dashboard"] + "/edit")
+@module_blueprint.route(mhelp.info["dashboard"] + "/all-pages")
 def index():
     context = {}
     pages = Page.query.all()
@@ -45,8 +46,8 @@ def index():
     return render_template("page/all_pages.html", **context)
 
 
-@module_blueprint.route("/s/<slug>", methods=["GET"])
-def view_page(slug):
+@module_blueprint.route("dashboard/s/<slug>", methods=["GET"])
+def view_page_dashboard(slug):
     context = {}
     page = Page.query.filter(Page.slug == slug).first()
     form = PageForm(obj=page)
@@ -57,6 +58,14 @@ def view_page(slug):
     form.lang.data = lang_arg
 
     context.update({"page": page, "form": form})
+    return render_template("page/view_page_dashboard.html", **context)
+
+
+@module_blueprint.route("/s/<slug>", methods=["GET"])
+def view_page(slug):
+    context = {}
+    page = Page.query.filter(Page.slug == slug).first()
+    context.update({"page": page})
     return render_template("page/view_page.html", **context)
 
 
@@ -83,6 +92,33 @@ def check_pagecontent():
             slug=form.slug.data,
             title=form.title.data,
         )
+        db.session.add(toaddpage)
+        db.session.flush()
         toaddpage.insert_lang(form.lang.data, form.content.data)
         toaddpage.save()
         return redirect(url_for(f"{module_name}.dashboard"))
+
+
+@module_blueprint.route("/edit_pagecontent", methods=["GET", "POST"])
+@login_required
+def edit_pagecontent():
+    if request.method == "POST":
+        form = PageForm()
+        if not form.validate_on_submit():
+            flash_errors(form)
+            return redirect(url_for(f"{module_name}.dashboard"))
+
+        editpage = db.session.query(Page).get(request.form["page_id"])
+        editpage.slug = form.slug.data
+        editpage.title = form.title.data
+        editpage.content = form.content.data
+
+        editpage.set_lang(form.lang.data, form.content.data)
+        db.session.commit()
+        return redirect(
+            url_for(
+                f"{module_name}.view_page_dashboard",
+                slug=form.slug.data,
+                lang=form.lang.data,
+            )
+        )

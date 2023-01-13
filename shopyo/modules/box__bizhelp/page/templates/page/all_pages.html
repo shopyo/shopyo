@@ -18,17 +18,16 @@
 {%include 'page/blocks/sidebar.html'%}
 {%endblock%}
 {% block content %}
-
+<br>
 <div class="list-group">
+   <div class="list-group-item">
   {%for page in pages%}
-      {% if page.get_url() %}
-      <a href="{{ page.get_url() }}">
-        <div class="list-group-item">
+      {% if page.get_dashboard_url() %}
+      <a href="{{ page.get_dashboard_url() }}">
           {{page.title}}
-        </div>
-
-      </a>
+      </a><br>
       {% endif %}
   {%endfor%}
+  </div>
 </div>
 {% endblock %}
