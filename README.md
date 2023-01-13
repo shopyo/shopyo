@@ -18,11 +18,31 @@ E-commerce modules transferred to [ShopCube](https://github.com/shopyo/shopcube)
 
 # What?
 
-Your next-level modular web framework. Headless support coming soon.
+Your next-level modular web framework. Get organisation & scalability from day 1.
 
 Built on top of Flask, it offers most Django features, sometimes a tidbit more with far more flexibility.
 
-# Have a go!
+# Why?
+
+| Perk |  |
+|:--:|:--:|
+| 🥏 No learning  | Does not get into the way, uses common flask-packages. You only need to know Flask. |
+| 🏗️ Architecture | Never think about architecture of your app, just build & integrate extensions. |
+| 🏢 Scalable | As your app grows, Shopyo caters for your codebase with powerful features. |
+| 🥢 Good practices | Testing, docs etc are covered. Don't make those afterthoughts. |
+| 🔧 Ease your life | We've been there. Awesome utils to ease development. |
+| 🪜 Scaffolding | Don't waste time writing boilerplate code. We've got you covered |
+
+# Features
+
+- ⚛️ i18n setup
+- 🔐 Login & Auth
+- 📧 Email
+- 📦 2-level modularity
+- 🪐 Designed for really BIG apps
+- 🌅 Assets management
+
+# Quick start
 
 ```
 python3.9 -m venv venv
