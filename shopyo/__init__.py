@@ -1,8 +1,12 @@
-version_info = (4, 8, 2)
+version_info = (4, 8, 3)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.8.3
+
+- Fix load erros instead of passing
+
 4.8.2
 
 - Fix admin required on dashbaord
