@@ -11,11 +11,8 @@
 #      __main__.main()
 #      captured = capfd.readouterr()
 #      assert "Please use Shopyo in a virtual environment for this command" in captured.out
-import os
 import subprocess
 import sys
-
-import pytest
 
 
 def test_no_args(capfd):

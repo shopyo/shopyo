@@ -1,7 +1,6 @@
 import json
 import os
 
-from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import render_template

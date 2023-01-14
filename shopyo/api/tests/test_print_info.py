@@ -1,16 +1,11 @@
 import datetime
-import os
-import subprocess
-import sys
-
-import pytest
 
 from shopyo.api.info import printinfo
 
 
 def test_no_args(capfd):
     printinfo()
-    year = datetime.datetime.now().year
+    datetime.datetime.now().year
     captured = capfd.readouterr()
     assert (
         r"""

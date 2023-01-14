@@ -11,13 +11,10 @@ Hope it helps! We welcome all questions and even requests for walkthroughs
 """
 import importlib
 import os
-import pkgutil
 import sys
 
-import click
 import jinja2
 from flask import Flask
-from flask import session
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_login import current_user
@@ -30,7 +27,6 @@ from shopyo.api.file import trycopy
 base_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, base_path)
 from config import app_config
-from init import csrf
 
 # from init import db
 from init import load_extensions
@@ -38,7 +34,6 @@ from init import modules_path
 from init import installed_packages
 
 
-from shopyo_admin import DefaultModelView
 from shopyo_admin import MyAdminIndexView
 
 
@@ -169,7 +164,7 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                         f"modules.{folder}.{sub_folder}.view"
                     )
                     app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
-                except AttributeError as e:
+                except AttributeError:
                     pass
                 try:
                     mod_global = importlib.import_module(
