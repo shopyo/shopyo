@@ -40,7 +40,7 @@ Global values for templates can be found in shopyoapi/enhance.py in this functio
 .. literalinclude:: ../shopyo/api/enhance.py
    :language: python
    :linenos:
-   :lines: 9-15
+   :lines: 1-13
 
 Passing parameters to templates
 -------------------------------
