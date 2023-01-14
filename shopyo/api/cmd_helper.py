@@ -50,6 +50,7 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
     click.echo("Cleaning...")
     click.echo(SEP_CHAR * SEP_NUM)
     db = current_app.extensions["sqlalchemy"].db
+    print(current_app.extensions["sqlalchemy"])
 
     if clear_db:
         db.drop_all()
