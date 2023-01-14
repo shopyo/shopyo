@@ -392,9 +392,7 @@ def _verify_app(app_path, found_url_prefixes, box_name=None):
         with open(os.path.join(app_path, "info.json")) as f:
             json_data = json.load(f)
 
-        url_prefix_exists_begining = _url_prefix_exists(
-            json_data["url_prefix"], found_url_prefixes
-        )
+        _url_prefix_exists(json_data["url_prefix"], found_url_prefixes)
 
         to_check_keys = ["module_name", "url_prefix"]
         not_found = []
@@ -426,7 +424,7 @@ def _verify_app(app_path, found_url_prefixes, box_name=None):
             json_data["url_prefix"], found_url_prefixes
         )
 
-        if url_prefix_exists["status"] == True:
+        if url_prefix_exists["status"] is True:
             msg = (
                 f"warning: url_prefix '{json_data['url_prefix']}' exists in"
                 f" '{app_path}' and '{url_prefix_exists['data']['path']}'"
@@ -589,7 +587,7 @@ def _rename_app(old_app_name, new_app_name):
         box_name = old_app_name.split("/")[0]
         if name_is_box(new_app_name):
             app_part = old_app_name.split("/")[1]
-            app_name = new_app_name.split("/")[1]
+            new_app_name.split("/")[1]
 
         if not path_exists(os.path.join(modules_path, box_name, app_part)):
             click.echo(f"App {old_app_name} does not exist")

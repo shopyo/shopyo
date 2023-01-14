@@ -39,7 +39,7 @@ class Page(PkModel):
     def get_content(self, lang=None):
         if not lang:
             lang = session.get("yo_current_lang", "en")
-        page = Page.query.get(self.id)
+        Page.query.get(self.id)
         record = LangRecord.query.filter(
             LangRecord.strid == self.get_strid(), LangRecord.lang == lang
         ).first()

@@ -11,9 +11,7 @@ import click
 from flask.cli import FlaskGroup
 from flask.cli import pass_script_info
 from init import db
-from init import modules_path
 from init import root_path
-from init import static_path
 
 from shopyo.api.cmd_helper import tryrmcache
 from shopyo.api.cmd_helper import tryrmfile
@@ -134,7 +132,7 @@ def initialise():
                         f"modules.{folder}.{sub_folder}.upload"
                     )
                     upload.upload()
-                except ImportError as e:
+                except ImportError:
                     # print(e)
                     pass
         else:
@@ -142,7 +140,7 @@ def initialise():
             try:
                 upload = importlib.import_module(f"modules.{folder}.upload")
                 upload.upload()
-            except ImportError as e:
+            except ImportError:
                 # print(e)
                 pass
 

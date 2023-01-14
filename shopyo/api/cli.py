@@ -21,8 +21,6 @@ from shopyo.api.cmd_helper import _upload_data
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 from shopyo.api.database import autoload_models
-from shopyo.api.file import path_exists
-from shopyo.api.file import trycopy
 from shopyo.api.file import tryrmtree
 from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists

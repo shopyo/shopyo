@@ -3,10 +3,6 @@
    :synopsis: All endpoints of the admin views are defined here.
 
 """
-import json
-import os
-
-from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import render_template

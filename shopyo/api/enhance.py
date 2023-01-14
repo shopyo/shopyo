@@ -1,10 +1,3 @@
-import json
-import os
-
-from flask import current_app
-from flask import url_for
-
-
 def base_context():
     """
     Used to define global template values
