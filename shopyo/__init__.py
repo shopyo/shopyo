@@ -1,8 +1,12 @@
-version_info = (4, 8, 5)
+version_info = (4, 8, 6)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.8.6
+
+- Fixes for sqlalchemy db & other upgrade supports
+
 4.8.5
 
 - Tests and docs fixes
