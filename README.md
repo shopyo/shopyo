@@ -57,7 +57,9 @@ If errors do (linux, use `set <VAR>` for Windows):
 
 ```
 export SHOPYO_CONFIG_PROFILE=development
-export FLASK_ENV=development
+export FLASK_ENV=development # < flask 2.2.x
+export ENV=development
+export FLASK_DEBUG=development # < flask 2.2.x
 export FLASK_APP=app.py
 ```
 

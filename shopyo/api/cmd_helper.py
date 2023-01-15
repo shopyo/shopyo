@@ -49,8 +49,10 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
     """
     click.echo("Cleaning...")
     click.echo(SEP_CHAR * SEP_NUM)
-    db = current_app.extensions["sqlalchemy"].db
-    print(current_app.extensions["sqlalchemy"])
+    try:
+        db = current_app.extensions["sqlalchemy"].db
+    except:
+        db = current_app.extensions["sqlalchemy"]
 
     if clear_db:
         db.drop_all()
@@ -362,6 +364,7 @@ def _run_app(mode):
 
     os.environ["FLASK_APP"] = f"app:create_app('{mode}')"
     os.environ["FLASK_ENV"] = mode
+    os.environ["ENV"] = mode
     run(["flask", "run"])
 
 

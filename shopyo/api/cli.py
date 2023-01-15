@@ -51,6 +51,7 @@ def cli(info, **parmams):
     info.data["config"] = config_name
     os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
     os.environ["FLASK_ENV"] = config_name
+    os.environ["ENV"] = config_name
 
 
 @cli.command("startbox", with_appcontext=False)
