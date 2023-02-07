@@ -51,7 +51,6 @@ def index():
                     module_info = json.load(f)
                     all_info[sub_folder] = module_info
         else:
-
             if folder not in ["dashboard"]:
                 with open(
                     os.path.join(

@@ -8,7 +8,6 @@ import pytest
 class TestAppConfigs:
     @pytest.mark.parametrize("app_type", ["development"])
     def test_dev_app_config(self, app):
-
         config = app.config
 
         assert "ENV" in config

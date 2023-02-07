@@ -30,7 +30,6 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 @module_blueprint.route("/register", methods=["GET", "POST"])
 def register():
-
     context = {}
     reg_form = RegistrationForm()
 
@@ -66,7 +65,6 @@ def register():
 @module_blueprint.route("/confirm/<token>")
 @login_required
 def confirm(token):
-
     if current_user.is_email_confirmed:
         flash(notify_warning("Account already confirmed."))
         return redirect(url_for("dashboard.index"))
@@ -82,7 +80,6 @@ def confirm(token):
 @module_blueprint.route("/resend")
 @login_required
 def resend():
-
     if current_user.is_email_confirmed:
         return redirect(url_for("dashboard.index"))
 

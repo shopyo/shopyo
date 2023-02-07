@@ -75,7 +75,6 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
 
 
 def _collectstatic(target_module="modules", verbose=False):
-
     """
     Copies ``module/static`` into ``/static/modules/module``.
     In static it becomes like
@@ -109,7 +108,6 @@ def _collectstatic(target_module="modules", verbose=False):
     # if target_module path does not start with 'modules\' add it to as a
     # prefix to the target_module path
     if target_module != "modules":
-
         # normalize the target_module path to be same as that of OS
         target_module = re.split(r"[/|\\]+", target_module)
         target_module_start = target_module[0]
@@ -251,7 +249,6 @@ def _upload_data(verbose=False):
 
 
 def _create_box(boxname, verbose=False):
-
     base_path = os.path.join("modules", boxname)
     trymkdir(base_path, verbose=verbose)
 
@@ -407,7 +404,6 @@ def _verify_app(app_path, found_url_prefixes, box_name=None):
                 audit_info["issues"].append(msg)
 
         if ("module_name" not in not_found) and ("url_prefix" not in not_found):
-
             if (json_data["module_name"].strip() == "") or (
                 json_data["url_prefix"].strip() == ""
             ):
@@ -571,7 +567,6 @@ def name_is_box(app_name):
 
 
 def _rename_app(old_app_name, new_app_name):
-
     # box_
     if old_app_name.startswith("box") and not old_app_name.startswith("box__"):
         click.echo('Box names start with two __, example: "box__default"')

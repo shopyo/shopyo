@@ -318,7 +318,6 @@ def new(projname, verbose, modules):
     here = os.getcwd()
 
     if projname == "":
-
         projname = os.path.basename(here)
 
         # the base/root project folder where files such as README, docs,
