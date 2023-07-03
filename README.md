@@ -50,6 +50,7 @@ pip install shopyo==4.4.3
 mkdir blog
 cd blog
 shopyo new -m # add default modules
+cd blog
 shopyo run
 ```
 
