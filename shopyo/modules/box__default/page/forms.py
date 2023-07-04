@@ -12,7 +12,6 @@ from shopyo.api.validators import verify_slug
 
 
 class PageForm(FlaskForm):
-
     content = TextAreaField(
         "Content",
         [],

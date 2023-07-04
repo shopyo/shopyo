@@ -84,7 +84,6 @@ class TestAnonymousUser:
         assert bool(user.email)
 
     def test_anonymous_user_representation(self):
-
         user = AnonymousUser()
 
         assert repr(user) == "<AnonymousUser guest>"

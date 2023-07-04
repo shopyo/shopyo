@@ -22,7 +22,6 @@ def admin_required(f):
         if current_user.is_admin:
             return f(*args, **kwargs)
         else:
-
             return redirect("/")
 
     return wrap
