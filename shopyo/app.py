@@ -38,7 +38,6 @@ from shopyo_admin import MyAdminIndexView
 
 
 def create_app(config_name="development"):
-
     global_template_variables = {}
     global_configs = {}
     app = Flask(
@@ -98,7 +97,6 @@ def load_plugins(app, global_template_variables, global_configs, config_name):
 
 
 def load_config_from_obj(app, config_name):
-
     try:
         configuration = app_config[config_name]
     except KeyError as e:
@@ -112,7 +110,6 @@ def load_config_from_obj(app, config_name):
 
 
 def load_config_from_instance(app, config_name):
-
     if config_name != "testing":
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile("config.py", silent=True)

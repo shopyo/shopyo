@@ -43,7 +43,6 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 @module_blueprint.route("/")
 @login_required
 def index():
-
     context = {}
 
     front_themes_path = os.path.join(

@@ -371,7 +371,6 @@ def createmodulebox(string):
 
 
 def collect_static(target_module="modules", verbose=False):
-
     """
     Copies ``module/static`` into ``/static/modules/module``.
     In static it becomes like
@@ -399,7 +398,6 @@ def collect_static(target_module="modules", verbose=False):
     # if target_module path does not start with 'modules\' add it to as a
     # prefix to the target_module path
     if target_module != "modules":
-
         # normalize the target_module path to be same as that of OS
         target_module = re.split(r"[/|\\]+", target_module)
         target_module_start = target_module[0]

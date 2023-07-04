@@ -9,7 +9,6 @@ from shopyo.api.models import PkModel
 
 
 class Page(PkModel):
-
     __tablename__ = "pages"
 
     created_date = db.Column(db.DateTime, default=datetime.now())

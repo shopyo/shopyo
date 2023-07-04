@@ -7,7 +7,6 @@ from wtforms.validators import ValidationError
 
 
 def get_module_path_if_exists(name):
-
     root_path = os.getcwd()
 
     for folder in os.listdir(os.path.join(root_path, "modules")):
@@ -62,7 +61,6 @@ def is_valid_url(url):
 
 
 def verify_slug(form, field):
-
     if not is_valid_slug(field.data):
         raise ValidationError(
             "Slugs can only contain alphabets, numbers and hyphens (-). eg. good-day-1"

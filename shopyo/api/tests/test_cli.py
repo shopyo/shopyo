@@ -433,7 +433,6 @@ class TestCliNew:
 
     @pytest.mark.parametrize("proj,parent", [("", "foo"), ("bar", "")])
     def test_new_project_valid_name(self, cli_runner, tmp_path, proj, parent):
-
         # create the parent folder for foo and none for bar proj
         temp_proj = tmp_path / parent
         # print(temp_proj)
@@ -637,7 +636,6 @@ class TestCliCollectstatic:
         assert len(os.listdir("static/modules")) == 1
 
     def test_collectstatic_with_invalid_arg(self, cli_runner):
-
         result = cli_runner("collectstatic", "foobar")
         modules_path = os.path.join("modules", "foobar")
         modules_path = os.path.join(os.getcwd(), modules_path)
@@ -649,7 +647,6 @@ class TestCliCollectstatic:
 
     @pytest.mark.parametrize("option", ["-v", "--verbose"])
     def test_collectstatic_with_verbose(self, cli_runner, option):
-
         result = cli_runner("collectstatic", option)
         expected_out1 = "Collecting static...\n" + SEP_CHAR * SEP_NUM + "\n"
         expected_out2 = "[x] done copying"
