@@ -9,6 +9,7 @@ Flask-WTF>=1.0.0
 marshmallow>=3.14.0
 marshmallow-sqlalchemy>=0.26.1
 SQLAlchemy>=1.4.27
+SQLAlchemy<=1.4.49
 Werkzeug>=2.0.2
 WTForms>=3.0.0
 email-validator
