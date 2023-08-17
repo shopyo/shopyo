@@ -1,5 +1,6 @@
 import importlib
 import os
+import sys
 
 import click
 
@@ -47,7 +48,16 @@ def autoload_models(verbose=False):
                     click.echo(f"[ ] {e}")
 
     # installed modules
-    from init import installed_packages
+    try:
+        from init import installed_packages
+    except ImportError:
+        click.echo(
+            "This version of Shopyo requires that\n"
+            "init.py contains the line\n"
+            "installed_packages = []\n"
+            "please add it."
+        )
+        sys.exit()
 
     try:
         for plugin in installed_packages:

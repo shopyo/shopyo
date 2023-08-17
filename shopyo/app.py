@@ -13,6 +13,7 @@ import importlib
 import os
 import sys
 
+import click
 import jinja2
 from flask import Flask
 from flask_admin import Admin
@@ -31,8 +32,17 @@ from config import app_config
 # from init import db
 from init import load_extensions
 from init import modules_path
-from init import installed_packages
 
+try:
+    from init import installed_packages
+except ImportError:
+    click.echo(
+        "This version of Shopyo requires that\n"
+        "init.py contains the line\n"
+        "installed_packages = []\n"
+        "please add it."
+    )
+    sys.exit()
 
 from shopyo_admin import MyAdminIndexView
 

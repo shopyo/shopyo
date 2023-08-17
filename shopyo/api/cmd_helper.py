@@ -173,8 +173,16 @@ def _collectstatic(target_module="modules", verbose=False):
 
     # load packages
 
-    from init import installed_packages
-
+    try:
+        from init import installed_packages
+    except ImportError:
+        click.echo(
+            "This version of Shopyo requires that\n"
+            "init.py contains the line\n"
+            "installed_packages = []\n"
+            "please add it."
+        )
+        sys.exit()
     for plugin in installed_packages:
         try:
             plugin_mod = importlib.import_module(plugin)
