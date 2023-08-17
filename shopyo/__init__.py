@@ -1,8 +1,13 @@
-version_info = (4, 8, 6)
+version_info = (4, 9, 0)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.9.0
+
+- Provide more info on missing installed_packages
+- Bound SQLAlchemy version
+
 4.8.6
 
 - Fixes for sqlalchemy db & other upgrade supports

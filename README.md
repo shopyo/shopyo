@@ -55,6 +55,16 @@ shopyo initialise
 shopyo run
 ```
 
+
+```bash
+pip install shopyo==4.4.3
+mkdir blog
+cd blog
+shopyo new
+cd blog
+shopyo run
+```
+
 If errors do (linux, use `set <VAR>` for Windows):
 
 ```
