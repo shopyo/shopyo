@@ -51,6 +51,7 @@ mkdir blog
 cd blog
 shopyo new -m # add default modules
 cd blog
+shopyo initialise
 shopyo run
 ```
 
