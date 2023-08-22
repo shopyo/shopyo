@@ -19,7 +19,7 @@ module_blueprint = globals()[mhelp.blueprint_str]
 all_info = {}
 
 
-@dashboard_blueprint.route("/")
+@module_blueprint.route("/")
 @login_required
 @check_confirmed
 @admin_required
