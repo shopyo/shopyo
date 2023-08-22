@@ -4,6 +4,7 @@ from flask import request
 from flask import url_for
 from flask_login import login_required
 from init import db
+from modules.box__default.appadmin.admin import admin_required
 from modules.box__default.i18n.helpers import get_current_lang
 
 from .forms import PageForm
@@ -24,6 +25,8 @@ module_settings = {"sidebar": sidebar}
 
 
 @module_blueprint.route(mhelp.info["dashboard"] + "/all")
+@login_required
+@admin_required
 def index_all():
     context = {}
     pages = Page.query.all()
@@ -33,6 +36,8 @@ def index_all():
 
 
 @module_blueprint.route(mhelp.info["dashboard"] + "/all-pages")
+@login_required
+@admin_required
 def index():
     context = {}
     pages = Page.query.all()
@@ -42,6 +47,8 @@ def index():
 
 
 @module_blueprint.route("dashboard/s/<slug>", methods=["GET"])
+@login_required
+@admin_required
 def view_page_dashboard(slug):
     context = {}
     page = Page.query.filter(Page.slug == slug).first()
@@ -66,6 +73,7 @@ def view_page(slug):
 
 @module_blueprint.route(mhelp.info["dashboard"])
 @login_required
+@admin_required
 def dashboard():
     context = {}
     form = PageForm()
@@ -77,6 +85,7 @@ def dashboard():
 
 @module_blueprint.route("/check_pagecontent", methods=["GET", "POST"])
 @login_required
+@admin_required
 def check_pagecontent():
     if request.method == "POST":
         form = PageForm()
@@ -96,6 +105,7 @@ def check_pagecontent():
 
 @module_blueprint.route("/edit_pagecontent", methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_pagecontent():
     if request.method == "POST":
         form = PageForm()
