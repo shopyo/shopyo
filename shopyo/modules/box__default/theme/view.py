@@ -7,6 +7,7 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 from flask_login import login_required
+from modules.box__default.appadmin.admin import admin_required
 from modules.box__default.settings.helpers import get_setting
 from modules.box__default.settings.helpers import set_setting
 
@@ -42,6 +43,7 @@ module_blueprint = globals()["{}_blueprint".format(module_info["module_name"])]
 
 @module_blueprint.route("/")
 @login_required
+@admin_required
 def index():
     context = {}
 
@@ -87,6 +89,7 @@ def index():
 
 @module_blueprint.route("/activate/front/<theme_name>")
 @login_required
+@admin_required
 def activate_front_theme(theme_name):
     set_setting("ACTIVE_FRONT_THEME", theme_name)
 
@@ -99,6 +102,7 @@ def activate_front_theme(theme_name):
 
 @module_blueprint.route("/activate/back/<theme_name>")
 @login_required
+@admin_required
 def activate_back_theme(theme_name):
     set_setting("ACTIVE_BACK_THEME", theme_name)
 
