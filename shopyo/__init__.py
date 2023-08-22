@@ -1,8 +1,12 @@
-version_info = (4, 9, 1)
+version_info = (4, 9, 2)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.9.2
+
+- Fix missing import
+
 4.9.1
 
 - Improtant security fixes to box__default
