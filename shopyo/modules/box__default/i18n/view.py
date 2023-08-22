@@ -4,7 +4,7 @@ from flask import session
 from modules.box__default.i18n.helpers import lang_keys
 
 from shopyo.api.module import ModuleHelp
-from shopyo.api.security import get_safe_url
+from shopyo.api.security import get_safe_redirect
 
 # from flask import render_template
 # from flask import url_for
@@ -34,7 +34,7 @@ def set_lang():
         session["yo_current_lang"] = set_to_lang
         session["yo_default_lang"] = set_to_lang
 
-        return redirect(get_safe_url(next_url))
+        return redirect(get_safe_redirect(next_url))
 
 
 # If "dashboard": "/dashboard" is set in info.json
