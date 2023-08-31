@@ -52,7 +52,7 @@ cd blog
 shopyo new -m # add default modules
 cd blog
 shopyo initialise
-shopyo run
+flask run --debug
 ```
 
 
@@ -62,7 +62,7 @@ mkdir blog
 cd blog
 shopyo new
 cd blog
-shopyo run
+flask run --debug
 ```
 
 If errors do (linux, use `set <VAR>` for Windows):
