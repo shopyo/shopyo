@@ -1,8 +1,12 @@
-version_info = (4, 9, 3)
+version_info = (4, 9, 4)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.9.4
+
+- loosen sqlalchemy requirment; initialize still expected to fail, but package usable
+
 4.9.3
 
 - Remove marshmallow from deps
