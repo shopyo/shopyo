@@ -1,8 +1,12 @@
-version_info = (4, 9, 4)
+version_info = (4, 9, 5)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.9.5
+
+- initialize supports sqlalchemy 2.0
+
 4.9.4
 
 - loosen sqlalchemy requirment; initialize still expected to fail, but package usable
