@@ -6,6 +6,7 @@ import json
 import os
 import re
 import sys
+from importlib.metadata import version
 from subprocess import run
 
 import click
@@ -56,7 +57,17 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
 
     if clear_db:
         db.drop_all()
-        db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
+        sqlalchemy_version = version("sqlalchemy").split(".")
+
+        sql = "DROP TABLE IF EXISTS alembic_version;"
+        if int(sqlalchemy_version[0]) <= 1:
+            db.engine.execute(sql)
+        else:
+            from sqlalchemy import text
+
+            with db.engine.begin() as conn:
+                result = conn.execute(text(sql))
+                conn.commit()
 
         tryrmfile(os.path.join(os.getcwd(), "shopyo.db"), verbose=verbose)
         if verbose:
