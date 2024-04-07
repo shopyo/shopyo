@@ -1,15 +1,92 @@
 ## Unreleased
 
+### Feat
+
+- support sqlalchemy 2.0
+
+## 4.9.4 (2024-04-04)
+
+## 4.9.3 (2023-08-24)
+
+## 4.9.2 (2023-08-22)
+
 ### Fix
 
-- check conditions for app elements naming warnings
-- tests
-- tests
+- import error in i18n
+
+## 4.9.1 (2023-08-22)
+
+### Fix
+
+- missing imports in i18n
+- secure admin access to theme module
+- secure admin access to page module
+- dashboard module route
+
+## 4.9.0 (2023-08-17)
 
 ### Feat
 
-- stricter app audits
+- errors (#145)
+- debug mode
+
+### Fix
+
+- install deps
+- Add wsgi.py as example
+- Add autoapp as example
+
+## v4.8.3 (2023-01-13)
+
+### Fix
+
+- dashboard open to non admin
+- security alert
+- **3.5.7**: upload key
+
+## v4.5.2 (2022-04-16)
+
+### Feat
+
+- add url_conflict detection to audit command, closes #103 (#108)
+
+### Fix
+
+- get_static path not from templates
+- serving static assets via api.assets.get_static
+
+## v4.4.3 (2022-04-12)
+
+### Fix
+
+- initialise command failing
+- email-validator version pining
+
+## v4.4.1 (2022-04-11)
+
+### Feat
+
+- rename command for boxes and apps (#93)
+
+### Fix
+
+- adjust audit warning levels (#97)
+- remove 3.6 for tox
+- remove 3.6 for tests
+- removed db-dependent function to render default www page
+- shopyo image banner in readme
+- commented out failing tests
+
+## v4.3.2 (2022-04-09)
+
+### Feat
+
 - shopyo audit (#90)
+
+### Fix
+
+- tests
+- tests
 
 ### Refactor
 
@@ -26,13 +103,17 @@
 
 ### Fix
 
-- clear migrations folder
 - add no-action flag
 - clear migrations folder
 - Improve homepage wording
-- Improve homepage wording
 
 ## v4.1.2 (2021-05-19)
+
+### Feat
+
+- api.templates.yo_render
+- cli.py is added
+that allows users to add their own project command
 
 ### Fix
 
@@ -41,13 +122,10 @@
 - style
 - test syntax
 - test for new command
-- test for new command
 - new command: shopyo.png
 - Set logo to shopyo.png
-- Set logo to shopyo.png
-- auto create config
 - adding FLASK_APP is causing importError which causes shopyo initialise to fail. Commented that part for now
-- collecstatic args not consistent with collectstatic
+- auto create config
 - tests
 - collecstatic args not consistent with collectstatic
 - sqlalchemy issue
@@ -55,16 +133,8 @@
 - path bug
 - merge
 
-### Feat
-
-- api.templates.yo_render
-- api.templates.yo_render
-- cli.py is added
-that allows users to add their own project command
-
 ### Refactor
 
-- use click for cli instead of argv parsing
 - add the shopyo info message before each command
 - rename files and commmands
 - delete unused files
@@ -78,6 +148,16 @@ that allows users to add their own project command
 - use click for cli insteade of argv parsing
 
 ## v3.9.0 (2021-03-01)
+
+### Feat
+
+- rm ecommerce
+- add email confirmation disable option in configs
+- add email confirmation
+- added uploads protocol
+- collectstatic command
+- announcement module completed
+- add CRUD DB model and other DB utilities
 
 ### Fix
 
@@ -105,7 +185,6 @@ that allows users to add their own project command
 - not redirect for login
 - remove testing endpoint checks
 - add flask-admin to requirements
-- remove requests package
 - remove requests package requests package removed from requirements.txt and dev_requirements.txt fixes #383
 - use thread join for testing send_async_email
 - unused imports
@@ -117,7 +196,6 @@ that allows users to add their own project command
 - #340 merge caused unable to compile code now fixed
 - running test does not clear shopyo.db
 - theme path in theme/view.py
-- running test does not clear shopyo.db
 - lint
 - login to auth renaming
 - themes to static folder
@@ -127,49 +205,24 @@ that allows users to add their own project command
 - added panel-control for back theme
 - Added front theme in front folder (themes/front/...)
 - remove theme info from app.py
-- delete category name with hyphen(-)
-- add check for anonymous user; correct flash message
 - add check for anonymous user; correct flash message
 - scrolling for long content
 - failing test
 - review issues with branch
 - style errors
 - replace pycodestyle with flake8
-- add the SERVER_NAME in test config to allow url_for to be used
 - add the SERVER_NAME in test config to allow url_for to be used without errors
-- update tox to fix test warning. add tox to dev_requirements
 - update tox to fix test warning. add tox to dev_requirements
 
 ### Refactor
 
 - use intance folder or .env to hide secrets
-- use intance folder or .env to hide secrets
-- separate requirements.txt and dev_requirements.txt
 - separate requirements.txt and dev_requirements.txt
 - update clean cmd arg and add tests
-- update clean cmd arg and add tests
-- readable tests for category module
 - readable tests for category module
 - admin test with less code and easier to read
-- admin test with less code and easier to read
-- change the name of crud db model
 - change the name of crud db model
 - add the crud helper class for admin models
-- add the crud helper class for admin models
-
-### Feat
-
-- rm ecommerce
-- rm ecommerce
-- add email confirmation disable option in configs
-- add email confirmation disable option in configs
-- add email confirmation
-- add email confirmation
-- added uploads protocol
-- collectstatic command
-- announcement module completed
-- add CRUD DB methods and other DB utilities
-- add CRUD DB model and other DB utilities
 
 ## v3.3.6 (2021-01-09)
 
@@ -182,11 +235,9 @@ that allows users to add their own project command
 - change import statement layout, update travis
 - remove the deprecaited yield fixture call causing warning
 - partial alerts
-- partial alerts
 - merge conflict on 2nd commit of previous branch
 - tests
 - correct the linting
-- dev_requriements.txt was misspelled in .travis.yml
 - sphinx build command should be before changing directory
 - marshmallow_sqlalchemy broken in python 3.5. Removing python 3.5 check
 - dev_requriements.txt was misspelled in .travis.yml
@@ -194,7 +245,6 @@ that allows users to add their own project command
 - docs
 - add global.py in modules and removed dummy folder
 - get_symbol_currency not found
-- add missing packages in dev-requiremnts.txt
 - add missing packages in dev-requiremnts.txt
 - screenshot update
 
@@ -218,29 +268,24 @@ that allows users to add their own project command
 
 ### Fix
 
-- page dashboard
 - page dashboard + icon colors
 
 ## v1.2.4 (2020-10-09)
 
-### Refactor
-
-- checking module name to follow certain constraints
-- checking module name to follow certain constraints
-
 ### Feat
 
 - added manufacturer details in people module
+
+### Refactor
+
+- checking module name to follow certain constraints
 
 ## v1.1.7 (2020-10-04)
 
 ### Fix
 
 - Several of issues found on products module are fixed - enhanced
-- Several of issues found on products module are fixed - enhanced
 - Several of issues found on products module are fixed
-- Several of issues found on products module are fixed
-- 138
 - 138
 
 ## v1.2.0 (2020-03-29)
