@@ -4,7 +4,8 @@ python:
     - requirements: requirements/docs.txt
     - method: pip
       path: .
-build.os: ubuntu-lts-latest
+build:
+  os: ubuntu-22.04
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
   configuration: docs/conf.py
