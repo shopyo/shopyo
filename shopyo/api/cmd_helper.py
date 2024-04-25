@@ -386,9 +386,7 @@ def _run_app(mode):
 
 def _check_modules_path(root_path):
     modules_path = os.path.join(root_path, "modules")
-    if path_exists(modules_path):
-        pass
-    else:
+    if not path_exists(modules_path):
         click.echo("Modules folder not found!")
         sys.exit()
 
