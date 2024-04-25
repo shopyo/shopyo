@@ -163,7 +163,7 @@ def create_module(modulename, base_path=None):
 
     """
 
-    if bool(re.match(r"^[A-Za-z0-9_]+$", modulename)) is False:
+    if bool(re.match(r"^[\w]+$", modulename)) is False:
         print(
             "Error: modulename is not valid, please use alphanumeric             and"
             " underscore only"
