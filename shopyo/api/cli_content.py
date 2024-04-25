@@ -489,7 +489,7 @@ def get_index_rst_content(projname):
     return content
 
 
-def get_docs_rst_content(projname):
+def get_docs_rst_content():
     content = textwrap.dedent(
         """\
         .. :tocdepth:: 5
