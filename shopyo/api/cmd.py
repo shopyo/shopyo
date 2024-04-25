@@ -35,7 +35,6 @@ def _create_shopyo_app(info):
 def cli(info, **parmams):
     """CLI for shopyo"""
     printinfo()
-    pass
 
 
 @cli.command("new")
