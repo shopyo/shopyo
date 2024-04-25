@@ -256,7 +256,7 @@ def get_setup_py_content(projname):
 
 def get_manifest_ini_content(projname):
     content = textwrap.dedent(
-        """\
+        f"""\
         include requirements.txt
         include dev_requirements.txt
         exclude config.json
