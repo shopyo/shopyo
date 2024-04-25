@@ -39,6 +39,7 @@ def cli(info, **parmams):
 
 @cli.command("new")
 def new(help="shopyo new or shopyo new <folder>"):
+    '''Added only to get the new command for click if i remember well.'''
     pass
 
 
