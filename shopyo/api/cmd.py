@@ -345,15 +345,14 @@ def create_module_in_box(modulename, boxname):
 
 
 def createmodulebox(string):
-    # todo: add a proper result class
-    exit = True
+    exit_status = True
     message = ""
 
     if "/" in string:
         if string.count("/") != 1:
-            exit = False
+            exit_status = False
             message = "more than one / found in argument"
-            return [exit, message]
+            return [exit_status, message]
         elif string.count("/") == 1:
             boxname = string.split("/")[0]
             modulename = string.split("/")[1]
@@ -367,7 +366,7 @@ def createmodulebox(string):
         create_module(string)
 
     message = "Created successfully!"
-    return [exit, message]
+    return [exit_status, message]
 
 
 def collect_static(target_module="modules", verbose=False):
