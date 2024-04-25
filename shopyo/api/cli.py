@@ -484,7 +484,7 @@ def new(projname, verbose, modules):
     # create docs page
     trymkfile(
         os.path.join(sphinx_src, "docs.rst"),
-        get_docs_rst_content(projname),
+        get_docs_rst_content(),
         verbose=verbose,
     )
 
