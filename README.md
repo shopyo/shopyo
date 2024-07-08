@@ -46,7 +46,7 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 # Quick start
 
 ```bash
-pip install shopyo==4.9.3
+pip install shopyo # always ensure latest version
 mkdir blog
 cd blog
 shopyo new -m # add default modules
