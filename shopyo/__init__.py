@@ -1,8 +1,12 @@
-version_info = (4, 9, 5)
+version_info = (4, 10, 0)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.10.0
+
+- base module now ships in a separate package: shopyo_base
+
 4.9.5
 
 - initialize supports sqlalchemy 2.0
