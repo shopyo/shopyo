@@ -1,7 +1,3 @@
-"""
-All initializations like db = SQLAlchemy in this file
-"""
-
 import os
 
 from flask_login import LoginManager
@@ -11,7 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from shopyo_base import ShopyoBase
 
-# from flask_marshmallow import Marshmallow, uncommented as not updated to support flask 2.x
 
 root_path = os.path.dirname(os.path.abspath(__file__))  # don't remove
 static_path = os.path.join(root_path, "static")  # don't remove
@@ -22,7 +17,6 @@ installed_packages = []  # don't remove
 installed_packages = []
 
 db = SQLAlchemy()
-# ma = Marshmallow()
 login_manager = LoginManager()
 migrate = Migrate()
 mail = Mail()
