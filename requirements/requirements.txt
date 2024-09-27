@@ -9,3 +9,4 @@ SQLAlchemy>=1.4.27
 Werkzeug>=2.0.2
 WTForms>=3.0.0
 email-validator
+shopyo-base
