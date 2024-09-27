@@ -2,6 +2,7 @@
 DB-related helper utilities. Taken from database.py
 file at https://github.com/cookiecutter-flask/cookiecutter-flask
 """
+
 import os
 import sys
 

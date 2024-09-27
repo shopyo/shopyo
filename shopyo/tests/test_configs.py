@@ -2,6 +2,7 @@
 test all the different configurations types in
 config.py
 """
+
 import pytest
 
 

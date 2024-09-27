@@ -2,6 +2,7 @@
 This file email.py contains functions for sending
 text and html rendered emails asynchronously
 """
+
 from threading import Thread
 
 from flask import current_app

@@ -3,6 +3,7 @@ Tests all db utilities such as CRUDMixin defined under shopapi/models.py
 Most of the test cases taken from:
 https://github.com/cookiecutter-flask/cookiecutter-flask
 """
+
 import pytest
 from flask_login import UserMixin
 from init import db

@@ -3,6 +3,7 @@ File conftest.py for auth testing contains pytest fixtures that are only in
 box__default/auth module. Refer to https://docs.pytest.org/en/stable/fixture.html
 for more details on pytest
 """
+
 import pytest
 
 

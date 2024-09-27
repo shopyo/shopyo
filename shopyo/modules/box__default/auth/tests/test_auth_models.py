@@ -2,6 +2,7 @@
 This file (test_auth_models.py) contains the units tests for
 the all `auth` module's models.
 """
+
 import datetime as dt
 
 import pytest

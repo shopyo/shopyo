@@ -3,6 +3,7 @@
    :synopsis: All endpoints of the admin views are defined here.
 
 """
+
 from flask import flash
 from flask import redirect
 from flask import render_template
