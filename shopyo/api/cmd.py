@@ -1,6 +1,7 @@
 """
 commandline utilities functions
 """
+
 import importlib
 import os
 import re
@@ -238,7 +239,7 @@ def index():
     trymkdir(f"{base_path}/templates/{modulename}/blocks")
     trymkfile(f"{base_path}/templates/{modulename}/blocks/sidebar.html", "")
     dashboard_file_content = """
-{% extends "base/module_base.html" %}
+{% extends "shopyo_base/module_base.html" %}
 {% set active_page = info['display_string']+' dashboard' %}
 {% block pagehead %}
 <title></title>
