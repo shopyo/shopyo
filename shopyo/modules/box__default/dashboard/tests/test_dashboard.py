@@ -5,6 +5,7 @@ the `login` blueprint.
 These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `login` blueprint.
 """
+
 import pytest
 from flask import request
 from flask import url_for

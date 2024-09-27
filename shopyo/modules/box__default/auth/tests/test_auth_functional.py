@@ -5,6 +5,7 @@ the `auth` blueprint.
 These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `auth` module
 """
+
 import json
 import os
 import threading

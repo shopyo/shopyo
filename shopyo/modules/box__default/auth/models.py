@@ -3,6 +3,7 @@
    :synopsis: Contains model of a user Record
 
 """
+
 import datetime
 
 from flask import current_app

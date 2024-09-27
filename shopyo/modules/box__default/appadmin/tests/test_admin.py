@@ -5,6 +5,7 @@ the `admin` blueprint.
 These tests use GETs and POSTs to different endpoints to check
 for the proper behavior of the `admin` blueprint.
 """
+
 import json
 import os
 
