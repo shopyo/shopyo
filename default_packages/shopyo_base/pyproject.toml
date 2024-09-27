@@ -33,4 +33,4 @@ where = ["."]
 exclude = ["tests*", "docs*", "examples*"]
 
 [tool.setuptools.package-data]
-flask_tabler_icons = ["static/**", "templates/**"]
+shopyo_base = ["static/**", "templates/**", "*.json"]
