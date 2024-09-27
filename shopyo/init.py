@@ -1,6 +1,7 @@
 """
 All initializations like db = SQLAlchemy in this file
 """
+
 import os
 
 from flask_login import LoginManager
@@ -8,6 +9,7 @@ from flask_mailman import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
+from shopyo_base import ShopyoBase
 
 # from flask_marshmallow import Marshmallow, uncommented as not updated to support flask 2.x
 
@@ -25,6 +27,7 @@ login_manager = LoginManager()
 migrate = Migrate()
 mail = Mail()
 csrf = CSRFProtect()
+sh_base = ShopyoBase()
 
 
 def load_extensions(app):
@@ -34,3 +37,4 @@ def load_extensions(app):
     mail.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    sh_base.init_app(app)

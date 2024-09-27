@@ -43,7 +43,7 @@ def get_module_view_content():
 def get_dashboard_html_content():
     content = textwrap.dedent(
         """\
-        {% extends "base/module_base.html" %}
+        {% extends "shopyo_base/module_base.html" %}
         {% set active_page = info['display_string']+' dashboard' %}
         {% block pagehead %}
         <title></title>

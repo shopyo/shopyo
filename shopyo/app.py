@@ -9,6 +9,7 @@ Need help?
 
 Hope it helps! We welcome all questions and even requests for walkthroughs
 """
+
 import importlib
 import os
 import sys
@@ -19,6 +20,7 @@ from flask import Flask
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_login import current_user
+from shopyo_base import ShopyoBase
 
 from shopyo.api.assets import register_devstatic
 from shopyo.api.debug import is_yo_debug
