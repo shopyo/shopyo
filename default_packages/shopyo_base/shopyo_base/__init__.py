@@ -3,7 +3,7 @@ from typing import Any
 from flask import Flask
 from shopyo_base.view import module_blueprint
 
-__version__ = "1.0.0"
+__version__ = "1.0.2"
 
 
 class ShopyoBase:
