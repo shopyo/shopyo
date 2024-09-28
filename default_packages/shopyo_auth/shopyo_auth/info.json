@@ -2,6 +2,6 @@
 	"display_string": "Login",
 	"type": "hidden",
 	"fa-icon": "fas fa-clock",
-	"module_name": "auth",
-	"url_prefix": "/auth"
+	"module_name": "shopyo_auth",
+	"url_prefix": "/shopyo-auth"
 }

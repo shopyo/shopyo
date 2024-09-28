@@ -10,3 +10,6 @@ Werkzeug>=2.0.2
 WTForms>=3.0.0
 email-validator
 shopyo-base
+shopyo-auth
+shopyo-dashboard
+shopyo-appadmin

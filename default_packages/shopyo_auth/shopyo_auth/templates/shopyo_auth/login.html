@@ -36,8 +36,8 @@
         <div class="card">
             <div class="card-body">
                 <img src="/static/shopyo.svg" width="175" height="150">
-                <form action="{{url_for('auth.login')}}" method="POST">
-                    {%include 'auth/blocks/login_form.html'%}
+                <form action="{{url_for('shopyo_auth.login')}}" method="POST">
+                    {%include 'shopyo_auth/blocks/login_form.html'%}
                 </form>
             </div>
         </div>

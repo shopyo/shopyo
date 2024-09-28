@@ -44,7 +44,7 @@ with open(os.path.join(module_path, "info.json")) as f:
 #         )
 
 #         assert response.status_code == 200
-#         assert request.path == url_for("auth.login")
+#         assert request.path == url_for("shopyo_auth.login")
 
 
 class TestAuthEndpoints:
@@ -76,7 +76,7 @@ class TestAuthEndpoints:
         )
 
         assert response.status_code == 200
-        assert request.path == url_for("auth.register")
+        assert request.path == url_for("shopyo_auth.register")
 
     def test_user_registration_is_case_insensitive(self, test_client):
         User.create(email="foo@bar.com", password="pass")
@@ -93,7 +93,7 @@ class TestAuthEndpoints:
         )
 
         assert response.status_code == 200
-        assert request.path == url_for("auth.register")
+        assert request.path == url_for("shopyo_auth.register")
 
     # @pytest.mark.parametrize(
     #     "email_config",
@@ -116,7 +116,7 @@ class TestAuthEndpoints:
     #     user = User.query.filter(User.email == "test@gmail.com").scalar()
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for('auth.register')
+    #     assert request.path == url_for('shopyo_auth.register')
     #     assert user.is_email_confirmed is True
 
     # @pytest.mark.parametrize(
@@ -166,7 +166,7 @@ class TestAuthEndpoints:
     #     )
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("dashboard.index")
+    #     assert request.path == url_for("shopyo_dashboard.index")
     #     assert b"Account already confirmed." in response.data
 
     # @pytest.mark.usefixtures("login_unconfirmed_user")
@@ -177,7 +177,7 @@ class TestAuthEndpoints:
     #     )
 
     #     assert response.status_code == 200
-    #     # assert request.path == url_for("dashboard.index")
+    #     # assert request.path == url_for("shopyo_dashboard.index")
     #     # assert b"You have confirmed your account. Thanks!" in response.data
     #     assert current_user.is_email_confirmed is True
 
@@ -235,7 +235,7 @@ class TestAuthEndpoints:
     #     assert current_user.email.encode() in response.data
 
     # def test_login_for_dashboard_renders(self, test_client):
-    #     response = test_client.get(url_for("auth.login"))
+    #     response = test_client.get(url_for("shopyo_auth.login"))
 
     #     assert response.status_code == 200
     #     assert b"Login" in response.data
@@ -243,25 +243,25 @@ class TestAuthEndpoints:
 
     # def test_invalid_dashboard_login(self, test_client):
     #     response = test_client.post(
-    #         url_for("auth.login"),
+    #         url_for("shopyo_auth.login"),
     #         data=dict(email="admin1@domain.com", password="wrongpass"),
     #         follow_redirects=True,
     #     )
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("auth.login")
+    #     assert request.path == url_for("shopyo_auth.login")
     #     assert b"please check your user id and password" in response.data
 
     # def test_valid_dashboard_login(self, test_client, admin_user, current_user):
     #     response = test_client.post(
-    #         url_for("auth.login"),
+    #         url_for("shopyo_auth.login"),
     #         data=dict(email=admin_user.email, password="pass"),
     #         follow_redirects=True,
     #     )
 
     #     assert response.status_code == 200
     #     assert current_user.email == admin_user.email
-    #     assert request.path == url_for("dashboard.index")
+    #     assert request.path == url_for("shopyo_dashboard.index")
 
     # def test_valid_dashboard_login_is_case_insensitive(self, test_client, current_user):
     #     try:
@@ -270,7 +270,7 @@ class TestAuthEndpoints:
     #         pass
     #     data = {"email": "Foo@Bar.com", "password": "pass"}
     #     response = test_client.post(
-    #         url_for("auth.login"),
+    #         url_for("shopyo_auth.login"),
     #         data=data,
     #         follow_redirects=True,
     #     )
@@ -284,6 +284,6 @@ class TestAuthEndpoints:
     #     response = test_client.get(url_for("auth.logout"), follow_redirects=True)
 
     #     assert response.status_code == 200
-    #     assert request.path == url_for("auth.login")
+    #     assert request.path == url_for("shopyo_auth.login")
     #     assert b"Successfully logged out" in response.data
     #     assert current_user.is_authenticated is False

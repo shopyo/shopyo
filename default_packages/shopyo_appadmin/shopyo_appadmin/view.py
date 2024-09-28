@@ -11,8 +11,8 @@ from flask import request
 from flask import url_for
 from flask_login import login_required
 from init import db
-from modules.box__default.auth.models import Role
-from modules.box__default.auth.models import User
+from shopyo_auth.models import Role
+from shopyo_auth.models import User
 from sqlalchemy import exists
 
 from .admin import admin_required

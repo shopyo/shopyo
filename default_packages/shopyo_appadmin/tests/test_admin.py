@@ -49,7 +49,7 @@ module_info = None
 #         )
 
 #         assert response.status_code == 200
-#         assert request.path == url_for("auth.login")
+#         assert request.path == url_for("shopyo_auth.login")
 
 #     @pytest.mark.parametrize("route", routes_post)
 #     def test_redirect_if_not_logged_in_post(self, test_client, route, auth):
@@ -61,7 +61,7 @@ module_info = None
 #         )
 
 #         assert response.status_code == 200
-#         assert request.path == url_for("auth.login")
+#         assert request.path == url_for("shopyo_auth.login")
 
 #     @pytest.mark.usefixtures("login_non_admin_user")
 #     @pytest.mark.parametrize("route", routes_get)
@@ -73,7 +73,7 @@ module_info = None
 #         )
 
 #         assert response.status_code == 200
-#         assert request.path == url_for("dashboard.index")
+#         assert request.path == url_for("shopyo_dashboard.index")
 #         assert b"You need to be an admin to view this page" in response.data
 
 #     @pytest.mark.usefixtures("login_non_admin_user")
@@ -86,7 +86,7 @@ module_info = None
 #         )
 
 #         assert response.status_code == 200
-#         assert request.path == url_for("dashboard.index")
+#         assert request.path == url_for("shopyo_dashboard.index")
 #         assert b"You need to be an admin to view this page" in response.data
 
 

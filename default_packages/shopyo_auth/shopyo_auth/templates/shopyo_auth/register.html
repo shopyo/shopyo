@@ -12,13 +12,13 @@
         <div class="card">
             <div class="card-body">
                 <img src="/static/shopyo.svg" width="175" height="150">
-                <form action="{{url_for('auth.register')}}" method="post">
+                <form action="{{url_for('shopyo_auth.register')}}" method="post">
                     {%include 'auth/blocks/register_form.html'%}
                 </form>
                 <hr>
                 <span class="text-muted">
                     Have already registered?
-                    <a href={{ url_for('auth.login') }}>Sign in here</a>
+                    <a href="{{ url_for('shopyo_auth.login') }}">Sign in here</a>
                 </span>
             </div>
         </div>

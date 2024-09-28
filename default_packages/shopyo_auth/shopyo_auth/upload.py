@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from modules.box__default.auth.models import User
+from .models import User
 
 
 def add_admin(email, password):

@@ -26,7 +26,7 @@ from flask import url_for
 #         response = test_client.get(route, follow_redirects=True)
 
 #         assert response.status_code == 200
-#         assert request.path == url_for("auth.login")
+#         assert request.path == url_for("shopyo_auth.login")
 
 #     @pytest.mark.usefixtures("login_unconfirmed_user")
 #     @pytest.mark.parametrize("route", routes_get)

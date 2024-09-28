@@ -9,8 +9,10 @@ import datetime
 from flask import current_app
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
+
 from init import db
 from init import login_manager
+
 from itsdangerous import URLSafeTimedSerializer
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
@@ -135,7 +137,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-login_manager.login_view = "auth.login"
+login_manager.login_view = "shopyo_auth.login"
 
 
 class Role(PkModel):

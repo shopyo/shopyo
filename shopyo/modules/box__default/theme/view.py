@@ -7,7 +7,7 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 from flask_login import login_required
-from modules.box__default.appadmin.admin import admin_required
+from shopyo_appadmin.admin import admin_required
 from modules.box__default.settings.helpers import get_setting
 from modules.box__default.settings.helpers import set_setting
 

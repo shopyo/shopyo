@@ -50,16 +50,16 @@ def register():
             user.update()
         else:
             token = user.generate_confirmation_token()
-            template = "auth/emails/activate_user"
+            template = "shopyo_auth/emails/activate_user"
             subject = "Please confirm your email"
             context.update({"token": token, "user": user})
             send_async_email(email, subject, template, **context)
             flash(notify_success("A confirmation email has been sent via email."))
 
-        return redirect(url_for("dashboard.index"))
+        return redirect(url_for("shopyo_dashboard.index"))
 
     context["form"] = reg_form
-    return render_template("auth/register.html", **context)
+    return render_template("shopyo_auth/register.html", **context)
 
 
 @module_blueprint.route("/confirm/<token>")
@@ -67,38 +67,38 @@ def register():
 def confirm(token):
     if current_user.is_email_confirmed:
         flash(notify_warning("Account already confirmed."))
-        return redirect(url_for("dashboard.index"))
+        return redirect(url_for("shopyo_dashboard.index"))
 
     if current_user.confirm_token(token):
         flash(notify_success("You have confirmed your account. Thanks!"))
-        return redirect(url_for("dashboard.index"))
+        return redirect(url_for("shopyo_dashboard.index"))
 
     flash(notify_warning("The confirmation link is invalid/expired."))
-    return redirect(url_for("auth.unconfirmed"))
+    return redirect(url_for("shopyo_auth.unconfirmed"))
 
 
 @module_blueprint.route("/resend")
 @login_required
 def resend():
     if current_user.is_email_confirmed:
-        return redirect(url_for("dashboard.index"))
+        return redirect(url_for("shopyo_dashboard.index"))
 
     token = current_user.generate_confirmation_token()
-    template = "auth/emails/activate_user"
+    template = "shopyo_auth/emails/activate_user"
     subject = "Please confirm your email"
     context = {"token": token, "user": current_user}
     send_async_email(current_user.email, subject, template, **context)
     flash(notify_success("A new confirmation email has been sent."))
-    return redirect(url_for("auth.unconfirmed"))
+    return redirect(url_for("shopyo_auth.unconfirmed"))
 
 
 @module_blueprint.route("/unconfirmed")
 @login_required
 def unconfirmed():
     if current_user.is_email_confirmed:
-        return redirect(url_for("dashboard.index"))
+        return redirect(url_for("shopyo_dashboard.index"))
     flash(notify_warning("Please confirm your account!"))
-    return render_template("auth/unconfirmed.html")
+    return render_template("shopyo_auth/unconfirmed.html")
 
 
 @module_blueprint.route("/login", methods=["GET", "POST"])
@@ -112,18 +112,18 @@ def login():
         user = User.query.filter(func.lower(User.email) == func.lower(email)).first()
         if user is None or not user.check_password(password):
             flash(notify_danger("please check your user id and password"))
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("shopyo_auth.login"))
         login_user(user)
         if "next" not in request.form:
-            next_url = url_for("dashboard.index")
+            next_url = url_for("shopyo_dashboard.index")
 
         else:
             if request.form["next"] == "":
-                next_url = url_for("dashboard.index")
+                next_url = url_for("shopyo_dashboard.index")
             else:
                 next_url = get_safe_redirect(request.form["next"])
         return redirect(next_url)
-    return render_template("auth/login.html", **context)
+    return render_template("shopyo_auth/login.html", **context)
 
 
 @module_blueprint.route("/logout", methods=["GET"])
@@ -133,10 +133,10 @@ def logout():
     flash(notify_success("Successfully logged out"))
 
     if "next" not in request.args:
-        next_url = url_for("dashboard.index")
+        next_url = url_for("shopyo_dashboard.index")
     else:
         if request.args.get("next") == "":
-            next_url = url_for("dashboard.index")
+            next_url = url_for("shopyo_dashboard.index")
         else:
             next_url = get_safe_redirect(request.args.get("next"))
     return redirect(next_url)

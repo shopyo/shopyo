@@ -9,8 +9,6 @@ from wtforms.validators import InputRequired
 from wtforms.validators import Length
 from wtforms.validators import ValidationError
 
-from .models import User
-
 
 class LoginForm(FlaskForm):
     email = EmailField(
@@ -61,6 +59,10 @@ class RegistrationForm(FlaskForm):
             ValidationError: if the username entered in the field is already
             in the database
         """
+        try:
+            from .models import User
+        except Exception as e:
+            raise e
         user = User.query.filter(
             func.lower(User.email) == func.lower(field.data)
         ).scalar()

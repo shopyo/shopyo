@@ -1,12 +1,12 @@
 from typing import Any
 
 from flask import Flask
-from shopyo_base.view import module_blueprint
+from shopyo_appadmin.view import module_blueprint
 
-__version__ = "1.0.3"
+__version__ = "1.0.0"
 
 
-class ShopyoBase:
+class ShopyoAppAdmin:
     def __init__(self, app: Any = None) -> None:
         if app is not None:
             self.init_app(app)
@@ -15,6 +15,6 @@ class ShopyoBase:
         if not hasattr(app, "extensions"):
             app.extensions = {}
 
-        app.extensions["shopyo_base"] = self
+        app.extensions["shopyo_appadmin"] = self
         bp = module_blueprint
         app.register_blueprint(bp)

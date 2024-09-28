@@ -5,8 +5,8 @@ from flask import current_app
 from flask import flash
 from flask import render_template
 from flask_login import login_required
-from modules.box__default.appadmin.admin import admin_required
-from modules.box__default.auth.decorators import check_confirmed
+from shopyo_appadmin.admin import admin_required
+from shopyo_auth.decorators import check_confirmed
 
 from shopyo.api.html import notify_success
 from shopyo.api.module import ModuleHelp
@@ -65,4 +65,4 @@ def index():
 
     context["all_info"] = all_info
     flash(notify_success("Notif test"))
-    return render_template("dashboard/index.html", **context)
+    return render_template("shopyo_dashboard/index.html", **context)
