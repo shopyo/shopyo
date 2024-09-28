@@ -49,8 +49,6 @@ except ImportError:
 from shopyo_admin import MyAdminIndexView
 
 
-
-
 def create_app(config_name="development"):
     global_template_variables = {}
     global_configs = {}
@@ -68,7 +66,7 @@ def create_app(config_name="development"):
 
     from shopyo_base import ShopyoBase
     from shopyo_auth import ShopyoAuth
-    from shopyo_appadmin import ShopyoAppAdmin 
+    from shopyo_appadmin import ShopyoAppAdmin
     from shopyo_dashboard import ShopyoDashboard
 
     sh_base = ShopyoBase()
