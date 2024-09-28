@@ -1,8 +1,14 @@
-version_info = (4, 10, 0)
+version_info = (4, 11, 0)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.11.0
+
+- auth is now shopyo_auth
+- dashboard is now shopyo_dashboard
+- app admin is now shopyo_appadmin
+
 4.10.0
 
 - base module now ships in a separate package: shopyo_base
