@@ -9,7 +9,6 @@ from flask_mailman import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-from shopyo_base import ShopyoBase
 
 # from flask_marshmallow import Marshmallow, uncommented as not updated to support flask 2.x
 
@@ -19,15 +18,14 @@ modules_path = os.path.join(root_path, "modules")  # don't remove
 themes_path = os.path.join(static_path, "themes")  # don't remove
 installed_packages = []  # don't remove
 
-installed_packages = []
 
 db = SQLAlchemy()
 # ma = Marshmallow()
-login_manager = LoginManager()
+
 migrate = Migrate()
 mail = Mail()
 csrf = CSRFProtect()
-sh_base = ShopyoBase()
+login_manager = LoginManager()
 
 
 def load_extensions(app):
@@ -37,4 +35,3 @@ def load_extensions(app):
     mail.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
-    sh_base.init_app(app)

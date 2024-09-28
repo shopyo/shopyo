@@ -218,7 +218,7 @@ class AuthActions:
 
     def login(self, user, password="pass"):
         return self._client.post(
-            url_for("auth.login"),
+            url_for("shopyo_auth.login"),
             data=dict(email=user.email, password=password),
             follow_redirects=True,
         )
