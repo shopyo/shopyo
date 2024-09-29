@@ -19,6 +19,17 @@ module_blueprint = globals()[mhelp.blueprint_str]
 all_info = {}
 
 
+import importlib
+import pkgutil
+
+discovered_plugins = {
+    name: importlib.import_module(name)
+    for finder, name, ispkg
+    in pkgutil.iter_modules()
+    if (name.startswith('shopyo_') and not name == "shopyo_admin")
+}
+
+
 @module_blueprint.route("/")
 @login_required
 @check_confirmed
@@ -26,6 +37,12 @@ all_info = {}
 def index():
     context = {}
 
+    # for plugins
+
+    for plugin in discovered_plugins:
+        all_info[plugin] = discovered_plugins[plugin].info
+
+    # for local folders
     for folder in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
         if folder.startswith("__"):
             continue
@@ -62,6 +79,9 @@ def index():
                 ) as f:
                     module_info = json.load(f)
                     all_info[folder] = module_info
+
+
+    print(all_info)
 
     context["all_info"] = all_info
     flash(notify_success("Notif test"))
