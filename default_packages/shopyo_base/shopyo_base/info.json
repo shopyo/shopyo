@@ -3,5 +3,5 @@
     "type": "hidden",
     "fa-icon": "fas fa-clock",
     "url_prefix": "/shopyo-base",
-    "module_name": "base"
+    "module_name": "shopyo_base"
 }
