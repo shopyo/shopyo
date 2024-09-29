@@ -1,6 +1,6 @@
 from typing import Any
-import os 
-import json 
+import os
+import json
 
 from flask import Flask
 from shopyo_appadmin.view import module_blueprint

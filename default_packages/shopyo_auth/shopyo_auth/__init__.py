@@ -1,6 +1,6 @@
 from typing import Any
-import os 
-import json 
+import os
+import json
 
 from flask import Flask
 from .view import module_blueprint
@@ -10,6 +10,7 @@ __version__ = "1.1.0"
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
+
 
 class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:

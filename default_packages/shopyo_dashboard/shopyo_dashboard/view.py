@@ -24,9 +24,8 @@ import pkgutil
 
 discovered_plugins = {
     name: importlib.import_module(name)
-    for finder, name, ispkg
-    in pkgutil.iter_modules()
-    if (name.startswith('shopyo_') and not name == "shopyo_admin")
+    for finder, name, ispkg in pkgutil.iter_modules()
+    if (name.startswith("shopyo_") and not name == "shopyo_admin")
 }
 
 
@@ -79,7 +78,6 @@ def index():
                 ) as f:
                     module_info = json.load(f)
                     all_info[folder] = module_info
-
 
     print(all_info)
 

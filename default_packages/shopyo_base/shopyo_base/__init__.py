@@ -12,6 +12,7 @@ info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
 
+
 class ShopyoBase:
     def __init__(self, app: Any = None) -> None:
         if app is not None:
