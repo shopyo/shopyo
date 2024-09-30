@@ -23,3 +23,7 @@ class ShopyoDashboard:
         app.extensions["shopyo_dashboard"] = self
         bp = module_blueprint
         app.register_blueprint(bp)
+
+
+    def get_info(self):
+        return info

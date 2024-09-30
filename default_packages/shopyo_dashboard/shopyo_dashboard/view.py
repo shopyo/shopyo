@@ -22,11 +22,6 @@ all_info = {}
 import importlib
 import pkgutil
 
-discovered_plugins = {
-    name: importlib.import_module(name)
-    for finder, name, ispkg in pkgutil.iter_modules()
-    if (name.startswith("shopyo_") and not name == "shopyo_admin")
-}
 
 
 @module_blueprint.route("/")
@@ -37,6 +32,13 @@ def index():
     context = {}
 
     # for plugins
+
+    discovered_plugins = {
+        
+    }
+
+    print(current_app.extensions)
+    print(discovered_plugins)
 
     for plugin in discovered_plugins:
         all_info[plugin] = discovered_plugins[plugin].info

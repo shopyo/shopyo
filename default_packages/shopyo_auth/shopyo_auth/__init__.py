@@ -24,3 +24,6 @@ class ShopyoAuth:
         app.extensions["shopyo_auth"] = self
         bp = module_blueprint
         app.register_blueprint(bp)
+
+    def get_info(self):
+        return info
