@@ -33,15 +33,9 @@ def index():
 
     # for plugins
 
-    discovered_plugins = {
-        
-    }
-
-    print(current_app.extensions)
-    print(discovered_plugins)
-
-    for plugin in discovered_plugins:
-        all_info[plugin] = discovered_plugins[plugin].info
+    for plugin in current_app.extensions:
+        if plugin.startswith('shopyo_'):
+            all_info[plugin] = current_app.extensions[plugin].get_info()
 
     # for local folders
     for folder in os.listdir(os.path.join(current_app.config["BASE_DIR"], "modules")):
