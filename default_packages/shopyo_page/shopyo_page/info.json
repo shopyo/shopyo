@@ -1,9 +1,9 @@
 {
         "display_string": "Page",
-        "module_name":"page",
+        "module_name":"shopyo_page",
         "type": "show",
         "fa-icon": "fa fa-edit",
-        "url_prefix": "/page",
+        "url_prefix": "/shopyo-page",
         "dashboard": "/dashboard",
         "author": {
                 "name": "Abdur-Rahmaan Janhangeer",

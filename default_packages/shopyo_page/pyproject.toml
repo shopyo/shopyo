@@ -1,0 +1,36 @@
+[project]
+name = "shopyo_page"
+authors = [{ name = "Abdur-Rahmaan Janhangeer", email = "arj.python@gmail.com" }]
+description = "Module for creating web pages in shopyo"
+# readme = "README.md"
+requires-python = ">=3.8"
+# license = { file = "LICENSE.txt" }
+keywords = ["shopyo"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["shopyo"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "shopyo_page.__version__" }
+
+[project.urls]
+"Homepage" = "https://github.com/shopyo/shopyo"
+"Bug Tracker" = "https://github.com/shopyo/shopyo/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*", "examples*"]
+
+[tool.setuptools.package-data]
+shopyo_page = ["static/**", "templates/**", "*.json"]
