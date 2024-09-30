@@ -32,7 +32,7 @@ def index_all():
     pages = Page.query.all()
 
     context.update({"pages": pages})
-    return render_template("page/all_pages.html", **context)
+    return render_template(f"{module_name}/all_pages.html", **context)
 
 
 @module_blueprint.route(mhelp.info["dashboard"] + "/all-pages")
@@ -43,7 +43,7 @@ def index():
     pages = Page.query.all()
 
     context.update({"pages": pages})
-    return render_template("page/all_pages.html", **context)
+    return render_template(f"{module_name}/all_pages.html", **context)
 
 
 @module_blueprint.route("dashboard/s/<slug>", methods=["GET"])
@@ -60,7 +60,7 @@ def view_page_dashboard(slug):
     form.lang.data = lang_arg
 
     context.update({"page": page, "form": form})
-    return render_template("page/view_page_dashboard.html", **context)
+    return render_template(f"{module_name}/view_page_dashboard.html", **context)
 
 
 @module_blueprint.route("/s/<slug>", methods=["GET"])
@@ -68,7 +68,7 @@ def view_page(slug):
     context = {}
     page = Page.query.filter(Page.slug == slug).first()
     context.update({"page": page})
-    return render_template("page/view_page.html", **context)
+    return render_template(f"{module_name}/view_page.html", **context)
 
 
 @module_blueprint.route(mhelp.info["dashboard"])
@@ -80,7 +80,7 @@ def dashboard():
 
     context.update({"form": form, "module_name": module_name})
     context.update(module_settings)
-    return render_template("page/dashboard.html", **context)
+    return render_template(f"{module_name}/dashboard.html", **context)
 
 
 @module_blueprint.route("/check_pagecontent", methods=["GET", "POST"])
