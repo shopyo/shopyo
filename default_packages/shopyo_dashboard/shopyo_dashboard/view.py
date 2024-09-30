@@ -23,7 +23,6 @@ import importlib
 import pkgutil
 
 
-
 @module_blueprint.route("/")
 @login_required
 @check_confirmed
@@ -34,7 +33,7 @@ def index():
     # for plugins
 
     for plugin in current_app.extensions:
-        if plugin.startswith('shopyo_'):
+        if plugin.startswith("shopyo_"):
             all_info[plugin] = current_app.extensions[plugin].get_info()
 
     # for local folders

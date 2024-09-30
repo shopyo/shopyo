@@ -24,6 +24,5 @@ class ShopyoDashboard:
         bp = module_blueprint
         app.register_blueprint(bp)
 
-
     def get_info(self):
         return info

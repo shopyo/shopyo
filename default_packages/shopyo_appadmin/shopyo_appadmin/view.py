@@ -28,6 +28,7 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 module_name = mhelp.info["module_name"]
 
+
 @module_blueprint.route("/")
 @login_required
 @admin_required
@@ -185,7 +186,7 @@ def admin_update():
 @login_required
 @admin_required
 def roles():
-    context = {'module_name': module_name}
+    context = {"module_name": module_name}
     context["roles"] = Role.query.all()
     return render_template(f"{module_name}/roles.html", **context)
 
