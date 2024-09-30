@@ -59,7 +59,9 @@ class Page(PkModel):
     def get_dashboard_url(self, lang=None):
         if self.slug:
             if lang:
-                return url_for("shopyo_page.view_page_dashboard", slug=self.slug, lang=lang)
+                return url_for(
+                    "shopyo_page.view_page_dashboard", slug=self.slug, lang=lang
+                )
             else:
                 return url_for("shopyo_page.view_page_dashboard", slug=self.slug)
         else:
