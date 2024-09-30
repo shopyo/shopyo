@@ -20,7 +20,6 @@ from flask import Flask
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
 from flask_login import current_user
-from shopyo_base import ShopyoBase
 
 from shopyo.api.assets import register_devstatic
 from shopyo.api.debug import is_yo_debug
@@ -69,18 +68,21 @@ def create_app(config_name="development"):
     from shopyo_appadmin import ShopyoAppAdmin
     from shopyo_dashboard import ShopyoDashboard
     from shopyo_page import ShopyoPage
+    from shopyo_i18n import Shopyoi18n
 
     sh_base = ShopyoBase()
     sh_auth = ShopyoAuth()
     sh_appadmin = ShopyoAppAdmin()
     sh_dashboard = ShopyoDashboard()
     sh_page = ShopyoPage()
+    sh_i18n = Shopyoi18n()
 
     sh_base.init_app(app)
     sh_auth.init_app(app)
     sh_appadmin.init_app(app)
     sh_dashboard.init_app(app)
     sh_page.init_app(app)
+    sh_i18n.init_app(app)
 
     setup_flask_admin(app)
     register_devstatic(app, modules_path)
