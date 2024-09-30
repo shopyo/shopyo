@@ -68,16 +68,19 @@ def create_app(config_name="development"):
     from shopyo_auth import ShopyoAuth
     from shopyo_appadmin import ShopyoAppAdmin
     from shopyo_dashboard import ShopyoDashboard
+    from shopyo_page import ShopyoPage
 
     sh_base = ShopyoBase()
     sh_auth = ShopyoAuth()
     sh_appadmin = ShopyoAppAdmin()
     sh_dashboard = ShopyoDashboard()
+    sh_page = ShopyoPage()
 
     sh_base.init_app(app)
     sh_auth.init_app(app)
     sh_appadmin.init_app(app)
     sh_dashboard.init_app(app)
+    sh_page.init_app(app)
 
     setup_flask_admin(app)
     register_devstatic(app, modules_path)
