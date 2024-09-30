@@ -1,7 +1,7 @@
 [project]
-name = "shopyo_auth"
+name = "shopyo_i18n"
 authors = [{ name = "Abdur-Rahmaan Janhangeer", email = "arj.python@gmail.com" }]
-description = "Base module containing jinja macros and templates"
+description = "i18n module for Shopyo"
 # readme = "README.md"
 requires-python = ">=3.8"
 # license = { file = "LICENSE.txt" }
@@ -15,7 +15,7 @@ dependencies = ["shopyo"]
 dynamic = ["version"]
 
 [tool.setuptools.dynamic]
-version = { attr = "shopyo_auth.__version__" }
+version = { attr = "shopyo_i18n.__version__" }
 
 [project.urls]
 "Homepage" = "https://github.com/shopyo/shopyo"
@@ -33,4 +33,4 @@ where = ["."]
 exclude = ["tests*", "docs*", "examples*"]
 
 [tool.setuptools.package-data]
-shopyo_auth = ["static/**", "templates/**", "*.json"]
+shopyo_i18n = ["static/**", "templates/**", "*.json"]

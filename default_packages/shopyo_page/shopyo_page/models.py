@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import session
 from flask import url_for
 from init import db
-from modules.box__default.i18n.models import LangRecord
+from shopyo_i18n.models import LangRecord
 
 from shopyo.api.models import PkModel
 
