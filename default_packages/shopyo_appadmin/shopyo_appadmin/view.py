@@ -26,6 +26,7 @@ mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]
 
+module_name = mhelp.info["module_name"]
 
 @module_blueprint.route("/")
 @login_required
@@ -39,7 +40,7 @@ def user_list():
     """
     context = {}
     context["users"] = User.query.all()
-    return render_template("appadmin/index.html", **context)
+    return render_template(f"{module_name}/index.html", **context)
 
 
 @module_blueprint.route("/add", methods=["GET", "POST"])
@@ -80,12 +81,12 @@ def user_add():
                     role = Role.get_by_id(role_id)
                     new_user.roles.append(role)
             new_user.save()
-            return redirect(url_for("appadmin.user_add"))
+            return redirect(url_for(f"{module_name}.user_add"))
 
         flash(notify_warning("User with same email already exists"))
 
     context["roles"] = Role.query.all()
-    return render_template("appadmin/add.html", **context)
+    return render_template(f"{module_name}/add.html", **context)
 
 
 @module_blueprint.route("/delete/<id>", methods=["GET"])
@@ -103,11 +104,11 @@ def admin_delete(id):
 
     if user is None:
         flash(notify_warning("Unable to delete. Invalid user id"))
-        return redirect("/appadmin")
+        return redirect(url_for(f"{module_name}.user_list"))
 
     user.delete()
     flash(notify_success("User successfully deleted"))
-    return redirect("/appadmin")
+    return redirect(url_for(f"{module_name}.user_list"))
 
 
 @module_blueprint.route("/edit/<id>", methods=["GET"])
@@ -126,12 +127,12 @@ def admin_edit(id):
 
     if user is None:
         flash(notify_warning("Unable to edit. Invalid user id"))
-        return redirect("/appadmin")
+        return redirect(url_for(f"{module_name}.user_list"))
 
     context["user"] = user
     context["user_roles"] = [r.name for r in user.roles]
     context["roles"] = Role.query.all()
-    return render_template("appadmin/edit.html", **context)
+    return render_template(f"{module_name}/edit.html", **context)
 
 
 @module_blueprint.route("/update", methods=["POST"])
@@ -158,7 +159,7 @@ def admin_update():
 
     if user is None:
         flash(notify_warning("Unable to update. User does not exist."))
-        return redirect("/admin")
+        return redirect(url_for(f"{module_name}.user_list"))
 
     user.is_admin = is_admin
     user.email = email
@@ -177,16 +178,16 @@ def admin_update():
 
     user.update()
     flash(notify_success("User successfully updated"))
-    return redirect("/appadmin")
+    return redirect(url_for(f"{module_name}.user_list"))
 
 
 @module_blueprint.route("/roles")
 @login_required
 @admin_required
 def roles():
-    context = {}
+    context = {'module_name': module_name}
     context["roles"] = Role.query.all()
-    return render_template("appadmin/roles.html", **context)
+    return render_template(f"{module_name}/roles.html", **context)
 
 
 @module_blueprint.route("/roles/add", methods=["POST"])
@@ -198,9 +199,9 @@ def roles_add():
             role = Role(name=request.form["name"])
             role.save()
             flash(notify_success("Role successfully added"))
-            return redirect(url_for("appadmin.roles"))
+            return redirect(url_for(f"{module_name}.roles"))
         flash(notify_warning("Role already exists"))
-        return redirect(url_for("appadmin.roles"))
+        return redirect(url_for(f"{module_name}.roles"))
 
 
 @module_blueprint.route("/roles/<role_id>/delete", methods=["GET"])
@@ -211,11 +212,11 @@ def roles_delete(role_id):
 
     if role is None:
         flash(notify_warning("Unable to delete. Invalid role id"))
-        return redirect(url_for("appadmin.roles"))
+        return redirect(url_for(f"{module_name}.roles"))
 
     role.delete()
     flash(notify_success("Role successfully deleted"))
-    return redirect(url_for("appadmin.roles"))
+    return redirect(url_for(f"{module_name}.roles"))
 
 
 @module_blueprint.route("/roles/update", methods=["POST"])
@@ -227,10 +228,10 @@ def roles_update():
 
         if role is None:
             flash(notify_warning("Unable to update. Role does not exist"))
-            return redirect(url_for("appadmin.roles"))
+            return redirect(url_for(f"{module_name}.roles"))
 
         role.name = request.form["role_name"]
         role.update()
         flash(notify_success("Role successfully updated"))
 
-    return redirect(url_for("appadmin.roles"))
+    return redirect(url_for(f"{module_name}.roles"))
