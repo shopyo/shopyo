@@ -19,7 +19,7 @@
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <a href="{{ url_for('page.index_all') }}">back</a>
+            <a href="{{ url_for('shopyo_page.index_all') }}">back</a>
             <form action="{{url_for('{}.edit_pagecontent'.format(module_name))}}" method="POST">
                 {{ form.title.label }}
                 <div class="input-group mb-3">

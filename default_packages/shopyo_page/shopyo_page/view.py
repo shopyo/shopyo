@@ -5,7 +5,7 @@ from flask import url_for
 from flask_login import login_required
 from init import db
 from shopyo_appadmin.admin import admin_required
-from modules.box__default.i18n.helpers import get_current_lang
+from shopyo_i18n.helpers import get_current_lang
 
 from .forms import PageForm
 from .models import Page

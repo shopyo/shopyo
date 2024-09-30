@@ -1,7 +1,7 @@
 from flask import redirect
 from flask import request
 from flask import session
-from modules.box__default.i18n.helpers import lang_keys
+from shopyo_i18n.helpers import lang_keys
 
 from shopyo.api.module import ModuleHelp
 from shopyo.api.security import get_safe_redirect
