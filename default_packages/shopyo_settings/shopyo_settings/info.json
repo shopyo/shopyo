@@ -1,0 +1,7 @@
+{
+	"display_string": "Settings",
+	"type": "show",
+	"fa-icon": "fa fa-cog",
+	"url_prefix": "/shopyo-settings",
+	"module_name": "shopyo_settings"
+}

@@ -74,7 +74,6 @@ def index():
                     module_info = json.load(f)
                     all_info[folder] = module_info
 
-    print(all_info)
 
     context["all_info"] = all_info
     flash(notify_success("Notif test"))
