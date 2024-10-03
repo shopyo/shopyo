@@ -2,6 +2,7 @@ from typing import Any
 import os
 import json
 from flask import Flask
+from .upload import upload
 
 __version__ = "1.0.0"
 
@@ -14,6 +15,7 @@ class ShopyoSettings:
     def __init__(self, app: Any = None) -> None:
         if app is not None:
             self.init_app(app)
+        self.upload = upload
 
     def init_app(self, app: Flask) -> None:
         if not hasattr(app, "extensions"):
