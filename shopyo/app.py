@@ -69,7 +69,7 @@ def create_app(config_name="development"):
     from shopyo_dashboard import ShopyoDashboard
     from shopyo_page import ShopyoPage
     from shopyo_i18n import Shopyoi18n
-    from shopyo_settings import ShopyoSettings 
+    from shopyo_settings import ShopyoSettings
     from shopyo_theme import ShopyoTheme
 
     sh_base = ShopyoBase()
@@ -96,6 +96,7 @@ def create_app(config_name="development"):
     setup_theme_paths(app)
     inject_global_vars(app, global_template_variables)
     from init import db
+
     custom_commands(db, app)
     return app
 
@@ -304,22 +305,22 @@ def inject_global_vars(app, global_template_variables):
 
         return base_context
 
+
 def custom_commands(db, app):
     from flask.cli import with_appcontext
 
-    @click.command('shopyo-seed')
+    @click.command("shopyo-seed")
     @with_appcontext
     def shopyo_upload():
-        
+
         for ext in app.extensions:
-            if ext.startswith('shopyo_'):
+            if ext.startswith("shopyo_"):
                 try:
                     e = app.extensions[ext]
                     e.upload()
                     db.session.commit()
-                    click.echo('Uploaded for '+ext)
+                    click.echo("Uploaded for " + ext)
                 except AttributeError as e:
                     pass
-
 
     app.cli.add_command(shopyo_upload)

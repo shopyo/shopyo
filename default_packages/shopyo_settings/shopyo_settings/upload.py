@@ -20,7 +20,7 @@ def upload(verbose=False):
         config = json.load(config)
         for name, value in config["settings"].items():
             add_setting(name, value)
-            print('Uploading settings to db:', name, value)
+            print("Uploading settings to db:", name, value)
 
         if verbose:
             print("[x] Added Dummy Settings")

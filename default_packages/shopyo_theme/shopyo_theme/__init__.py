@@ -3,7 +3,7 @@ import os
 import json
 from flask import Flask
 from shopyo_theme.view import module_blueprint
-from .helpers import * 
+from .helpers import *
 
 
 __version__ = "1.0.0"
@@ -28,7 +28,6 @@ class ShopyoTheme:
         self.get_active_back_theme = get_active_back_theme
         self.get_active_back_theme_version = get_active_back_theme_version
         self.get_active_back_theme_styles_url = get_active_back_theme_styles_url
-
 
     def init_app(self, app: Flask) -> None:
         if not hasattr(app, "extensions"):
