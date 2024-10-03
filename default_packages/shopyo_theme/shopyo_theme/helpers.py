@@ -60,5 +60,3 @@ def get_active_back_theme_styles_url():
         active_theme=get_active_back_theme(),
         v=get_active_back_theme_version(),
     )
-
-

@@ -12,7 +12,7 @@ def add_admin(email, password):
     user.is_email_confirmed = True
     user.email_confirm_date = datetime.datetime.now()
     user.save()
-    print('Uploading default admin with creds:', email, password)
+    print("Uploading default admin with creds:", email, password)
 
 
 def upload(verbose=False):
