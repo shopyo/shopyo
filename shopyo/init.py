@@ -22,9 +22,22 @@ csrf = CSRFProtect()
 login_manager = LoginManager()
 
 
+import importlib
+
 def load_extensions(app):
     migrate.init_app(app, db)
     db.init_app(app)
     mail.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+
+
+    with app.app_context():
+        for plugin in app.extensions:
+            if plugin.startswith("shopyo_"):
+                try:
+                    module = importlib.import_module(f'{plugin}.models')
+                    for attr_name in dir(module):
+                        attr = getattr(module, attr_name)
+                except Exception as e:
+                    print(e)
