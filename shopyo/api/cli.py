@@ -9,6 +9,7 @@ from subprocess import run
 import click
 from flask.cli import FlaskGroup
 from flask.cli import pass_script_info
+from flask.cli import with_appcontext
 
 from shopyo.api.cmd_helper import _audit
 from shopyo.api.cmd_helper import _clean
@@ -232,6 +233,7 @@ def clean(verbose, clear_migration, clear_db):
     "--clear-db/--no-clear-db", "clear_db", "-cdb", is_flag=True, default=True
 )
 @click.option("--verbose", "-v", is_flag=True, default=False)
+@with_appcontext
 def initialise(verbose, clear_migration, clear_db):
     """
     Creates ``db``, ``migration/``, adds default users, add settings
