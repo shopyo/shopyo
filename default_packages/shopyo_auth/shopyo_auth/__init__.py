@@ -4,6 +4,7 @@ import json
 
 from flask import Flask
 from .view import module_blueprint
+from .upload import upload
 
 __version__ = "1.1.0"
 
@@ -16,6 +17,7 @@ class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:
         if app is not None:
             self.init_app(app)
+        self.upload = upload 
 
     def init_app(self, app: Flask) -> None:
         if not hasattr(app, "extensions"):
