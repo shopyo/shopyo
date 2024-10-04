@@ -1,8 +1,12 @@
-version_info = (4, 11, 0)
+version_info = (4, 11, 1)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.11.1
+
+- explicit errors on missing imports while looking for create_app
+
 4.11.0
 
 - auth is now shopyo_auth
