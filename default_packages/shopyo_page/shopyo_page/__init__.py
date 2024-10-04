@@ -5,11 +5,7 @@ from flask import Flask
 from shopyo_page.view import module_blueprint
 from .helpers import get_pages
 
-<<<<<<< Updated upstream
-__version__ = "1.0.0"
-=======
-__version__ = "1.1.0"
->>>>>>> Stashed changes
+__version__ = "1.1.1"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
