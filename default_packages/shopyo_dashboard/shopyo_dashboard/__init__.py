@@ -4,7 +4,7 @@ import json
 from flask import Flask
 from shopyo_dashboard.view import module_blueprint
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
@@ -29,6 +29,7 @@ class ShopyoDashboard:
         app.extensions["shopyo_dashboard"] = self
         bp = module_blueprint
         app.register_blueprint(bp, url_prefix=app.config['SHOPYO_DASHBOARD_URL'])
+        app.jinja_env.globals["shopyo_dashboard"] = self
 
     def get_info(self):
         return info
