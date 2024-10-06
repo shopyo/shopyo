@@ -3,6 +3,11 @@ __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.12.0
+
+- remove resource module
+- migrate resource module to shopyo_theme
+
 4.11.1
 
 - explicit errors on missing imports while looking for create_app
