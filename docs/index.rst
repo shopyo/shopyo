@@ -34,6 +34,7 @@ Useful note on how to `integrate <https://speakerdeck.com/osdotsystem/fast-flask
    Testing <testing>
    Deploy on shared hosting <shared_hosting>
    Education section <education>
+   Packages <packages>
 
 Indices and tables
 ==================
