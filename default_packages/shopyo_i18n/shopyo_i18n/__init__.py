@@ -9,7 +9,7 @@ from .helpers import get_current_lang
 from .helpers import get_default_lang
 from .helpers import langs
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
