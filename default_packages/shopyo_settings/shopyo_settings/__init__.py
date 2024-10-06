@@ -5,7 +5,7 @@ from flask import Flask
 from .upload import upload
 from .helpers import get_setting
 
-__version__ = "1.1.1"
+__version__ = "1.2.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:

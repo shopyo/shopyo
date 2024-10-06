@@ -6,11 +6,13 @@ from shopyo_theme.view import module_blueprint
 from .helpers import *
 
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
+
+default_config = {"SHOPYO_THEME_URL": "/shopyo-theme"}
 
 
 class ShopyoTheme:
@@ -33,9 +35,12 @@ class ShopyoTheme:
         if not hasattr(app, "extensions"):
             app.extensions = {}
 
+        for key, value in default_config.items():
+            app.config.setdefault(key, value)
+
         app.extensions["shopyo_theme"] = self
         bp = module_blueprint
-        app.register_blueprint(bp)
+        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_THEME_URL"])
         app.jinja_env.globals["shopyo_theme"] = self
 
     def get_info(self):

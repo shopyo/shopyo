@@ -9,11 +9,13 @@ from .helpers import get_current_lang
 from .helpers import get_default_lang
 from .helpers import langs
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
+
+default_config = {"SHOPYO_I18N_URL": "/shopyo-i18n"}
 
 
 class Shopyoi18n:
@@ -29,9 +31,13 @@ class Shopyoi18n:
         if not hasattr(app, "extensions"):
             app.extensions = {}
 
+        for key, value in default_config.items():
+            app.config.setdefault(key, value)
+
         app.extensions["shopyo_i18n"] = self
         bp = module_blueprint
-        app.register_blueprint(bp)
+        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_I18N_URL"])
+        app.jinja_env.globals["shopyo_i18n"] = self
 
     def get_info(self):
         return info
