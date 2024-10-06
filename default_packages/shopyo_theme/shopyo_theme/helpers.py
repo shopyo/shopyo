@@ -56,7 +56,7 @@ def get_active_back_theme_version():
 
 def get_active_back_theme_styles_url():
     return url_for(
-        "resource.active_back_theme_css",
+        "shopyo_theme.active_back_theme_css",
         active_theme=get_active_back_theme(),
         v=get_active_back_theme_version(),
     )
