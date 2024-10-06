@@ -6,7 +6,7 @@ from shopyo_theme.view import module_blueprint
 from .helpers import *
 
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
