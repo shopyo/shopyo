@@ -114,7 +114,6 @@ def activate_back_theme(theme_name):
     return redirect(url_for("{}.index".format(module_info["module_name"])))
 
 
-
 @module_blueprint.route("/theme/front/<active_theme>/styles.css", methods=["GET"])
 def active_front_theme_css(active_theme):
     theme_dir = os.path.join(
