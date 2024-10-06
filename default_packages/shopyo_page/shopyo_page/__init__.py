@@ -12,9 +12,7 @@ with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as 
     info = json.load(f)
 
 
-default_config = {
-    'SHOPYO_PAGE_URL': '/shopyo-page'
-}
+default_config = {"SHOPYO_PAGE_URL": "/shopyo-page"}
 
 
 class ShopyoPage:
@@ -33,7 +31,7 @@ class ShopyoPage:
 
         app.extensions["shopyo_page"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config['SHOPYO_PAGE_URL'])
+        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_PAGE_URL"])
         app.jinja_env.globals["shopyo_page"] = self
 
     def get_info(self):

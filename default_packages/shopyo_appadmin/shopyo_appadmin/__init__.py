@@ -11,9 +11,8 @@ info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
 
-default_config = {
-    'SHOPYO_APPADMIN_URL': '/shopyo-appadmin'
-}
+default_config = {"SHOPYO_APPADMIN_URL": "/shopyo-appadmin"}
+
 
 class ShopyoAppAdmin:
     def __init__(self, app: Any = None) -> None:
@@ -29,7 +28,7 @@ class ShopyoAppAdmin:
 
         app.extensions["shopyo_appadmin"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config['SHOPYO_APPADMIN_URL'])
+        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_APPADMIN_URL"])
 
     def get_info(self):
         return info

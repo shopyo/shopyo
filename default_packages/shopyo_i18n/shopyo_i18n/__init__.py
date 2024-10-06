@@ -15,9 +15,8 @@ info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
 
-default_config = {
-    'SHOPYO_I18N_URL': '/shopyo-i18n'
-}
+default_config = {"SHOPYO_I18N_URL": "/shopyo-i18n"}
+
 
 class Shopyoi18n:
     def __init__(self, app: Any = None) -> None:
@@ -37,7 +36,7 @@ class Shopyoi18n:
 
         app.extensions["shopyo_i18n"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config['SHOPYO_I18N_URL'])
+        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_I18N_URL"])
         app.jinja_env.globals["shopyo_i18n"] = self
 
     def get_info(self):

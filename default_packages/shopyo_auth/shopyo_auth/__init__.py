@@ -13,9 +13,8 @@ with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as 
     info = json.load(f)
 
 
-default_config = {
-    'SHOPYO_AUTH_URL': '/shopyo-auth'
-}
+default_config = {"SHOPYO_AUTH_URL": "/shopyo-auth"}
+
 
 class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:
@@ -32,7 +31,7 @@ class ShopyoAuth:
 
         app.extensions["shopyo_auth"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config['SHOPYO_AUTH_URL'])
+        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_AUTH_URL"])
         app.jinja_env.globals["shopyo_auth"] = self
 
     def get_info(self):
