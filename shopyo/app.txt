@@ -9,12 +9,13 @@ Need help?
 
 Hope it helps! We welcome all questions and even requests for walkthroughs
 """
+
 import importlib
 import os
 import sys
 
-import jinja2
 import click
+import jinja2
 from flask import Flask
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
@@ -32,16 +33,18 @@ from config import app_config
 # from init import db
 from init import load_extensions
 from init import modules_path
+
 try:
     from init import installed_packages
 except ImportError:
     click.echo(
-        "This version of Shopyo requires that\n"\
-        "init.py contains the line\n"\
-        "installed_packages = []\n"\
-        "please add it."\
+        "This version of Shopyo requires that\n"
+        "init.py contains the line\n"
+        "installed_packages = []\n"
+        "please add it."
     )
     sys.exit()
+
 from shopyo_admin import MyAdminIndexView
 
 
@@ -59,11 +62,42 @@ def create_app(config_name="development"):
     load_config_from_instance(app, config_name)
     create_config_json()
     load_extensions(app)
+
+        # from shopyo_base import ShopyoBase
+    # from shopyo_auth import ShopyoAuth
+    # from shopyo_appadmin import ShopyoAppAdmin
+    # from shopyo_dashboard import ShopyoDashboard
+    # from shopyo_page import ShopyoPage
+    # from shopyo_i18n import Shopyoi18n
+    # from shopyo_settings import ShopyoSettings
+    # from shopyo_theme import ShopyoTheme
+
+    # sh_base = ShopyoBase()
+    # sh_auth = ShopyoAuth()
+    # sh_appadmin = ShopyoAppAdmin()
+    # sh_dashboard = ShopyoDashboard()
+    # sh_page = ShopyoPage()
+    # sh_i18n = Shopyoi18n()
+    # sh_settings = ShopyoSettings()
+    # sh_theme = ShopyoTheme()
+
+    # sh_base.init_app(app)
+    # sh_auth.init_app(app)
+    # sh_appadmin.init_app(app)
+    # sh_dashboard.init_app(app)
+    # sh_page.init_app(app)
+    # sh_i18n.init_app(app)
+    # sh_settings.init_app(app)
+    # sh_theme.init_app(app)
+
     setup_flask_admin(app)
     register_devstatic(app, modules_path)
     load_blueprints(app, config_name, global_template_variables, global_configs)
     setup_theme_paths(app)
     inject_global_vars(app, global_template_variables)
+    from init import db
+
+    custom_commands(db, app)
     return app
 
 
@@ -270,3 +304,23 @@ def inject_global_vars(app, global_template_variables):
         base_context.update(global_template_variables)
 
         return base_context
+
+
+def custom_commands(db, app):
+    from flask.cli import with_appcontext
+
+    @click.command("shopyo-seed")
+    @with_appcontext
+    def shopyo_upload():
+
+        for ext in app.extensions:
+            if ext.startswith("shopyo_"):
+                try:
+                    e = app.extensions[ext]
+                    e.upload()
+                    db.session.commit()
+                    click.echo("Uploaded for " + ext)
+                except AttributeError as e:
+                    pass
+
+    app.cli.add_command(shopyo_upload)
