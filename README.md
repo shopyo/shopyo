@@ -46,25 +46,6 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 # Quick start
 
 ```bash
-pip install shopyo # always ensure latest version
-mkdir blog
-cd blog
-shopyo new -m # add default modules
-cd blog
-shopyo initialise
-python
->>> from app import create_app()
->>> from shopyo_auth.upload import add_admin
->>> from init import db
->>> a = create_app()
->>> with a.create_app():
->>> add_admin('admin@domain.com', 'pass')
->>>     db.session.commit()
-flask run --debug
-```
-
-
-```bash
 pip install shopyo>=4.11
 mkdir blog
 cd blog
