@@ -68,8 +68,14 @@ flask run --debug
 pip install shopyo>=4.11
 mkdir blog
 cd blog
-shopyo new
+shopyo new -m # -m adds static files
 cd blog
+# comment out in app.py
+# from shopyo_base import ShopyoBase
+# ...
+# sh_theme.init_app(app)
+shopyo initialise
+flask shopyo-seed
 flask run --debug
 ```
 
