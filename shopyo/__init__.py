@@ -1,8 +1,12 @@
-version_info = (4, 12, 0)
+version_info = (4, 12, 1)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.12.1
+
+- support up to py3.13
+
 4.12.0
 
 - remove resource module
