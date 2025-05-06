@@ -142,3 +142,14 @@ api.validators
     :undoc-members:
     :inherited-members:
     :show-inheritance:
+
+
+
+api.response
+-----------------
+
+.. automodule:: api.response
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
