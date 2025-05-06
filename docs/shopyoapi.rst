@@ -153,3 +153,13 @@ api.response
     :undoc-members:
     :inherited-members:
     :show-inheritance:
+
+
+api.endpoint
+-----------------
+
+.. automodule:: api.endpoint
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
