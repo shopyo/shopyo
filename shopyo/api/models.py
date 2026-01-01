@@ -5,7 +5,7 @@ Provides powerful mixins and base classes for rapid development.
 
 import os
 import sys
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 from sqlalchemy import Column, DateTime, Boolean, func
 from sqlalchemy.ext.declarative import declared_attr
@@ -15,6 +15,9 @@ sys.path.append(os.getcwd())
 from init import db
 
 T = TypeVar("T", bound="YoModel")
+
+# Use timezone.utc for compatibility with Python < 3.11
+UTC = timezone.utc
 
 
 class TimestampMixin:
