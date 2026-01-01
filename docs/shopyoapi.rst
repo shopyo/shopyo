@@ -7,7 +7,7 @@ Shopyo has some api which eases your life
 api.assets
 ------------------
 
-.. automodule:: api.assets
+.. automodule:: shopyo.api.assets
     :members:
     :undoc-members:
     :inherited-members:
@@ -17,7 +17,7 @@ api.assets
 api.constants
 ------------------
 
-.. automodule:: api.constants
+.. automodule:: shopyo.api.constants
     :members:
     :undoc-members:
     :inherited-members:
@@ -28,7 +28,7 @@ api.constants
 api.database
 ------------------
 
-.. automodule:: api.database
+.. automodule:: shopyo.api.database
     :members:
     :undoc-members:
     :inherited-members:
@@ -38,7 +38,7 @@ api.database
 api.email
 ------------------
 
-.. automodule:: api.email
+.. automodule:: shopyo.api.email
     :members:
     :undoc-members:
     :inherited-members:
@@ -48,7 +48,7 @@ api.email
 api.enhance
 -----------------
 
-.. automodule:: api.enhance
+.. automodule:: shopyo.api.enhance
     :members:
     :undoc-members:
     :inherited-members:
@@ -57,7 +57,7 @@ api.enhance
 api.file
 --------------
 
-.. automodule:: api.file
+.. automodule:: shopyo.api.file
     :members:
     :undoc-members:
     :inherited-members:
@@ -68,7 +68,7 @@ api.file
 api.forms
 ---------------
 
-.. automodule:: api.forms
+.. automodule:: shopyo.api.forms
     :members:
     :undoc-members:
     :inherited-members:
@@ -77,7 +77,7 @@ api.forms
 api.html
 --------------
 
-.. automodule:: api.html
+.. automodule:: shopyo.api.html
     :members:
     :undoc-members:
     :inherited-members:
@@ -86,7 +86,7 @@ api.html
 api.info
 --------------
 
-.. automodule:: api.info
+.. automodule:: shopyo.api.info
     :members:
     :undoc-members:
     :inherited-members:
@@ -96,7 +96,7 @@ api.info
 api.models
 -----------------
 
-.. automodule:: api.models
+.. automodule:: shopyo.api.models
     :members:
     :undoc-members:
     :inherited-members:
@@ -107,7 +107,7 @@ api.models
 api.module
 -----------------
 
-.. automodule:: api.module
+.. automodule:: shopyo.api.module
     :members:
     :undoc-members:
     :inherited-members:
@@ -117,7 +117,7 @@ api.module
 api.security
 -----------------
 
-.. automodule:: api.security
+.. automodule:: shopyo.api.security
     :members:
     :undoc-members:
     :inherited-members:
@@ -127,7 +127,7 @@ api.security
 api.templates
 -----------------
 
-.. automodule:: api.templates
+.. automodule:: shopyo.api.templates
     :members:
     :undoc-members:
     :inherited-members:
@@ -137,7 +137,7 @@ api.templates
 api.validators
 -----------------
 
-.. automodule:: api.validators
+.. automodule:: shopyo.api.validators
     :members:
     :undoc-members:
     :inherited-members:
@@ -148,7 +148,7 @@ api.validators
 api.response
 -----------------
 
-.. automodule:: api.response
+.. automodule:: shopyo.api.response
     :members:
     :undoc-members:
     :inherited-members:
@@ -158,7 +158,7 @@ api.response
 api.endpoint
 -----------------
 
-.. automodule:: api.endpoint
+.. automodule:: shopyo.api.endpoint
     :members:
     :undoc-members:
     :inherited-members:
