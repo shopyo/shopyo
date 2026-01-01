@@ -114,27 +114,20 @@ specify the module url and panel icon.
 
 Default Modules/Boxes
 *********************
-The app comes with the following default modules and boxes
+The app comes with several default modules now shipped as separate packages in ``default_packages/``:
 
-box__bizhelp
-------------
-* announce
-* appoointment
-* contact
-* page
-* people
-
-box__default
-------------
-* appadmin
-* auth
-* base
-* dashboard
-* settings
-* theme
+* shopyo_appadmin
+* shopyo_auth
+* shopyo_base
+* shopyo_dashboard
+* shopyo_i18n
+* shopyo_page
+* shopyo_settings
+* shopyo_theme
 
 www
 ---
+This is the default public facing module located in ``shopyo/modules/www``.
 
 Using Shopyo as a Flask base
 ****************************
@@ -188,9 +181,4 @@ upload.py
 *********
 
 ``upload.py`` has a ``def upload():`` function where uploads should be done.
-This uploads are done when we run ``shopyo initialise``. Example for
-uploading an admin user is shown below:
-
-.. literalinclude:: ../shopyo/modules/box__default/auth/upload.py
-   :language: python
-   :linenos:
+This uploads are done when we run ``shopyo initialise``.

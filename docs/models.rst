@@ -6,16 +6,17 @@ Models
     :titlesonly:
 
 
-Creating a model
-----------------
+Example models
+**************
 
-Here is a sample model which uses sqlalchemy
+.. code:: python
 
+   from init import db
+   from shopyo.api.models import PkModel
 
-.. literalinclude:: ../shopyo/modules/box__default/page/models.py
-   :language: python
-   :linenos:
-   :lines: 5-24
+   class MyModel(PkModel):
+       __tablename__ = 'mymodel'
+       name = db.Column(db.String(100))
 
 🔩 Migrations
 -------------

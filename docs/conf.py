@@ -21,7 +21,7 @@ from shopyo import __version__
 
 current_dir = os.path.dirname(__file__)
 print(current_dir)
-target_dir = os.path.abspath(os.path.join(os.path.dirname(current_dir), "shopyo"))
+target_dir = os.path.dirname(current_dir)
 print(target_dir)
 sys.path.insert(0, os.path.abspath(target_dir))
 
