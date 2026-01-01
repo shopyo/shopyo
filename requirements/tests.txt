@@ -24,7 +24,7 @@ idna==3.4
     # via email-validator
 iniconfig==1.1.1
     # via pytest
-packaging==20.9
+packaging>=23.0
     # via pytest
 pluggy==0.13.1
     # via pytest
