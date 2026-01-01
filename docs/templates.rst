@@ -14,10 +14,15 @@ Please see the `Modules section <modules.html>`_ on how to structure a module.
 Having said that, this is the base file we are extending from.
 
 
-.. literalinclude:: ../shopyo/modules/box__default/base/templates/base/main_base.html
-   :language: html
-   :linenos:
-   :lines: 1-18
+Example template
+****************
+
+.. code:: html
+
+   {% extends "shopyo_base/main_base.html" %}
+   {% block content %}
+   <h1>Hello</h1>
+   {% endblock %}
 
 
 It includes:
