@@ -17,6 +17,8 @@ from init import root_path
 from shopyo.api.cmd_helper import tryrmcache
 from shopyo.api.cmd_helper import tryrmfile
 from shopyo.api.cmd_helper import tryrmtree
+from shopyo.api.constants import SEP_CHAR
+from shopyo.api.constants import SEP_NUM
 from shopyo.api.file import get_folders
 from shopyo.api.file import trycopytree
 from shopyo.api.file import trymkdir
