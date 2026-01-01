@@ -1,8 +1,14 @@
-version_info = (4, 12, 1)
+version_info = (4, 13, 1)
 __version__ = ".".join([str(v) for v in version_info])
 
 
 """
+4.13.0
+- fix tests
+- fix cov
+- fix docs
+- some api additions
+
 4.12.1
 
 - support up to py3.13
