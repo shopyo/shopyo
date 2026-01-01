@@ -6,6 +6,7 @@ Utilities for standardized API responses in Flask.
 
 from flask import jsonify
 
+
 def json_response(data=None, status=200, message=None, **kwargs):
     """
     Return a standard JSON response.
@@ -27,6 +28,7 @@ def json_response(data=None, status=200, message=None, **kwargs):
     response.update(kwargs)
     return jsonify(response), status
 
+
 def error_response(message, status=400, errors=None, **kwargs):
     """
     Return a standard error JSON response.
@@ -45,12 +47,15 @@ def error_response(message, status=400, errors=None, **kwargs):
         "error": {
             "message": message,
             "details": errors,
-        }
+        },
     }
     response.update(kwargs)
     return jsonify(response), status
 
-def paginated_response(items, total, page, per_page, status=200, message=None, **kwargs):
+
+def paginated_response(
+    items, total, page, per_page, status=200, message=None, **kwargs
+):
     """
     Return a paginated JSON response.
 
