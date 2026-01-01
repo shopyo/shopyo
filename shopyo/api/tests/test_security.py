@@ -59,3 +59,24 @@ def test_inject_csrf_token(app):
             context[security.CSRF_TOKEN_FORM_KEY]
             == session[security.CSRF_TOKEN_SESSION_KEY]
         )
+
+
+def test_csrf_protect(app):
+    @app.route("/protected", methods=["POST"])
+    @security.csrf_protect
+    def protected():
+        return "OK"
+
+    client = app.test_client()
+
+    # Fail without token
+    response = client.post("/protected")
+    assert response.status_code == 403
+
+    # Success with token
+    with client.session_transaction() as sess:
+        sess[security.CSRF_TOKEN_SESSION_KEY] = "test-token"
+
+    response = client.post("/protected", data={"csrf_token": "test-token"})
+    assert response.status_code == 200
+
