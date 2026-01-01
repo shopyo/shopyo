@@ -79,4 +79,3 @@ def test_csrf_protect(app):
 
     response = client.post("/protected", data={"csrf_token": "test-token"})
     assert response.status_code == 200
-
