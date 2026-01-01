@@ -22,7 +22,13 @@ def test_testok(runner):
 
 @patch('shopyo.api.cli._create_box')
 def test_startbox(mock_create_box, runner):
-    with patch('os.path.exists', return_value=False):
+    original_exists = os.path.exists
+    def exists_side_effect(path):
+        if 'box__test' in path:
+            return False
+        return original_exists(path)
+
+    with patch('os.path.exists', side_effect=exists_side_effect):
         result = runner.invoke(cli, ['startbox', 'box__test'])
         assert result.exit_code == 0
         mock_create_box.assert_called_once_with('box__test', verbose=False)
@@ -141,9 +147,15 @@ def test_new(mock_rmtree, mock_mkdir, mock_mkfile, mock_copytree, runner):
     # we can try to patch where it is used or mocking the module.
     # The 'new' command imports it inside the function: from shopyo.__init__ import __version__
     
+    original_exists = os.path.exists
+    def exists_side_effect(path):
+        if 'myproj' in path or path.endswith('tmp/tmp'):
+            return False
+        return original_exists(path)
+
     with patch('shopyo.__init__.__version__', '1.0.0', create=True), \
          patch('os.getcwd', return_value='/tmp'), \
-         patch('os.path.exists', return_value=False):
+         patch('os.path.exists', side_effect=exists_side_effect):
         
         # Test default (current dir)
         result = runner.invoke(cli, ['new'])
