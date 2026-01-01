@@ -8,6 +8,8 @@ from unittest.mock import patch, MagicMock
 # Mock app module before importing cli
 sys.modules["app"] = MagicMock()
 sys.modules["app"].create_app = MagicMock(return_value=MagicMock())
+sys.modules["shopyo.app"] = MagicMock()
+sys.modules["shopyo.app"].create_app = sys.modules["app"].create_app
 
 from shopyo.api.cli import cli
 
@@ -172,6 +174,8 @@ def test_new(mock_rmtree, mock_mkdir, mock_mkfile, mock_copytree, runner):
     original_exists = os.path.exists
 
     def exists_side_effect(path):
+        if path == "/tmp":
+            return True
         if "myproj" in path or path.endswith("tmp/tmp"):
             return False
         return original_exists(path)
