@@ -35,9 +35,7 @@ def _create_shopyo_app():
     except ImportError as e:
         raise e
         click.echo(e)
-        click.echo(
-            "Error finding create_app from shopyo.app."
-        )
+        click.echo("Error finding create_app from shopyo.app.")
         sys.exit()
 
     config_name = os.environ.get("SHOPYO_CONFIG_PROFILE") or "development"
