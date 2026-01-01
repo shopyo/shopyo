@@ -22,8 +22,10 @@ from shopyo import __version__
 current_dir = os.path.dirname(__file__)
 print(current_dir)
 target_dir = os.path.dirname(current_dir)
+shopyo_dir = os.path.join(target_dir, "shopyo")
 print(target_dir)
 sys.path.insert(0, os.path.abspath(target_dir))
+sys.path.insert(0, os.path.abspath(shopyo_dir))
 
 
 # -- Project information -----------------------------------------------------
