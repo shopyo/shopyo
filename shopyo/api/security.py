@@ -14,6 +14,7 @@ Includes:
 - Jinja2 context processor helper (`inject_csrf_token`)
 """
 
+
 # from https://security.openstack.org/guidelines/dg_avoid-unvalidated-redirects.html
 def is_safe_redirect_url(target):
     """
@@ -57,9 +58,11 @@ def get_safe_redirect(url):
 
     return "/"
 
+
 CSRF_TOKEN_SESSION_KEY = "_csrf_token"
 CSRF_TOKEN_HEADER = "X-CSRFToken"
 CSRF_TOKEN_FORM_KEY = "csrf_token"
+
 
 def generate_csrf_token():
     """Generate a secure CSRF token.
@@ -76,6 +79,7 @@ def generate_csrf_token():
         token = secrets.token_urlsafe(64)
         session[CSRF_TOKEN_SESSION_KEY] = token
     return token
+
 
 def validate_csrf_token(token):
     """Validate the CSRF token using constant-time comparison.
@@ -95,6 +99,7 @@ def validate_csrf_token(token):
         return False
     # Constant-time comparison to prevent timing attacks
     return secrets.compare_digest(session_token, token)
+
 
 def get_csrf_token_from_request():
     """Extract CSRF token from request.
@@ -121,6 +126,7 @@ def get_csrf_token_from_request():
             return json_data[CSRF_TOKEN_FORM_KEY]
     return None
 
+
 def csrf_protect(view_func):
     """Decorator to protect endpoints against CSRF attacks.
 
@@ -142,6 +148,7 @@ def csrf_protect(view_func):
     werkzeug.exceptions.Forbidden
         If CSRF token is missing or invalid.
     """
+
     @wraps(view_func)
     def wrapped_view(*args, **kwargs):
         # Only protect unsafe methods
@@ -150,7 +157,9 @@ def csrf_protect(view_func):
             if not validate_csrf_token(token):
                 abort(403, description="CSRF token missing or invalid.")
         return view_func(*args, **kwargs)
+
     return wrapped_view
+
 
 def inject_csrf_token():
     """Inject CSRF token into Jinja2 template context.

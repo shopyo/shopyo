@@ -19,6 +19,7 @@ def yo_render(template, context_dict):
     """
     return render_template(template, **context_dict)
 
+
 def yo_render_string(template_string, context_dict):
     """
     Renders a template from a string.
@@ -26,7 +27,9 @@ def yo_render_string(template_string, context_dict):
     Usage: yo_render_string("Hello {{ name }}!", {"name": "World"})
     """
     from flask import render_template_string
+
     return render_template_string(template_string, **context_dict)
+
 
 def yo_get_macro(template_name, macro_name):
     """
@@ -37,6 +40,7 @@ def yo_get_macro(template_name, macro_name):
         html = my_macro(arg1, arg2)
     """
     return get_template_attribute(template_name, macro_name)
+
 
 def yo_safe(html_string):
     """
