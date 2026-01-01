@@ -29,7 +29,7 @@ The file defines several critical paths used throughout the framework:
 Extension Loading
 *****************
 
-The `load_extensions(app)` function is responsible for binding the extension objects to the Flask application instance. 
+The `load_extensions(app)` function is responsible for binding the extension objects to the Flask application instance.
 
 Beyond standard initialization, it also performs **Automatic Model Discovery**:
 
@@ -37,11 +37,11 @@ Beyond standard initialization, it also performs **Automatic Model Discovery**:
 
     def load_extensions(app):
         # ... standard init_app calls ...
-        
+
         with app.app_context():
             for plugin in app.extensions:
                 if plugin.startswith("shopyo_"):
-                    # Dynamically imports models from shopyo_ packages 
+                    # Dynamically imports models from shopyo_ packages
                     # so they are registered with SQLAlchemy/Migrate
                     importlib.import_module(f"{plugin}.models")
 
@@ -50,7 +50,7 @@ This ensures that any installed Shopyo packages have their database models autom
 Installed Packages
 ******************
 
-The `installed_packages` list is where you register additional Shopyo-compatible packages that are installed via pip. 
+The `installed_packages` list is where you register additional Shopyo-compatible packages that are installed via pip.
 
 .. code-block:: python
 
