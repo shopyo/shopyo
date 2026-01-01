@@ -1,5 +1,11 @@
-from shopyo.api.enhance import base_context
-
+from shopyo.api import enhance
 
 def test_base_context():
-    assert isinstance(base_context(), dict)
+    context = enhance.base_context()
+    assert isinstance(context, dict)
+    assert len(context) == 0
+    
+    # Verify it returns a copy
+    context['key'] = 'value'
+    context2 = enhance.base_context()
+    assert 'key' not in context2
