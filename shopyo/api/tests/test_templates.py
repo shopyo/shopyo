@@ -2,6 +2,7 @@ import pytest
 from flask import Flask
 from shopyo.api.templates import yo_render, yo_render_string, yo_get_macro, yo_safe
 
+
 def test_yo_render():
     app = Flask(__name__)
     with app.test_request_context():
@@ -12,11 +13,13 @@ def test_yo_render():
         except Exception:
             pass
 
+
 def test_yo_render_string():
     app = Flask(__name__)
     with app.test_request_context():
         result = yo_render_string("Hello {{ name }}!", {"name": "World"})
         assert result == "Hello World!"
+
 
 def test_yo_safe():
     result = yo_safe("<b>bold</b>")

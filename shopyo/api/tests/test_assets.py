@@ -2,6 +2,7 @@ import pytest
 from flask import Flask
 from shopyo.api.assets import get_static, register_devstatic
 
+
 def test_get_static_debug_true():
     app = Flask(__name__)
     app.config["DEBUG"] = True
@@ -11,6 +12,7 @@ def test_get_static_debug_true():
         with app.test_request_context():
             url = get_static("box__default/auth", "style.css")
             assert "/devstatic/box__default/auth/f/style.css" in url
+
 
 def test_get_static_debug_false():
     app = Flask(__name__)
