@@ -174,7 +174,6 @@ def setup_flask_admin(app):
     admin = Admin(
         app,
         name="My App",
-        template_mode="bootstrap4",
         index_view=MyAdminIndexView(),
     )
     # admin.add_view(DefaultModelView(Settings, db.session))

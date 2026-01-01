@@ -25,6 +25,7 @@ class BaseConfig:
 
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FLASK_ADMIN_TEMPLATE_MODE = "bootstrap4"
     BASE_DIR = base_path
     STATIC = os.path.join(base_path, "static")
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")

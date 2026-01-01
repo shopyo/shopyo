@@ -1,4 +1,8 @@
-from flask import render_template, get_template_attribute, Markup
+from flask import render_template, get_template_attribute
+try:
+    from markupsafe import Markup
+except ImportError:
+    from flask import Markup
 
 
 def yo_render(template, context_dict):
