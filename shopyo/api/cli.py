@@ -31,13 +31,12 @@ from shopyo.api.validators import is_alpha_num_underscore
 def _create_shopyo_app():
     sys.path.append(os.getcwd())
     try:
-        from app import create_app
+        from shopyo.app import create_app
     except ImportError as e:
         raise e
         click.echo(e)
         click.echo(
-            "Error finding create_app from app. Make sure you are in the right folder or"
-            " your app.py is as the latest app.py shopyo requires!"
+            "Error finding create_app from shopyo.app."
         )
         sys.exit()
 
