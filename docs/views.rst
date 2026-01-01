@@ -1,54 +1,36 @@
 Views
 =====
 
-.. toctree::
-    :titlesonly:
+Shopyo simplifies Flask View management by using the `ModuleHelp` utility. This abstraction handles Blueprint registration, template path resolution, and metadata loading automatically.
 
-Shopyo creates some boiler plate codes for you using the startapp command. Please refer to the `Modules section <modules.html>`_
+The ModuleHelp Abstraction
+**************************
 
-View codes by default
----------------------
+When you create a new module with `shopyo startapp`, it generates a `view.py` with the following boilerplate:
 
-Here are some boiler plate codes created:
+.. code-block:: python
 
-.. code:: python
+    from shopyo.api.module import ModuleHelp
 
-    import os
-    import json
+    # Initializes help for the current module
+    mhelp = ModuleHelp(__file__, __name__)
+    
+    # Registers the blueprint automatically based on info.json
+    globals()[mhelp.blueprint_str] = mhelp.blueprint
+    module_blueprint = globals()[mhelp.blueprint_str]
 
-    from flask import Blueprint
-    # from flask import render_template
-    # from flask import url_for
-    # from flask import redirect
-    # from flask import flash
-    # from flask import request
-
-    # #
-    # from shopyo.api.html import notify_success
-    # from shopyo.api.forms import flash_errors
-
-    dirpath = os.path.dirname(os.path.abspath(__file__))
-    module_info = {}
-
-    with open(dirpath + "/info.json") as f:
-        module_info = json.load(f)
-
-    globals()['{}_blueprint'.format(module_info["module_name"])] = Blueprint(
-        "{}".format(module_info["module_name"]),
-        __name__,
-        template_folder="templates",
-        url_prefix=module_info["url_prefix"],
-    )
-
-
-    module_blueprint = globals()['{}_blueprint'.format(module_info["module_name"])]
-
-    module_name = module_info["module_name"]
-
-
-    @module_blueprint.route('/')
+    @module_blueprint.route("/")
     def index():
-        return ''
+        return mhelp.info['display_string']
 
+Key Features
+************
 
-Using the above you can develop as usual. To change module name and module url, please refer to the modules section under info.json
+- **Automatic Blueprint Creation**: The blueprint name and URL prefix are pulled directly from the module's `info.json`.
+- **Template Context**: `mhelp.context()` provides a dictionary with module-specific information (like `info.json` data) that you can easily update and pass to your templates.
+- **Simplified Rendering**: `mhelp.render('index.html', **context)` automatically looks for templates in the module's `templates/<module_name>/` directory.
+
+Standard Flask usage
+********************
+
+Since `module_blueprint` is just a standard Flask `Blueprint` object, you can use all standard Flask decorators and features as usual.

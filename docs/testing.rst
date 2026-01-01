@@ -1,76 +1,68 @@
 Testing
-=========
+=======
 
-.. toctree::
-    :titlesonly:
+Shopyo uses `pytest` for its test suite. Quality software requires testing; don't break the build.
 
+Running Tests
+*************
 
-We use `pytest`_ testing framework. If running tests using pytests make sure your are inside
-``shopyo/shopyo`` directory
+You should run tests from the project root directory.
 
--   To run all tests,
+- **Standard run**:
 
-    .. code:: bash
+  .. code-block:: bash
 
-        $ pytest
+      $ pytest
 
--   To run with more output use the verbose flag
+- **Verbose run**:
 
-    .. code:: bash
+  .. code-block:: bash
 
-        $ pytest -v
+      $ pytest -v
 
--   To run tests in only a particular file or function:
+- **Specific test file**:
 
-    .. code:: bash
+  .. code-block:: bash
 
-        $ pytest -k test_cli.py
+      $ pytest shopyo/api/tests/test_cli.py
 
-Alternatively, you can run your tests via `tox`_
+Continuous Integration (Tox)
+****************************
 
--   To run the complete test suit on all suported python interpretatos,
-    (``python 3.6``, ``python 3.7``, ``python 3.8``, ``python 3.9``
-    and test ``sphinx`` docs build):
+We use `tox` to verify compatibility across multiple Python versions (currently supporting 3.8 up to 3.13).
 
-    .. code:: bash
+- **Run all environments**:
 
-        $ tox
+  .. code-block:: bash
 
--   To run all tests only with Python 3.8 only:
+      $ tox
 
-    .. code:: bash
+- **Run specific environment (e.g., Python 3.11)**:
 
-        $ tox -e py38
+  .. code-block:: bash
 
--   run all only the ``TestCliStartapp`` test class with Python 3.9:
+      $ tox -e py311
 
-    .. code:: bash
+Coverage Reports
+****************
 
-        $ tox -e py39 -- -k TestCliStartapp
+To assess how much of the code is covered by tests, use `pytest-cov`.
 
+1. **Install requirements**:
 
-To generate cov reports, install testing requirements
+   .. code-block:: bash
 
-.. code:: bash
+       $ pip install -r requirements/tests.txt
 
-    $ python -m pip install -r requirements/tests.txt
+2. **Generate report**:
 
+   .. code-block:: bash
 
-Then generate the html files. They appear in shopyo/htmlcov
+       $ pytest --cov=shopyo
 
+3. **HTML report**:
 
-.. code:: bash
+   .. code-block:: bash
 
-    $ coverage html
-
-
-The use http.server to view it in the browser
-
-
-.. code:: bash
-
-    $  python -m http.server 8000 --dir htmlcov
-
-
-.. _pytest: https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html#commit-your-changes
-.. _tox: https://tox.readthedocs.io/en/latest/
+       $ pytest --cov=shopyo --cov-report=html
+       $ python -m http.server 8000 --directory htmlcov
