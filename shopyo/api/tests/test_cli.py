@@ -176,7 +176,7 @@ def test_new(mock_rmtree, mock_mkdir, mock_mkfile, mock_copytree, runner):
             return False
         return original_exists(path)
 
-    with patch("shopyo.__init__.__version__", "1.0.0", create=True), patch(
+    with patch("shopyo.__version__", "1.0.0", create=True), patch(
         "os.getcwd", return_value="/tmp"
     ), patch("os.path.exists", side_effect=exists_side_effect):
 
@@ -197,7 +197,7 @@ def test_new(mock_rmtree, mock_mkdir, mock_mkfile, mock_copytree, runner):
 
 @patch("shopyo.api.cli.copytree")
 def test_new_exists(mock_copytree, runner):
-    with patch("shopyo.__init__.__version__", "1.0.0", create=True), patch(
+    with patch("shopyo.__version__", "1.0.0", create=True), patch(
         "os.getcwd", return_value="/tmp"
     ), patch("os.path.exists", return_value=True):
 

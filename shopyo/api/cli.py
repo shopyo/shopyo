@@ -301,7 +301,7 @@ def new(projname, verbose, modules):
 
     modules_flag = modules
 
-    from shopyo.__init__ import __version__
+    from shopyo import __version__
     from shopyo.api.file import trymkfile
     from shopyo.api.file import trymkdir
     from shopyo.api.cli_content import get_tox_ini_content
