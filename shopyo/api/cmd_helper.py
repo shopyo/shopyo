@@ -7,7 +7,10 @@ import json
 import os
 import re
 import sys
-from importlib.metadata import version
+try:
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
 from subprocess import run
 
 import click
