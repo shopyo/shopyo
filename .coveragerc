@@ -1,0 +1,15 @@
+[run]
+source = shopyo
+branch = True
+omit =
+    shopyo/api/tests/*
+    shopyo/tests/*
+    shopyo/modules/*/tests/*
+    shopyo/modules/box__tests/*
+    shopyo/__main__.py
+    shopyo/manage.py
+    shopyo/wsgi.py.example
+    shopyo/autoapp.py.example
+
+[report]
+show_missing = True

@@ -167,9 +167,9 @@ def test_rename(mock_rename, runner):
 @patch("shopyo.api.file.trymkdir")
 @patch("shopyo.api.file.tryrmtree")
 def test_new(mock_rmtree, mock_mkdir, mock_mkfile, mock_copytree, runner):
-    # We need to patch shopyo.__init__.__version__ but since we might not invoke the real init,
+    # We need to patch shopyo.__version__ but since we might not invoke the real init,
     # we can try to patch where it is used or mocking the module.
-    # The 'new' command imports it inside the function: from shopyo.__init__ import __version__
+    # The 'new' command imports it inside the function: from shopyo import __version__
 
     original_exists = os.path.exists
 
