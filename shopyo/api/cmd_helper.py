@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+
 try:
     from importlib.metadata import version
 except ImportError:
