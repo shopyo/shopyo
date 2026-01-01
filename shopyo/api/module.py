@@ -57,7 +57,6 @@ class ModuleHelp:
         module_folder = os.path.normpath(module_folder)
         module_folder = os.path.basename(module_folder)
 
-        print(module_parent, module_parent)
         if module_parent.startswith("box__"):
             boxormodule = f"{module_parent}/{module_folder}"
         else:

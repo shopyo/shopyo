@@ -1,3 +1,5 @@
+from markupsafe import escape
+
 """
 Used on flash
 flash(notify_success('mail sent!'))
@@ -31,7 +33,7 @@ def notify(message, alert_type="primary"):
       </button>
     </div>
     """.format(
-        message=message, alert_type=alert_type
+        message=escape(message), alert_type=alert_type
     )
 
     scriptFade = """
