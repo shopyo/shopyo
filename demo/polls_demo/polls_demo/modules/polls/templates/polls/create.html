@@ -1,0 +1,22 @@
+{% extends "shopyo_base/main_base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Create Poll</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.text.label }}
+            {{ form.text(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.option1.label }}
+            {{ form.option1(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.option2.label }}
+            {{ form.option2(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</div>
+{% endblock %}

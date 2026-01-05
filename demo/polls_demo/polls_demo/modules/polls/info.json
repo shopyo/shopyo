@@ -1,0 +1,12 @@
+{
+    "author": {
+        "mail": "",
+        "name": "",
+        "website": ""
+    },
+    "display_string": "Polls",
+    "fa-icon": "fa fa-store",
+    "module_name": "polls",
+    "type": "show",
+    "url_prefix": "/polls"
+}
