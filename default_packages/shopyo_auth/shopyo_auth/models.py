@@ -5,6 +5,7 @@
 """
 
 import datetime
+import logging
 
 from flask import current_app
 from flask_login import AnonymousUserMixin
@@ -14,6 +15,7 @@ from init import db
 from init import login_manager
 
 from itsdangerous import URLSafeTimedSerializer
+from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
@@ -79,7 +81,7 @@ class User(UserMixin, PkModel):
     is_admin = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     date_registered = db.Column(
-        db.DateTime, nullable=False, default=datetime.datetime.now()
+        db.DateTime, nullable=False, default=datetime.datetime.now
     )
     is_email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
@@ -106,6 +108,11 @@ class User(UserMixin, PkModel):
     def check_password(self, password):
         return check_password_hash(self._password, password)
 
+    @classmethod
+    def get_by_email(cls, email):
+        """Case-insensitive user lookup by email."""
+        return cls.query.filter(func.lower(cls.email) == func.lower(email)).first()
+
     def generate_confirmation_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
         return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
@@ -120,7 +127,7 @@ class User(UserMixin, PkModel):
                 max_age=expiration,
             )
         except Exception as e:
-            print(f"\nShopyo-LOG, Error at confirm_token: {e}")
+            logging.getLogger(__name__).error(f"Error at confirm_token: {e}")
             return False
 
         if email != self.email:
@@ -130,6 +137,23 @@ class User(UserMixin, PkModel):
         self.email_confirm_date = datetime.datetime.now()
         self.update()
         return True
+
+    def generate_reset_password_token(self):
+        serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
+
+    @staticmethod
+    def verify_reset_password_token(token, expiration=3600):
+        serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+        try:
+            email = serializer.loads(
+                token,
+                salt=current_app.config["PASSWORD_SALT"],
+                max_age=expiration,
+            )
+        except Exception:
+            return None
+        return User.get_by_email(email)
 
 
 @login_manager.user_loader

@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from sqlalchemy import func
 from wtforms import PasswordField
 from wtforms.fields import EmailField
 from wtforms.validators import DataRequired
@@ -63,9 +62,35 @@ class RegistrationForm(FlaskForm):
             from .models import User
         except Exception as e:
             raise e
-        user = User.query.filter(
-            func.lower(User.email) == func.lower(field.data)
-        ).scalar()
+        user = User.get_by_email(field.data)
 
         if user is not None:
             raise ValidationError(f"email '{field.data}' is already in use.")
+
+
+class ForgotPasswordForm(FlaskForm):
+    email = EmailField(
+        "Email",
+        [DataRequired(), Email(message="Not a valid email address.")],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(
+        "New Password",
+        validators=[
+            InputRequired("Password is required"),
+            Length(
+                min=6,
+                max=25,
+                message="Password must be between 6 and 25 characters",
+            ),
+            EqualTo("confirm", message="Passwords must match"),
+        ],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    confirm = PasswordField(
+        "Repeat Password",
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )

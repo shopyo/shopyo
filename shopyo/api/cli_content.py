@@ -259,7 +259,6 @@ def get_manifest_ini_content(projname):
         f"""\
         include requirements.txt
         include dev_requirements.txt
-        exclude config.json
         recursive-include {projname} *
         recursive-exclude {projname}/instance *
         recursive-exclude {projname}/static/modules *
@@ -455,9 +454,6 @@ def get_gitignore_content():
 
         # modules in static since present in modules
         shopyo/static/modules/
-
-        # ignore secrets
-        config.json
         """
     )
 

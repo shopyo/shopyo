@@ -5,6 +5,44 @@ for more details on pytest
 """
 
 import pytest
+from shopyo.app import create_app
+from init import db
+from shopyo_auth.view import module_blueprint
+from shopyo_base.view import module_blueprint as base_blueprint
+from shopyo_theme import ShopyoTheme
+from shopyo_settings import ShopyoSettings
+from shopyo_settings.models import Settings
+from shopyo_dashboard.view import module_blueprint as dashboard_blueprint
+
+
+@pytest.fixture
+def flask_app():
+    app = create_app("testing")
+    with app.app_context():
+        app.register_blueprint(module_blueprint)
+        app.register_blueprint(base_blueprint)
+        app.register_blueprint(dashboard_blueprint)
+        sh_theme = ShopyoTheme(app)
+        sh_settings = ShopyoSettings(app)
+        db.create_all()
+
+        # Seed settings and admin using module upload methods
+        sh_settings.upload()
+        # Seed admin if needed, though most tests create their own
+        # from shopyo_auth import ShopyoAuth
+        # sh_auth = ShopyoAuth(app)
+        # sh_auth.upload()
+
+        db.session.commit()
+
+        yield app
+        db.session.remove()
+        db.drop_all()
+
+
+@pytest.fixture
+def test_client(flask_app):
+    return flask_app.test_client()
 
 
 @pytest.fixture

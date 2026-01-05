@@ -1,7 +1,11 @@
 import datetime
-import json
+import logging
+
+from flask import current_app
 
 from .models import User
+
+logger = logging.getLogger(__name__)
 
 
 def add_admin(email, password):
@@ -12,13 +16,14 @@ def add_admin(email, password):
     user.is_email_confirmed = True
     user.email_confirm_date = datetime.datetime.now()
     user.save()
-    print("Uploading default admin with creds:", email, password)
+    logger.info(f"Uploading default admin with creds: {email} {password}")
 
 
 def upload(verbose=False):
-    with open("config.json") as config:
-        config = json.load(config)
-        add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
+    add_admin(
+        current_app.config["SEED_ADMIN_EMAIL"],
+        current_app.config["SEED_ADMIN_PASSWORD"],
+    )
 
-        if verbose:
-            print("[x] Added Admin User")
+    if verbose:
+        logger.info("[x] Added Admin User")

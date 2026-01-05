@@ -3,6 +3,41 @@
 ### Feat
 
 - support sqlalchemy 2.0
+- various improvements
+
+### Refactor
+
+- remove config.json mechanism in favor of config.py variables
+- clean up cli commands and docs regarding config.json
+
+### Fix
+
+- auth functional tests redirect assertions
+- database seeding in tests (IntegrityError)
+
+### Docs
+
+- auth docs update
+
+## v4.13.1 (2026-01-01)
+
+### Fix
+
+- docs and readthedocs configuration (#220)
+
+### Chore
+
+- update tests and remove codeql ci
+
+## v4.13.0 (2026-01-01)
+
+### Fix
+
+- windows failing tests
+
+### Chore
+
+- auto fixes from pre-commit
 
 ## 4.9.4 (2024-04-04)
 
@@ -43,6 +78,18 @@
 - dashboard open to non admin
 - security alert
 - **3.5.7**: upload key
+
+## v4.6.0 (2022-08-30)
+
+### Feat
+
+- complete package addition
+- module functionalities extended for packages
+- plugins basics
+
+### Fix
+
+- plugin issues
 
 ## v4.5.2 (2022-04-16)
 
