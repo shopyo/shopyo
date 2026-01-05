@@ -42,6 +42,9 @@ the following module structure inside ``modules/``
    │   └── test_demo_models.py
    └── view.py
 
+.. note::
+   The ``models.py`` and ``forms.py`` files are generated with standard Shopyo imports (`PkModel`, `FlaskForm`) to get you started quickly.
+
 
 In case you want to group modules together in a particular subcategory, you can
 create modules inside a box. For example first run

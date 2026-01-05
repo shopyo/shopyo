@@ -490,7 +490,7 @@ and run the project as:
 
 .. code:: bash
 
-   path/to/blog/blog$ shopyo run
+   path/to/blog/blog$ flask run --debug
 
 
 You now have a complete Flask based blog application
