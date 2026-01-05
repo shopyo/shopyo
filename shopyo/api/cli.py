@@ -66,7 +66,9 @@ def create_box(boxname, verbose):
     path = os.path.join("modules", boxname)
 
     if os.path.exists(os.path.join("modules", boxname)):
-        click.secho(f" ❌ Error: Box '{path}' already exists!", fg="red", bold=True, err=True)
+        click.secho(
+            f" ❌ Error: Box '{path}' already exists!", fg="red", bold=True, err=True
+        )
         sys.exit(1)
 
     _create_box(boxname, verbose=verbose)
@@ -82,26 +84,46 @@ def create_module(modulename, boxname, verbose):
     provided, creates the module inside ``modules/BOXNAME.``
     """
     if boxname != "" and not boxname.startswith("box__"):
-        click.secho(f" ❌ Error: Invalid BOXNAME '{boxname}'. It should start with 'box__' prefix.", fg="red", bold=True)
+        click.secho(
+            f" ❌ Error: Invalid BOXNAME '{boxname}'. It should start with 'box__' prefix.",
+            fg="red",
+            bold=True,
+        )
         click.echo("    Example: box__ecommerce")
         sys.exit(1)
 
     if modulename.startswith("box_"):
-        click.secho(f" ❌ Error: Invalid MODULENAME '{modulename}'. It cannot start with 'box_' prefix.", fg="red", bold=True)
+        click.secho(
+            f" ❌ Error: Invalid MODULENAME '{modulename}'. It cannot start with 'box_' prefix.",
+            fg="red",
+            bold=True,
+        )
         sys.exit(1)
 
     if not is_alpha_num_underscore(modulename):
-        click.secho(f" ❌ Error: MODULENAME '{modulename}' is not valid. Use alphanumeric and underscore only.", fg="red", bold=True)
+        click.secho(
+            f" ❌ Error: MODULENAME '{modulename}' is not valid. Use alphanumeric and underscore only.",
+            fg="red",
+            bold=True,
+        )
         sys.exit(1)
 
     if boxname != "" and not is_alpha_num_underscore(boxname):
-        click.secho(f" ❌ Error: BOXNAME '{boxname}' is not valid. Use alphanumeric and underscore only.", fg="red", bold=True)
+        click.secho(
+            f" ❌ Error: BOXNAME '{boxname}' is not valid. Use alphanumeric and underscore only.",
+            fg="red",
+            bold=True,
+        )
         sys.exit(1)
 
     module_path = get_module_path_if_exists(modulename)
 
     if module_path is not None:
-        click.secho(f" ❌ Error: Module '{modulename}' already exists at {module_path}", fg="red", bold=True)
+        click.secho(
+            f" ❌ Error: Module '{modulename}' already exists at {module_path}",
+            fg="red",
+            bold=True,
+        )
         sys.exit(1)
 
     if boxname != "":
@@ -197,9 +219,11 @@ def initialise(verbose, clear_migration, clear_db):
         click.secho(
             " ❌ Error: 'modules' folder not found. Are you in the project root?",
             fg="red",
-            bold=True
+            bold=True,
         )
-        click.secho("    Try running 'shopyo new <project_name>' first.", fg="bright_black")
+        click.secho(
+            "    Try running 'shopyo new <project_name>' first.", fg="bright_black"
+        )
         sys.exit(1)
 
     click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
@@ -238,7 +262,9 @@ def initialise(verbose, clear_migration, clear_db):
     # Upload models data in upload.py files inside each module
     _upload_data(verbose=verbose)
 
-    click.secho("\n ✅ Initialization complete! Ready to develop.", fg="green", bold=True)
+    click.secho(
+        "\n ✅ Initialization complete! Ready to develop.", fg="green", bold=True
+    )
     click.echo("    Run 'flask run --debug' to start the server.\n")
 
 
@@ -440,7 +466,9 @@ def new(projname, verbose, modules):
         verbose=verbose,
     )
 
-    click.secho(f"\n ✨ Project '{projname}' created successfully!", fg="green", bold=True)
+    click.secho(
+        f"\n ✨ Project '{projname}' created successfully!", fg="green", bold=True
+    )
     click.echo(" " + "─" * 40)
     click.echo(" Next steps to get started:")
     if projname == "":

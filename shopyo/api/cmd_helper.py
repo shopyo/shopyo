@@ -191,7 +191,9 @@ def _collectstatic(target_module="modules", verbose=False):
     try:
         from init import installed_packages
     except ImportError:
-        click.secho("  ⚠️  Warning: init.py does not contain 'installed_packages'.", fg="yellow")
+        click.secho(
+            "  ⚠️  Warning: init.py does not contain 'installed_packages'.", fg="yellow"
+        )
         sys.exit()
     for plugin in installed_packages:
         try:
@@ -207,7 +209,9 @@ def _collectstatic(target_module="modules", verbose=False):
                     click.secho(f"  ✅ Collected static from {plugin}", fg="green")
             else:
                 if verbose:
-                    click.secho(f"  ℹ️  Static folder not found for {plugin}", fg="bright_black")
+                    click.secho(
+                        f"  ℹ️  Static folder not found for {plugin}", fg="bright_black"
+                    )
         except Exception as e:
             if verbose:
                 click.secho(f"  ❌ Error collecting static for {plugin}: {e}", fg="red")
@@ -236,7 +240,10 @@ def _upload_data(verbose=False):
                     upload.upload()
                 except ImportError as e:
                     if verbose:
-                        click.secho(f"  ℹ️  No seed data for {folder}/{sub_folder}", fg="bright_black")
+                        click.secho(
+                            f"  ℹ️  No seed data for {folder}/{sub_folder}",
+                            fg="bright_black",
+                        )
         else:
             # apps
             try:
@@ -258,7 +265,9 @@ def _upload_data(verbose=False):
                 click.secho(f"  ✅ Uploaded data from {plugin}", fg="green")
         except Exception as e:
             if verbose:
-                click.secho(f"  ℹ️  Package {plugin} has no seed data", fg="bright_black")
+                click.secho(
+                    f"  ℹ️  Package {plugin} has no seed data", fg="bright_black"
+                )
 
 
 def _create_box(boxname, verbose=False):
@@ -349,7 +358,9 @@ def _create_module(modulename, base_path=None, verbose=False):
         json.dump(info_json, f, indent=4, sort_keys=True)
 
     if verbose:
-        click.secho(f"  📄 Created module config at {info_json_path}", fg="bright_black")
+        click.secho(
+            f"  📄 Created module config at {info_json_path}", fg="bright_black"
+        )
 
     # create the sidebar.html inside templates/blocks
     blocks_path = os.path.join(base_path, "templates", modulename, "blocks")
@@ -375,7 +386,9 @@ def _create_module(modulename, base_path=None, verbose=False):
         os.path.join(base_path, "global.py"), get_global_py_content(), verbose=verbose
     )
 
-    click.secho(f" ✅ Module '{modulename}' created successfully!\n", fg="green", bold=True)
+    click.secho(
+        f" ✅ Module '{modulename}' created successfully!\n", fg="green", bold=True
+    )
 
 
 def _run_app(mode):
@@ -559,14 +572,24 @@ def _audit(warning, info, severe):
                 type_ = parts[0]
                 msg = parts[1].strip()
                 if issue_type[type_]:
-                    color = "red" if type_ == "severe" else "yellow" if type_ == "warning" else "bright_black"
-                    icon = "❌" if type_ == "severe" else "⚠️" if type_ == "warning" else "ℹ️"
+                    color = (
+                        "red"
+                        if type_ == "severe"
+                        else "yellow" if type_ == "warning" else "bright_black"
+                    )
+                    icon = (
+                        "❌"
+                        if type_ == "severe"
+                        else "⚠️" if type_ == "warning" else "ℹ️"
+                    )
                     click.secho(f"    {icon} {type_.capitalize()}: {msg}", fg=color)
             click.echo("")
 
     click.secho(" 🗃️ Checking Boxes", fg="bright_black", bold=True)
     for box_issue in boxes_issues:
-        has_box_issues = any(issue_type[issue.split(":")[0]] for issue in box_issue["issues"])
+        has_box_issues = any(
+            issue_type[issue.split(":")[0]] for issue in box_issue["issues"]
+        )
         has_app_issues = any(
             any(issue_type[issue.split(":")[0]] for issue in app_issue["issues"])
             for app_issue in box_issue["apps_issues"]
@@ -579,21 +602,41 @@ def _audit(warning, info, severe):
                 type_ = parts[0]
                 msg = parts[1].strip()
                 if issue_type[type_]:
-                    color = "red" if type_ == "severe" else "yellow" if type_ == "warning" else "bright_black"
-                    icon = "❌" if type_ == "severe" else "⚠️" if type_ == "warning" else "ℹ️"
+                    color = (
+                        "red"
+                        if type_ == "severe"
+                        else "yellow" if type_ == "warning" else "bright_black"
+                    )
+                    icon = (
+                        "❌"
+                        if type_ == "severe"
+                        else "⚠️" if type_ == "warning" else "ℹ️"
+                    )
                     click.secho(f"    {icon} {type_.capitalize()}: {msg}", fg=color)
 
             for app_issue in box_issue["apps_issues"]:
-                if any(issue_type[issue.split(":")[0]] for issue in app_issue["issues"]):
+                if any(
+                    issue_type[issue.split(":")[0]] for issue in app_issue["issues"]
+                ):
                     click.secho(f"    {app_issue['path']}", fg="bright_yellow")
                     for issue in app_issue["issues"]:
                         parts = issue.split(":")
                         type_ = parts[0]
                         msg = parts[1].strip()
                         if issue_type[type_]:
-                            color = "red" if type_ == "severe" else "yellow" if type_ == "warning" else "bright_black"
-                            icon = "❌" if type_ == "severe" else "⚠️" if type_ == "warning" else "ℹ️"
-                            click.secho(f"      {icon} {type_.capitalize()}: {msg}", fg=color)
+                            color = (
+                                "red"
+                                if type_ == "severe"
+                                else "yellow" if type_ == "warning" else "bright_black"
+                            )
+                            icon = (
+                                "❌"
+                                if type_ == "severe"
+                                else "⚠️" if type_ == "warning" else "ℹ️"
+                            )
+                            click.secho(
+                                f"      {icon} {type_.capitalize()}: {msg}", fg=color
+                            )
             click.echo("")
 
     click.secho(" ✨ Audit finished!", fg="green", bold=True)
@@ -619,14 +662,26 @@ def name_is_box(app_name):
 def _rename_app(old_app_name, new_app_name):
     # box_
     if old_app_name.startswith("box") and not old_app_name.startswith("box__"):
-        click.secho(' ❌ Error: Box names must start with two underscores, e.g., "box__default"', fg="red", bold=True)
+        click.secho(
+            ' ❌ Error: Box names must start with two underscores, e.g., "box__default"',
+            fg="red",
+            bold=True,
+        )
         sys.exit()
     if new_app_name.startswith("box") and not new_app_name.startswith("box__"):
-        click.secho(' ❌ Error: Box names must start with two underscores, e.g., "box__default"', fg="red", bold=True)
+        click.secho(
+            ' ❌ Error: Box names must start with two underscores, e.g., "box__default"',
+            fg="red",
+            bold=True,
+        )
         sys.exit()
 
     if (not _verify_app_name(old_app_name)) and (not _verify_app_name(new_app_name)):
-        click.secho(' ❌ Error: App names should be "app" or "box_name/app"', fg="red", bold=True)
+        click.secho(
+            ' ❌ Error: App names should be "app" or "box_name/app"',
+            fg="red",
+            bold=True,
+        )
         sys.exit()
 
     root_path = os.getcwd()
@@ -639,7 +694,9 @@ def _rename_app(old_app_name, new_app_name):
             new_app_name.split("/")[1]
 
         if not path_exists(os.path.join(modules_path, box_name, app_part)):
-            click.secho(f" ❌ Error: App '{old_app_name}' does not exist", fg="red", bold=True)
+            click.secho(
+                f" ❌ Error: App '{old_app_name}' does not exist", fg="red", bold=True
+            )
             sys.exit()
 
     try:
@@ -659,7 +716,11 @@ def _rename_app(old_app_name, new_app_name):
             json_data["module_name"] = module_name
             json.dump(json_data, f, indent=4)
 
-        click.secho(f" ✅ Renamed app '{old_app_name}' to '{new_app_name}'", fg="green", bold=True)
+        click.secho(
+            f" ✅ Renamed app '{old_app_name}' to '{new_app_name}'",
+            fg="green",
+            bold=True,
+        )
     except Exception as e:
         click.secho(f" ❌ Error during rename: {e}", fg="red", bold=True)
         raise e
