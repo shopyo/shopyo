@@ -20,6 +20,7 @@ from flask import current_app
 from shopyo.api.cli_content import get_dashboard_html_content
 from shopyo.api.cli_content import get_global_py_content
 from shopyo.api.cli_content import get_module_view_content
+from shopyo.api.cli_content import get_index_html_content
 from shopyo.api.constants import SEP_CHAR
 from shopyo.api.constants import SEP_NUM
 from shopyo.api.file import get_folders
@@ -374,6 +375,13 @@ def _create_module(modulename, base_path=None, verbose=False):
     trymkfile(
         os.path.join(base_path, "templates", modulename, "dashboard.html"),
         get_dashboard_html_content(),
+        verbose=verbose,
+    )
+
+    # create the index.html inside templates/MODULENAME
+    trymkfile(
+        os.path.join(base_path, "templates", modulename, "index.html"),
+        get_index_html_content(),
         verbose=verbose,
     )
 

@@ -20,7 +20,7 @@ def get_module_view_content():
 
         @blueprint.route("/")
         def index():
-            return mhelp.info['display_string']
+            return mhelp.render('index.html')
 
         # If "dashboard": "/dashboard" is set in info.json
         #
@@ -33,6 +33,22 @@ def get_module_view_content():
 
         #         })
         #     return mhelp.render('dashboard.html', **context)
+        """
+    )
+
+    return content
+
+
+def get_index_html_content():
+    content = textwrap.dedent(
+        """\
+        {% extends "shopyo_base/module_base.html" %}
+        {% set active_page = info['display_string'] %}
+        {% block content %}
+        <div class="container">
+            <h1>{{ info['display_string'] }}</h1>
+        </div>
+        {% endblock %}
         """
     )
 
