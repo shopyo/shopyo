@@ -20,6 +20,7 @@ Useful note on how to `integrate <https://speakerdeck.com/osdotsystem/fast-flask
    :maxdepth: 9
 
    Basic Usage <usage>
+   Auth Tutorial <auth_tutorial>
    Architecture <architecture>
    Contributing to Shopyo <contrib>
    Modules/Apps <modules>

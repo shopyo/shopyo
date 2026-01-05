@@ -20,12 +20,6 @@ where the ``app.py`` and ``modules/`` reside), run
 
    shopyo startapp [OPTIONS] MODULENAME [BOXNAME]
 
-or you can do
-
-.. code:: bash
-
-   python manage.py startapp [OPTIONS] MODULENAME [BOXNAME]
-
 
 For example if you run ``shopyo startapp product``, it will auto create
 the following module structure inside ``modules/``
