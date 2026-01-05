@@ -6,7 +6,7 @@ This tutorial walks you through creating a simple Polls application using vanill
 Polls Tutorial Prerequisites
 ----------------------------
 1.  **Create a Project:**
-    
+
     .. code-block:: bash
 
        mkdir polls_project
@@ -92,15 +92,15 @@ Polls Implementation
                question = Question(text=form.text.data)
                db.session.add(question)
                db.session.commit()
-               
+
                opt1 = Option(text=form.option1.data, question_id=question.id)
                opt2 = Option(text=form.option2.data, question_id=question.id)
                db.session.add_all([opt1, opt2])
                db.session.commit()
-               
+
                notify_success("Poll created!")
                return redirect(url_for("polls.index"))
-           
+
            return mhelp.render("create.html", form=form)
 
        @module_blueprint.route("/<int:question_id>/vote", methods=["POST"])
@@ -200,7 +200,7 @@ Polls Implementation
        {% endblock %}
 
 6.  **Run Migrations:**
-    
+
     .. code-block:: bash
 
        shopyo db migrate
