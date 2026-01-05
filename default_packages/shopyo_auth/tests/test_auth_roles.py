@@ -8,9 +8,10 @@ from shopyo_auth.models import User, Role
 from factories import UserFactory, RoleFactory
 from demo_roles import demo_blueprint
 
+
 @pytest.mark.usefixtures("flask_app")
 class TestRolesRequired:
-    
+
     @pytest.fixture(autouse=True)
     def setup_demo(self, flask_app):
         flask_app.register_blueprint(demo_blueprint)
@@ -28,7 +29,7 @@ class TestRolesRequired:
                 data={"email": admin_user.email, "password": "pass"},
                 follow_redirects=True,
             )
-            
+
             response = test_client.get("/admin-only")
             assert response.status_code == 200
             assert b"Welcome, Admin!" in response.data
@@ -46,7 +47,7 @@ class TestRolesRequired:
                 data={"email": staff_user.email, "password": "pass"},
                 follow_redirects=True,
             )
-            
+
             response = test_client.get("/admin-only", follow_redirects=False)
             # Redirects to root "/"
             assert response.status_code == 302
@@ -65,7 +66,7 @@ class TestRolesRequired:
                 data={"email": staff_user.email, "password": "pass"},
                 follow_redirects=True,
             )
-            
+
             response = test_client.get("/staff-access")
             assert response.status_code == 200
             assert b"Welcome, Staff Member!" in response.data
