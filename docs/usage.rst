@@ -31,7 +31,7 @@ all project scafolding and pre-included modules such as authentication, admin, t
     $ shopyo new
     $ cd blog
     $ shopyo initialise
-    $ shopyo rundebug
+    $ flask run --debug
 
 This creates a Flask app ``blog``, initialises it and then runs it at http://localhost:5000/.
 For the home page it will say ``Shopyo is now running!`` which will be the home page of your app (see

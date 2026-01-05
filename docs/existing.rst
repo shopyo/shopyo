@@ -11,4 +11,4 @@ Run
 .. code:: bash
 
     python manage.py initialise
-    python manage.py rundebug
+    flask run --debug

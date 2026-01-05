@@ -89,7 +89,7 @@ First time setup
 
     .. code-block:: text
 
-        $ shopyo rundebug
+        $ flask run --debug
 
 -   Go to the link http://127.0.0.1:5000/ and you should see ``Shopyo is now running!``. Go to
     http://127.0.0.1:5000/auth/login and then you can access the dashboard by logging in

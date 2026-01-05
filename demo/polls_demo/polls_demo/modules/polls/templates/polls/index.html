@@ -1,0 +1,26 @@
+{% extends "shopyo_base/main_base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Active Polls</h2>
+    <a href="{{ url_for('polls.create') }}" class="btn btn-primary mb-3">Create Poll</a>
+    <ul class="list-group">
+        {% for question in questions %}
+        <li class="list-group-item">
+            <a href="{{ url_for('polls.results', question_id=question.id) }}">{{ question.text }}</a>
+            <form action="{{ url_for('polls.vote', question_id=question.id) }}" method="post" class="mt-2">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                {% for option in question.options %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option_id" value="{{ option.id }}" id="opt{{ option.id }}" required>
+                    <label class="form-check-label" for="opt{{ option.id }}">
+                        {{ option.text }}
+                    </label>
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-sm btn-success mt-2">Vote</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

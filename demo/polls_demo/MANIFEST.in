@@ -1,0 +1,7 @@
+include requirements.txt
+include dev_requirements.txt
+recursive-include polls_demo *
+recursive-exclude polls_demo/instance *
+recursive-exclude polls_demo/static/modules *
+recursive-exclude polls_demo/.tox *
+recursive-exclude __pycache__ *

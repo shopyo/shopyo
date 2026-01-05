@@ -1,0 +1,15 @@
+{% extends "shopyo_base/main_base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Results: {{ question.text }}</h2>
+    <ul class="list-group">
+        {% for option in question.options %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ option.text }}
+            <span class="badge badge-primary badge-pill">{{ option.votes }} votes</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('polls.index') }}" class="btn btn-secondary mt-3">Back</a>
+</div>
+{% endblock %}

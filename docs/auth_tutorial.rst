@@ -6,8 +6,8 @@ This tutorial demonstrates a real-world use case for `shopyo-auth`: creating a *
 **The Scenario:**
 You are building a B2B application. You need a dedicated section of the site (`/portal`) that is only accessible to users with the **"client"** role. Staff members and regular users should not be able to access it.
 
-Prerequisites
--------------
+Auth Tutorial Prerequisites
+---------------------------
 1.  **Create a Project:**
 
     .. code-block:: bash
@@ -41,8 +41,8 @@ Enable the extension in your `app.py`. Uncomment the `shopyo_auth` lines:
        # ...
        return app
 
-Implementation
---------------
+Auth Implementation
+-------------------
 We will create a specific module for the client portal.
 
 1.  **Create a Module:**
@@ -129,6 +129,6 @@ Testing the Setup
 3.  Navigate to `/portal`. You should see the welcome message.
 4.  Try accessing `/portal` as a different user (e.g., admin). You should be denied access (403 Forbidden).
 
-Source Code
------------
+Auth Demo Source Code
+---------------------
 You can view the source code for a similar setup at `shopyo/demo/auth_demo`.

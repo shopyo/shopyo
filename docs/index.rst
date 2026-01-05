@@ -21,6 +21,7 @@ Useful note on how to `integrate <https://speakerdeck.com/osdotsystem/fast-flask
 
    Basic Usage <usage>
    Auth Tutorial <auth_tutorial>
+   Polls Tutorial <polls_tutorial>
    Architecture <architecture>
    Contributing to Shopyo <contrib>
    Modules/Apps <modules>
