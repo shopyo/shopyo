@@ -15,11 +15,10 @@ def get_module_view_content():
         # from shopyo.api.forms import flash_errors
 
         mhelp = ModuleHelp(__file__, __name__)
-        globals()[mhelp.blueprint_str] = mhelp.blueprint
-        module_blueprint = globals()[mhelp.blueprint_str]
+        blueprint = mhelp.blueprint
 
 
-        @module_blueprint.route("/")
+        @blueprint.route("/")
         def index():
             return mhelp.info['display_string']
 

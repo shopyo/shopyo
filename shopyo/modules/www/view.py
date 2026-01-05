@@ -15,11 +15,10 @@ from shopyo.api.templates import yo_render
 # from modules.box__ecommerce.shop.helpers import get_cart_data
 
 mhelp = ModuleHelp(__file__, __name__)
-globals()[mhelp.blueprint_str] = mhelp.blueprint
-module_blueprint = globals()[mhelp.blueprint_str]
+blueprint = mhelp.blueprint
 
 
-@module_blueprint.route("/")
+@blueprint.route("/")
 def index():
     # cant be defined above but must be manually set each time
     # active_theme_dir = os.path.join(
@@ -37,7 +36,7 @@ def index():
 from shopyo.api.assets import get_static
 
 
-@module_blueprint.route("/render_demo")
+@blueprint.route("/render_demo")
 def render_demo():
     context = {"fruit": "mango"}
     return yo_render("blogus/render_demo.html", context)

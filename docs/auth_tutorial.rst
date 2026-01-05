@@ -65,14 +65,21 @@ We will create a specific module for the client portal.
        from shopyo_auth.decorators import roles_required
        from shopyo.api.module import ModuleHelp
 
-       mhelp = ModuleHelp(__file__, __name__)
-       globals()[mhelp.blueprint_str] = mhelp.blueprint
-       module_blueprint = globals()[mhelp.blueprint_str]
+              mhelp = ModuleHelp(__file__, __name__)
 
-       @module_blueprint.route("/")
-       @login_required
-       @roles_required("client")
-       def index():
+              blueprint = mhelp.blueprint
+
+       
+
+              @blueprint.route("/")
+
+              @login_required
+
+              @roles_required("client") 
+
+              def index():
+
+       
            """
            Only users with the 'client' role can access this view.
            """
