@@ -12,7 +12,7 @@ with app.app_context():
         db.session.add(client_role)
         db.session.commit()
         print("Created role: client")
-    
+
     # Assign to user (demo user)
     user = User.query.first()
     if user:

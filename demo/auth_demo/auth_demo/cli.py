@@ -28,7 +28,7 @@ def cli(ctx):
 
 @cli.command("welcome")
 @click.argument("name")
-@click.option('--verbose', "-v", is_flag=True, default=False)
+@click.option("--verbose", "-v", is_flag=True, default=False)
 def welcome(name, verbose):
     """Sample command to welcome users.
 

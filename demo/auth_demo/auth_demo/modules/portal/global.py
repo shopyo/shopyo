@@ -1,4 +1,3 @@
-
 # global templates variables in here
 # available_everywhere = {
 #

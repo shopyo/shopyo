@@ -8,9 +8,10 @@ mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]
 
+
 @module_blueprint.route("/")
 @login_required
-@roles_required("client") 
+@roles_required("client")
 def index():
     """
     Only users with the 'client' role can access this view.

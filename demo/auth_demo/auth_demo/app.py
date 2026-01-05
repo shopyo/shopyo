@@ -65,6 +65,7 @@ def create_app(config_name="development"):
 
     # from shopyo_base import ShopyoBase
     from shopyo_auth import ShopyoAuth
+
     # from shopyo_appadmin import ShopyoAppAdmin
     # from shopyo_dashboard import ShopyoDashboard
     # from shopyo_page import ShopyoPage

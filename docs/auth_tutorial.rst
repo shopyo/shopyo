@@ -9,7 +9,7 @@ You are building a B2B application. You need a dedicated section of the site (`/
 Prerequisites
 -------------
 1.  **Create a Project:**
-    
+
     .. code-block:: bash
 
        mkdir my_b2b_app
@@ -71,7 +71,7 @@ We will create a specific module for the client portal.
 
        @module_blueprint.route("/")
        @login_required
-       @roles_required("client") 
+       @roles_required("client")
        def index():
            """
            Only users with the 'client' role can access this view.
@@ -113,7 +113,7 @@ Now we need to create the "client" role and assign it to a user. You can do this
    user.email = "client@company.com"
    user.password = "securepass"
    user.is_admin = False # They are not a superadmin
-   
+
    # Add the client role
    client_role = Role.query.filter_by(name="client").first()
    user.roles.append(client_role)
