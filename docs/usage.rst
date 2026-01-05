@@ -41,8 +41,8 @@ To access the dashboard, go to http://localhost:5000/auth/login and login with e
 
 See :ref:`new` for more details.
 
-Configuration
--------------
+Environment Variables
+---------------------
 Shopyo can be configured using environment variables. This is especially useful for production deployments.
 
 Essential Variables
