@@ -41,4 +41,30 @@ To access the dashboard, go to http://localhost:5000/auth/login and login with e
 
 See :ref:`new` for more details.
 
+Configuration
+-------------
+Shopyo can be configured using environment variables. This is especially useful for production deployments.
+
+Essential Variables
+*******************
+- ``SECRET_KEY``: A long random string used to secure session cookies and other crypto needs.
+- ``SQLALCHEMY_DATABASE_URI``: The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:pass@localhost/dbname``).
+
+Email Configuration
+*******************
+If you have email confirmation enabled, you must configure the following:
+
+- ``MAIL_SERVER``: SMTP server address.
+- ``MAIL_PORT``: SMTP server port.
+- ``MAIL_USERNAME``: Username for the email server.
+- ``MAIL_PASSWORD``: Password for the email server.
+- ``MAIL_DEFAULT_SENDER``: Email address used as the sender.
+
+Seeding Configuration
+*********************
+These variables are used during the ``shopyo initialise`` command to create the initial admin user:
+
+- ``SEED_ADMIN_EMAIL``: Email for the default admin user (defaults to ``admin@domain.com``).
+- ``SEED_ADMIN_PASSWORD``: Password for the default admin user (defaults to ``pass``).
+
 .. _Flask: https://github.com/pallets/flask

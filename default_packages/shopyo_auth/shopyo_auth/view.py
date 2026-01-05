@@ -11,8 +11,10 @@ from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 
+from .forms import ForgotPasswordForm
 from .forms import LoginForm
 from .forms import RegistrationForm
+from .forms import ResetPasswordForm
 from .models import User
 from shopyo.api.email import send_async_email
 from shopyo.api.html import notify_danger
@@ -98,6 +100,45 @@ def unconfirmed():
         return redirect(url_for("shopyo_dashboard.index"))
     flash(notify_warning("Please confirm your account!"))
     return render_template("shopyo_auth/unconfirmed.html")
+
+
+@module_blueprint.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for("shopyo_dashboard.index"))
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        user = User.get_by_email(form.email.data)
+        if user:
+            token = user.generate_reset_password_token()
+            template = "shopyo_auth/emails/reset_password"
+            subject = "Password Reset Requested"
+            context = {"token": token, "user": user}
+            send_async_email(user.email, subject, template, **context)
+        flash(
+            notify_success(
+                "Check your email for the instructions to reset your password"
+            )
+        )
+        return redirect(url_for("shopyo_auth.login"))
+    return render_template("shopyo_auth/forgot_password.html", form=form)
+
+
+@module_blueprint.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for("shopyo_dashboard.index"))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        flash(notify_danger("Invalid or expired token"))
+        return redirect(url_for("shopyo_dashboard.index"))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.password = form.password.data
+        user.update()
+        flash(notify_success("Your password has been reset."))
+        return redirect(url_for("shopyo_auth.login"))
+    return render_template("shopyo_auth/reset_password.html", form=form)
 
 
 @module_blueprint.route("/login", methods=["GET", "POST"])

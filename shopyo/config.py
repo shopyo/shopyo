@@ -31,6 +31,16 @@ class BaseConfig:
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
     UPLOADED_PATH_THUMB = os.path.join(STATIC, "uploads", "thumbs")
 
+    # Seeding
+    SEED_ADMIN_EMAIL = os.environ.get("SEED_ADMIN_EMAIL", "admin@domain.com")
+    SEED_ADMIN_PASSWORD = os.environ.get("SEED_ADMIN_PASSWORD", "pass")
+    SEED_SETTINGS = {
+        "APP_NAME": "Demo",
+        "ACTIVE_FRONT_THEME": "blogus",
+        "ACTIVE_BACK_THEME": "boogle",
+        "CURRENCY": "MUR",
+    }
+
 
 class ProductionConfig(BaseConfig):
     """Configurations for production"""
@@ -94,6 +104,7 @@ class TestingConfig(BaseConfig):
     DEBUG = True
     SERVER_NAME = "localhost.com"
     SECRET_KEY = "secret"
+    PREFERRED_URL_SCHEME = "http"
     PREFERRED_URL_SCHEME = "http"
 
     # flask WTF configs

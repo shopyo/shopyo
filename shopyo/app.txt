@@ -60,7 +60,7 @@ def create_app(config_name="development"):
     load_plugins(app, global_template_variables, global_configs, config_name)
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
-    create_config_json()
+    # create_config_json()
     load_extensions(app)
 
         # from shopyo_base import ShopyoBase
@@ -163,11 +163,6 @@ def load_config_from_instance(app, config_name):
             pass
     except OSError:
         pass
-
-
-def create_config_json():
-    if not os.path.exists("config.json"):
-        trycopy("config_demo.json", "config.json")
 
 
 def setup_flask_admin(app):

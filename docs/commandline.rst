@@ -466,7 +466,6 @@ the following blog project is created
    │   ├── app.py
    │   ├── cli.py
    │   ├── config.py
-   │   ├── config_demo.json
    │   ├── conftest.py
    │   ├── init.py
    │   ├── manage.py

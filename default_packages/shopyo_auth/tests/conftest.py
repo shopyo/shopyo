@@ -22,18 +22,17 @@ def flask_app():
         app.register_blueprint(module_blueprint)
         app.register_blueprint(base_blueprint)
         app.register_blueprint(dashboard_blueprint)
-        ShopyoTheme(app)
-        ShopyoSettings(app)
+        sh_theme = ShopyoTheme(app)
+        sh_settings = ShopyoSettings(app)
         db.create_all()
 
-        # Seed settings
-        settings = [
-            Settings(setting="APP_NAME", value="Demo"),
-            Settings(setting="ACTIVE_FRONT_THEME", value="blogus"),
-            Settings(setting="ACTIVE_BACK_THEME", value="boogle"),
-            Settings(setting="CURRENCY", value="MUR"),
-        ]
-        db.session.add_all(settings)
+        # Seed settings and admin using module upload methods
+        sh_settings.upload()
+        # Seed admin if needed, though most tests create their own
+        # from shopyo_auth import ShopyoAuth
+        # sh_auth = ShopyoAuth(app)
+        # sh_auth.upload()
+
         db.session.commit()
 
         yield app

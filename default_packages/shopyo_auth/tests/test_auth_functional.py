@@ -53,7 +53,7 @@ class TestAuthEndpoints:
     """
 
     def test_user_registration_page_renders(self, test_client):
-        response = test_client.get(f"{module_info['url_prefix']}/register")
+        response = test_client.get(f"http://localhost.com{module_info['url_prefix']}/register")
 
         assert response.status_code == 200
         assert b"Email" in response.data
@@ -67,11 +67,12 @@ class TestAuthEndpoints:
             "email": "test@gmail.com",
             "password": "password",
             "confirm": "password",
+            "csrf_token": "",
         }
 
         with test_client:
             response = test_client.post(
-                f"{module_info['url_prefix']}/register",
+                f"http://localhost.com{module_info['url_prefix']}/register",
                 data=data,
                 follow_redirects=True,
             )
@@ -85,17 +86,88 @@ class TestAuthEndpoints:
             "email": "Foo@Bar.com",
             "password": "password",
             "confirm": "password",
+            "csrf_token": "",
         }
 
         with test_client:
             response = test_client.post(
-                f"{module_info['url_prefix']}/register",
+                f"http://localhost.com{module_info['url_prefix']}/register",
                 data=data,
                 follow_redirects=True,
             )
 
             assert response.status_code == 200
             assert request.path == url_for("shopyo_auth.register")
+
+    def test_forgot_password_page_renders(self, test_client):
+        response = test_client.get(f"http://localhost.com{module_info['url_prefix']}/forgot-password")
+        assert response.status_code == 200
+        assert b"Forgot Password" in response.data
+        assert b"Submit" in response.data
+
+    def test_forgot_password_submit_redirects(self, test_client):
+        User.create(email="reset@example.com", password="password")
+        data = {"email": "reset@example.com", "csrf_token": ""}
+        response = test_client.post(
+            f"http://localhost.com{module_info['url_prefix']}/forgot-password",
+            data=data,
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert response.request.url == url_for("shopyo_auth.login")
+        assert b"Check your email" in response.data
+
+    def test_reset_password_page_renders_with_valid_token(self, test_client):
+        user = User.create(email="token@example.com", password="password")
+        token = user.generate_reset_password_token()
+        response = test_client.get(
+            f"http://localhost.com{module_info['url_prefix']}/reset-password/{token}"
+        )
+        assert response.status_code == 200
+        assert b"Reset Password" in response.data
+        assert b"Reset Password" in response.data # The button value
+
+    def test_reset_password_submit_updates_password(self, test_client):
+        user = User.create(email="change@example.com", password="old_password")
+        token = user.generate_reset_password_token()
+        data = {"password": "new_password", "confirm": "new_password", "csrf_token": ""}
+        response = test_client.post(
+            f"http://localhost.com{module_info['url_prefix']}/reset-password/{token}",
+            data=data,
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert response.request.url == url_for("shopyo_auth.login")
+        assert b"Your password has been reset" in response.data
+
+        updated_user = User.get_by_email("change@example.com")
+        assert updated_user.check_password("new_password")
+        assert not updated_user.check_password("old_password")
+
+    def test_reset_password_page_renders_with_invalid_or_expired_token(self, test_client):
+        response = test_client.get(
+            f"http://localhost.com{module_info['url_prefix']}/reset-password/invalidtoken",
+            follow_redirects=True
+        )
+        assert response.status_code == 200
+        assert b"Invalid or expired token" in response.data
+
+    def test_reset_password_submit_with_mismatched_passwords(self, test_client):
+        user = User.create(email="mismatch@example.com", password="old_password")
+        token = user.generate_reset_password_token()
+        data = {"password": "new_password", "confirm": "different_password", "csrf_token": ""}
+        with test_client:
+            response = test_client.post(
+                f"http://localhost.com{module_info['url_prefix']}/reset-password/{token}",
+                data=data,
+                follow_redirects=True,
+            )
+            assert response.status_code == 200
+            assert request.path == url_for("shopyo_auth.reset_password", token=token)
+            assert b"Passwords must match" in response.data
+            updated_user = User.get_by_email("mismatch@example.com")
+            assert updated_user.check_password("old_password")
+            assert not updated_user.check_password("new_password")
 
     # @pytest.mark.parametrize(
     #     "email_config",

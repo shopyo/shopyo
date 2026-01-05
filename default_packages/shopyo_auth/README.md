@@ -9,7 +9,8 @@ This package implements a production-ready authentication system using Flask-Log
 ## Features
 
 - **Full Authentication Flow**: Pre-built views and forms for Login, Logout, and Registration.
-- **Role-Based Access Control (RBAC)**: Supports complex many-to-many relationships between users and roles.
+- **Password Reset**: Secure, token-based password recovery workflow via email.
+- **Flexible Role-Based Access Control (RBAC)**: Assign multiple roles to users and restrict access using granular decorators.
 - **Email Confirmation**: Secure, token-based email verification system to validate new accounts.
 - **Security Hardened**:
     - Case-insensitive email lookups to prevent duplicate accounts.
@@ -46,20 +47,58 @@ You can customize the behavior of `shopyo_auth` using the following config varia
 
 ### 3. Protecting Views
 
-Use the standard `@login_required` decorator for authenticated access, or the custom `@check_confirmed` decorator to ensure the user has verified their email:
+Use standard Flask-Login decorators or custom Shopyo Auth decorators to protect your routes:
 
 ```python
 from flask_login import login_required
-from shopyo_auth.decorators import check_confirmed
+from shopyo_auth.decorators import check_confirmed, roles_required
 
+# Requires login and email confirmation
 @module_blueprint.route('/dashboard')
 @login_required
 @check_confirmed
 def dashboard():
     return "Welcome to your verified dashboard!"
+
+# Requires specific roles
+@module_blueprint.route('/admin-panel')
+@login_required
+@roles_required('admin', 'editor')
+def admin_panel():
+    return "Welcome, privileged user!"
 ```
 
-### 4. Seeding Admin Users
+### 4. Role-Based Access Control (RBAC) Demo
+
+Below is a demonstration of how to implement role-based access in your blueprints:
+
+```python
+from flask import Blueprint
+from shopyo_auth.decorators import roles_required
+from flask_login import login_required
+
+demo_blueprint = Blueprint("demo", __name__)
+
+@demo_blueprint.route("/staff-only")
+@login_required
+@roles_required("admin", "staff")
+def staff_only():
+    """Access allowed for users with 'admin' OR 'staff' roles."""
+    return "Hello Staff!"
+
+@demo_blueprint.route("/admin-only")
+@login_required
+@roles_required("admin")
+def admin_only():
+    """Access restricted to users with the 'admin' role only."""
+    return "Hello Admin!"
+```
+
+### 5. Resetting Passwords
+
+The password reset workflow is handled automatically via the `/forgot-password` and `/reset-password/<token>` routes. Users can request a reset link by providing their email address. If the account exists, an email is sent with a secure, timed link to set a new password.
+
+### 6. Seeding Admin Users
 
 To bootstrap your application with a default admin user, you can use the built-in seeding utility:
 

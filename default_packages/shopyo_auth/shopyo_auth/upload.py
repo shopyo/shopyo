@@ -1,6 +1,7 @@
 import datetime
-import json
 import logging
+
+from flask import current_app
 
 from .models import User
 
@@ -19,9 +20,10 @@ def add_admin(email, password):
 
 
 def upload(verbose=False):
-    with open("config.json") as config:
-        config = json.load(config)
-        add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
+    add_admin(
+        current_app.config["SEED_ADMIN_EMAIL"],
+        current_app.config["SEED_ADMIN_PASSWORD"],
+    )
 
-        if verbose:
-            logger.info("[x] Added Admin User")
+    if verbose:
+        logger.info("[x] Added Admin User")

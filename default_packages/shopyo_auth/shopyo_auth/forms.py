@@ -66,3 +66,31 @@ class RegistrationForm(FlaskForm):
 
         if user is not None:
             raise ValidationError(f"email '{field.data}' is already in use.")
+
+
+class ForgotPasswordForm(FlaskForm):
+    email = EmailField(
+        "Email",
+        [DataRequired(), Email(message="Not a valid email address.")],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(
+        "New Password",
+        validators=[
+            InputRequired("Password is required"),
+            Length(
+                min=6,
+                max=25,
+                message="Password must be between 6 and 25 characters",
+            ),
+            EqualTo("confirm", message="Passwords must match"),
+        ],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    confirm = PasswordField(
+        "Repeat Password",
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )

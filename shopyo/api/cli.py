@@ -381,7 +381,6 @@ def new(projname, verbose, modules):
             "__pycache__",
             "*.pyc",
             "sphinx_source",
-            "config.json",
             "pyproject.toml",
             "modules",
             "static",
