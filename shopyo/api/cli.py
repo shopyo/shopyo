@@ -484,6 +484,10 @@ def new(projname, verbose, modules):
     )
 
     click.echo(f"[x] Project {projname} created successfully!\n")
+    click.echo("Next steps:")
+    click.echo(f"  cd {projname}")
+    click.echo("  shopyo initialise")
+    click.echo("  flask run --debug\n")
 
     if modules_flag:
         copytree(
