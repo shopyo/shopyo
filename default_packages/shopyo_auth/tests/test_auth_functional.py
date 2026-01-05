@@ -53,7 +53,9 @@ class TestAuthEndpoints:
     """
 
     def test_user_registration_page_renders(self, test_client):
-        response = test_client.get(f"http://localhost.com{module_info['url_prefix']}/register")
+        response = test_client.get(
+            f"http://localhost.com{module_info['url_prefix']}/register"
+        )
 
         assert response.status_code == 200
         assert b"Email" in response.data
@@ -100,7 +102,9 @@ class TestAuthEndpoints:
             assert request.path == url_for("shopyo_auth.register")
 
     def test_forgot_password_page_renders(self, test_client):
-        response = test_client.get(f"http://localhost.com{module_info['url_prefix']}/forgot-password")
+        response = test_client.get(
+            f"http://localhost.com{module_info['url_prefix']}/forgot-password"
+        )
         assert response.status_code == 200
         assert b"Forgot Password" in response.data
         assert b"Submit" in response.data
@@ -125,7 +129,7 @@ class TestAuthEndpoints:
         )
         assert response.status_code == 200
         assert b"Reset Password" in response.data
-        assert b"Reset Password" in response.data # The button value
+        assert b"Reset Password" in response.data  # The button value
 
     def test_reset_password_submit_updates_password(self, test_client):
         user = User.create(email="change@example.com", password="old_password")
@@ -144,10 +148,12 @@ class TestAuthEndpoints:
         assert updated_user.check_password("new_password")
         assert not updated_user.check_password("old_password")
 
-    def test_reset_password_page_renders_with_invalid_or_expired_token(self, test_client):
+    def test_reset_password_page_renders_with_invalid_or_expired_token(
+        self, test_client
+    ):
         response = test_client.get(
             f"http://localhost.com{module_info['url_prefix']}/reset-password/invalidtoken",
-            follow_redirects=True
+            follow_redirects=True,
         )
         assert response.status_code == 200
         assert b"Invalid or expired token" in response.data
@@ -155,7 +161,11 @@ class TestAuthEndpoints:
     def test_reset_password_submit_with_mismatched_passwords(self, test_client):
         user = User.create(email="mismatch@example.com", password="old_password")
         token = user.generate_reset_password_token()
-        data = {"password": "new_password", "confirm": "different_password", "csrf_token": ""}
+        data = {
+            "password": "new_password",
+            "confirm": "different_password",
+            "csrf_token": "",
+        }
         with test_client:
             response = test_client.post(
                 f"http://localhost.com{module_info['url_prefix']}/reset-password/{token}",

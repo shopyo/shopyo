@@ -140,9 +140,7 @@ class User(UserMixin, PkModel):
 
     def generate_reset_password_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(
-            self.email, salt=current_app.config["PASSWORD_SALT"]
-        )
+        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
 
     @staticmethod
     def verify_reset_password_token(token, expiration=3600):

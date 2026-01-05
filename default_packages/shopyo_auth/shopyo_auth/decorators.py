@@ -20,6 +20,7 @@ def roles_required(*roles):
     Decorator to restrict access to users with at least one of the specified roles.
     Usage: @roles_required('admin', 'editor')
     """
+
     def decorator(f):
         @wraps(f)
         def wrap(*args, **kwargs):
@@ -31,5 +32,7 @@ def roles_required(*roles):
                 return f(*args, **kwargs)
 
             return redirect("/")
+
         return wrap
+
     return decorator
