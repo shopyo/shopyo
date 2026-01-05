@@ -337,8 +337,16 @@ def _create_module(modulename, base_path=None, verbose=False):
     trymkfile(
         os.path.join(base_path, "view.py"), get_module_view_content(), verbose=verbose
     )
-    trymkfile(os.path.join(base_path, "forms.py"), "from flask_wtf import FlaskForm\n# from wtforms import StringField\n# from wtforms.validators import DataRequired\n", verbose=verbose)
-    trymkfile(os.path.join(base_path, "models.py"), "from shopyo.api.models import PkModel\nfrom init import db\n", verbose=verbose)
+    trymkfile(
+        os.path.join(base_path, "forms.py"),
+        "from flask_wtf import FlaskForm\n# from wtforms import StringField\n# from wtforms.validators import DataRequired\n",
+        verbose=verbose,
+    )
+    trymkfile(
+        os.path.join(base_path, "models.py"),
+        "from shopyo.api.models import PkModel\nfrom init import db\n",
+        verbose=verbose,
+    )
 
     # create info.json file inside the module
     info_json = {
