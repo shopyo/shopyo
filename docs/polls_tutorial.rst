@@ -1,3 +1,6 @@
+Polls Tutorial
+==============
+
 Building a Polls App (Tutorial)
 ===============================
 
@@ -6,7 +9,7 @@ This tutorial walks you through creating a simple Polls application using vanill
 Polls Tutorial Prerequisites
 ----------------------------
 1.  **Create a Project:**
-
+    
     .. code-block:: bash
 
        mkdir polls_project
@@ -50,15 +53,11 @@ Polls Implementation
     .. code-block:: python
 
        from flask_wtf import FlaskForm
-       from wtforms import StringField, SubmitField, FieldList, FormField
+       from wtforms import StringField, SubmitField
        from wtforms.validators import DataRequired
-
-       class OptionForm(FlaskForm):
-           text = StringField("Option", validators=[DataRequired()])
 
        class PollForm(FlaskForm):
            text = StringField("Question", validators=[DataRequired()])
-           # For simplicity, we'll just add fields for 2 options in this tutorial version
            option1 = StringField("Option 1", validators=[DataRequired()])
            option2 = StringField("Option 2", validators=[DataRequired()])
            submit = SubmitField("Create Poll")
@@ -68,55 +67,56 @@ Polls Implementation
 
     .. code-block:: python
 
-       from flask import redirect, url_for, request, flash
+       from flask import redirect, url_for, request
        from shopyo.api.module import ModuleHelp
        from shopyo.api.html import notify_success
        from modules.polls.models import Question, Option
        from modules.polls.forms import PollForm
        from init import db
 
-              mhelp = ModuleHelp(__file__, __name__)
-              blueprint = mhelp.blueprint
-       
-              @blueprint.route("/")
-              def index():
-                  questions = Question.query.all()
-                  context = {"questions": questions}
-                  return mhelp.render("index.html", **context)
-       
-              @blueprint.route("/create", methods=["GET", "POST"])
-              def create():
-                  form = PollForm()
-                  if form.validate_on_submit():
-                      question = Question(text=form.text.data)
-                      db.session.add(question)
-                      db.session.commit()
-                      
-                      opt1 = Option(text=form.option1.data, question_id=question.id)
-                      opt2 = Option(text=form.option2.data, question_id=question.id)
-                      db.session.add_all([opt1, opt2])
-                      db.session.commit()
-                      
-                      notify_success("Poll created!")
-                      return redirect(url_for("polls.index"))
-                  
-                  return mhelp.render("create.html", form=form)
-       
-              @blueprint.route("/<int:question_id>/vote", methods=["POST"])
-              def vote(question_id):
-                  option_id = request.form.get("option_id")
-                  if option_id:
-                      option = Option.query.get_or_404(option_id)
-                      option.votes += 1
-                      db.session.commit()
-                      notify_success("Vote cast!")
-                  return redirect(url_for("polls.results", question_id=question_id))
-       
-              @blueprint.route("/<int:question_id>/results")
-              def results(question_id):
-                  question = Question.query.get_or_404(question_id)
-                  return mhelp.render("results.html", question=question)
-       5.  **Create Templates:**
+       mhelp = ModuleHelp(__file__, __name__)
+       blueprint = mhelp.blueprint
+
+       @blueprint.route("/")
+       def index():
+           questions = Question.query.all()
+           context = {"questions": questions}
+           return mhelp.render("index.html", **context)
+
+       @blueprint.route("/create", methods=["GET", "POST"])
+       def create():
+           form = PollForm()
+           if form.validate_on_submit():
+               question = Question(text=form.text.data)
+               db.session.add(question)
+               db.session.commit()
+               
+               opt1 = Option(text=form.option1.data, question_id=question.id)
+               opt2 = Option(text=form.option2.data, question_id=question.id)
+               db.session.add_all([opt1, opt2])
+               db.session.commit()
+               
+               notify_success("Poll created!")
+               return redirect(url_for("polls.index"))
+           
+           return mhelp.render("create.html", form=form)
+
+       @blueprint.route("/<int:question_id>/vote", methods=["POST"])
+       def vote(question_id):
+           option_id = request.form.get("option_id")
+           if option_id:
+               option = Option.query.get_or_404(option_id)
+               option.votes += 1
+               db.session.commit()
+               notify_success("Vote cast!")
+           return redirect(url_for("polls.results", question_id=question_id))
+
+       @blueprint.route("/<int:question_id>/results")
+       def results(question_id):
+           question = Question.query.get_or_404(question_id)
+           return mhelp.render("results.html", question=question)
+
+5.  **Create Templates:**
     Create the following files in `modules/polls/templates/polls/`.
 
     **index.html**:
@@ -198,7 +198,7 @@ Polls Implementation
        {% endblock %}
 
 6.  **Run Migrations:**
-
+    
     .. code-block:: bash
 
        shopyo db migrate
