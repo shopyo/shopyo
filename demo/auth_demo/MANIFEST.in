@@ -1,0 +1,7 @@
+include requirements.txt
+include dev_requirements.txt
+recursive-include auth_demo *
+recursive-exclude auth_demo/instance *
+recursive-exclude auth_demo/static/modules *
+recursive-exclude auth_demo/.tox *
+recursive-exclude __pycache__ *
