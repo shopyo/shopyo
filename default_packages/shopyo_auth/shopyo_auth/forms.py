@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from sqlalchemy import func
 from wtforms import PasswordField
 from wtforms.fields import EmailField
 from wtforms.validators import DataRequired
@@ -63,9 +62,7 @@ class RegistrationForm(FlaskForm):
             from .models import User
         except Exception as e:
             raise e
-        user = User.query.filter(
-            func.lower(User.email) == func.lower(field.data)
-        ).scalar()
+        user = User.get_by_email(field.data)
 
         if user is not None:
             raise ValidationError(f"email '{field.data}' is already in use.")

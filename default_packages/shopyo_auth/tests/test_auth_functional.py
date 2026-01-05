@@ -14,14 +14,14 @@ import pytest
 import sqlalchemy
 from flask import request
 from flask import url_for
-from modules.box__default.auth.models import User
+from shopyo_auth.models import User
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.dirname(dirpath)
 
 module_info = None
 
-with open(os.path.join(module_path, "info.json")) as f:
+with open(os.path.join(module_path, "shopyo_auth", "info.json")) as f:
     module_info = json.load(f)
 
 
@@ -69,14 +69,15 @@ class TestAuthEndpoints:
             "confirm": "password",
         }
 
-        response = test_client.post(
-            f"{module_info['url_prefix']}/register",
-            data=data,
-            follow_redirects=True,
-        )
+        with test_client:
+            response = test_client.post(
+                f"{module_info['url_prefix']}/register",
+                data=data,
+                follow_redirects=True,
+            )
 
-        assert response.status_code == 200
-        assert request.path == url_for("shopyo_auth.register")
+            assert response.status_code == 200
+            assert request.path == url_for("shopyo_auth.register")
 
     def test_user_registration_is_case_insensitive(self, test_client):
         User.create(email="foo@bar.com", password="pass")
@@ -86,14 +87,15 @@ class TestAuthEndpoints:
             "confirm": "password",
         }
 
-        response = test_client.post(
-            f"{module_info['url_prefix']}/register",
-            data=data,
-            follow_redirects=True,
-        )
+        with test_client:
+            response = test_client.post(
+                f"{module_info['url_prefix']}/register",
+                data=data,
+                follow_redirects=True,
+            )
 
-        assert response.status_code == 200
-        assert request.path == url_for("shopyo_auth.register")
+            assert response.status_code == 200
+            assert request.path == url_for("shopyo_auth.register")
 
     # @pytest.mark.parametrize(
     #     "email_config",

@@ -1,7 +1,10 @@
 import datetime
 import json
+import logging
 
 from .models import User
+
+logger = logging.getLogger(__name__)
 
 
 def add_admin(email, password):
@@ -12,7 +15,7 @@ def add_admin(email, password):
     user.is_email_confirmed = True
     user.email_confirm_date = datetime.datetime.now()
     user.save()
-    print("Uploading default admin with creds:", email, password)
+    logger.info(f"Uploading default admin with creds: {email} {password}")
 
 
 def upload(verbose=False):
@@ -21,4 +24,4 @@ def upload(verbose=False):
         add_admin(config["admin_user"]["email"], config["admin_user"]["password"])
 
         if verbose:
-            print("[x] Added Admin User")
+            logger.info("[x] Added Admin User")

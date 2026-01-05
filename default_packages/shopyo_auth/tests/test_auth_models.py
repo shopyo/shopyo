@@ -7,15 +7,16 @@ import datetime as dt
 
 import pytest
 from freezegun import freeze_time
-from modules.box__default.auth.models import AnonymousUser
-from modules.box__default.auth.models import Role
-from modules.box__default.auth.models import role_user_bridge
-from modules.box__default.auth.models import User
-from modules.box__default.auth.tests.factories import RoleFactory
-from modules.box__default.auth.tests.factories import UserFactory
+from shopyo_auth.models import AnonymousUser
+from shopyo_auth.models import Role
+from shopyo_auth.models import role_user_bridge
+from shopyo_auth.models import User
+from factories import RoleFactory
+from factories import UserFactory
 from sqlalchemy.exc import IntegrityError
 
 
+@pytest.mark.usefixtures("flask_app")
 class TestAuthFactory:
     """Test all Model Factories in Auth"""
 
@@ -39,6 +40,7 @@ class TestAuthFactory:
         assert bool(retrived.name)
 
 
+@pytest.mark.usefixtures("flask_app")
 class TestAnonymousUser:
     """tests app's anonymous users characteristics"""
 
@@ -90,6 +92,7 @@ class TestAnonymousUser:
         assert repr(user) == "<AnonymousUser guest>"
 
 
+@pytest.mark.usefixtures("flask_app")
 class TestUser:
     """Test User model"""
 
@@ -183,6 +186,7 @@ class TestUser:
         assert not user1.is_email_confirmed
 
 
+@pytest.mark.usefixtures("flask_app")
 class TestRole:
     """Test Role model"""
 
@@ -198,6 +202,7 @@ class TestRole:
         assert repr(role) == f"<Role-id: {role.id}, Role-name: buyer>"
 
 
+@pytest.mark.usefixtures("flask_app")
 class TestUserRoleRelation:
     """Test User and Role model relationship"""
 

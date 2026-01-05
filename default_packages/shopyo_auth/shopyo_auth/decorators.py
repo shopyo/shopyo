@@ -10,6 +10,6 @@ def check_confirmed(func):
     def decorated_function(*args, **kwargs):
         if current_user.is_email_confirmed:
             return func(*args, **kwargs)
-        return redirect(url_for("auth.unconfirmed"))
+        return redirect(url_for("shopyo_auth.unconfirmed"))
 
     return decorated_function
