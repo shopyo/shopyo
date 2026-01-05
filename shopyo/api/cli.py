@@ -237,6 +237,14 @@ def initialise(verbose, clear_migration, clear_db):
     """
     Creates ``db``, ``migration/``, adds default users, add settings
     """
+    if not os.path.exists("modules"):
+        click.secho(
+            "Error: 'modules' folder not found. "
+            "Please run this command from the Shopyo project directory.",
+            fg="red",
+        )
+        sys.exit(1)
+
     click.echo("initializing...")
 
     # drop db, remove mirgration/ and shopyo.db
@@ -485,7 +493,10 @@ def new(projname, verbose, modules):
 
     click.echo(f"[x] Project {projname} created successfully!\n")
     click.echo("Next steps:")
-    click.echo(f"  cd {projname}")
+    if projname == "":
+        click.echo(f"  cd {os.path.basename(os.getcwd())}")
+    else:
+        click.echo(f"  cd {projname}/{projname}")
     click.echo("  shopyo initialise")
     click.echo("  flask run --debug\n")
 
