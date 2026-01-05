@@ -328,7 +328,7 @@ def _create_module(modulename, base_path=None, verbose=False):
         base_path, "tests", f"test_{modulename}_functional.py"
     )
     test_models_path = os.path.join(base_path, "tests", f"test_{modulename}_models.py")
-    test_func_content = "# Please add your functional tests to this file.\n"
+    test_func_content = f"def test_index(client):\n    response = client.get('/{modulename}/')\n    assert response.status_code == 200\n"
     test_model_content = "# Please add your models tests to this file.\n"
     trymkfile(test_func_path, test_func_content, verbose=verbose)
     trymkfile(test_models_path, test_model_content, verbose=verbose)
