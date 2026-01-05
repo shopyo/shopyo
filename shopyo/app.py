@@ -106,7 +106,10 @@ def load_plugins(app, global_template_variables, global_configs, config_name):
         if plugin not in ["shopyo_admin"]:
             try:
                 mod = importlib.import_module(f"{plugin}.view")
-                app.register_blueprint(getattr(mod, f"{plugin}_blueprint"))
+                if hasattr(mod, "blueprint"):
+                    app.register_blueprint(getattr(mod, "blueprint"))
+                else:
+                    app.register_blueprint(getattr(mod, f"{plugin}_blueprint"))
             except AttributeError:
                 # print("[ ] Blueprint skipped:", e)
                 pass
@@ -196,7 +199,12 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     sys_mod = importlib.import_module(
                         f"modules.{folder}.{sub_folder}.view"
                     )
-                    app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
+                    if hasattr(sys_mod, "blueprint"):
+                        app.register_blueprint(getattr(sys_mod, "blueprint"))
+                    else:
+                        app.register_blueprint(
+                            getattr(sys_mod, f"{sub_folder}_blueprint")
+                        )
                 except AttributeError:
                     pass
                 try:
@@ -231,7 +239,10 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
             # apps
             try:
                 mod = importlib.import_module(f"modules.{folder}.view")
-                app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
+                if hasattr(mod, "blueprint"):
+                    app.register_blueprint(getattr(mod, "blueprint"))
+                else:
+                    app.register_blueprint(getattr(mod, f"{folder}_blueprint"))
             except AttributeError as e:
                 if is_yo_debug():
                     print("[ ] skipped", e)

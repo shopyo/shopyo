@@ -16,10 +16,9 @@ When you create a new module with `shopyo startapp`, it generates a `view.py` wi
     mhelp = ModuleHelp(__file__, __name__)
 
     # Registers the blueprint automatically based on info.json
-    globals()[mhelp.blueprint_str] = mhelp.blueprint
-    module_blueprint = globals()[mhelp.blueprint_str]
+    blueprint = mhelp.blueprint
 
-    @module_blueprint.route("/")
+    @blueprint.route("/")
     def index():
         return mhelp.info['display_string']
 

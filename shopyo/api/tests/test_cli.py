@@ -113,13 +113,14 @@ def test_clean(mock_clean, runner):
     )
 
 
+@patch("shopyo.api.cli.os.path.exists", return_value=True)
 @patch("shopyo.api.cli._clean")
 @patch("shopyo.api.cli.autoload_models")
 @patch("shopyo.api.cli.run")
 @patch("shopyo.api.cli._collectstatic")
 @patch("shopyo.api.cli._upload_data")
 def test_initialise(
-    mock_upload, mock_collect, mock_run, mock_autoload, mock_clean, runner
+    mock_upload, mock_collect, mock_run, mock_autoload, mock_clean, mock_exists, runner
 ):
     result = runner.invoke(cli, ["initialise"])
     assert result.exit_code == 0

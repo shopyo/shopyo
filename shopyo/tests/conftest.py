@@ -24,3 +24,8 @@ def app(tmpdir, app_type, temp_app):
     dev_app = create_app(app_type)
     yield dev_app
     shutil.copy(dest, src)
+
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
