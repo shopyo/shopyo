@@ -69,17 +69,17 @@ We will create a specific module for the client portal.
 
               blueprint = mhelp.blueprint
 
-       
+
 
               @blueprint.route("/")
 
               @login_required
 
-              @roles_required("client") 
+              @roles_required("client")
 
               def index():
 
-       
+
            """
            Only users with the 'client' role can access this view.
            """

@@ -202,7 +202,9 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
                     if hasattr(sys_mod, "blueprint"):
                         app.register_blueprint(getattr(sys_mod, "blueprint"))
                     else:
-                        app.register_blueprint(getattr(sys_mod, f"{sub_folder}_blueprint"))
+                        app.register_blueprint(
+                            getattr(sys_mod, f"{sub_folder}_blueprint")
+                        )
                 except AttributeError:
                     pass
                 try:
