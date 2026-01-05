@@ -211,6 +211,10 @@ class PkModel(YoModel):
     __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)
 
+    def __repr__(self) -> str:
+        """Represent instance as a unique string."""
+        return f"<{self.__class__.__name__} id={self.id}>"
+
     @classmethod
     def get_by_id(cls: Type[T], record_id: Union[int, str]) -> Optional[T]:
         """Get record by ID.
