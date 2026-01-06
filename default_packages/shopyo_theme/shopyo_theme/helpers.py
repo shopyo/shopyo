@@ -7,7 +7,8 @@ from shopyo_settings.helpers import get_setting
 
 
 def get_front_theme_dir():
-    theme_dir = os.path.join(themes_path, "front", get_setting("ACTIVE_FRONT_THEME"))
+    active_theme = get_setting("ACTIVE_FRONT_THEME") or "default"
+    theme_dir = os.path.join(themes_path, "front", active_theme)
     return theme_dir
 
 
@@ -19,7 +20,7 @@ def get_front_theme_info_data():
 
 
 def get_active_front_theme():
-    return get_setting("ACTIVE_FRONT_THEME")
+    return get_setting("ACTIVE_FRONT_THEME") or "default"
 
 
 def get_active_front_theme_version():
@@ -35,7 +36,8 @@ def get_active_front_theme_styles_url():
 
 
 def get_back_theme_dir():
-    theme_dir = os.path.join(themes_path, "back", get_setting("ACTIVE_BACK_THEME"))
+    active_theme = get_setting("ACTIVE_BACK_THEME") or "default"
+    theme_dir = os.path.join(themes_path, "back", active_theme)
     return theme_dir
 
 
@@ -47,7 +49,7 @@ def get_back_theme_info_data():
 
 
 def get_active_back_theme():
-    return get_setting("ACTIVE_BACK_THEME")
+    return get_setting("ACTIVE_BACK_THEME") or "default"
 
 
 def get_active_back_theme_version():
