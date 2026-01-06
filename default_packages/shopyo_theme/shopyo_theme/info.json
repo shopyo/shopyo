@@ -3,7 +3,7 @@
         "module_name":"shopyo_theme",
         "type": "show",
         "fa-icon": "fa fa-palette",
-        "url_prefix": "/shopyo_theme",
+        "url_prefix": "/shopyo-theme",
         "author": {
             "name":"",
             "website":"https://www.pythonkitchen.com/about-me/",
