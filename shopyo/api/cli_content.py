@@ -75,7 +75,7 @@ def get_dashboard_html_content():
             {% include info['module_name']+'/blocks/sidebar.html' %}
             <br>
             <div class="content">
-                
+
             </div>
         </body>
         </html>
