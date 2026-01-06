@@ -198,30 +198,12 @@ def load_blueprints(app, config_name, global_template_variables, global_configs)
     - Adds global template objects from modules
     - Adds global configs from modules
     """
-    for folder in os.listdir(os.path.join(base_path, "modules")):
-        if folder.startswith("__"):  # ignore __pycache__
-            continue
+    from shopyo.api.module import iter_modules
 
-        if folder.startswith("box__"):
-            # boxes
-            for sub_folder in os.listdir(os.path.join(base_path, "modules", folder)):
-                if sub_folder.startswith("__") or sub_folder.endswith(".json"):
-                    continue
-
-                module_name = f"modules.{folder}.{sub_folder}"
-                _register_module(
-                    app,
-                    module_name,
-                    global_template_variables,
-                    global_configs,
-                    config_name,
-                )
-        else:
-            # apps
-            module_name = f"modules.{folder}"
-            _register_module(
-                app, module_name, global_template_variables, global_configs, config_name
-            )
+    for module_name, _ in iter_modules(base_path):
+        _register_module(
+            app, module_name, global_template_variables, global_configs, config_name
+        )
 
     app.config.update(**global_configs)
 
