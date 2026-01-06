@@ -67,7 +67,7 @@ class ModuleHelp:
 def iter_modules(project_root):
     """
     Yields (module_name, module_path) for every valid module in the project,
-    transparently handling both standalone modules and 'box__' nested modules.
+    transparently handling both standalone modules and ``'box__'`` nested modules.
 
     Yields:
         module_name (str): Dot-separated python path (e.g., 'modules.box__shop.cart')
