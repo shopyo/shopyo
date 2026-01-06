@@ -221,6 +221,7 @@ def _upload_data(verbose=False):
     click.secho(" 💾 Seeding database data...", fg="bright_black")
 
     root_path = os.getcwd()
+    from init import db
 
     from shopyo.api.module import iter_modules
 
@@ -234,10 +235,19 @@ def _upload_data(verbose=False):
                     f"  ℹ️  No seed data for {module_name}",
                     fg="bright_black",
                 )
+        except Exception as e:
+            db.session.rollback()
+            if verbose:
+                click.secho(
+                    f"  ❌ Error uploading data for {module_name}: {e}", fg="red"
+                )
 
-    # load packages
+    # load packages from init.py
 
-    from init import installed_packages
+    try:
+        from init import installed_packages
+    except ImportError:
+        installed_packages = []
 
     for plugin in installed_packages:
         try:
@@ -246,10 +256,48 @@ def _upload_data(verbose=False):
             if verbose:
                 click.secho(f"  ✅ Uploaded data from {plugin}", fg="green")
         except Exception as e:
+            db.session.rollback()
             if verbose:
                 click.secho(
                     f"  ℹ️  Package {plugin} has no seed data", fg="bright_black"
                 )
+
+    # load packages from app.extensions (manually initialized)
+
+    for ext_name, ext_obj in current_app.extensions.items():
+        if ext_name.startswith("shopyo_"):
+            try:
+                if hasattr(ext_obj, "upload"):
+                    ext_obj.upload()
+                    if verbose:
+                        click.secho(
+                            f"  ✅ Uploaded data from extension {ext_name}", fg="green"
+                        )
+            except Exception as e:
+                db.session.rollback()
+                if verbose:
+                    click.secho(
+                        f"  ❌ Error uploading data for extension {ext_name}: {e}",
+                        fg="red",
+                    )
+
+    # load packages from app.extensions (manually initialized)
+
+    for ext_name, ext_obj in current_app.extensions.items():
+        if ext_name.startswith("shopyo_"):
+            try:
+                if hasattr(ext_obj, "upload"):
+                    ext_obj.upload()
+                    if verbose:
+                        click.secho(
+                            f"  ✅ Uploaded data from extension {ext_name}", fg="green"
+                        )
+            except Exception as e:
+                if verbose:
+                    click.secho(
+                        f"  ❌ Error uploading data for extension {ext_name}: {e}",
+                        fg="red",
+                    )
 
 
 def _create_box(boxname, verbose=False):
