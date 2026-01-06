@@ -4,7 +4,7 @@ import json
 from flask import Flask
 from shopyo_dashboard.view import module_blueprint
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:

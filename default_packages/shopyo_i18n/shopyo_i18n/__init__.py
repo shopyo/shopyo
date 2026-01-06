@@ -8,7 +8,7 @@ from shopyo_i18n.view import module_blueprint
 from .helpers import get_current_lang
 from .helpers import get_default_lang
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:

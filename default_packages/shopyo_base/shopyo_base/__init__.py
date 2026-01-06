@@ -5,7 +5,7 @@ import json
 from flask import Flask
 from shopyo_base.view import module_blueprint
 
-__version__ = "1.1.0"
+__version__ = "1.3.0"
 
 
 info = {}
