@@ -20,6 +20,7 @@
     <div class="card">
         <div class="card-body">
             <a href="{{ url_for('shopyo_page.index_all') }}">back</a>
+            <a href="{{ url_for('shopyo_page.view_page_revisions', slug=page.slug) }}" class="btn btn-secondary btn-sm ml-2">View Revisions</a>
             <form action="{{url_for('{}.edit_pagecontent'.format(module_name))}}" method="POST">
                 {{ form.title.label }}
                 <div class="input-group mb-3">
@@ -35,6 +36,22 @@
                         <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
                     </div>
                     {{ form.slug }}
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                {{ form.meta_description.label }}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                    </div>
+                    {{ form.meta_description }}
+                    <span id="error" type="text" vissiblity='hidden'></span>
+                </div>
+                {{ form.meta_keywords.label }}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
+                    </div>
+                    {{ form.meta_keywords }}
                     <span id="error" type="text" vissiblity='hidden'></span>
                 </div>
                 <div class="field">
@@ -70,7 +87,7 @@ tinymce.init({
     imagetools_toolbar: "rotateleft rotateright | flipv fliph | editimage imageoptions",
     toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | codesample',
     relative_urls: false,
-    images_upload_url: "",
+    images_upload_url: "{{ url_for('shopyo_page.upload_image') }}",
     image_title: true,
     automatic_uploads: true,
     images_reuse_filename: false,
