@@ -204,7 +204,7 @@ def _collectstatic(target_module="modules", verbose=False):
             if os.path.exists(plugin_static_folder):
                 plugin_in_static_dir = os.path.join(modules_path_in_static, plugin)
                 tryrmtree(plugin_in_static_dir, verbose=verbose)
-                trycopytree(plugin_static_folder, module_in_static_dir, verbose=verbose)
+                trycopytree(plugin_static_folder, plugin_in_static_dir, verbose=verbose)
                 if verbose:
                     click.secho(f"  ✅ Collected static from {plugin}", fg="green")
             else:
