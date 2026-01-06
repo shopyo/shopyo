@@ -2,6 +2,14 @@
 Test Role-Based Access Control
 """
 
+import os
+import sys
+
+# Add the current directory to sys.path to make factories importable
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Add the parent directory to sys.path to make demo_roles importable
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pytest
 from flask import url_for
 from shopyo_auth.models import User, Role

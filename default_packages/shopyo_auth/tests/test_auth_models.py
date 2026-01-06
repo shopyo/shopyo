@@ -4,6 +4,11 @@ the all `auth` module's models.
 """
 
 import datetime as dt
+import os
+import sys
+
+# Add the current directory to sys.path to make factories importable
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import pytest
 from freezegun import freeze_time

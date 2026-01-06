@@ -28,4 +28,6 @@ def get_setting(name):
         value of key
     """
     s = Settings.query.get(name)
-    return s.value
+    if s:
+        return s.value
+    return None
