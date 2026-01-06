@@ -1,2 +1,2 @@
-SEP_CHAR = "#"
-SEP_NUM = 23
+SEP_CHAR = "─"
+SEP_NUM = 40

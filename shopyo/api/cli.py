@@ -66,7 +66,9 @@ def create_box(boxname, verbose):
     path = os.path.join("modules", boxname)
 
     if os.path.exists(os.path.join("modules", boxname)):
-        click.echo(f"[ ] unable to create. Box {path} already exists!", err=True)
+        click.secho(
+            f" ❌ Error: Box '{path}' already exists!", fg="red", bold=True, err=True
+        )
         sys.exit(1)
 
     _create_box(boxname, verbose=verbose)
@@ -80,71 +82,47 @@ def create_module(modulename, boxname, verbose):
     """
     create a module/app ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
     provided, creates the module inside ``modules/BOXNAME.``
-
-    BOXNAME the name of box to create the MODULENAME in. Must start with
-    ``box__``, otherwise error is thrown
-
-    MODULENAME the name of module to be created. Must not start with
-    ``box__``, otherwise error is thrown
-
-    \b
-    If box ``BOXNAME`` does not exist, it is created.
-    If ``MODULENAME`` already exists, an error is thrown and command is
-    terminated.
-
-    Following structure of module  is created inside `modules` when running
-    `shopyo startapp demo`
-
-        \b
-        demo/
-        ├── forms.py
-        ├── global.py
-        ├── info.json
-        ├── models.py
-        ├── static
-        ├── templates
-        │   └── demo
-        │       ├── blocks
-        │       │   └── sidebar.html
-        │       └── dashboard.html
-        ├── tests
-        │   ├── test_demo_functional.py
-        │   └── test_demo_models.py
-        └── view.py
     """
     if boxname != "" and not boxname.startswith("box__"):
-        click.echo(
-            f"[ ] Invalid BOXNAME '{boxname}'. BOXNAME should start with 'box__' prefix"
+        click.secho(
+            f" ❌ Error: Invalid BOXNAME '{boxname}'. It should start with 'box__' prefix.",
+            fg="red",
+            bold=True,
         )
+        click.echo("    Example: box__ecommerce")
         sys.exit(1)
 
     if modulename.startswith("box_"):
-        click.echo(
-            f"[ ] Invalid MODULENAME '{modulename}'. "
-            "MODULENAME cannot start with box_ prefix"
+        click.secho(
+            f" ❌ Error: Invalid MODULENAME '{modulename}'. It cannot start with 'box_' prefix.",
+            fg="red",
+            bold=True,
         )
         sys.exit(1)
 
     if not is_alpha_num_underscore(modulename):
-        click.echo(
-            "[ ] Error: MODULENAME is not valid, please use alphanumeric "
-            "and underscore only"
+        click.secho(
+            f" ❌ Error: MODULENAME '{modulename}' is not valid. Use alphanumeric and underscore only.",
+            fg="red",
+            bold=True,
         )
         sys.exit(1)
 
     if boxname != "" and not is_alpha_num_underscore(boxname):
-        click.echo(
-            "[ ] Error: BOXNAME is not valid, please use alphanumeric "
-            "and underscore only"
+        click.secho(
+            f" ❌ Error: BOXNAME '{boxname}' is not valid. Use alphanumeric and underscore only.",
+            fg="red",
+            bold=True,
         )
         sys.exit(1)
 
     module_path = get_module_path_if_exists(modulename)
 
     if module_path is not None:
-        click.echo(
-            f"[ ] Unable to create module '{modulename}'. "
-            f"MODULENAME already exists inside modules/ at {module_path}"
+        click.secho(
+            f" ❌ Error: Module '{modulename}' already exists at {module_path}",
+            fg="red",
+            bold=True,
         )
         sys.exit(1)
 
@@ -239,13 +217,16 @@ def initialise(verbose, clear_migration, clear_db):
     """
     if not os.path.exists("modules"):
         click.secho(
-            "Error: 'modules' folder not found. "
-            "Please run this command from the Shopyo project directory.",
+            " ❌ Error: 'modules' folder not found. Are you in the project root?",
             fg="red",
+            bold=True,
+        )
+        click.secho(
+            "    Try running 'shopyo new <project_name>' first.", fg="bright_black"
         )
         sys.exit(1)
 
-    click.echo("initializing...")
+    click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
 
     # drop db, remove mirgration/ and shopyo.db
     _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
@@ -254,34 +235,25 @@ def initialise(verbose, clear_migration, clear_db):
     autoload_models(verbose=verbose)
 
     # add a migrations folder to your application.
-    click.echo("Creating db...")
-    click.echo(SEP_CHAR * SEP_NUM)
+    click.echo(" 📁 Creating database migrations...")
     if verbose:
         run(["flask", "db", "init"])
     else:
         run(["flask", "db", "init"], stdout=PIPE, stderr=PIPE)
-    click.echo("")
 
-    # generate an initial migration i.e autodetect changes in the
-    # tables (table autodetection is limited. See
-    # https://flask-migrate.readthedocs.io/en/latest/ for more details)
     # load all models available inside modules
     autoload_models(verbose=verbose)
-    click.echo("Migrating db...")
-    click.echo(SEP_CHAR * SEP_NUM)
+    click.echo(" ⚙️  Generating initial migration...")
     if verbose:
         run(["flask", "db", "migrate"])
     else:
         run(["flask", "db", "migrate"], stdout=PIPE, stderr=PIPE)
-    click.echo("")
 
-    click.echo("Upgrading db...")
-    click.echo(SEP_CHAR * SEP_NUM)
+    click.echo(" ⬆️  Upgrading database...")
     if verbose:
         run(["flask", "db", "upgrade"])
     else:
         run(["flask", "db", "upgrade"], stdout=PIPE, stderr=PIPE)
-    click.echo("")
 
     # collect all static folders inside modules/ and add it to global
     # static/
@@ -290,7 +262,10 @@ def initialise(verbose, clear_migration, clear_db):
     # Upload models data in upload.py files inside each module
     _upload_data(verbose=verbose)
 
-    click.echo("All Done!")
+    click.secho(
+        "\n ✅ Initialization complete! Ready to develop.", fg="green", bold=True
+    )
+    click.echo("    Run 'flask run --debug' to start the server.\n")
 
 
 @cli.command("new", with_appcontext=False)
@@ -491,14 +466,17 @@ def new(projname, verbose, modules):
         verbose=verbose,
     )
 
-    click.echo(f"[x] Project {projname} created successfully!\n")
-    click.echo("Next steps:")
+    click.secho(
+        f"\n ✨ Project '{projname}' created successfully!", fg="green", bold=True
+    )
+    click.echo(" " + "─" * 40)
+    click.echo(" Next steps to get started:")
     if projname == "":
-        click.echo(f"  cd {os.path.basename(os.getcwd())}")
+        click.secho(f"  1. cd {os.path.basename(os.getcwd())}", fg="cyan")
     else:
-        click.echo(f"  cd {projname}/{projname}")
-    click.echo("  shopyo initialise")
-    click.echo("  flask run --debug\n")
+        click.secho(f"  1. cd {projname}/{projname}", fg="cyan")
+    click.secho("  2. shopyo initialise", fg="cyan")
+    click.secho("  3. flask run --debug\n", fg="cyan")
 
     if modules_flag:
         copytree(

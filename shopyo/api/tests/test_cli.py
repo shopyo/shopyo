@@ -76,13 +76,13 @@ def test_startapp_in_box(mock_get_path, mock_create_module, mock_create_box, run
 def test_startapp_invalid_box_name(runner):
     result = runner.invoke(cli, ["startapp", "testmod", "invalidbox"])
     assert result.exit_code == 1
-    assert "BOXNAME should start with 'box__'" in result.output
+    assert "should start with 'box__' prefix" in result.output
 
 
 def test_startapp_invalid_mod_name(runner):
     result = runner.invoke(cli, ["startapp", "box_mod"])
     assert result.exit_code == 1
-    assert "cannot start with box_" in result.output
+    assert "cannot start with 'box_' prefix" in result.output
 
 
 @patch("shopyo.api.cli.get_module_path_if_exists")
