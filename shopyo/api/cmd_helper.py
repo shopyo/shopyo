@@ -222,36 +222,18 @@ def _upload_data(verbose=False):
 
     root_path = os.getcwd()
 
-    for folder in os.listdir(os.path.join(root_path, "modules")):
-        if folder.startswith("__"):  # ignore __pycache__
-            continue
-        if folder.startswith("box__"):
-            # boxes
-            for sub_folder in os.listdir(os.path.join(root_path, "modules", folder)):
-                if sub_folder.startswith("__"):  # ignore __pycache__
-                    continue
-                elif sub_folder.endswith(".json"):  # box_info.json
-                    continue
+    from shopyo.api.module import iter_modules
 
-                try:
-                    upload = importlib.import_module(
-                        f"modules.{folder}.{sub_folder}.upload"
-                    )
-                    upload.upload()
-                except ImportError as e:
-                    if verbose:
-                        click.secho(
-                            f"  ℹ️  No seed data for {folder}/{sub_folder}",
-                            fg="bright_black",
-                        )
-        else:
-            # apps
-            try:
-                upload = importlib.import_module(f"modules.{folder}.upload")
-                upload.upload()
-            except ImportError as e:
-                if verbose:
-                    click.secho(f"  ℹ️  No seed data for {folder}", fg="bright_black")
+    for module_name, _ in iter_modules(root_path):
+        try:
+            upload = importlib.import_module(f"{module_name}.upload")
+            upload.upload()
+        except ImportError as e:
+            if verbose:
+                click.secho(
+                    f"  ℹ️  No seed data for {module_name}",
+                    fg="bright_black",
+                )
 
     # load packages
 

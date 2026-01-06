@@ -62,3 +62,35 @@ class ModuleHelp:
         else:
             boxormodule = module_folder
         return get_static(boxormodule=boxormodule, filename=filename)
+
+
+def iter_modules(project_root):
+    """
+    Yields (module_name, module_path) for every valid module in the project,
+    transparently handling both standalone modules and 'box__' nested modules.
+
+    Yields:
+        module_name (str): Dot-separated python path (e.g., 'modules.box__shop.cart')
+        module_path (str): Absolute file system path to the module directory.
+    """
+    modules_dir = os.path.join(project_root, "modules")
+    if not os.path.exists(modules_dir):
+        return
+
+    for folder in os.listdir(modules_dir):
+        if folder.startswith("__"):
+            continue
+
+        abs_folder_path = os.path.join(modules_dir, folder)
+
+        if folder.startswith("box__"):
+            # It's a box, iterate its children
+            for sub in os.listdir(abs_folder_path):
+                if sub.startswith("__") or sub.endswith(".json"):
+                    continue
+
+                # Yield box module
+                yield f"modules.{folder}.{sub}", os.path.join(abs_folder_path, sub)
+        else:
+            # It's a standard module
+            yield f"modules.{folder}", abs_folder_path
