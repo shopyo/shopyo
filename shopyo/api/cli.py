@@ -31,12 +31,17 @@ from shopyo.api.validators import is_alpha_num_underscore
 def _create_shopyo_app():
     sys.path.append(os.getcwd())
     try:
-        from shopyo.app import create_app
-    except ImportError as e:
-        raise e
-        click.echo(e)
-        click.echo("Error finding create_app from shopyo.app.")
-        sys.exit()
+        import app
+
+        create_app = app.create_app
+    except (ImportError, AttributeError) as e:
+        click.secho(
+            f" ❌ Error: Could not find 'create_app' in local 'app.py'.",
+            fg="red",
+            bold=True,
+        )
+        click.echo(f"    Details: {e}")
+        sys.exit(1)
 
     config_name = os.environ.get("SHOPYO_CONFIG_PROFILE") or "development"
     return create_app(config_name=config_name)
@@ -227,6 +232,14 @@ def initialise(verbose, clear_migration, clear_db):
         sys.exit(1)
 
     click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
+
+    try:
+        from flask import current_app
+
+        db_uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+        click.secho(f" 🗄️  Using database: {db_uri}", fg="bright_black")
+    except RuntimeError:
+        pass
 
     # drop db, remove mirgration/ and shopyo.db
     _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)

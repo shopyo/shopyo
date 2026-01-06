@@ -8,7 +8,13 @@ from .models import User
 logger = logging.getLogger(__name__)
 
 
-def add_admin(email, password):
+def add_admin(email, password, verbose=False):
+    user = User.query.filter_by(email=email).first()
+    if user:
+        if verbose:
+            logger.info(f"[ ] Admin user with email {email} already exists")
+        return
+
     user = User()
     user.email = email
     user.password = password
@@ -23,6 +29,7 @@ def upload(verbose=False):
     add_admin(
         current_app.config["SEED_ADMIN_EMAIL"],
         current_app.config["SEED_ADMIN_PASSWORD"],
+        verbose=verbose,
     )
 
     if verbose:
