@@ -1,3 +1,7 @@
+from flask import jsonify
+from werkzeug.utils import secure_filename
+import os
+from flask import current_app
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -56,7 +60,7 @@ def view_page_dashboard(slug):
 
     lang_arg = request.args.get("lang", get_current_lang())
 
-    form.content = page.get_content(lang=lang_arg)
+    form.content.data = page.get_content(lang=lang_arg)
     form.lang.data = lang_arg
 
     context.update({"page": page, "form": form})
@@ -95,6 +99,8 @@ def check_pagecontent():
         toaddpage = Page(
             slug=form.slug.data,
             title=form.title.data,
+            meta_description=form.meta_description.data,
+            meta_keywords=form.meta_keywords.data,
         )
         db.session.add(toaddpage)
         db.session.flush()
@@ -116,7 +122,15 @@ def edit_pagecontent():
         editpage = db.session.query(Page).get(request.form["page_id"])
         editpage.slug = form.slug.data
         editpage.title = form.title.data
-        editpage.content = form.content.data
+        editpage.meta_description = form.meta_description.data
+        editpage.meta_keywords = form.meta_keywords.data
+
+        editpage.save_revision(
+            form.lang.data,
+            form.content.data,
+            form.meta_description.data,
+            form.meta_keywords.data,
+        )
 
         editpage.set_lang(form.lang.data, form.content.data)
         db.session.commit()
@@ -127,3 +141,60 @@ def edit_pagecontent():
                 lang=form.lang.data,
             )
         )
+
+
+@module_blueprint.route("/upload_image", methods=["POST"])
+@login_required
+@admin_required
+def upload_image():
+    if "file" in request.files:
+        file = request.files["file"]
+        if file:
+            filename = secure_filename(file.filename)
+            upload_folder = os.path.join(
+                current_app.root_path, "static", "uploads", "images"
+            )
+            os.makedirs(upload_folder, exist_ok=True)
+            file.save(os.path.join(upload_folder, filename))
+            return jsonify({"location": f"/static/uploads/images/{filename}"})
+    return jsonify({"error": "File not uploaded"}), 400
+
+
+@module_blueprint.route("/dashboard/s/<slug>/revisions", methods=["GET"])
+@login_required
+@admin_required
+def view_page_revisions(slug):
+    context = {}
+    page = Page.query.filter(Page.slug == slug).first()
+    if page:
+        context["page"] = page
+        context["revisions"] = (
+            PageRevision.query.filter_by(page_id=page.id)
+            .order_by(PageRevision.revision_date.desc())
+            .all()
+        )
+    return render_template(f"{module_name}/revisions.html", **context)
+
+
+@module_blueprint.route("/revert/<int:revision_id>", methods=["POST"])
+@login_required
+@admin_required
+def revert_page_revision(revision_id):
+    revision = PageRevision.query.get(revision_id)
+    if revision:
+        page = Page.query.get(revision.page_id)
+        if page:
+            page.set_lang(revision.lang, revision.content)
+            page.meta_description = revision.meta_description
+            page.meta_keywords = revision.meta_keywords
+            db.session.commit()
+            flash("Page reverted successfully!", "success")
+            return redirect(
+                url_for(
+                    f"{module_name}.view_page_dashboard",
+                    slug=page.slug,
+                    lang=revision.lang,
+                )
+            )
+    flash("Error reverting page.", "danger")
+    return redirect(url_for(f"{module_name}.dashboard"))

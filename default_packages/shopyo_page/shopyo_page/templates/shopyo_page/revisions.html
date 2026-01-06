@@ -1,0 +1,42 @@
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page = 'page' %}
+{% block pagehead %}
+<title>{{active_page.capitalize()}} Revisions</title>
+{% endblock %}
+{% block sidebar %}
+{%include 'shopyo_page/blocks/sidebar.html'%}
+{%endblock%}
+{% block content %}
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <a href="{{ url_for('shopyo_page.view_page_dashboard', slug=page.slug) }}">Back to Page</a>
+            <h3>Revisions for "{{ page.title }}" ({{ page.slug }})</h3>
+
+            {% if revisions %}
+            <ul class="list-group">
+                {% for revision in revisions %}
+                <li class="list-group-item">
+                    <strong>Revision Date:</strong> {{ revision.revision_date.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                    <strong>Language:</strong> {{ revision.lang }}<br>
+                    <strong>Meta Description:</strong> {{ revision.meta_description }}<br>
+                    <strong>Meta Keywords:</strong> {{ revision.meta_keywords }}<br>
+                    <p><strong>Content:</strong></p>
+                    <div style="border: 1px solid #eee; padding: 10px; max-height: 200px; overflow-y: scroll;">
+                        {{ revision.content | safe }}
+                    </div>
+                    <form action="{{ url_for('shopyo_page.revert_page_revision', revision_id=revision.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to revert to this revision?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-warning btn-sm mt-2">Revert to this Revision</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No revisions found for this page.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

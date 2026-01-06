@@ -1,14 +1,11 @@
 from flask_wtf import FlaskForm
-from shopyo_i18n.helpers import langs
 from wtforms import SelectField
 from wtforms import StringField
 from wtforms import TextAreaField
 from wtforms.validators import DataRequired
+from shopyo_i18n.models import LangRecord
 
 from shopyo.api.validators import verify_slug
-
-# from wtforms.validators import Length
-# from wtforms.fields import EmailField
 
 
 class PageForm(FlaskForm):
@@ -31,4 +28,18 @@ class PageForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
-    lang = SelectField("Language", choices=[(k, v) for k, v in langs.items()])
+    meta_description = StringField(
+        "Meta Description",
+        [],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    meta_keywords = StringField(
+        "Meta Keywords",
+        [],
+        render_kw={"class": "form-control", "autocomplete": "off"},
+    )
+    lang = SelectField("Language")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lang.choices = [(l.lang_code, l.lang_name) for l in LangRecord.query.all()]
