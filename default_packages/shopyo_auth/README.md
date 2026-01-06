@@ -2,6 +2,8 @@
 
 `shopyo_auth` is a robust authentication and user management package for the Shopyo ecosystem. It provides a complete, security-hardened foundation for handling users, roles, and session management.
 
+[view docs for more info](https://shopyo.readthedocs.io/en/latest/)
+
 ## Description
 
 This package implements a production-ready authentication system using Flask-Login and SQLAlchemy. It handles the entire lifecycle of a user account—from registration and email verification to secure login and role-based access control. Designed to be modular, it integrates seamlessly into Shopyo's plugin architecture while remaining flexible for customization.

@@ -5,7 +5,7 @@ def get_module_view_content():
     content = textwrap.dedent(
         """\
         from shopyo.api.module import ModuleHelp
-        # from flask import render_template
+        from flask import render_template
         # from flask import url_for
         # from flask import redirect
         # from flask import flash
@@ -20,7 +20,10 @@ def get_module_view_content():
 
         @blueprint.route("/")
         def index():
-            return mhelp.render('index.html')
+            context = mhelp.context()
+            return render_template(
+                "{}/index.html".format(mhelp.info["module_name"]), **context
+            )
 
         # If "dashboard": "/dashboard" is set in info.json
         #
@@ -32,7 +35,9 @@ def get_module_view_content():
         #     context.update({
 
         #         })
-        #     return mhelp.render('dashboard.html', **context)
+        #     return render_template(
+        #         "{}/dashboard.html".format(mhelp.info["module_name"]), **context
+        #     )
         """
     )
 
@@ -42,13 +47,15 @@ def get_module_view_content():
 def get_index_html_content():
     content = textwrap.dedent(
         """\
-        {% extends "shopyo_base/module_base.html" %}
-        {% set active_page = info['display_string'] %}
-        {% block content %}
-        <div class="container">
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>{{ info['display_string'] }}</title>
+        </head>
+        <body>
             <h1>{{ info['display_string'] }}</h1>
-        </div>
-        {% endblock %}
+        </body>
+        </html>
         """
     )
 
@@ -58,25 +65,20 @@ def get_index_html_content():
 def get_dashboard_html_content():
     content = textwrap.dedent(
         """\
-        {% extends "shopyo_base/module_base.html" %}
-        {% set active_page = info['display_string']+' dashboard' %}
-        {% block pagehead %}
-        <title></title>
-        <style>
-        </style>
-        {% endblock %}
-        {% block sidebar %}
-        {% include info['module_name']+'/blocks/sidebar.html' %}
-        {% endblock %}
-        {% block content %}
-        <br>
-
-        <div class="card">
-            <div class="card-body">
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>{{ info['display_string'] }} Dashboard</title>
+        </head>
+        <body>
+            <h1>{{ info['display_string'] }} Dashboard</h1>
+            {% include info['module_name']+'/blocks/sidebar.html' %}
+            <br>
+            <div class="content">
 
             </div>
-        </div>
-        {% endblock %}
+        </body>
+        </html>
         """
     )
 

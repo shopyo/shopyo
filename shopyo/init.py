@@ -19,7 +19,11 @@ login_manager = LoginManager()
 migrate = Migrate()
 mail = Mail()
 csrf = CSRFProtect()
-login_manager = LoginManager()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return None
 
 
 import importlib

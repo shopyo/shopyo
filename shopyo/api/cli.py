@@ -475,7 +475,7 @@ def new(projname, verbose, modules):
         click.secho(f"  1. cd {os.path.basename(os.getcwd())}", fg="cyan")
     else:
         click.secho(f"  1. cd {projname}/{projname}", fg="cyan")
-    click.secho("  2. shopyo initialise", fg="cyan")
+    click.secho("  2. shopyo initialise (if you are using models)", fg="cyan")
     click.secho("  3. flask run --debug\n", fg="cyan")
 
     if modules_flag:
