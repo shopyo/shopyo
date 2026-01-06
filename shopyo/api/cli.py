@@ -494,6 +494,12 @@ def new(projname, verbose, modules):
         trymkdir(os.path.join(project_path, "modules"), verbose=verbose)
         trymkdir(os.path.join(project_path, "static"), verbose=verbose)
 
+        # Copy themes as they are required
+        themes_src = os.path.join(src_shopyo_shopyo, "static", "themes")
+        themes_dest = os.path.join(project_path, "static", "themes")
+        if os.path.exists(themes_src):
+            copytree(themes_src, themes_dest)
+
 
 @cli.command("rundebug", with_appcontext=False)
 def rundebug():
