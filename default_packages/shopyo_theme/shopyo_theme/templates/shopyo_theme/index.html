@@ -4,44 +4,6 @@
 
 {% block pagehead %}
 <title>Theme Store</title>
-<style>
-    .theme-card {
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        border: none;
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    .theme-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .theme-card .card-body {
-        padding: 1.5rem;
-    }
-    .theme-card .card-title {
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-    .theme-card .card-text {
-        color: #6c757d;
-        font-size: 0.9rem;
-    }
-    .badge-active {
-        background-color: #28a745;
-        color: white;
-        padding: 0.5em 0.8em;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-    .section-title {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        border-bottom: 2px solid #f8f9fa;
-        padding-bottom: 0.5rem;
-    }
-</style>
 {% endblock %}
 
 {% block sidebar %}
@@ -49,13 +11,13 @@
 {%endblock%}
 
 {% block content %}
-<div class="container py-4">
+<div class="container-fluid py-4">
     <div class="mb-5">
         <h2 class="section-title">Front Themes</h2>
         <div class="row">
             {% for key in all_front_info %}
             <div class="col-md-4 mb-4">
-                <div class="card theme-card h-100 shadow-sm">
+                <div class="card theme-card h-100">
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="card-title">{{ key|capitalize }}</h5>
@@ -63,14 +25,14 @@
                                 <span class="badge badge-active">Active</span>
                             {% endif %}
                         </div>
-                        <p class="card-text mb-4">
-                            by {{ all_front_info[key]['author']['name'] or 'Unknown' }}
+                        <p class="card-text mb-4 text-muted">
+                            by <strong>{{ all_front_info[key]['author']['name'] or 'Unknown' }}</strong>
                         </p>
                         <div class="mt-auto">
                             {% if active_front_theme != key %}
-                                <a href="{{ url_for('shopyo_theme.activate_front_theme', theme_name=key) }}" class="btn btn-outline-primary btn-block rounded-pill">Activate</a>
+                                <a href="{{ url_for('shopyo_theme.activate_front_theme', theme_name=key) }}" class="btn btn-primary btn-block">Activate</a>
                             {% else %}
-                                <button class="btn btn-success btn-block rounded-pill" disabled>Activated</button>
+                                <button class="btn btn-success btn-block" disabled>Activated</button>
                             {% endif %}
                         </div>
                     </div>
@@ -85,7 +47,7 @@
         <div class="row">
             {% for key in all_back_info %}
             <div class="col-md-4 mb-4">
-                <div class="card theme-card h-100 shadow-sm">
+                <div class="card theme-card h-100">
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="card-title">{{ key|capitalize }}</h5>
@@ -93,14 +55,14 @@
                                 <span class="badge badge-active">Active</span>
                             {% endif %}
                         </div>
-                        <p class="card-text mb-4">
-                            by {{ all_back_info[key]['author']['name'] or 'Unknown' }}
+                        <p class="card-text mb-4 text-muted">
+                            by <strong>{{ all_back_info[key]['author']['name'] or 'Unknown' }}</strong>
                         </p>
                         <div class="mt-auto">
                             {% if active_back_theme != key %}
-                                <a href="{{ url_for('shopyo_theme.activate_back_theme', theme_name=key) }}" class="btn btn-outline-primary btn-block rounded-pill">Activate</a>
+                                <a href="{{ url_for('shopyo_theme.activate_back_theme', theme_name=key) }}" class="btn btn-primary btn-block">Activate</a>
                             {% else %}
-                                <button class="btn btn-success btn-block rounded-pill" disabled>Activated</button>
+                                <button class="btn btn-success btn-block" disabled>Activated</button>
                             {% endif %}
                         </div>
                     </div>
