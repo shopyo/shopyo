@@ -25,12 +25,17 @@
                         </a>
                     </li>
                 {% else %}
+                    {% if config['SHOPYO_BASE_NAV_LOGIN'] %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('shopyo_auth.login')}}" title="Login">Login</a>
                     </li>
+                    {% endif %}
+
+                    {% if config['SHOPYO_BASE_NAV_REGISTER'] %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('shopyo_auth.register')}}" title="Register">Register</a>
                     </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>
