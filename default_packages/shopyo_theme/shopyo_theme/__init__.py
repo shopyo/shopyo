@@ -2,11 +2,12 @@ from typing import Any
 import os
 import json
 from flask import Flask
+from flask import current_app
 from shopyo_theme.view import module_blueprint
 from .helpers import *
 
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
@@ -44,4 +45,5 @@ class ShopyoTheme:
         app.jinja_env.globals["shopyo_theme"] = self
 
     def get_info(self):
+        info.update({"url_prefix": current_app.config["SHOPYO_THEME_URL"]})
         return info
