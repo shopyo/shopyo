@@ -1,37 +1,110 @@
 {% extends "shopyo_base/main_base.html" %}
-
-{% set active_page ='control panel' %}
+{% set active_page = 'control panel' %}
 
 {% block pagehead %}
 <title>Dashboard</title>
 <link rel="stylesheet" href="/static/fontawesome/css/all.css">
+
+<style>
+
+/* Card container */
+.dashboard-card {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    background: #fff;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+
+    overflow: visible;        /* ensures bottom border shows */
+    min-height: 160px;        /* enough vertical space */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Card body */
+.dashboard-card-body {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    flex: 1;
+    text-align: center;
+}
+
+/* Icon */
+.dashboard-icon {
+    font-size: 1.75rem;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    text-decoration: none !important;
+}
+
+/* Hover effect */
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Label */
+.dashboard-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #222;
+    letter-spacing: 0.01em;
+}
+
+/* Responsive padding */
+@media (max-width: 576px) {
+    .dashboard-card-body {
+        padding: 2rem 1.5rem;
+    }
+}
+
+
+</style>
 {% endblock %}
 
 {% block content %}
-  {% include 'shopyo_dashboard/nav.html' %}
+{% include 'shopyo_dashboard/nav.html' %}
 
-  <div class="container-fluid py-4">
-    <div class="row no-gutters d-flex flex-wrap">
+<div class="container-fluid py-5">
+  <div class="dashboard-grid">
+    <div class="row g-4">
+
       {% for info in all_info %}
-          {% if all_info[info]['type'] == 'show'%}
-            <div class="col-auto">
-              {%if 'dashboard' in all_info[info]%}
-                <a class="shopyo-link" href="{{all_info[info]['url_prefix'] + all_info[info]['dashboard']}}">
-              {%else%}
-                <a class="shopyo-link" href="{{all_info[info]['url_prefix']}}">
-              {%endif%}
-              <div class="shopyo-dashboard-card card-menu h-100">
-                <div class="card-body text-center d-flex flex-column align-items-center justify-content-center">
-                  <i class="card-menu-icon {{all_info[info]['fa-icon']}}"></i>
-                  <div class="card-footer mt-auto">
-                    {{all_info[info]['display_string']}}
-                  </div>
-                </div>
-              </div>
-            </a>
-            </div>
+        {% if all_info[info]['type'] == 'show' %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+          {% if 'dashboard' in all_info[info] %}
+            <a class="dashboard-link"
+               href="{{ all_info[info]['url_prefix'] + all_info[info]['dashboard'] }}">
+          {% else %}
+            <a class="dashboard-link"
+               href="{{ all_info[info]['url_prefix'] }}">
           {% endif %}
+
+            <div class="dashboard-card h-100">
+              <div class="dashboard-card-body d-flex flex-column align-items-center justify-content-center">
+
+                <i class="dashboard-icon {{ all_info[info]['fa-icon'] }}"></i>
+
+                <div class="dashboard-label">
+                  {{ all_info[info]['display_string'] }}
+                </div>
+
+              </div>
+            </div>
+
+          </a>
+        </div>
+        {% endif %}
       {% endfor %}
+
     </div>
   </div>
- {% endblock %}
+</div>
+{% endblock %}
