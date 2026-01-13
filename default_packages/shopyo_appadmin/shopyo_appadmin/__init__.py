@@ -3,9 +3,10 @@ import os
 import json
 
 from flask import Flask
+from flask import current_app
 from shopyo_appadmin.view import module_blueprint
 
-__version__ = "1.3.0"
+__version__ = "1.4.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
@@ -31,4 +32,5 @@ class ShopyoAppAdmin:
         app.register_blueprint(bp, url_prefix=app.config["SHOPYO_APPADMIN_URL"])
 
     def get_info(self):
+        info.update({"url_prefix": current_app.config["SHOPYO_APPADMIN_URL"]})
         return info

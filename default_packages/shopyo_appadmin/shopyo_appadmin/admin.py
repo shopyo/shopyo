@@ -7,7 +7,7 @@ from shopyo_auth.models import User
 
 from shopyo.api.html import notify_warning
 
-login_manager.login_message = notify_warning("Please login for access")
+# login_manager.login_message = notify_warning("Please login for access")
 
 
 @login_manager.user_loader
