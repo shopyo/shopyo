@@ -3,17 +3,22 @@ import os
 import json
 
 from flask import Flask
+from flask import current_app
 from .view import module_blueprint
 from .upload import upload
 
-__version__ = "1.4.0"
+__version__ = "1.5.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
 
 
-default_config = {"SHOPYO_AUTH_URL": "/shopyo-auth"}
+default_config = {
+    "SHOPYO_AUTH_URL": "/shopyo-auth",
+    "SHOPYO_AUTH_REGISTER": True,
+    "SHOPYO_AUTH_LOGIN_FORGET_PASSWORD": True,
+}
 
 
 class ShopyoAuth:
@@ -35,4 +40,5 @@ class ShopyoAuth:
         app.jinja_env.globals["shopyo_auth"] = self
 
     def get_info(self):
+        info.update({"url_prefix": current_app.config["SHOPYO_AUTH_URL"]})
         return info
