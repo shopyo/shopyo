@@ -118,7 +118,7 @@ Get Started
    Want to contribute? Check out :doc:`contrib`. We have a 100% first-timers friendly policy!
 
 Indices and tables
-=================
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`

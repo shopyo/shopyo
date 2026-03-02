@@ -136,13 +136,13 @@ Environment Variables
 Shopyo can be configured using environment variables. This is especially useful for production deployments.
 
 Essential Variables
-*******************
+===================
 
 - ``SECRET_KEY``: A long random string used to secure session cookies and other crypto needs.
 - ``SQLALCHEMY_DATABASE_URI``: The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:pass@localhost/dbname``).
 
 Email Configuration
-*******************
+===================
 
 If you have email confirmation enabled, you must configure the following:
 
@@ -153,7 +153,7 @@ If you have email confirmation enabled, you must configure the following:
 - ``MAIL_DEFAULT_SENDER``: Email address used as the sender.
 
 Seeding Configuration
-**********************
+=====================
 
 These variables are used during the ``shopyo initialise`` command to create the initial admin user:
 
@@ -161,9 +161,23 @@ These variables are used during the ``shopyo initialise`` command to create the 
 - ``SEED_ADMIN_PASSWORD``: Password for the default admin user (defaults to ``pass``).
 
 Why Not Plain Flask?
---------------------
+-------------------
 
-+-------------------+---------------+------------------+--------+
++-------------------+--------------------+----------+
+| Feature           | Plain Flask        | Shopyo   |
++===================+====================+==========+
+| Modular           | No                 | Yes      |
+| Enforcement       |                    |          |
++-------------------+--------------------+----------+
+| Plugin System    | No                 | Yes      |
++-------------------+--------------------+----------+
+| Built-in Auth    | No                 | Yes      |
++-------------------+--------------------+----------+
+| Admin UI         | No                 | Yes      |
++-------------------+--------------------+----------+
+| Structured       | No                 | Yes      |
+| Scaling          |                    |          |
++-------------------+--------------------+----------+
 | Feature           | Plain Flask   | Flask + Blueprints| Shopyo |
 +===================+===============+==================+========+
 | Modular           |               |                  |        |
