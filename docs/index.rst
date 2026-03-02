@@ -1,47 +1,124 @@
-.. shopyo documentation master file, created by
-   sphinx-quickstart on Sat Mar  7 23:26:49 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to Shopyo
+==================
 
+**Build Large Flask Apps Without Losing Your Sanity**
 
-Welcome to Shopyo's docs!
-=========================
+Shopyo is a modular Flask framework designed for maintainability, extensibility, and real-world scale.
 
-Shopyo an Open web framework. It is HIGHLY MODULAR and is built for BIG projects.
+Why developers choose Shopyo:
 
+* **Modular app architecture** with enforced boundaries
+* **Built-in admin & authentication** system
+* **Plugin-based module system**
+* **Structured project layout** that scales
+* **Production-ready** foundations
 
-The ecommerce part has been offloaded to
-`ShopCube <https://github.com/shopyo/shopcube>`_.
+.. note::
 
-Useful note on how to `integrate <https://speakerdeck.com/osdotsystem/fast-flask-dev-for-big-codebases>`_  celery and Flask-restx .
+   New to Shopyo? Start here: :doc:`usage`
 
+Quick Install
+-------------
+
+.. code-block:: bash
+
+    pip install shopyo
+    shopyo new myproject --demo
+
+Your Flask app is now running at http://localhost:5000
+
+Real-World Use Cases
+--------------------
+
+🏢 **SaaS Applications**
+   Build multi-tenant SaaS with modular features: auth, roles, billing, and more.
+
+🔧 **Internal Enterprise Tools**
+   Organize internal tools with multiple modules and role-based access.
+
+🛒 **E-commerce Platforms**
+   Product management, orders, customers, inventory - all as independent modules.
+
+🎓 **Educational Platforms**
+   Course management, student progress, content delivery - modular and scalable.
+
+Who Uses Shopyo?
+----------------
+
+* `Maurilearn.com`_ - Elearning platform
+* `Linkolearn.com`_ - Learn by links
+* `FlaskCon.com`_ - Conference software
+
+.. _Maurilearn.com: https://maurilearn.com
+.. _Linkolearn.com: https://linkolearn.com
+.. _FlaskCon.com: https://flaskcon.com
+
+Get Started
+-----------
 
 .. toctree::
-   :maxdepth: 9
+   :maxdepth: 2
+   :caption: Getting Started
 
-   Basic Usage <usage>
-   Auth Tutorial <auth_tutorial>
-   Polls Tutorial <polls_tutorial>
-   Theme Tutorial <shopyo_theme_tutorial>
-   Architecture <architecture>
-   Contributing to Shopyo <contrib>
-   Modules/Apps <modules>
-   Assets <assets>
-   Templates <templates>
-   Models <models>
-   Views <views>
-   The Init File <init>
-   Commandline <commandline>
-   Run Existing Project <existing>
-   Shopyo api <shopyoapi>
+   usage
+   quickstart
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Core Concepts
+
+   architecture
+   modules
+   plugins
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials
+
+   auth_tutorial
+   polls_tutorial
+   shopyo_theme_tutorial
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+
+   commandline
+   shopyoapi
+   models
+   views
+   templates
+   init
+   assets
+   packages
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Project Maintenance
+
+   testing
+   existing
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Deployment
+
+   shared_hosting
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Community
+
+   contrib
+   education
    Docs <docs>
-   Testing <testing>
-   Deploy on shared hosting <shared_hosting>
-   Education section <education>
-   Packages <packages>
+
+.. note::
+
+   Want to contribute? Check out :doc:`contrib`. We have a 100% first-timers friendly policy!
 
 Indices and tables
-==================
+=================
 
 * :ref:`genindex`
 * :ref:`modindex`
