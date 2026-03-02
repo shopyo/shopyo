@@ -1,30 +1,66 @@
-.. :tocdepth:: 5
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
 
-Documentation
-=============
+   usage
+   quickstart
 
-``Sphinx`` is included in ``requirements/dev.txt``. Make sure to install it before
-running these command as explained in :ref:`Contributing to Shopyo`
-(i.e ``pip install -r requirements/dev.txt``)
+.. toctree::
+   :maxdepth: 2
+   :caption: Core Concepts
 
+   architecture
+   modules
+   plugins
 
--   To build the docs from source folder ``docs`` to destination folder ``docs/_build``, run
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials
 
-    .. code:: text
+   auth_tutorial
+   polls_tutorial
+   shopyo_theme_tutorial
 
-        $ sphinx-build -b html -E docs docs/_build
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
 
--   You can also build the docs by using the Sphinx Makefile as follows
+   commandline
+   shopyoapi
+   models
+   views
+   templates
 
-    .. code:: text
+.. toctree::
+   :maxdepth: 2
+   :caption: Advanced
 
-        $ cd docs
-        $ make html
+   init
+   assets
+   packages
 
--   To view the docs, open ``docs/_build/html/index.html`` in your browser
+.. toctree::
+   :maxdepth: 2
+   :caption: Project Maintenance
 
--   If you want the doc to auto build upon changes, use the ``sphinx-autobuild`` command intead:
+   testing
+   existing
 
-    .. code:: text
+.. toctree::
+   :maxdepth: 2
+   :caption: Deployment
 
-        $ sphinx-autobuild docs docs/_build
+   shared_hosting
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Community
+
+   contrib
+   education
+
+----
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
