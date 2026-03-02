@@ -89,6 +89,8 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
         if verbose:
             click.secho("  ⏭️  Migration folder delete skipped", fg="yellow")
 
+    click.secho(" ✅ Workspace cleaned successfully!", fg="green", bold=True)
+
 
 def _collectstatic(target_module="modules", verbose=False):
     """
@@ -319,6 +321,11 @@ def _create_box(boxname, verbose=False):
         click.secho(f"  📄 Created box config at {box_info}", fg="bright_black")
 
     click.secho(f" ✅ Box '{boxname}' created successfully!", fg="green", bold=True)
+    click.echo(f"    📁 Location: modules/{boxname}/")
+    click.echo("")
+    click.secho("   Next steps:", fg="cyan")
+    click.echo(f"    1. Run 'shopyo startapp -i' to create modules in this box")
+    click.echo("")
 
 
 def _create_module(modulename, base_path=None, verbose=False):
@@ -417,8 +424,17 @@ def _create_module(modulename, base_path=None, verbose=False):
     )
 
     click.secho(
-        f" ✅ Module '{modulename}' created successfully!\n", fg="green", bold=True
+        f" ✅ Module '{modulename}' created successfully!", fg="green", bold=True
     )
+    click.echo(f"    📁 Location: {base_path}/")
+    click.echo(f"    🔗 URL prefix: /{modulename}")
+    click.echo("")
+    click.secho("   Next steps:", fg="cyan")
+    click.echo(f"    1. Add your model definitions to {modulename}/models.py")
+    click.echo(f"    2. Add your views to {modulename}/view.py")
+    click.echo(f"    3. Add your forms to {modulename}/forms.py")
+    click.echo(f"    4. Run 'shopyo initialise' to register the module")
+    click.echo("")
 
 
 def _run_app(mode):

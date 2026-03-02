@@ -34,13 +34,33 @@ def _create_shopyo_app():
         import app
 
         create_app = app.create_app
-    except (ImportError, AttributeError) as e:
+    except ImportError as e:
         click.secho(
-            f" ❌ Error: Could not find 'create_app' in local 'app.py'.",
+            f" ❌ Error: Could not find 'app' module.",
             fg="red",
             bold=True,
         )
         click.echo(f"    Details: {e}")
+        click.echo("\n 💡 Make sure you are in your Shopyo project root directory.")
+        click.echo(
+            "    Your project should have an 'app.py' file with a 'create_app' function."
+        )
+        sys.exit(1)
+    except AttributeError as e:
+        click.secho(
+            f" ❌ Error: Could not find 'create_app' in 'app.py'.",
+            fg="red",
+            bold=True,
+        )
+        click.echo(f"    Details: {e}")
+        click.echo(
+            "\n 💡 Your 'app.py' should define a 'create_app(config_name)' function."
+        )
+        click.echo("    Example:")
+        click.echo("        def create_app(config_name='development'):")
+        click.echo("            app = Flask(__name__)")
+        click.echo("            # ... initialize extensions and modules")
+        click.echo("            return app")
         sys.exit(1)
 
     config_name = os.environ.get("SHOPYO_CONFIG_PROFILE") or "development"
@@ -61,13 +81,30 @@ def cli(info, **parmams):
 
 
 @cli.command("startbox", with_appcontext=False)
-@click.argument("boxname")
+@click.argument("boxname", required=False)
 @click.option("--verbose", "-v", is_flag=True, default=False)
-def create_box(boxname, verbose):
+@click.option("--interactive", "-i", is_flag=True, default=False)
+def create_box(boxname, verbose, interactive):
     """creates ``box`` with ``box_info.json``.
 
     ``BOXNAME`` is the name of the ``box`` which holds modules
+
+    Use --interactive or -i to be prompted for box name.
     """
+    if interactive or boxname is None:
+        boxname = click.prompt(
+            " 📦 Enter box name",
+            type=str,
+            default="box__mybox",
+            show_default=True,
+        )
+        if not boxname.startswith("box__"):
+            click.secho(
+                " ⚠️  Box name should start with 'box__' prefix. Adding automatically...",
+                fg="yellow",
+            )
+            boxname = "box__" + boxname
+
     path = os.path.join("modules", boxname)
 
     if os.path.exists(os.path.join("modules", boxname)):
@@ -80,14 +117,38 @@ def create_box(boxname, verbose):
 
 
 @cli.command("startapp", with_appcontext=False)
-@click.argument("modulename")
+@click.argument("modulename", required=False)
 @click.argument("boxname", required=False, default="")
 @click.option("--verbose", "-v", is_flag=True, default=False)
-def create_module(modulename, boxname, verbose):
+@click.option("--interactive", "-i", is_flag=True, default=False)
+def create_module(modulename, boxname, verbose, interactive):
     """
     create a module/app ``MODULENAME`` inside ``modules/``. If ``BOXNAME`` is
     provided, creates the module inside ``modules/BOXNAME.``
+
+    Use --interactive or -i to be prompted for module name.
     """
+    if interactive or modulename is None:
+        if modulename is None:
+            modulename = click.prompt(
+                " 📦 Enter module name",
+                type=str,
+                default="mymodule",
+                show_default=True,
+            )
+        if boxname == "":
+            add_to_box = click.confirm(
+                " 📂 Do you want to add this module to a box?",
+                default=False,
+            )
+            if add_to_box:
+                boxname = click.prompt(
+                    "    Enter box name",
+                    type=str,
+                    default="box__default",
+                    show_default=True,
+                )
+
     if boxname != "" and not boxname.startswith("box__"):
         click.secho(
             f" ❌ Error: Invalid BOXNAME '{boxname}'. It should start with 'box__' prefix.",
