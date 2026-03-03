@@ -12,6 +12,10 @@ logo = r"""
 
 
 def printinfo():
+    import os
+
+    if os.environ.get("SHOPYO_QUIET") == "True":
+        return
     """
     prints Shopyo copyright in ASCII art font
     """

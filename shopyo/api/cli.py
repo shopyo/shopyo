@@ -278,6 +278,10 @@ def clean(verbose, clear_migration, clear_db):
 @click.option("--verbose", "-v", is_flag=True, default=False)
 @with_appcontext
 def initialise(verbose, clear_migration, clear_db):
+    import os
+
+    if os.environ.get("SHOPYO_QUIET") == "True":
+        verbose = False
     """
     Creates ``db``, ``migration/``, adds default users, add settings
     """
@@ -292,7 +296,8 @@ def initialise(verbose, clear_migration, clear_db):
         )
         sys.exit(1)
 
-    click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
+    if os.environ.get("SHOPYO_QUIET") != "True":
+        click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
 
     try:
         from flask import current_app

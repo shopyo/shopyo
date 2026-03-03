@@ -32,8 +32,8 @@ class BaseConfig:
     UPLOADED_PATH_THUMB = os.path.join(STATIC, "uploads", "thumbs")
 
     # Seeding
-    SEED_ADMIN_EMAIL = os.environ.get("SEED_ADMIN_EMAIL", "admin@domain.com")
-    SEED_ADMIN_PASSWORD = os.environ.get("SEED_ADMIN_PASSWORD", "pass")
+    SEED_ADMIN_EMAIL = os.environ.get("SEED_ADMIN_EMAIL", "admin@admin.com")
+    SEED_ADMIN_PASSWORD = os.environ.get("SEED_ADMIN_PASSWORD", "admin")
     SEED_SETTINGS = {
         "APP_NAME": "Demo",
         "ACTIVE_FRONT_THEME": "blogus",
