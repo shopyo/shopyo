@@ -7,7 +7,7 @@ from flask import current_app
 from .view import module_blueprint
 from .upload import upload
 
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
