@@ -51,6 +51,8 @@ You can customize the behavior of `shopyo_auth` using the following config varia
 | `SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED` | Set to `True` to enforce strong password requirements (min 12 chars, upper, lower, digit, special). | `False` |
 | `SHOPYO_AUTH_RATE_LIMIT_ENABLED` | Set to `True` to enable brute-force protection using Flask-Limiter. | `False` |
 | `SHOPYO_AUTH_RATE_LIMIT` | The rate limit string (e.g., "5 per minute"). | `"5 per minute"` |
+| `SHOPYO_AUTH_SEED_ADMIN_EMAIL` | Default email for initial admin user. | `admin@admin.com` |
+| `SHOPYO_AUTH_SEED_ADMIN_PASSWORD` | Default password for initial admin user. | `Pass1234!@#$` |
 
 ### 3. Protecting Views
 

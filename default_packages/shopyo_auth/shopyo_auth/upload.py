@@ -27,8 +27,8 @@ def add_admin(email, password, verbose=False):
 
 def upload(verbose=False):
     add_admin(
-        current_app.config["SEED_ADMIN_EMAIL"],
-        current_app.config["SEED_ADMIN_PASSWORD"],
+        current_app.config["SHOPYO_AUTH_SEED_ADMIN_EMAIL"],
+        current_app.config["SHOPYO_AUTH_SEED_ADMIN_PASSWORD"],
         verbose=verbose,
     )
 

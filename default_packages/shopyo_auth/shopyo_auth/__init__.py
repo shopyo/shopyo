@@ -91,6 +91,12 @@ default_config = {
     "SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED": False,
     "SHOPYO_AUTH_RATE_LIMIT_ENABLED": False,
     "SHOPYO_AUTH_RATE_LIMIT": "5 per minute",
+    "SHOPYO_AUTH_SEED_ADMIN_EMAIL": os.environ.get(
+        "SHOPYO_AUTH_SEED_ADMIN_EMAIL", "admin@admin.com"
+    ),
+    "SHOPYO_AUTH_SEED_ADMIN_PASSWORD": os.environ.get(
+        "SHOPYO_AUTH_SEED_ADMIN_PASSWORD", "Pass1234!@#$"
+    ),
 }
 
 

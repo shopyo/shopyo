@@ -43,7 +43,7 @@ Open http://localhost:5000 in your browser.
 
 * **Dashboard**: http://localhost:5000/dashboard
 * **Login**: http://localhost:5000/auth/login
-* **Credentials**: ``admin@domain.com`` / ``pass``
+* **Credentials**: ``admin@domain.com`` / ``Pass1234!@#$``
 
 Create Your First Module
 ------------------------
