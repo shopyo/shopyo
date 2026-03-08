@@ -1,10 +1,16 @@
-Building a Client Portal (RBAC Tutorial)
-========================================
+Authentication & Authorization
+===============================
 
-This tutorial demonstrates a real-world use case for `shopyo-auth`: creating a **Client Portal**.
+`shopyo-auth` is a robust authentication framework for Shopyo that provides a complete foundation for handling users, roles, and granular permissions.
 
-**The Scenario:**
-You are building a B2B application. You need a dedicated section of the site (`/portal`) that is only accessible to users with the **"client"** role. Staff members and regular users should not be able to access it.
+Key Features
+------------
+
+* **Granular Access Control**: Use Roles (RBAC) or complex Policies.
+* **Security Hardened**: Built-in rate limiting and configurable password complexity.
+* **Modern Auth**: Support for Personal Access Tokens (API Tokens).
+* **Decoupled Architecture**: Hook into authentication lifecycle with Auth Events.
+* **CLI Management**: Manage users and roles directly from the command line.
 
 Auth Tutorial Prerequisites
 ---------------------------
@@ -22,11 +28,11 @@ Auth Tutorial Prerequisites
 
     .. code-block:: bash
 
-       pip install shopyo-auth
+       pip install shopyo-auth flask-limiter
 
 Shopyo Auth Configuration
 -------------------------
-Enable the extension in your `app.py`. Uncomment the `shopyo_auth` lines:
+Enable the extension in your `app.py`. You can also configure security features:
 
 .. code-block:: python
 
@@ -35,107 +41,106 @@ Enable the extension in your `app.py`. Uncomment the `shopyo_auth` lines:
 
    def create_app(config_name="development"):
        # ...
-       sh_auth = ShopyoAuth()
-       # ...
-       sh_auth.init_app(app)
-       # ...
+       app.config.update({
+           "SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED": True,
+           "SHOPYO_AUTH_RATE_LIMIT_ENABLED": True,
+           "SHOPYO_AUTH_RATE_LIMIT": "5 per minute",
+       })
+
+       sh_auth = ShopyoAuth(app)
        return app
 
-Auth Implementation
--------------------
-We will create a specific module for the client portal.
+CLI Management
+--------------
+Instead of using the database shell, manage your users directly via the CLI:
 
-1.  **Create a Module:**
-    Use the `shopyo startapp` command to create a new module named `portal`.
+**Create a User with Roles:**
 
-    .. code-block:: bash
+.. code-block:: bash
 
-       shopyo startapp portal
+   flask auth create-user --email client@company.com --password "Pass1234!@#$" --role client
 
-    This will create a `modules/portal` directory with the necessary files, including `view.py` and `info.json`.
+**List Users:**
 
-2.  **Define the Restricted Route:**
-    Open `modules/portal/view.py` and modify it to include the access controls.
+.. code-block:: bash
 
-    .. code-block:: python
+   flask auth list-users
 
-       # modules/portal/view.py
-       from flask import Blueprint
-       from flask_login import login_required
-       from shopyo_auth.decorators import roles_required
-       from shopyo.api.module import ModuleHelp
+**Reset Password:**
 
-              mhelp = ModuleHelp(__file__, __name__)
+.. code-block:: bash
 
-              blueprint = mhelp.blueprint
+   flask auth reset-password client@company.com
 
+Access Control
+--------------
 
+1. **Role-Based Access (RBAC)**
+   Use the `@roles_required` decorator for simple group-based checks.
 
-              @blueprint.route("/")
+   .. code-block:: python
 
-              @login_required
+      from shopyo_auth.decorators import roles_required
 
-              @roles_required("client")
+      @blueprint.route("/portal")
+      @roles_required("client")
+      def portal_index():
+          return "Welcome Client"
 
-              def index():
+2. **Policy-Based Access (Granular)**
+   Define complex logic that depends on request context (e.g., "users can only edit their own posts").
 
+   .. code-block:: python
 
-           """
-           Only users with the 'client' role can access this view.
-           """
-           return "<h1>Welcome to the Client Portal</h1><p>Restricted access area.</p>"
+      # Define the policy
+      def can_edit_user(user, **context):
+          target_user_id = int(context.get("user_id"))
+          return user.is_admin or user.id == target_user_id
 
-    *Note: The `ModuleHelp` class handles blueprint registration and `info.json` loading automatically.*
+      auth.define_policy("edit_user", can_edit_user)
 
-3.  **Check `info.json` (Optional):**
-    Ensure `modules/portal/info.json` has the correct `url_prefix`. It typically defaults to `/{module_name}`, so it should be `/portal`.
+      # Use the policy
+      from shopyo_auth.decorators import require
 
-Setting Up Roles & Users
-------------------------
-Now we need to create the "client" role and assign it to a user. You can do this using the Flask shell or a python script.
+      @blueprint.route("/user/<int:user_id>/edit")
+      @require(policy="edit_user")
+      def edit_user(user_id):
+          return "Editing profile..."
 
-**Step 1: Create the Role**
+API Tokens (Personal Access Tokens)
+-----------------------------------
+`shopyo-auth` allows users to generate tokens for programmatic access.
 
-.. code-block:: python
-
-   # run: flask shell
-   from shopyo_auth.models import Role
-   from init import db
-
-   client_role = Role(name="client")
-   db.session.add(client_role)
-   db.session.commit()
-   print("Client role created!")
-
-**Step 2: Assign Role to a User**
+**Protecting an API route:**
 
 .. code-block:: python
 
-   # run: flask shell
-   from shopyo_auth.models import User, Role
-   from init import db
+   from shopyo_auth.decorators import token_required
 
-   # Create a new user (or select an existing one)
-   user = User()
-   user.email = "client@company.com"
-   user.password = "securepass"
-   user.is_admin = False # They are not a superadmin
+   @blueprint.route("/api/data")
+   @token_required
+   def get_data():
+       from flask import g
+       return {"user": g.current_user.email, "secret": "123"}
 
-   # Add the client role
-   client_role = Role.query.filter_by(name="client").first()
-   user.roles.append(client_role)
+Users can manage tokens via the built-in API endpoints:
+* `POST /shopyo-auth/api/tokens`: Create a token.
+* `GET /shopyo-auth/api/tokens`: List tokens.
+* `DELETE /shopyo-auth/api/tokens/<id>`: Revoke a token.
 
-   db.session.add(user)
-   db.session.commit()
-   print(f"User {user.email} created with 'client' role.")
+Auth Events System
+------------------
+Synchronize your application logic with authentication actions using events.
 
-Testing the Setup
------------------
-1.  Run the app: `flask run --debug`
-2.  Login as `client@company.com`.
-3.  Navigate to `/portal`. You should see the welcome message.
-4.  Try accessing `/portal` as a different user (e.g., admin). You should be denied access (403 Forbidden).
+.. code-block:: python
 
-Auth Demo Source Code
----------------------
-You can view the source code for a similar setup at `shopyo/demo/auth_demo`.
+   @auth.on("user_login")
+   def log_login(user):
+       print(f"User {user.email} logged in!")
+
+   @auth.on("user_registered")
+   def send_welcome(user):
+       # Send custom webhook or integration
+       pass
+
+Available events: `user_registered`, `user_login`, `user_logout`, `password_reset_requested`, `password_reset_completed`.

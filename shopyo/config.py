@@ -31,9 +31,6 @@ class BaseConfig:
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
     UPLOADED_PATH_THUMB = os.path.join(STATIC, "uploads", "thumbs")
 
-    # Seeding
-    SEED_ADMIN_EMAIL = os.environ.get("SEED_ADMIN_EMAIL", "admin@admin.com")
-    SEED_ADMIN_PASSWORD = os.environ.get("SEED_ADMIN_PASSWORD", "admin")
     SEED_SETTINGS = {
         "APP_NAME": "Demo",
         "ACTIVE_FRONT_THEME": "blogus",
@@ -116,7 +113,7 @@ class TestingConfig(BaseConfig):
     # flask-mailman configs
     MAIL_BACKEND = "console"
     MAIL_USERNAME = "shopyofrom@test.com"
-    MAIL_PASSWORD = "pass"
+    MAIL_PASSWORD = "Pass1234!@#$"
     MAIL_DEFAULT_SENDER = "shopyofrom@test.com"
 
     # flask sqlalchemy configs

@@ -106,7 +106,7 @@ This command:
 1. Creates project structure
 2. Copies demo modules (auth, dashboard, settings)
 3. Initializes SQLite database
-4. Creates admin user (admin@domain.com / pass)
+4. Creates admin user (admin@domain.com / Pass1234!@#$)
 5. Starts development server
 
 Manual Setup
@@ -126,7 +126,7 @@ Want more control?
 For the home page it will say ``Shopyo is now running!`` which will be the home page of your app (see
 ``blog/blog/modules/www/view.py`` and ``blog/static/themes/front/blogus/index.html``).
 To access the dashboard, go to http://localhost:5000/auth/login and login with email
-``admin@domain.com`` and password ``pass``
+``admin@domain.com`` and password ``Pass1234!@#$``
 
 See :ref:`new` for more details.
 
@@ -139,7 +139,7 @@ Essential Variables
 ===================
 
 - ``SECRET_KEY``: A long random string used to secure session cookies and other crypto needs.
-- ``SQLALCHEMY_DATABASE_URI``: The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:pass@localhost/dbname``).
+- ``SQLALCHEMY_DATABASE_URI``: The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
 
 Email Configuration
 ===================
@@ -157,8 +157,8 @@ Seeding Configuration
 
 These variables are used during the ``shopyo initialise`` command to create the initial admin user:
 
-- ``SEED_ADMIN_EMAIL``: Email for the default admin user (defaults to ``admin@domain.com``).
-- ``SEED_ADMIN_PASSWORD``: Password for the default admin user (defaults to ``pass``).
+- ``SHOPYO_AUTH_SEED_ADMIN_EMAIL``: Email for the default admin user (defaults to ``admin@domain.com``).
+- ``SHOPYO_AUTH_SEED_ADMIN_PASSWORD``: Password for the default admin user (defaults to ``Pass1234!@#$``).
 
 Why Not Plain Flask?
 --------------------
