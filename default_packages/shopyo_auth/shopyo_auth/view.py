@@ -42,6 +42,11 @@ def register():
         email = reg_form.email.data
         password = reg_form.password.data
         user = User.create(email=email, password=password)
+
+        auth_ext = current_app.extensions.get("shopyo_auth")
+        if auth_ext:
+            auth_ext.trigger("user_registered", user)
+
         login_user(user)
 
         is_disabled = False
@@ -120,6 +125,9 @@ def forgot_password():
             subject = "Password Reset Requested"
             context = {"token": token, "user": user}
             send_async_email(user.email, subject, template, **context)
+            auth_ext = current_app.extensions.get("shopyo_auth")
+            if auth_ext:
+                auth_ext.trigger("password_reset_requested", user)
         flash(
             notify_success(
                 "Check your email for the instructions to reset your password"
@@ -142,6 +150,11 @@ def reset_password(token):
     if form.validate_on_submit():
         user.password = form.password.data
         user.update()
+
+        auth_ext = current_app.extensions.get("shopyo_auth")
+        if auth_ext:
+            auth_ext.trigger("password_reset_completed", user)
+
         flash(notify_success("Your password has been reset."))
         return redirect(url_for("shopyo_auth.login"))
     return render_template("shopyo_auth/reset_password.html", form=form)
@@ -161,6 +174,11 @@ def login():
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("shopyo_auth.login"))
         login_user(user)
+
+        auth_ext = current_app.extensions.get("shopyo_auth")
+        if auth_ext:
+            auth_ext.trigger("user_login", user)
+
         next_url = request.form.get("next")
         if not next_url or not is_safe_redirect_url(next_url):
             next_url = url_for("shopyo_dashboard.index")
@@ -171,7 +189,13 @@ def login():
 @module_blueprint.route("/logout", methods=["GET"])
 @login_required
 def logout():
+    user = current_user._get_current_object()
     logout_user()
+
+    auth_ext = current_app.extensions.get("shopyo_auth")
+    if auth_ext:
+        auth_ext.trigger("user_logout", user)
+
     flash(notify_success("Successfully logged out"))
 
     next_url = request.args.get("next")

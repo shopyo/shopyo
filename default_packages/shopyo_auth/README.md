@@ -191,5 +191,33 @@ def system_config():
     return "System configuration"
 ```
 
+### 10. Auth Events System
+
+The event system allows you to hook into authentication actions without modifying the core code.
+
+**Available Events:**
+- `user_registered`: Triggered when a new user account is created.
+- `user_login`: Triggered on successful login.
+- `user_logout`: Triggered on logout.
+- `password_reset_requested`: Triggered when a reset email is sent.
+- `password_reset_completed`: Triggered after a successful password change via token.
+
+**Registering a Callback:**
+
+```python
+from shopyo_auth import ShopyoAuth
+
+auth = ShopyoAuth(app)
+
+@auth.on("user_login")
+def log_user_login(user):
+    print(f"User {user.email} logged in at {datetime.datetime.now()}")
+
+@auth.on("user_registered")
+def send_welcome_webhook(user):
+    # Call your external services here
+    pass
+```
+
 ---
-*Version 1.8.0*
+*Version 1.9.0*
