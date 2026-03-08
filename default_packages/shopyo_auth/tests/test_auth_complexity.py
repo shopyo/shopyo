@@ -1,73 +1,99 @@
+"""
+Elite Unit Tests for Password Complexity.
+Uses parametrization to enforce strict security boundaries.
+"""
+
 import pytest
 from wtforms.validators import ValidationError
+from werkzeug.datastructures import MultiDict
 from shopyo_auth.forms import PasswordComplexity, RegistrationForm
-from flask import Flask
 
 
-def test_password_complexity_validator(flask_app):
-    validator = PasswordComplexity()
+class TestPasswordComplexity:
+    """Tests for the core complexity validator logic."""
 
-    class Field:
-        def __init__(self, data):
-            self.data = data
+    @pytest.mark.parametrize(
+        "password",
+        [
+            "Pass1234!@#$",
+            "Stronger_1234!",
+            "Valid8_Token$",
+        ],
+    )
+    def test_valid_passwords(self, password, flask_app):
+        """Verify that compliant passwords pass without error."""
+        validator = PasswordComplexity()
 
-    with flask_app.app_context():
-        # Case 1: Disabled (Backward Compatible)
-        flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = False
-        # Simple password should pass
-        validator(None, Field("pass"))
+        class Field:
+            data = password
 
-        # Case 2: Enabled
-        flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = True
+        with flask_app.app_context():
+            flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = True
+            # Should not raise
+            validator(None, Field())
 
-        # Valid password
-        validator(None, Field("Pass1234!@#$"))
+    @pytest.mark.parametrize(
+        "password, error_match",
+        [
+            ("pass", "at least 12 characters"),
+            ("pass1234!@#$", "uppercase letter"),
+            ("PASS1234!@#$", "lowercase letter"),
+            ("Pass!!!!@#$%", "one digit"),
+            ("Pass12345678", "special character"),
+        ],
+    )
+    def test_invalid_passwords(self, password, error_match, flask_app):
+        """Verify that non-compliant passwords trigger specific errors."""
+        validator = PasswordComplexity()
 
-        # Short password (min 12)
-        with pytest.raises(ValidationError) as excinfo:
-            validator(None, Field("Pass1!"))
-        assert "at least 12 characters" in str(excinfo.value)
+        class Field:
+            data = password
 
-        # Missing uppercase
-        with pytest.raises(ValidationError):
-            validator(None, Field("pass1234!@#$"))
+        with flask_app.app_context():
+            flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = True
+            with pytest.raises(ValidationError, match=error_match):
+                validator(None, Field())
 
-        # Missing lowercase
-        with pytest.raises(ValidationError):
-            validator(None, Field("PASS1234!@#$"))
+    def test_disabled_complexity(self, flask_app):
+        """Verify backward compatibility: simple passwords pass when disabled."""
+        validator = PasswordComplexity()
 
-        # Missing digit
-        with pytest.raises(ValidationError):
-            validator(None, Field("Pass!!!!@#$"))
+        class Field:
+            data = "simple"
 
-        # Missing special character
-        with pytest.raises(ValidationError):
-            validator(None, Field("Pass12345678"))
+        with flask_app.app_context():
+            flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = False
+            # Should pass despite being non-compliant
+            validator(None, Field())
 
 
-def test_registration_form_complexity(flask_app):
-    with flask_app.test_request_context():
-        # Case 1: Disabled
-        flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = False
-        form = RegistrationForm(
-            email="test@example.com", password="password", confirm="password"
-        )
-        assert form.validate() is True
+class TestRegistrationFormIntegration:
+    """Integration tests for forms using the complexity validator."""
 
-        # Case 2: Enabled
-        flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = True
-        # Test valid
-        form = RegistrationForm(
-            email="test@example.com", password="Pass1234!@#$", confirm="Pass1234!@#$"
-        )
-        assert form.validate() is True
+    def test_form_validation_enabled(self, flask_app):
+        """Verify form rejects simple password when complexity is enabled."""
+        with flask_app.test_request_context():
+            flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = True
 
-        # Test missing complexity
-        form = RegistrationForm(
-            email="test@example.com", password="password12345", confirm="password12345"
-        )
-        assert form.validate() is False
-        assert (
-            "Password must contain at least one uppercase letter"
-            in form.password.errors[0]
-        )
+            data = MultiDict(
+                {"email": "test@example.com", "password": "simple", "confirm": "simple"}
+            )
+            form = RegistrationForm(data)
+            assert form.validate() is False
+            assert any("at least 12 characters" in err for err in form.password.errors)
+
+    def test_form_validation_disabled(self, flask_app):
+        """Verify form accepts simple password when complexity is disabled."""
+        with flask_app.test_request_context():
+            flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = False
+
+            data = MultiDict(
+                {
+                    "email": "test@example.com",
+                    "password": "password",
+                    "confirm": "password",
+                }
+            )
+            form = RegistrationForm(data)
+            # Length 6 is still enforced by WTForms Length validator
+            assert form.validate() is True

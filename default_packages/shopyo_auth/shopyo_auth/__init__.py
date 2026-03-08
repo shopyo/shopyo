@@ -9,10 +9,7 @@ from flask.cli import with_appcontext
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-from .view import module_blueprint
-from .upload import upload
-
-__version__ = "1.5.1"
+__version__ = "1.10.0"
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -79,6 +76,9 @@ def reset_password(email, password):
     click.secho(f"Password for {email} reset successfully.", fg="green")
 
 
+from .view import module_blueprint
+from .upload import upload
+
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
@@ -115,8 +115,10 @@ class ShopyoAuth:
         for key, value in default_config.items():
             app.config.setdefault(key, value)
 
-        if app.config.get("SHOPYO_AUTH_RATE_LIMIT_ENABLED", False):
-            limiter.init_app(app)
+        # Always init, but it will only throttle if enabled via config
+        limiter.init_app(app)
+        # Enable/Disable based on config
+        limiter.enabled = app.config.get("SHOPYO_AUTH_RATE_LIMIT_ENABLED", False)
 
         app.extensions["shopyo_auth"] = self
         app.cli.add_command(auth_cli)

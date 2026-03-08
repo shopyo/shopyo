@@ -180,7 +180,7 @@ class TestAuthEndpoints:
             assert request.path == url_for("shopyo_auth.reset_password", token=token)
             assert b"Passwords must match" in response.data
             updated_user = User.get_by_email("mismatch@example.com")
-            assert updated_user.check_password("old_password")
+            assert updated_user.check_password("OldPass1234!@#$")
             assert not updated_user.check_password("new_password")
 
     # @pytest.mark.parametrize(
