@@ -219,5 +219,24 @@ def send_welcome_webhook(user):
     pass
 ```
 
+### 11. CLI Commands
+
+Manage users and roles directly from the command line using `flask auth`.
+
+**Commands:**
+
+- `flask auth create-user`: Create a new user account.
+  ```bash
+  flask auth create-user --email admin@example.com --password mypass --admin --role editor
+  ```
+- `flask auth list-users`: Display all registered users.
+  ```bash
+  flask auth list-users
+  ```
+- `flask auth reset-password`: Reset a user's password.
+  ```bash
+  flask auth reset-password admin@example.com
+  ```
+
 ---
-*Version 1.9.0*
+*Version 1.10.0*
