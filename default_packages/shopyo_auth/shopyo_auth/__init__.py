@@ -32,6 +32,13 @@ default_config = {
 class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:
         self.policies = {}
+        self.events = {
+            "user_registered": [],
+            "user_login": [],
+            "user_logout": [],
+            "password_reset_requested": [],
+            "password_reset_completed": [],
+        }
         if app is not None:
             self.init_app(app)
         self.upload = upload
@@ -62,6 +69,29 @@ class ShopyoAuth:
         if name not in self.policies:
             return False
         return self.policies[name](user, **context)
+
+    def on(self, event_name):
+        """
+        Decorator to register a callback for an event.
+        Usage:
+        @auth.on("user_registered")
+        def my_callback(user):
+            ...
+        """
+
+        def decorator(func):
+            if event_name not in self.events:
+                self.events[event_name] = []
+            self.events[event_name].append(func)
+            return func
+
+        return decorator
+
+    def trigger(self, event_name, *args, **kwargs):
+        """Triggers an event and calls all registered callbacks."""
+        if event_name in self.events:
+            for callback in self.events[event_name]:
+                callback(*args, **kwargs)
 
     def get_info(self):
         info.update({"url_prefix": current_app.config["SHOPYO_AUTH_URL"]})
