@@ -31,6 +31,7 @@ default_config = {
 
 class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:
+        self.policies = {}
         if app is not None:
             self.init_app(app)
         self.upload = upload
@@ -49,6 +50,18 @@ class ShopyoAuth:
         bp = module_blueprint
         app.register_blueprint(bp, url_prefix=app.config["SHOPYO_AUTH_URL"])
         app.jinja_env.globals["shopyo_auth"] = self
+
+    def define_policy(self, name, func):
+        """
+        Defines a security policy.
+        func should take (user, **context) and return bool.
+        """
+        self.policies[name] = func
+
+    def check_policy(self, name, user, **context):
+        if name not in self.policies:
+            return False
+        return self.policies[name](user, **context)
 
     def get_info(self):
         info.update({"url_prefix": current_app.config["SHOPYO_AUTH_URL"]})
