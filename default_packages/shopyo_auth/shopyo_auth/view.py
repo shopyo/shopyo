@@ -11,6 +11,7 @@ from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 
+from . import limiter
 from .forms import ForgotPasswordForm
 from .forms import LoginForm
 from .forms import RegistrationForm
@@ -30,6 +31,7 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 
 @module_blueprint.route("/register", methods=["GET", "POST"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
 def register():
     context = {}
     reg_form = RegistrationForm()
@@ -103,6 +105,7 @@ def unconfirmed():
 
 
 @module_blueprint.route("/forgot-password", methods=["GET", "POST"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
 def forgot_password():
     if current_user.is_authenticated:
         return redirect(url_for("shopyo_dashboard.index"))
@@ -125,6 +128,7 @@ def forgot_password():
 
 
 @module_blueprint.route("/reset-password/<token>", methods=["GET", "POST"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for("shopyo_dashboard.index"))
@@ -142,6 +146,7 @@ def reset_password(token):
 
 
 @module_blueprint.route("/login", methods=["GET", "POST"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
 def login():
     context = {}
     login_form = LoginForm()

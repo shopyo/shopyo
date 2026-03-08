@@ -27,7 +27,7 @@ class UserFactory(BaseFactory):
 
     username = Sequence(lambda n: f"user{n}")
     email = Sequence(lambda n: f"user{n}@example.com")
-    password = "pass"
+    password = "Pass1234!@#$"
     is_email_confirmed = True
     is_admin = False
 

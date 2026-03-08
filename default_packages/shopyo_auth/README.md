@@ -15,9 +15,11 @@ This package implements a production-ready authentication system using Flask-Log
 - **Flexible Role-Based Access Control (RBAC)**: Assign multiple roles to users and restrict access using granular decorators.
 - **Email Confirmation**: Secure, token-based email verification system to validate new accounts.
 - **Security Hardened**:
-    - Case-insensitive email lookups to prevent duplicate accounts.
-    - Safe redirect enforcement to prevent Open Redirect vulnerabilities.
-    - Password hashing using Werkzeug's security helpers.
+    - **Password Complexity**: Optional enforcement of strong passwords (uppercase, lowercase, digits, symbols).
+    - **Brute-Force Protection**: Integrated `Flask-Limiter` for login and registration throttling.
+    - **Safe Redirects**: Enforcement to prevent Open Redirect vulnerabilities.
+    - **Case-Insensitive Lookups**: Prevents duplicate accounts via email variations.
+    - **Secure Hashing**: Password hashing using Werkzeug's security helpers.
 - **Configurable Verification**: Toggle email confirmation on or off via configuration settings.
 - **Bootstrap-Ready Templates**: Includes clean, extensible templates that integrate with Shopyo's theme system.
 - **Data Seeding**: Built-in utilities to bootstrap initial admin accounts and roles.
@@ -46,6 +48,9 @@ You can customize the behavior of `shopyo_auth` using the following config varia
 |----------|-------------|---------|
 | `SHOPYO_AUTH_URL` | The base URL prefix for all authentication routes. | `/shopyo-auth` |
 | `EMAIL_CONFIRMATION_DISABLED` | Set to `True` to allow users to log in without verifying their email. | `False` |
+| `SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED` | Set to `True` to enforce strong password requirements (min 12 chars, upper, lower, digit, special). | `False` |
+| `SHOPYO_AUTH_RATE_LIMIT_ENABLED` | Set to `True` to enable brute-force protection using Flask-Limiter. | `False` |
+| `SHOPYO_AUTH_RATE_LIMIT` | The rate limit string (e.g., "5 per minute"). | `"5 per minute"` |
 
 ### 3. Protecting Views
 
@@ -100,16 +105,19 @@ def admin_only():
 
 The password reset workflow is handled automatically via the `/forgot-password` and `/reset-password/<token>` routes. Users can request a reset link by providing their email address. If the account exists, an email is sent with a secure, timed link to set a new password.
 
-### 6. Seeding Admin Users
+### 7. Rate Limiting
 
-To bootstrap your application with a default admin user, you can use the built-in seeding utility:
+Rate limiting is powered by `Flask-Limiter`. To enable it, set `SHOPYO_AUTH_RATE_LIMIT_ENABLED` to `True` in your configuration. You can customize the limit using `SHOPYO_AUTH_RATE_LIMIT` (e.g., `"10 per minute"`).
 
 ```python
-from shopyo_auth import upload
+# The limiter instance is available for use in other blueprints if needed
+from shopyo_auth import limiter
 
-# This will read from your config.json and create the admin user
-upload()
+@module_blueprint.route("/heavy-op")
+@limiter.limit("1 per second")
+def heavy_op():
+    return "Done!"
 ```
 
 ---
-*Version 1.2.0*
+*Version 1.6.0*
