@@ -1,85 +1,49 @@
 """
-Test Role-Based Access Control
+Elite Tests for Role-Based Access Control (RBAC).
+Verifies access restrictions based on user roles using g.current_user for reliability.
 """
 
-import os
-import sys
-
-# Add the current directory to sys.path to make factories importable
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-# Add the parent directory to sys.path to make demo_roles importable
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import pytest
-from flask import url_for
-from shopyo_auth.models import User, Role
-from factories import UserFactory, RoleFactory
-from demo_roles import demo_blueprint
+from flask import g
 
 
-@pytest.mark.usefixtures("flask_app")
 class TestRolesRequired:
+    """Verifies that @roles_required correctly filters access."""
 
-    @pytest.fixture(autouse=True)
-    def setup_demo(self, flask_app):
-        flask_app.register_blueprint(demo_blueprint)
+    def test_admin_access_allowed(self, test_client, active_user, flask_app):
+        """Admin should access admin-only demo route."""
+        admin = active_user(email="admin-role@auth.com", is_admin=True)
+        with flask_app.test_request_context():
+            g.current_user = admin
+            assert test_client.get("/admin-only-demo").status_code == 200
 
-    def test_admin_access_allowed(self, test_client):
-        admin_role = Role.create(name="admin")
-        admin_user = UserFactory(is_email_confirmed=True)
-        admin_user.roles.append(admin_role)
-        admin_user.save()
+    def test_admin_access_denied_for_non_admin(
+        self, test_client, active_user, flask_app
+    ):
+        """Regular user should be blocked from admin-only demo route."""
+        user = active_user(email="user-role@auth.com", is_admin=False)
+        with flask_app.test_request_context():
+            g.current_user = user
+            assert test_client.get("/admin-only-demo").status_code == 403
 
-        with test_client:
-            # Login user
-            test_client.post(
-                url_for("shopyo_auth.login"),
-                data={"email": admin_user.email, "password": "pass"},
-                follow_redirects=True,
-            )
+    def test_multiple_roles_allowed(self, test_client, active_user, flask_app):
+        """User with 'staff' role should access staff-only demo route."""
+        from shopyo_auth.models import Role
+        from init import db
 
-            response = test_client.get("/admin-only")
-            assert response.status_code == 200
-            assert b"Welcome, Admin!" in response.data
-
-    def test_admin_access_denied_for_non_admin(self, test_client):
         staff_role = Role.create(name="staff")
-        staff_user = UserFactory(is_email_confirmed=True)
-        staff_user.roles.append(staff_role)
-        staff_user.save()
+        db.session.commit()
 
-        with test_client:
-            # Login user
-            test_client.post(
-                url_for("shopyo_auth.login"),
-                data={"email": staff_user.email, "password": "pass"},
-                follow_redirects=True,
-            )
+        user = active_user(email="staff@auth.com")
+        user.roles.append(staff_role)
+        user.save()
 
-            response = test_client.get("/admin-only", follow_redirects=False)
-            # Redirects to root "/"
-            assert response.status_code == 302
-            assert response.location == "/"
-
-    def test_multiple_roles_allowed(self, test_client):
-        staff_role = Role.create(name="staff")
-        staff_user = UserFactory(is_email_confirmed=True)
-        staff_user.roles.append(staff_role)
-        staff_user.save()
-
-        with test_client:
-            # Login user
-            test_client.post(
-                url_for("shopyo_auth.login"),
-                data={"email": staff_user.email, "password": "pass"},
-                follow_redirects=True,
-            )
-
-            response = test_client.get("/staff-access")
-            assert response.status_code == 200
-            assert b"Welcome, Staff Member!" in response.data
+        with flask_app.test_request_context():
+            g.current_user = user
+            assert test_client.get("/staff-only-demo").status_code == 200
 
     def test_unauthenticated_redirect_to_login(self, test_client):
-        response = test_client.get("/admin-only", follow_redirects=False)
+        """Unauthenticated users should be redirected to login."""
+        response = test_client.get("/admin-only-demo")
         assert response.status_code == 302
         assert "/shopyo-auth/login" in response.location

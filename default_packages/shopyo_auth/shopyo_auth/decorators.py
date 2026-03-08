@@ -61,14 +61,27 @@ def roles_required(*roles):
     def decorator(f):
         @wraps(f)
         def wrap(*args, **kwargs):
-            if not current_user.is_authenticated:
+            user = getattr(g, "current_user", None)
+            if user is None:
+                user = current_user
+
+            if not user or not user.is_authenticated:
+                # API check
+                if "Authorization" in request.headers:
+                    return {"message": "Authentication required"}, 401
                 return redirect(url_for("shopyo_auth.login"))
 
-            user_roles = [r.name for r in current_user.roles]
+            # Check if email confirmation is required and if user is confirmed
+            is_disabled = current_app.config.get("EMAIL_CONFIRMATION_DISABLED", False)
+            if not is_disabled and not user.is_email_confirmed:
+                return redirect(url_for("shopyo_auth.unconfirmed"))
+
+            user_roles = [r.name for r in user.roles]
             if any(role in user_roles for role in roles):
                 return f(*args, **kwargs)
 
-            return redirect("/")
+            # return redirect("/")
+            abort(403)
 
         return wrap
 
@@ -90,13 +103,20 @@ def require(policy=None, roles=None, admin_only=False):
         @wraps(f)
         def wrap(*args, **kwargs):
             # Try to get user from g (set by token_required) or current_user
-            user = getattr(g, "current_user", current_user)
+            user = getattr(g, "current_user", None)
+            if user is None:
+                user = current_user
 
             if not user or not user.is_authenticated:
                 # If API request (has Bearer), return JSON, else redirect
                 if "Authorization" in request.headers:
                     return {"message": "Authentication required"}, 401
                 return redirect(url_for("shopyo_auth.login"))
+
+            # Email confirmation check
+            is_disabled = current_app.config.get("EMAIL_CONFIRMATION_DISABLED", False)
+            if not is_disabled and not user.is_email_confirmed:
+                return redirect(url_for("shopyo_auth.unconfirmed"))
 
             # Admin check
             if admin_only and not user.is_admin:

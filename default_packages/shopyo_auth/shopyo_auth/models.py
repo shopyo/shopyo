@@ -18,6 +18,7 @@ from init import login_manager
 
 from itsdangerous import URLSafeTimedSerializer
 from sqlalchemy import func
+from sqlalchemy.orm import object_session
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
@@ -63,6 +64,10 @@ class AnonymousUser(AnonymousUserMixin):
     @property
     def is_admin(self):
         return False
+
+    @property
+    def roles(self):
+        return []
 
     def __repr__(self):
         return f"<AnonymousUser {self.username}>"
@@ -112,8 +117,14 @@ class User(UserMixin, PkModel):
         # the default hashing method is pbkdf2:sha256
         self._password = generate_password_hash(plaintext)
         self.last_password_change = datetime.datetime.now()
-        # Revoke all tokens on password change for security
-        self.tokens.delete()
+
+        # Only attempt revocation if the instance is persisted and attached to a session
+        session = object_session(self)
+        if session is not None:
+            try:
+                self.tokens.delete()
+            except Exception as e:
+                logging.getLogger(__name__).error(f"Failed to revoke tokens: {e}")
 
     def check_password(self, password):
         return check_password_hash(self._password, password)
