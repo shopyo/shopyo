@@ -119,5 +119,77 @@ def heavy_op():
     return "Done!"
 ```
 
+### 8. API Tokens (Personal Access Tokens)
+
+Users can generate API tokens for programmatic access. These tokens are used via the `Authorization: Bearer <token>` header.
+
+**Security Features:**
+- **One-time Visibility**: Tokens are only shown once during creation.
+- **Hashed Storage**: Only hashes of tokens are stored in the database.
+- **Auto-Revocation**: Changing a password automatically revokes all active API tokens for that user.
+
+**Protecting API Routes:**
+
+```python
+from shopyo_auth.decorators import token_required
+
+@module_blueprint.route("/api/v1/resource")
+@token_required
+def api_resource():
+    # g.current_user is populated with the authenticated user
+    from flask import g
+    return {"data": "secret", "user": g.current_user.email}
+```
+
+**Management Routes:**
+- `GET /api/tokens`: List all active tokens.
+- `POST /api/tokens`: Create a new token (expects `{"name": "my-token"}`).
+- `DELETE /api/tokens/<id>`: Revoke a specific token.
+
+### 9. Policy Engine (Granular Authorization)
+
+The Policy Engine allows you to define complex, logic-based authorization rules that go beyond simple roles.
+
+**Defining a Policy:**
+
+```python
+# In your app initialization or a blueprint
+from shopyo_auth import ShopyoAuth
+
+auth = ShopyoAuth(app)
+
+def can_edit_user(user, **context):
+    target_user_id = int(context.get("user_id"))
+    return user.is_admin or user.id == target_user_id
+
+auth.define_policy("edit_user", can_edit_user)
+```
+
+**Using the Policy:**
+
+The `@require` decorator is a unified authorization tool that can check policies, roles, or admin status.
+
+```python
+from shopyo_auth.decorators import require
+
+# Check a custom policy
+@module_blueprint.route("/user/<int:user_id>/edit")
+@require(policy="edit_user")
+def edit_user(user_id):
+    return "Editing user profile..."
+
+# Check specific roles
+@module_blueprint.route("/reports")
+@require(roles=["manager", "admin"])
+def view_reports():
+    return "Reports data"
+
+# Admin only
+@module_blueprint.route("/system/config")
+@require(admin_only=True)
+def system_config():
+    return "System configuration"
+```
+
 ---
-*Version 1.6.0*
+*Version 1.8.0*

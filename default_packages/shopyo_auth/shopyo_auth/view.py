@@ -2,6 +2,7 @@ import datetime
 
 from flask import current_app
 from flask import flash
+from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -17,6 +18,7 @@ from .forms import LoginForm
 from .forms import RegistrationForm
 from .forms import ResetPasswordForm
 from .models import User
+from .models import UserToken
 from shopyo.api.email import send_async_email
 from shopyo.api.html import notify_danger
 from shopyo.api.html import notify_success
@@ -176,3 +178,48 @@ def logout():
     if not next_url or not is_safe_redirect_url(next_url):
         next_url = url_for("shopyo_dashboard.index")
     return redirect(next_url)
+
+
+@module_blueprint.route("/api/tokens", methods=["GET"])
+@login_required
+def list_tokens():
+    tokens = current_user.tokens.all()
+    return jsonify(
+        [
+            {
+                "id": t.id,
+                "name": t.name,
+                "created_at": t.created_at.isoformat(),
+                "last_used_at": t.last_used_at.isoformat() if t.last_used_at else None,
+            }
+            for t in tokens
+        ]
+    )
+
+
+@module_blueprint.route("/api/tokens", methods=["POST"])
+@login_required
+def create_token():
+    name = request.json.get("name")
+    if not name:
+        return jsonify({"message": "Token name is required"}), 400
+    token = current_user.generate_api_token(name)
+    return (
+        jsonify(
+            {
+                "token": token,
+                "message": "Store this token safely, it won't be shown again!",
+            }
+        ),
+        201,
+    )
+
+
+@module_blueprint.route("/api/tokens/<int:token_id>", methods=["DELETE"])
+@login_required
+def delete_token(token_id):
+    token = UserToken.query.filter_by(id=token_id, user_id=current_user.id).first()
+    if not token:
+        return jsonify({"message": "Token not found"}), 404
+    token.delete()
+    return jsonify({"message": "Token deleted"}), 200

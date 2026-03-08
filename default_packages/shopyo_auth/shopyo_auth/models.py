@@ -5,7 +5,9 @@
 """
 
 import datetime
+import hashlib
 import logging
+import secrets
 
 from flask import current_app
 from flask_login import AnonymousUserMixin
@@ -85,12 +87,17 @@ class User(UserMixin, PkModel):
     )
     is_email_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
     email_confirm_date = db.Column(db.DateTime)
+    last_password_change = db.Column(db.DateTime, default=datetime.datetime.now)
 
     # A user can have many roles and a role can have many users
     roles = db.relationship(
         "Role",
         secondary=role_user_bridge,
         backref="users",
+    )
+
+    tokens = db.relationship(
+        "UserToken", backref="user", lazy="dynamic", cascade="all, delete-orphan"
     )
 
     def __repr__(self):
@@ -104,6 +111,9 @@ class User(UserMixin, PkModel):
     def password(self, plaintext):
         # the default hashing method is pbkdf2:sha256
         self._password = generate_password_hash(plaintext)
+        self.last_password_change = datetime.datetime.now()
+        # Revoke all tokens on password change for security
+        self.tokens.delete()
 
     def check_password(self, password):
         return check_password_hash(self._password, password)
@@ -155,6 +165,23 @@ class User(UserMixin, PkModel):
             return None
         return User.get_by_email(email)
 
+    def generate_api_token(self, name):
+        """Generates a new API token for the user."""
+        token = secrets.token_urlsafe(32)
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+        UserToken.create(user_id=self.id, name=name, token_hash=token_hash)
+        return token  # Return the raw token ONLY ONCE
+
+    @staticmethod
+    def verify_api_token(token):
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+        user_token = UserToken.query.filter_by(token_hash=token_hash).first()
+        if user_token:
+            user_token.last_used_at = datetime.datetime.now()
+            user_token.update()
+            return user_token.user
+        return None
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -162,6 +189,22 @@ def load_user(user_id):
 
 
 login_manager.login_view = "shopyo_auth.login"
+
+
+class UserToken(PkModel):
+    """API Tokens for users"""
+
+    __tablename__ = "user_tokens"
+    user_id = db.Column(
+        db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    name = db.Column(db.String(100), nullable=False)
+    token_hash = db.Column(db.String(64), unique=True, index=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    last_used_at = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return f"<UserToken {self.name} for User {self.user_id}>"
 
 
 class Role(PkModel):
