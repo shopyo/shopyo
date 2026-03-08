@@ -35,7 +35,7 @@ class TestAuthFactory:
         assert bool(retrived.password)
         assert retrived.is_email_confirmed is True
         assert retrived.is_admin is False
-        assert retrived.check_password("pass")
+        assert retrived.check_password("Pass1234!@#$")
 
     def test_role_factory(self):
         role = RoleFactory()

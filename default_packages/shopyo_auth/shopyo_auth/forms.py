@@ -1,3 +1,6 @@
+import re
+
+from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import PasswordField
 from wtforms.fields import EmailField
@@ -7,6 +10,41 @@ from wtforms.validators import EqualTo
 from wtforms.validators import InputRequired
 from wtforms.validators import Length
 from wtforms.validators import ValidationError
+
+
+class PasswordComplexity:
+    """
+    Validator to check for password complexity.
+    Requires at least one uppercase, one lowercase, one digit, and one special character.
+    If SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED is False, it passes.
+    """
+
+    def __init__(self, message=None):
+        if not message:
+            message = (
+                "Password must contain at least one uppercase letter, "
+                "one lowercase letter, one digit, and one special character."
+            )
+        self.message = message
+
+    def __call__(self, form, field):
+        if not current_app.config.get("SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED", False):
+            return
+
+        password = field.data
+        if len(password) < 12:
+            raise ValidationError(
+                "Password must be at least 12 characters when complexity is enabled."
+            )
+
+        if not re.search(r"[A-Z]", password):
+            raise ValidationError(self.message)
+        if not re.search(r"[a-z]", password):
+            raise ValidationError(self.message)
+        if not re.search(r"\d", password):
+            raise ValidationError(self.message)
+        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+            raise ValidationError(self.message)
 
 
 class LoginForm(FlaskForm):
@@ -36,9 +74,10 @@ class RegistrationForm(FlaskForm):
             InputRequired("Password is required"),
             Length(
                 min=6,
-                max=25,
-                message="Password must be between 6 and 25 characters",
+                max=128,
+                message="Password must be between 6 and 128 characters",
             ),
+            PasswordComplexity(),
             EqualTo("confirm", message="Passwords must match"),
         ],
     )
@@ -83,9 +122,10 @@ class ResetPasswordForm(FlaskForm):
             InputRequired("Password is required"),
             Length(
                 min=6,
-                max=25,
-                message="Password must be between 6 and 25 characters",
+                max=128,
+                message="Password must be between 6 and 128 characters",
             ),
+            PasswordComplexity(),
             EqualTo("confirm", message="Passwords must match"),
         ],
         render_kw={"class": "form-control", "autocomplete": "off"},

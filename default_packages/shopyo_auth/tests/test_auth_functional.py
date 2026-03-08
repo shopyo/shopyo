@@ -64,11 +64,11 @@ class TestAuthEndpoints:
         assert b"Register" in response.data
 
     def test_user_not_registered_on_invalid_form_submit(self, test_client):
-        User.create(email="test@gmail.com", password="pass")
+        User.create(email="test@gmail.com", password="Pass1234!@#$")
         data = {
             "email": "test@gmail.com",
-            "password": "password",
-            "confirm": "password",
+            "password": "Pass1234!@#$",
+            "confirm": "Pass1234!@#$",
             "csrf_token": "",
         }
 
@@ -83,11 +83,11 @@ class TestAuthEndpoints:
             assert request.path == url_for("shopyo_auth.register")
 
     def test_user_registration_is_case_insensitive(self, test_client):
-        User.create(email="foo@bar.com", password="pass")
+        User.create(email="foo@bar.com", password="Pass1234!@#$")
         data = {
             "email": "Foo@Bar.com",
-            "password": "password",
-            "confirm": "password",
+            "password": "Pass1234!@#$",
+            "confirm": "Pass1234!@#$",
             "csrf_token": "",
         }
 
@@ -110,7 +110,7 @@ class TestAuthEndpoints:
         assert b"Submit" in response.data
 
     def test_forgot_password_submit_redirects(self, test_client):
-        User.create(email="reset@example.com", password="password")
+        User.create(email="reset@example.com", password="Pass1234!@#$")
         data = {"email": "reset@example.com", "csrf_token": ""}
         response = test_client.post(
             f"http://localhost.com{module_info['url_prefix']}/forgot-password",
@@ -122,7 +122,7 @@ class TestAuthEndpoints:
         assert b"Check your email" in response.data
 
     def test_reset_password_page_renders_with_valid_token(self, test_client):
-        user = User.create(email="token@example.com", password="password")
+        user = User.create(email="token@example.com", password="Pass1234!@#$")
         token = user.generate_reset_password_token()
         response = test_client.get(
             f"http://localhost.com{module_info['url_prefix']}/reset-password/{token}"
@@ -132,9 +132,13 @@ class TestAuthEndpoints:
         assert b"Reset Password" in response.data  # The button value
 
     def test_reset_password_submit_updates_password(self, test_client):
-        user = User.create(email="change@example.com", password="old_password")
+        user = User.create(email="change@example.com", password="OldPass1234!@#$")
         token = user.generate_reset_password_token()
-        data = {"password": "new_password", "confirm": "new_password", "csrf_token": ""}
+        data = {
+            "password": "NewPass1234!@#$",
+            "confirm": "NewPass1234!@#$",
+            "csrf_token": "",
+        }
         response = test_client.post(
             f"http://localhost.com{module_info['url_prefix']}/reset-password/{token}",
             data=data,
@@ -145,8 +149,8 @@ class TestAuthEndpoints:
         assert b"Your password has been reset" in response.data
 
         updated_user = User.get_by_email("change@example.com")
-        assert updated_user.check_password("new_password")
-        assert not updated_user.check_password("old_password")
+        assert updated_user.check_password("NewPass1234!@#$")
+        assert not updated_user.check_password("OldPass1234!@#$")
 
     def test_reset_password_page_renders_with_invalid_or_expired_token(
         self, test_client
@@ -159,11 +163,11 @@ class TestAuthEndpoints:
         assert b"Invalid or expired token" in response.data
 
     def test_reset_password_submit_with_mismatched_passwords(self, test_client):
-        user = User.create(email="mismatch@example.com", password="old_password")
+        user = User.create(email="mismatch@example.com", password="OldPass1234!@#$")
         token = user.generate_reset_password_token()
         data = {
-            "password": "new_password",
-            "confirm": "different_password",
+            "password": "NewPass1234!@#$",
+            "confirm": "DifferentPass1234!@#$",
             "csrf_token": "",
         }
         with test_client:
