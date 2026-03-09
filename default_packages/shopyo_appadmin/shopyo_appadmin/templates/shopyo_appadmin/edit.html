@@ -13,18 +13,24 @@
 <div class="max-w-2xl mx-auto">
     <div class="card">
         <div class="card-body">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-lg border border-primary/20">
-                    {{ user.email[0]|upper }}
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-lg border border-primary/20">
+                        {{ user.email[0]|upper }}
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Edit Profile</h3>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ user.email }}</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Edit Profile</h3>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ user.email }}</p>
-                </div>
+                <a href="{{ url_for('shopyo_appadmin.user_list') }}"
+                   class="btn btn-dark !py-2 !px-4 flex items-center gap-2 group">
+                    <i class="fas fa-arrow-left text-[10px] group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Back to List</span>
+                </a>
             </div>
 
-            <form action="{{ url_for('shopyo_appadmin.admin_update') }}" method="post" class="space-y-6">
-                <input required name="id" id="user_id" type="hidden" value="{{ user.id }}">
+            <form action="{{ url_for('shopyo_appadmin.admin_update') }}" method="post" class="space-y-6">                <input required name="id" id="user_id" type="hidden" value="{{ user.id }}">
 
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
