@@ -1,0 +1,27 @@
+<div class="grid grid-cols-2 gap-4">
+    <div class="space-y-1">
+        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Environment</p>
+        <p class="text-sm font-bold text-slate-900 dark:text-white">{{ config.get('ENV', 'production') }}</p>
+    </div>
+    <div class="space-y-1">
+        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Debug Mode</p>
+        <p class="text-sm font-bold {% if config.DEBUG %}text-amber-500{% else %}text-emerald-500{% endif %}">
+            {{ 'Enabled' if config.DEBUG else 'Disabled' }}
+        </p>
+    </div>
+    <div class="space-y-1">
+        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Flask Version</p>
+        <p class="text-sm font-bold text-slate-900 dark:text-white">{{ flask_version or '3.0+' }}</p>
+    </div>
+    <div class="space-y-1">
+        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Database</p>
+        <p class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ config.get('SQLALCHEMY_DATABASE_URI', '').split(':')[0] or 'SQLAlchemy' }}</p>
+    </div>
+</div>
+
+<div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+    <div class="flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-500">Shopyo Core</span>
+        <span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold">STABLE</span>
+    </div>
+</div>
