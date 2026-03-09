@@ -56,17 +56,18 @@
                                     </td>
                                     <input type="hidden" name="role_id" value="{{role.id}}">
                                     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                                    <td class="text-right flex items-center justify-end gap-1">
-                                        <button class="btn btn-primary !p-2 !rounded-lg" type="submit" title="Save Changes">
+                                    <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                                        <button class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-100 dark:border-emerald-500/20"
+                                                type="submit" title="Save Role">
                                             <i class="fas fa-save text-[10px]"></i>
                                         </button>
-                                        <a class="btn btn-dark !p-2 !rounded-lg hover:bg-red-500 hover:text-white transition-all"
+                                        <a class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700"
                                            href="{{url_for(module_name+'.roles_delete', role_id=role.id)}}"
-                                           title="Delete Role">
+                                           title="Delete Role"
+                                           onclick="return confirm('Delete this role?')">
                                             <i class="fas fa-trash-alt text-[10px]"></i>
                                         </a>
-                                    </td>
-                                </form>
+                                    </td>                                </form>
                             </tr>
                             {%endfor%}
                         </tbody>
