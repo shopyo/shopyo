@@ -1,86 +1,48 @@
-
-
 {% from "shopyo_base/blocks/macros.html" import sidebar_item with context %}
+{% extends "shopyo_dashboard/dashboard_base.html" %}
 
-<!doctype html>
-<html lang="en">
-<head>
+{% block pagehead %}
+<style>
+    /* Compatibility for legacy module content */
+    .card { @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm; }
+    .card-body { @apply p-6 md:p-8; }
+    .table { @apply w-full text-sm text-left; }
+    .table thead th { @apply px-4 py-3 bg-slate-50 dark:bg-slate-800/50 text-slate-500 font-bold uppercase tracking-widest text-[10px] border-b border-slate-200 dark:border-slate-800; }
+    .table tbody td { @apply px-4 py-4 border-b border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300; }
+    .btn { @apply inline-flex items-center justify-center px-4 py-2 rounded-xl font-bold text-xs transition-all focus:outline-none focus:ring-2 focus:ring-offset-2; }
+    .btn-primary { @apply bg-primary text-white hover:bg-primary-dark focus:ring-primary/20; }
+    .btn-dark { @apply bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700; }
+    .btn-warning { @apply bg-amber-500 text-white hover:bg-amber-600; }
+    .badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider; }
+    .badge-primary { @apply bg-primary/10 text-primary; }
+</style>
+{% endblock %}
 
-    {% include 'shopyo_base/blocks/default_styles.html'%}
-    {% block pagehead %}{% endblock %}
-
-
-    {% include 'shopyo_base/blocks/resources.html'%}
-</head>
-<body>
-    {% include 'shopyo_base/nav_base.html'%}
-    {% include 'shopyo_base/blocks/flashed_messages.html'%}
-
-  <div class="d-flex bg-white " id="wrapper">
-
-    <!-- Sidebar -->
-    <div class="bg-white border-right" id="sidebar-wrapper">
-      <!--TODO: module info['display string']-->
-      <div class="sidebar-heading"><a href=""></a></div>
-      <div class="list-group list-group-flush" >
-        {% block sidebar %}{% endblock %}
-      </div>
-    </div>
-    <!-- /#sidebar-wrapper -->
-
-    <!-- Page Content -->
-    <div id="page-content-wrapper" >
-
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle">Sidebar</button>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <!--
-            <li class="nav-item">
-              <a class="nav-link" href="">Logout</a>
-            </li>
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-          -->
-          </ul>
+{% block content %}
+<div class="flex flex-col lg:flex-row gap-8">
+    <!-- Modernized Sidebar -->
+    <aside class="w-full lg:w-64 shrink-0">
+        <div class="sticky top-24 space-y-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl shadow-sm">
+            <div class="px-4 py-2 mb-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">
+                Module Menu
+            </div>
+            <div class="flex flex-col gap-1">
+                {% block sidebar %}{% endblock %}
+            </div>
         </div>
-      </nav>
-      <div class="container-fluid shopyo-module-area">
+    </aside>
 
-        {% block content %}{% endblock %}
+    <!-- Module Content -->
+    <div class="flex-1 min-w-0">
+        <div class="mb-6">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase">
+                {% block module_title %}{{ active_page|capitalize if active_page else 'Module' }}{% endblock %}
+            </h2>
+        </div>
 
-      </div>
+        <div class="shopyo-module-content">
+            {% block module_content %}{% endblock %}
+        </div>
     </div>
-    <!-- /#page-content-wrapper -->
-
-  </div>
-  <!-- /#wrapper -->
-
-
-
-  <!-- Menu Toggle Script -->
-  <script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-  </script>
-  {% include 'shopyo_base/blocks/footer.html'%}
-
-</body>
-</html>
+</div>
+{% endblock %}

@@ -31,42 +31,9 @@
     </style>
     {% block pagehead %}{% endblock %}
 </head>
-<body class="bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col">
-    <!-- Modern Top Nav -->
-    <nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center gap-4">
-                    <img src="/static/shopyo.svg" class="w-8 h-8" alt="Shopyo Logo">
-                    <div class="flex items-baseline gap-2">
-                        <span class="font-black text-xl tracking-tight text-slate-900 dark:text-white uppercase">Shopyo</span>
-                        <span class="text-slate-400 dark:text-slate-600 font-bold text-xs uppercase tracking-widest border-l border-slate-200 dark:border-slate-800 pl-2">Dashboard</span>
-                    </div>
-                </div>
+<body class="bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col" x-cloak>
 
-                <div class="flex items-center gap-4">
-                    <!-- Dark Mode -->
-                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)"
-                            class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-                        <i class="fas" :class="darkMode ? 'fa-sun text-amber-500' : 'fa-moon'"></i>
-                    </button>
-
-                    <div class="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
-
-                    <!-- User -->
-                    <div class="flex items-center gap-3 pl-2">
-                        <div class="hidden sm:block text-right">
-                            <p class="text-xs font-bold">{{ current_user.username }}</p>
-                            <a href="{{ url_for('shopyo_auth.logout') }}" class="text-[10px] font-bold text-red-500 hover:text-red-600 uppercase tracking-tighter">Sign out</a>
-                        </div>
-                        <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold shadow-lg shadow-primary/20">
-                            {{ current_user.username[0]|upper }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    {% include "shopyo_base/nav_base.html" %}
 
     <!-- Content Area -->
     <main class="flex-1 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -74,10 +41,17 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="py-8 text-center border-t border-slate-200 dark:border-slate-800">
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">
-            {{ OUR_APP_NAME }} &copy; {{ current_year }}
-        </p>
+    <footer class="py-12 text-center border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto px-8 gap-4">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
+                {{OUR_APP_NAME}} <span class="mx-2 text-slate-200 dark:text-slate-800">|</span> Modular Ecosystem
+            </p>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                &copy; {{ current_year }} Shopyo Framework
+            </p>
+        </div>
     </footer>
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

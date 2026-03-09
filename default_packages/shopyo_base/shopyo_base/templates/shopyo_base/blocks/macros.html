@@ -1,5 +1,6 @@
 {% macro sidebar_item(text, icon='fa fa-table', url='') -%}
-	<a href="{{url}}" class="list-group-item list-group-item-action yo-sidebar-item">
-	<i class="{{icon}}"></i>&nbsp;&nbsp;&nbsp; {{text}}
+	<a href="{{url}}" class="flex items-center px-4 py-2.5 text-xs font-bold rounded-xl transition-all duration-200 group {{ 'bg-primary text-white shadow-lg shadow-primary/20' if request.path == url else 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-primary dark:text-slate-400 dark:hover:text-white' }}">
+	    <i class="{{icon}} w-6 text-center text-sm transition-colors {{ 'text-white' if request.path == url else 'text-slate-400 group-hover:text-primary' }}"></i>
+        <span class="ml-2 uppercase tracking-widest">{{text}}</span>
 	</a>
 {%- endmacro %}
