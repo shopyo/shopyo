@@ -54,20 +54,23 @@
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Assigned Roles</label>
-                    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <table class="table">
-                            <tbody>
-                                {%for role in roles%}
-                                <tr class="hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                                    <td class="w-12 text-center">
-                                        <input type="checkbox" name="role_{{role.id}}" class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary/20">
-                                    </td>
-                                    <td class="text-xs font-bold text-slate-700 dark:text-slate-300">{{role.name}}</td>
-                                </tr>
-                                {%endfor%}
-                            </tbody>
-                        </table>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Assigned Roles</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {% for role in roles %}
+                        <label class="relative flex items-center p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group">
+                            <div class="flex items-center h-5">
+                                <input type="checkbox" name="role_{{role.id}}"
+                                       class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary/20 bg-transparent">
+                            </div>
+                            <div class="ml-3">
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors">{{role.name}}</span>
+                            </div>
+                        </label>
+                        {% else %}
+                        <div class="col-span-full p-4 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 text-center">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No roles defined</span>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
