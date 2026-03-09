@@ -1,43 +1,48 @@
-
-<p class="h2">Login</p>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+<div class="space-y-5">
+    <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Email Address</label>
+        <div class="relative group">
+            <i class="fa fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+            {{ form.email(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-3.5 pl-11 pr-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none", placeholder="Email") }}
+        </div>
+        {% if form.email.errors %}
+            <div class="px-1 pt-1">
+                {% for error in form.email.errors %}
+                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-widest">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-    {{ form.email() }}
-    {% if form.email.errors %}
-        <ul class="errors">
-            {% for error in form.user_id.errors %}
-	            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+
+    <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Password</label>
+        <div class="relative group">
+            <i class="fa fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+            {{ form.password(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-3.5 pl-11 pr-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none", placeholder="••••••••") }}
+        </div>
+        {% if form.password.errors %}
+            <div class="px-1 pt-1">
+                {% for error in form.password.errors %}
+                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-widest">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
+
+    <div class="pt-2">
+        <button type="submit" class="w-full bg-primary text-white font-black py-4 px-6 rounded-2xl hover:bg-primary-dark transition-all shadow-xl shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-[0.2em]">
+            Sign In
+        </button>
+    </div>
+
+    {% if config["SHOPYO_AUTH_LOGIN_FORGET_PASSWORD"] %}
+    <div class="text-center mt-4">
+        <a href="{{ url_for('shopyo_auth.forgot_password') }}" class="text-[10px] font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-widest">
+            Forgot password?
+        </a>
+    </div>
     {% endif %}
 </div>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-key"></i></span>
-    </div>
-    {{ form.password() }}
-    {% if form.password.errors %}
-        <ul class="errors">
-            {% for error in form.password.errors %}
-	            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
-<input
-    type="hidden"
-    name="next"
-    value="{{ request.args.get('next', '') }}"
-/>
-<input type="submit" name="" value="submit" class="btn btn-info">
-
-{% if config["SHOPYO_AUTH_LOGIN_FORGET_PASSWORD"] %}
-<p class="mt-3">
-    <a href="{{ url_for('shopyo_auth.forgot_password') }}">Forgot password?</a>
-</p>
-
-{% endif %}

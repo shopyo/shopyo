@@ -1,33 +1,52 @@
-{% extends "shopyo_base/base.html" %}
-{% set active_page = 'i18n' %}
-{% from "shopyo_base/macros/form.html" import render_field %}
+{% extends "shopyo_base/module_base.html" %}
+{% set active_page ='i18n' %}
 
+{% block pagehead %}
+<title>Internationalization - Shopyo</title>
+{% endblock %}
 
-{% block content %}
-<div class="container">
-    <h1>Language Management</h1>
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Add Language</h2>
-            <form method="POST" action="{{ url_for('shopyo_i18n.dashboard') }}">
-                {{ form.csrf_token }}
-                {{ render_field(form.lang_code) }}
-                {{ render_field(form.lang_name) }}
-                <button type="submit" class="btn btn-primary">Add</button>
+{% block sidebar %}
+    {% include 'shopyo_i18n/blocks/sidebar.html' %}
+{% endblock %}
+
+{% block module_content %}
+<div class="max-w-4xl mx-auto">
+    <div class="card">
+        <div class="card-body">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Language Settings</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Configure system locale and translations</p>
+                </div>
+            </div>
+
+            <form action="{{url_for('shopyo_i18n.dashboard')}}" method="POST" class="space-y-8">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+                <div class="space-y-4">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Default System Language</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {% for language in languages %}
+                        <label class="relative flex items-center p-4 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group">
+                            <div class="flex items-center h-5">
+                                <input type="radio" name="language" value="{{ language }}"
+                                       class="w-4 h-4 border-slate-300 dark:border-slate-600 text-primary focus:ring-primary/20 bg-transparent"
+                                       {% if language == current_language %} checked {% endif %}>
+                            </div>
+                            <div class="ml-3">
+                                <span class="text-xs font-black text-slate-900 dark:text-slate-200 uppercase tracking-widest group-hover:text-primary transition-colors">{{ language }}</span>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+                    <button type="submit" class="w-full bg-primary text-white font-black py-4 px-6 rounded-2xl hover:bg-primary-dark transition-all shadow-xl shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-[0.2em]">
+                        Save Localization Settings
+                    </button>
+                </div>
             </form>
-        </div>
-        <div class="col-md-6">
-            <h2>Available Languages</h2>
-            <ul class="list-group">
-                {% for lang in langs %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ lang.lang_name }} ({{ lang.lang_code }})
-                    <form method="POST" action="{{ url_for('shopyo_i18n.delete', lang_code=lang.lang_code) }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
         </div>
     </div>
 </div>

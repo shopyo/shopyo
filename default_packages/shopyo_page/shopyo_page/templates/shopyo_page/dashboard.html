@@ -1,101 +1,111 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page ='page' %}
+
 {% block pagehead %}
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-<title>{{active_page.capitalize()}}</title>
-<style>
-    .hidden{
-    display: none;
-  }
-  .show{
-    display: inline-block;
-  }
-</style>
+<title>Pages - Shopyo</title>
 {% endblock %}
+
 {% block sidebar %}
-{%include 'shopyo_page/blocks/sidebar.html'%}
-{%endblock%}
-{% block content %}
-<br>
-<div class="container">
+    {% include 'shopyo_page/blocks/sidebar.html' %}
+{% endblock %}
+
+{% block module_content %}
+<div class="max-w-4xl mx-auto">
     <div class="card">
         <div class="card-body">
-            <h3>New page</h3>
-            <form action="{{url_for('{}.check_pagecontent'.format(module_name))}}" method="POST">
-                {{ form.title.label }}
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
-                    </div>
-                    {{ form.title }}
-                    <span id="error" type="text" vissiblity='hidden'></span>
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Create New Page</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Publish content to your site</p>
                 </div>
-                {{ form.slug.label }}
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
-                    </div>
-                    {{ form.slug }}
-                    <span id="error" type="text" vissiblity='hidden'></span>
-                </div>
-                {{ form.meta_description.label }}
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
-                    </div>
-                    {{ form.meta_description }}
-                    <span id="error" type="text" vissiblity='hidden'></span>
-                </div>
-                {{ form.meta_keywords.label }}
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar-day"></i></span>
-                    </div>
-                    {{ form.meta_keywords }}
-                    <span id="error" type="text" viss_iblity='hidden'></span>
-                </div>
-                <div class="field">
-                    {{ form.lang.label }} <br>
-                    <div class="input-group mb-3">
-                        {{ form.lang }}
-                    </div>
-                </div>
-                <div class="field">
-                    {{ form.content.label }} <br>
-                    <div id="editor" style="height: 300px;"></div>
-                    <div class="input-group mb-3" style="display:none;">
-                        {{ form.content }}
-                    </div>
-                </div>
+            </div>
 
-
+            <form action="{{url_for('{}.check_pagecontent'.format(module_name))}}" method="POST" class="space-y-6">
                 <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                <input type="submit" class="btn btn-info" value="submit">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Title -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Page Title</label>
+                        <div class="relative group">
+                            <i class="fa fa-heading absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+                            {{ form.title(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", placeholder="My New Page", id="title") }}
+                        </div>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">URL Slug</label>
+                        <div class="relative group">
+                            <i class="fa fa-link absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+                            {{ form.slug(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", placeholder="my-new-page", id="slug") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Meta Description</label>
+                    {{ form.meta_description(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", placeholder="SEO description...") }}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Keywords -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Meta Keywords</label>
+                        {{ form.meta_keywords(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none", placeholder="cms, flask, shopyo") }}
+                    </div>
+
+                    <!-- Language -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Language</label>
+                        {{ form.lang(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none") }}
+                    </div>
+                </div>
+
+                <!-- Content Editor -->
+                <div class="space-y-3">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Page Content</label>
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white">
+                        <div id="editor" class="min-h-[300px] text-slate-900"></div>
+                    </div>
+                    <div class="hidden">
+                        {{ form.content(id="content-textarea") }}
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button type="submit" class="w-full bg-primary text-white font-black py-4 px-6 rounded-2xl hover:bg-primary-dark transition-all shadow-xl shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-[0.2em]">
+                        Publish Page
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Include the Quill library -->
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
-<!-- Initialize Quill editor -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script>
   const quill = new Quill('#editor', {
-    theme: 'snow'
+    theme: 'snow',
+    placeholder: 'Start writing your story...'
   });
+
+  const textarea = document.getElementById('content-textarea');
   quill.on('text-change', function() {
-    document.querySelector('textarea[name="content"]').value = quill.root.innerHTML;
+    textarea.value = quill.root.innerHTML;
   });
-</script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#title").change(function() {
-        var title = $('#title').val();
-        title = title.trim();
-        title = title.replace(/[\W_]+/g, " ");
-        title = title.replaceAll(" ", "-");
-        $('#slug').val(title);
-    });
-});
+
+  // Slug auto-generation (Vanilla JS)
+  document.getElementById('title').addEventListener('input', function(e) {
+      const slugInput = document.getElementById('slug');
+      let val = e.target.value.toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      slugInput.value = val;
+  });
 </script>
 {% endblock %}

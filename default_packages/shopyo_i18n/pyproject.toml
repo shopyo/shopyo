@@ -3,7 +3,7 @@ name = "shopyo_i18n"
 authors = [{ name = "Abdur-Rahmaan Janhangeer", email = "arj.python@gmail.com" }]
 description = "i18n module for Shopyo"
 # readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 # license = { file = "LICENSE.txt" }
 keywords = ["shopyo"]
 classifiers = [

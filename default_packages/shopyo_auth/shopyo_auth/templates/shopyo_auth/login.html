@@ -2,45 +2,36 @@
 
 {% set active_page = "login" %}
 {% block pagehead %}
-	<title>{{active_page.capitalize()}}</title>
-	<style>
-        .hidden {
-            display: none;
-        }
-
-        .show {
-            display: inline-block;
-        }
-
-        .active {
-            width: 6rem;
-            color: white;
-            background-color: #34ce57;
-        }
-
-        .inactive {
-            width: 6rem;
-            color: white;
-            background-color: #ff253a;
-        }
-
-        .all_inactive {
-            display: none;
-        }
-    </style>
-
+	<title>Login - Shopyo</title>
 {% endblock %}
-{% block content %}
 
-	<div class="container col-md-6 off-set-2 text-center test">
-        <div class="card">
-            <div class="card-body">
-                <img src="/static/shopyo.svg" width="175" height="150">
-                <form action="{{url_for('shopyo_auth.login')}}" method="POST">
-                    {%include 'shopyo_auth/blocks/login_form.html'%}
-                </form>
-            </div>
-        </div>
+{% block content %}
+<div class="min-h-[80vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <img src="/static/shopyo.svg" class="mx-auto h-20 w-auto transition-transform hover:scale-110 duration-300" alt="Shopyo">
+        <h2 class="mt-6 text-center text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase">
+            Sign in
+        </h2>
+        <p class="mt-2 text-center text-xs font-bold text-slate-500 uppercase tracking-widest">
+            Access your control panel
+        </p>
     </div>
 
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white dark:bg-slate-900 py-10 px-6 shadow-2xl rounded-[2.5rem] border border-slate-200 dark:border-slate-800 sm:px-10">
+            <form action="{{url_for('shopyo_auth.login')}}" method="POST" class="space-y-6">
+                {% include 'shopyo_auth/blocks/login_form.html' %}
+            </form>
+
+            {% if config["SHOPYO_BASE_NAV_REGISTER"] %}
+            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    New here?
+                    <a href="{{ url_for('shopyo_auth.register') }}" class="ml-1 text-primary hover:text-primary-dark transition-colors">Create an account</a>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

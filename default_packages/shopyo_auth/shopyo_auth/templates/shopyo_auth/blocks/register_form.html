@@ -1,44 +1,54 @@
-<p class="h2">Register</p>
+<div class="space-y-5">
+    <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Email Address</label>
+        <div class="relative group">
+            <i class="fa fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+            {{ form.email(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-3.5 pl-11 pr-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none", placeholder="Email", autocomplete="off", autofocus=true) }}
+        </div>
+        {% if form.email.errors %}
+            <div class="px-1 pt-1">
+                {% for error in form.email.errors %}
+                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-widest">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 
-<div class="form-group">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+    <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Password</label>
+        <div class="relative group">
+            <i class="fa fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+            {{ form.password(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-3.5 pl-11 pr-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none", placeholder="••••••••") }}
         </div>
-        {{ form.email(class_="form-control", placeholder="Email", autocomplete="off", autofocus=true) }}
+        {% if form.password.errors %}
+            <div class="px-1 pt-1">
+                {% for error in form.password.errors %}
+                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-widest">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-    <ul class="form-errors">
-        {% for error in form.email.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-</div>
-<div class="form-group">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-key"></i></span>
-        </div>
-        {{ form.password(class_="form-control", placeholder="Password") }}
-    </div>
-    <ul class="form-errors">
-        {% for error in form.password.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-</div>
-<div class="form-group">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-key"></i></span>
-        </div>
-        {{ form.confirm(class_="form-control", placeholder="Confirm Password") }}
-    </div>
-    <ul class="form-errors">
-        {% for error in form.confirm.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-</div>
 
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-<input type="submit" name="" value="register" class="btn btn-info">
+    <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Confirm Password</label>
+        <div class="relative group">
+            <i class="fa fa-shield-check absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+            {{ form.confirm(class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-3.5 pl-11 pr-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none", placeholder="••••••••") }}
+        </div>
+        {% if form.confirm.errors %}
+            <div class="px-1 pt-1">
+                {% for error in form.confirm.errors %}
+                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-widest">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="pt-2">
+        <button type="submit" class="w-full bg-primary text-white font-black py-4 px-6 rounded-2xl hover:bg-primary-dark transition-all shadow-xl shadow-primary/20 active:scale-[0.98] text-xs uppercase tracking-[0.2em]">
+            Create Account
+        </button>
+    </div>
+</div>

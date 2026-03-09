@@ -42,4 +42,10 @@ class PageForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.lang.choices = [(l.lang_code, l.lang_name) for l in LangRecord.query.all()]
+        self.lang.choices = [
+            ("en", "English"),
+            ("fr", "French"),
+            ("es", "Spanish"),
+            ("de", "German"),
+            ("it", "Italian"),
+        ]

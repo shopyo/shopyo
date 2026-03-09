@@ -1,40 +1,53 @@
 {% extends "shopyo_base/module_base.html" %}
 
-{% set active_page ='' %}
+{% set active_page ='theme' %}
 
 {% block pagehead %}
-<title>Theme Store</title>
+<title>Theme Store - Shopyo</title>
 {% endblock %}
 
 {% block sidebar %}
-  {%include '{}/blocks/sidebar.html'.format(module_info['module_name'])%}
-{%endblock%}
+    {% include 'shopyo_theme/blocks/sidebar.html' %}
+{% endblock %}
 
-{% block content %}
-<div class="container-fluid py-4">
-    <div class="mb-5">
-        <h2 class="section-title">Front Themes</h2>
-        <div class="row">
+{% block module_content %}
+<div class="space-y-12">
+    <!-- Front Themes Section -->
+    <div>
+        <div class="flex items-center gap-3 mb-8">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Front Themes</h2>
+            <div class="h-px flex-1 bg-slate-100 dark:bg-slate-800"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for key in all_front_info %}
-            <div class="col-md-4 mb-4">
-                <div class="card theme-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title">{{ key|capitalize }}</h5>
-                            {% if active_front_theme == key %}
-                                <span class="badge badge-active">Active</span>
-                            {% endif %}
-                        </div>
-                        <p class="card-text mb-4 text-muted">
-                            by <strong>{{ all_front_info[key]['author']['name'] or 'Unknown' }}</strong>
-                        </p>
-                        <div class="mt-auto">
-                            {% if active_front_theme != key %}
-                                <a href="{{ url_for('shopyo_theme.activate_front_theme', theme_name=key) }}" class="btn btn-primary btn-block">Activate</a>
-                            {% else %}
-                                <button class="btn btn-success btn-block" disabled>Activated</button>
-                            {% endif %}
-                        </div>
+            <div class="group relative bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-primary transition-all hover:shadow-2xl hover:shadow-primary/5">
+                <div class="p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors">{{ key|capitalize }}</h3>
+                        {% if active_front_theme == key %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Active
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        by <span class="text-slate-600 dark:text-slate-300">{{ all_front_info[key]['author']['name'] or 'Unknown' }}</span>
+                    </p>
+
+                    <div class="mt-8">
+                        {% if active_front_theme != key %}
+                            <a href="{{ url_for('shopyo_theme.activate_front_theme', theme_name=key) }}"
+                               class="block w-full bg-primary text-white text-center font-black py-3 rounded-xl hover:bg-primary-dark transition-all text-[10px] uppercase tracking-widest shadow-lg shadow-primary/10">
+                                Activate Theme
+                            </a>
+                        {% else %}
+                            <button class="block w-full bg-slate-50 dark:bg-slate-800 text-slate-400 cursor-not-allowed font-black py-3 rounded-xl text-[10px] uppercase tracking-widest border border-slate-100 dark:border-slate-700" disabled>
+                                Currently Active
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -42,29 +55,42 @@
         </div>
     </div>
 
+    <!-- Back Themes Section -->
     <div>
-        <h2 class="section-title">Back Themes</h2>
-        <div class="row">
+        <div class="flex items-center gap-3 mb-8">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Admin Themes</h2>
+            <div class="h-px flex-1 bg-slate-100 dark:bg-slate-800"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for key in all_back_info %}
-            <div class="col-md-4 mb-4">
-                <div class="card theme-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title">{{ key|capitalize }}</h5>
-                            {% if active_back_theme == key %}
-                                <span class="badge badge-active">Active</span>
-                            {% endif %}
-                        </div>
-                        <p class="card-text mb-4 text-muted">
-                            by <strong>{{ all_back_info[key]['author']['name'] or 'Unknown' }}</strong>
-                        </p>
-                        <div class="mt-auto">
-                            {% if active_back_theme != key %}
-                                <a href="{{ url_for('shopyo_theme.activate_back_theme', theme_name=key) }}" class="btn btn-primary btn-block">Activate</a>
-                            {% else %}
-                                <button class="btn btn-success btn-block" disabled>Activated</button>
-                            {% endif %}
-                        </div>
+            <div class="group relative bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-primary transition-all hover:shadow-2xl hover:shadow-primary/5">
+                <div class="p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors">{{ key|capitalize }}</h3>
+                        {% if active_back_theme == key %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Active
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        by <span class="text-slate-600 dark:text-slate-300">{{ all_back_info[key]['author']['name'] or 'Unknown' }}</span>
+                    </p>
+
+                    <div class="mt-8">
+                        {% if active_back_theme != key %}
+                            <a href="{{ url_for('shopyo_theme.activate_back_theme', theme_name=key) }}"
+                               class="block w-full bg-primary text-white text-center font-black py-3 rounded-xl hover:bg-primary-dark transition-all text-[10px] uppercase tracking-widest shadow-lg shadow-primary/10">
+                                Activate Theme
+                            </a>
+                        {% else %}
+                            <button class="block w-full bg-slate-50 dark:bg-slate-800 text-slate-400 cursor-not-allowed font-black py-3 rounded-xl text-[10px] uppercase tracking-widest border border-slate-100 dark:border-slate-700" disabled>
+                                Currently Active
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
