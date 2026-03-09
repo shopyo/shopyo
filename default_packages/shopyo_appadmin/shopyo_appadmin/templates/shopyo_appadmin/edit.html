@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <form action='/appadmin/update' method="post" class="space-y-6">
+            <form action="{{ url_for('shopyo_appadmin.admin_update') }}" method="post" class="space-y-6">
                 <input required name="id" id="user_id" type="hidden" value="{{ user.id }}">
 
                 <div class="space-y-1">

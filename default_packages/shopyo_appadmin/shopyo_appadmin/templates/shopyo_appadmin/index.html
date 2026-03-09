@@ -14,68 +14,107 @@
 $(function() {
     $('.delete_me').click(function() {
         var id = $(this).data('id');
-        console.log(id);
-        var ask = confirm("Do you want to delete ?");
+        var ask = confirm("Do you want to delete user #" + id + "?");
         if (ask == true) {
-            window.open("/appadmin/delete/" + id, "_self")
+            var url = "{{ url_for('shopyo_appadmin.admin_delete', id='0') }}".replace('0', id);
+            window.open(url, "_self")
         }
     });
 });
 </script>
 
 <div class="card">
-    <div class="card-body">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">User Management</h3>
-            <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                {{ users|length }} Total Users
-            </span>
+    <div class="card-body !p-0"> <!-- Remove padding for full-width table -->
+        <div class="p-6 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
+            <div>
+                <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">User Management</h3>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Directory of all registered accounts</p>
+            </div>
+            <div class="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                    {{ users|length }} TOTAL
+                </span>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="table">
+            <table class="w-full border-collapse">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Password</th>
-                        <th>Admin</th>
-                        <th>Roles</th>
-                        <th class="text-right">Actions</th>
+                    <tr class="bg-slate-50/50 dark:bg-slate-800/30">
+                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">ID</th>
+                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">Account</th>
+                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">Security</th>
+                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">Status</th>
+                        <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">Roles</th>
+                        <th class="px-6 py-4 text-right text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 dark:border-slate-800">Control</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                     {% for user in users %}
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="font-bold text-slate-400">#{{user.id}}</td>
-                        <td class="font-medium text-slate-900 dark:text-white">{{user.email}}</td>
-                        <td class="text-slate-400 tracking-widest">••••••••</td>
-                        <td>
+                    <tr class="group hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-all">
+                        <td class="px-6 py-5 align-middle">
+                            <span class="font-mono text-xs font-bold text-slate-400">#{{user.id}}</span>
+                        </td>
+                        <td class="px-6 py-5 align-middle">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">{{user.email}}</span>
+                                <span class="text-[10px] font-medium text-slate-400">{{ user.first_name if user.first_name else '' }} {{ user.last_name if user.last_name else '' }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5 align-middle">
+                            <div class="flex items-center gap-1.5">
+                                <i class="fas fa-lock text-[10px] text-slate-300"></i>
+                                <span class="text-[10px] font-bold text-slate-400 tracking-[0.3em]">••••••••</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5 align-middle">
                             {% if user.is_admin %}
-                                <span class="badge bg-emerald-100 text-emerald-600">Yes</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-500/20">
+                                    <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                                    Admin
+                                </span>
                             {% else %}
-                                <span class="badge bg-slate-100 text-slate-500">No</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700">
+                                    <span class="w-1 h-1 rounded-full bg-slate-400"></span>
+                                    User
+                                </span>
                             {% endif %}
                         </td>
-                        <td>
-                            <div class="flex flex-wrap gap-1">
+                        <td class="px-6 py-5 align-middle">
+                            <div class="flex flex-wrap gap-1.5">
                                 {%for role in user.roles%}
-                                <span class="badge badge-primary">{{role.name}}</span>
+                                <span class="px-2 py-0.5 rounded-md bg-primary/5 text-primary text-[10px] font-bold border border-primary/10">
+                                    {{role.name}}
+                                </span>
+                                {% else %}
+                                <span class="text-[10px] font-medium text-slate-400 italic">No roles</span>
                                 {%endfor%}
                             </div>
                         </td>
-                        <td class="text-right space-x-1">
-                            <a href="/appadmin/edit/{{ user.id }}" class="btn btn-warning !p-2 !rounded-lg" title="Edit User">
-                                <i class="fas fa-pencil-alt text-[10px]"></i>
-                            </a>
-                            <button data-id="{{ user.id }}" class="delete_me btn btn-dark !p-2 !rounded-lg hover:bg-red-500 hover:text-white transition-all" title="Delete User">
-                                <i class="fas fa-trash-alt text-[10px]"></i>
-                            </button>
+                        <td class="px-6 py-5 align-middle text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ url_for('shopyo_appadmin.admin_edit', id=user.id) }}"
+                                   class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all border border-amber-100 dark:border-amber-500/20"
+                                   title="Edit User">
+                                    <i class="fas fa-pencil-alt text-[10px]"></i>
+                                </a>
+                                <button data-id="{{ user.id }}"
+                                        class="delete_me w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700"
+                                        title="Delete User">
+                                    <i class="fas fa-trash-alt text-[10px]"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <div class="p-6 bg-slate-50/30 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">
+                Use caution when performing administrative actions
+            </p>
         </div>
     </div>
 </div>

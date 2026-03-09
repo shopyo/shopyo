@@ -15,7 +15,7 @@
         <div class="card-body">
             <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-8">Add New User</h3>
 
-            <form action="/appadmin/add" method="post" class="space-y-6">
+            <form action="{{ url_for('shopyo_appadmin.user_add') }}" method="post" class="space-y-6">
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
                     <div class="relative group">
