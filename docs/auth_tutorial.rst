@@ -3,8 +3,8 @@ Authentication & Authorization
 
 `shopyo-auth` is a robust authentication framework for Shopyo that provides a complete foundation for handling users, roles, and granular permissions.
 
-Key Features
-------------
+Auth Key Features
+-----------------
 
 * **Granular Access Control**: Use Roles (RBAC) or complex Policies.
 * **Security Hardened**: Built-in rate limiting and configurable password complexity.

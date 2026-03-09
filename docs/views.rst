@@ -22,8 +22,8 @@ When you create a new module with `shopyo startapp`, it generates a `view.py` wi
     def index():
         return mhelp.info['display_string']
 
-Key Features
-************
+View Key Features
+*****************
 
 - **Automatic Blueprint Creation**: The blueprint name and URL prefix are pulled directly from the module's `info.json`.
 - **Template Context**: `mhelp.context()` provides a dictionary with module-specific information (like `info.json` data) that you can easily update and pass to your templates.
