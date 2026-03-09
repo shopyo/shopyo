@@ -11,16 +11,13 @@
 
 {% block module_content %}
 <script type="text/javascript">
-$(function() {
-    $('.delete_me').click(function() {
-        var id = $(this).data('id');
-        var ask = confirm("Do you want to delete user #" + id + "?");
-        if (ask == true) {
-            var url = "{{ url_for('shopyo_appadmin.admin_delete', id='0') }}".replace('0', id);
-            window.open(url, "_self")
-        }
-    });
-});
+function confirmDelete(id) {
+    if (confirm("Do you want to delete user #" + id + "?")) {
+        // Construct the URL by replacing the placeholder
+        var baseUrl = "{{ url_for('shopyo_appadmin.admin_delete', id='PLACEHOLDER') }}";
+        window.location.href = baseUrl.replace('PLACEHOLDER', id);
+    }
+}
 </script>
 
 <div class="card">
@@ -98,8 +95,8 @@ $(function() {
                                    title="Edit User">
                                     <i class="fas fa-pencil-alt text-[10px]"></i>
                                 </a>
-                                <button data-id="{{ user.id }}"
-                                        class="delete_me w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700"
+                                <button onclick="confirmDelete('{{ user.id }}')"
+                                        class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-slate-200 dark:border-slate-700"
                                         title="Delete User">
                                     <i class="fas fa-trash-alt text-[10px]"></i>
                                 </button>
