@@ -1,39 +1,78 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page = "admin" %}
+
 {% block pagehead %}
+<title>Roles Management</title>
 {% endblock %}
+
 {% block sidebar %}
-{%include 'shopyo_appadmin/blocks/sidebar.html'%}
-{%endblock%}
-{% block content %}
-<br>
-<div class="card">
-    <div class="card-body">
-        <h2>Roles</h2>
-        <div class="">
-            <form class="" method="POST" action='{{url_for(module_name+".roles_add")}}'>
-                <div class="form-group">
+    {% include 'shopyo_appadmin/blocks/sidebar.html' %}
+{% endblock %}
+
+{% block module_content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Add Role -->
+    <div>
+        <div class="card h-full">
+            <div class="card-body">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-8 text-center md:text-left">Add New Role</h3>
+
+                <form class="space-y-4" method="POST" action='{{url_for(module_name+".roles_add")}}'>
                     <input name="csrf_token" value="{{csrf_token()}}" type="hidden">
-                    <input class="form-control" type="" name="name"><br>
-                    <button class="btn btn-info" type="submit">add</button>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Role Name</label>
+                        <input type="text" name="name" placeholder="e.g. Moderator" required
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                    </div>
+                    <button class="btn btn-primary w-full py-3 tracking-widest uppercase" type="submit">
+                        Create Role
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing Roles -->
+    <div>
+        <div class="card h-full">
+            <div class="card-body">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-8">Existing Roles</h3>
+
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Role Name</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for role in roles%}
+                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                                <form action="{{url_for(module_name+'.roles_update')}}" method="POST">
+                                    <td>
+                                        <input value="{{role.name}}" name="role_name" required
+                                               class="bg-transparent border-none focus:ring-1 focus:ring-primary/20 rounded-lg py-1 px-2 text-xs font-bold text-slate-700 dark:text-slate-300 w-full">
+                                    </td>
+                                    <input type="hidden" name="role_id" value="{{role.id}}">
+                                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                    <td class="text-right flex items-center justify-end gap-1">
+                                        <button class="btn btn-primary !p-2 !rounded-lg" type="submit" title="Save Changes">
+                                            <i class="fas fa-save text-[10px]"></i>
+                                        </button>
+                                        <a class="btn btn-dark !p-2 !rounded-lg hover:bg-red-500 hover:text-white transition-all"
+                                           href="{{url_for(module_name+'.roles_delete', role_id=role.id)}}"
+                                           title="Delete Role">
+                                            <i class="fas fa-trash-alt text-[10px]"></i>
+                                        </a>
+                                    </td>
+                                </form>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
                 </div>
-            </form>
-            <table>
-                <tbody>
-                    {%for role in roles%}
-                    <tr>
-                        <form action="{{url_for(module_name+'.roles_update')}}" method="POST">
-                            <td>
-                                <input value="{{role.name}}" class="form-control" type="" name="role_name"></td>
-                            <input type="hidden" name="role_id" value="{{role.id}}">
-                            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                            <td><button class="btn btn-info form-control" type="submit">save</button></td>
-                            <td><a class="btn btn-danger" href="{{url_for(module_name+'.roles_delete', role_id=role.id)}}">delete</a></td>
-                        </form>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
+            </div>
         </div>
     </div>
 </div>
