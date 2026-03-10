@@ -2,6 +2,7 @@
 {% set active_page ='page' %}
 
 {% block pagehead %}
+{{ super() }}
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 <title>Pages - Shopyo</title>
 {% endblock %}
@@ -67,11 +68,11 @@
                 <!-- Content Editor -->
                 <div class="space-y-3">
                     <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Page Content</label>
-                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white">
-                        <div id="editor" class="min-h-[300px] text-slate-900"></div>
-                    </div>
                     <div class="hidden">
                         {{ form.content(id="content-textarea") }}
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white min-h-[400px] flex flex-col">
+                        <div id="editor" class="flex-1 min-h-[350px] text-slate-900"></div>
                     </div>
                 </div>
 

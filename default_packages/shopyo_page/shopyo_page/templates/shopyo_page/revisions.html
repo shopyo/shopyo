@@ -1,6 +1,7 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page = 'page' %}
 {% block pagehead %}
+{{ super() }}
 <title>{{active_page.capitalize()}} Revisions</title>
 {% endblock %}
 {% block sidebar %}

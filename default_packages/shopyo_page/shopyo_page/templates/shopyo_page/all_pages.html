@@ -3,6 +3,7 @@
 {% set active_page ='page' %}
 
 {% block pagehead %}
+{{ super() }}
 <title>{{active_page.capitalize()}}</title>
 <style>
   .hidden{
@@ -17,7 +18,7 @@
 {% block sidebar %}
 {%include 'shopyo_page/blocks/sidebar.html'%}
 {%endblock%}
-{% block content %}
+{% block module_content %}
 <br>
 <div class="list-group">
    <div class="list-group-item">
