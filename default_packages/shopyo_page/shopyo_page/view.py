@@ -72,7 +72,15 @@ def view_page(slug):
     context = {}
     page = Page.query.filter(Page.slug == slug).first()
     context.update({"page": page})
-    return render_template(f"{module_name}/view_page.html", **context)
+
+    # Fallback order: page.template -> SHOPYO_PAGE_TEMPLATE config -> module's view_page.html
+    template = page.template
+    if not template:
+        template = current_app.config.get(
+            "SHOPYO_PAGE_TEMPLATE", f"{module_name}/view_page.html"
+        )
+
+    return render_template(template, **context)
 
 
 @module_blueprint.route(mhelp.info["dashboard"])

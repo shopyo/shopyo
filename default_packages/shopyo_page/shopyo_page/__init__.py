@@ -12,7 +12,10 @@ with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as 
     info = json.load(f)
 
 
-default_config = {"SHOPYO_PAGE_URL": "/shopyo-page"}
+default_config = {
+    "SHOPYO_PAGE_URL": "/shopyo-page",
+    "SHOPYO_PAGE_TEMPLATE": "shopyo_page/view_page.html",
+}
 
 
 class ShopyoPage:

@@ -14,6 +14,7 @@ class Page(PkModel):
     created_date = db.Column(db.DateTime, default=datetime.now())
     title = db.Column(db.String(100))
     slug = db.Column(db.String(100))
+    template = db.Column(db.String(200), default="shopyo_page/view_page.html")
     meta_description = db.Column(db.String(200))
     meta_keywords = db.Column(db.String(200))
 
