@@ -29,7 +29,7 @@ def get_active_front_theme_version():
 
 def get_active_front_theme_styles_url():
     return url_for(
-        "resource.active_front_theme_css",
+        "shopyo_theme.active_front_theme_css",
         active_theme=get_active_front_theme(),
         v=get_active_front_theme_version(),
     )

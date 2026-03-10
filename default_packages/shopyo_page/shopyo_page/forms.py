@@ -28,6 +28,15 @@ class PageForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
+    template = StringField(
+        "Custom Template (optional)",
+        [],
+        render_kw={
+            "class": "form-control",
+            "placeholder": "e.g., blogus/landing.html",
+            "autocomplete": "off",
+        },
+    )
     meta_description = StringField(
         "Meta Description",
         [],

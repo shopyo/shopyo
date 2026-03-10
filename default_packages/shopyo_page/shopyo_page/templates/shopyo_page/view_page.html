@@ -1,15 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ session.get('yo_current_lang', 'en') }}">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>{{ page.title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title }} - Shopyo</title>
+
+    <!-- Include Front-end Theme Resources if they exist -->
+    {% include shopyo_theme.get_active_front_theme() + '/sections/resources.html' ignore missing %}
+
+    <!-- Link to Active Front-end Theme Stylesheet -->
+    <link rel="stylesheet" href="{{ shopyo_theme.get_active_front_theme_styles_url() }}">
+
+    <!-- Fallback for basic icons if theme doesn't provide them -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
-	Demo content page, need to add set lang mechanism by calling `/i18n/set-lang?lang=fr`.
-	<h1>
-		{{ page.title }}
-	</h1>
-	{{ page.get_content() }}
+<body class="shopyo-front-body">
+
+    <!-- Include Front-end Theme Navigation -->
+    {% include shopyo_theme.get_active_front_theme() + '/sections/nav.html' ignore missing %}
+
+    <!-- Main Content Area -->
+    <div class="shopyo-content-container">
+        <article class="page-content">
+            {{ page.get_content() | safe }}
+        </article>
+    </div>
+
+    <!-- Include Front-end Theme Footer -->
+    {% include shopyo_theme.get_active_front_theme() + '/sections/footer.html' ignore missing %}
+
 </body>
 </html>
