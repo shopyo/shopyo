@@ -1,84 +1,90 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page = "admin" %}
+
 {% block pagehead %}
-<title>{{active_page.capitalize()}}</title>
-<style>
-    .hidden {
-            display: none;
-        }
-
-        .show {
-            display: inline-block;
-        }
-
-        .active {
-            width: 6rem;
-            color: white;
-            background-color: #34ce57;
-        }
-
-        .inactive {
-            width: 6rem;
-            color: white;
-            background-color: #ff253a;
-        }
-
-        .all_inactive {
-            display: none;
-        }
-    </style>
+{{ super() }}
+<title>Add User</title>
 {% endblock %}
+
 {% block sidebar %}
-{%include 'shopyo_appadmin/blocks/sidebar.html'%}
-{%endblock%}
-{% block content %}
-<br>
-<div class="container col-md-6 off-set-3">
+    {% include 'shopyo_appadmin/blocks/sidebar.html' %}
+{% endblock %}
+
+{% block module_content %}
+<div class="max-w-2xl mx-auto">
     <div class="card">
         <div class="card-body">
-            <form action="/appadmin/add" method="post">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-user"></i></span>
-                    </div>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" required autocomplete="off">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-key"></i></span>
-                    </div>
-                    <input type="password" name="password" class="form-control" id="user_password" placeholder="Password" required autocomplete="off">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-key"></i></span>
-                    </div>
-                    <input type="text" name="first_name" class="form-control" placeholder="First Name" autocomplete="off">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-key"></i></span>
-                    </div>
-                    <input type="text" name="last_name" class="form-control" placeholder="Last Name" autocomplete="off">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="is_admin" class="custom-control-input" id="is_admin" value="True" checked>
-                        <label for="is_admin" class="custom-control-label">Admin User</label>
+            <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-8">Add New User</h3>
+
+            <form action="{{ url_for('shopyo_appadmin.user_add') }}" method="post" class="space-y-6">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
+                    <div class="relative group">
+                        <i class="fa fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+                        <input type="email" name="email" placeholder="Email" required autocomplete="off"
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
                     </div>
                 </div>
-                <table class="table">
-                    <tbody>
-                        {%for role in roles%}
-                        <tr>
-                            <td><input type="checkbox" name="role_{{role.id}}"></td>
-                            <td>{{role.name}}</td>
-                        </tr>
-                        {%endfor%}
-                    </tbody>
-                </table>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Password</label>
+                    <div class="relative group">
+                        <i class="fa fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs group-focus-within:text-primary transition-colors"></i>
+                        <input type="password" name="password" placeholder="Password" required autocomplete="off"
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-11 pr-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">First Name</label>
+                        <input type="text" name="first_name" placeholder="First Name" autocomplete="off"
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Last Name</label>
+                        <input type="text" name="last_name" placeholder="Last Name" autocomplete="off"
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 py-2">
+                    <input type="checkbox" name="is_admin" id="is_admin" value="True" checked
+                           class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary/20">
+                    <label for="is_admin" class="text-xs font-bold text-slate-700 dark:text-slate-300">Administrator Privileges</label>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] px-1">Assigned Roles</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {% for role in roles %}
+                        <label class="relative flex items-center p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group">
+                            <div class="flex items-center h-5">
+                                <input type="checkbox" name="role_{{role.id}}"
+                                       class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary/20 bg-transparent">
+                            </div>
+                            <div class="ml-3">
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors">{{role.name}}</span>
+                            </div>
+                        </label>
+                        {% else %}
+                        <div class="col-span-full p-4 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 text-center">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No roles defined</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                <input type="submit" class="btn btn-info" value="add" required>
+
+                <div class="pt-6">
+                    <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 active:scale-[0.98]">
+                        Create User
+                    </button>
+                    <a href="{{ url_for('shopyo_appadmin.user_list') }}" class="block text-center mt-4 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
+                        Cancel and return
+                    </a>
+                </div>
             </form>
         </div>
     </div>

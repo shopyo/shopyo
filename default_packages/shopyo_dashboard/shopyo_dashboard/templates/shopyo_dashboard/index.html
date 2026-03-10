@@ -1,110 +1,54 @@
-{% extends "shopyo_base/main_base.html" %}
-{% set active_page = 'control panel' %}
+{% extends "shopyo_dashboard/dashboard_base.html" %}
 
-{% block pagehead %}
-<title>Dashboard</title>
-<link rel="stylesheet" href="/static/fontawesome/css/all.css">
-
-<style>
-
-/* Card container */
-.dashboard-card {
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 12px;
-    background: #fff;
-    transition: transform 0.15s ease, border-color 0.15s ease;
-
-    overflow: visible;        /* ensures bottom border shows */
-    min-height: 160px;        /* enough vertical space */
-    display: flex;
-    flex-direction: column;
-}
-
-/* Card body */
-.dashboard-card-body {
-    padding: 2.5rem 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.25rem;
-    flex: 1;
-    text-align: center;
-}
-
-/* Icon */
-.dashboard-icon {
-    font-size: 1.75rem;
-    color: #4b5563;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    text-decoration: none !important;
-}
-
-/* Hover effect */
-.dashboard-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(0, 0, 0, 0.12);
-}
-
-/* Label */
-.dashboard-label {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #222;
-    letter-spacing: 0.01em;
-}
-
-/* Responsive padding */
-@media (max-width: 576px) {
-    .dashboard-card-body {
-        padding: 2rem 1.5rem;
-    }
-}
-
-
-</style>
-{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
-{% include 'shopyo_dashboard/nav.html' %}
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" x-data="{ search: '' }">
+    <!-- Header/Search Area (Optional but helpful for many modules) -->
+    <div class="col-span-full mb-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-8">
+        <div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase">Modules</h1>
+            <p class="text-slate-500 dark:text-slate-400 font-medium text-xs uppercase tracking-widest mt-1">Select a module to manage</p>
+        </div>
 
-<div class="container-fluid py-5">
-  <div class="dashboard-grid">
-    <div class="row g-4">
+        <div class="relative w-full md:w-72">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs transition-colors group-focus-within:text-primary"></i>
+            <input
+                type="text"
+                x-model="search"
+                placeholder="Search modules..."
+                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl py-3 pl-11 pr-4 text-xs focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none"
+            >
+        </div>
+    </div>
 
-      {% for info in all_info %}
+    <!-- The 1-to-1 Module Grid -->
+    {% for info in all_info %}
         {% if all_info[info]['type'] == 'show' %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <a href="{{ all_info[info]['url_prefix'] + all_info[info].get('dashboard', '') }}"
+           x-show="search === '' || '{{ all_info[info]['display_string'] }}'.toLowerCase().includes(search.toLowerCase())"
+           x-transition.scale.95
+           class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-10 rounded-3xl hover:border-primary dark:hover:border-primary transition-all hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden">
 
-          {% if 'dashboard' in all_info[info] %}
-            <a class="dashboard-link"
-               href="{{ all_info[info]['url_prefix'] + all_info[info]['dashboard'] }}">
-          {% else %}
-            <a class="dashboard-link"
-               href="{{ all_info[info]['url_prefix'] }}">
-          {% endif %}
-
-            <div class="dashboard-card h-100">
-              <div class="dashboard-card-body d-flex flex-column align-items-center justify-content-center">
-
-                <i class="dashboard-icon {{ all_info[info]['fa-icon'] }}"></i>
-
-                <div class="dashboard-label">
-                  {{ all_info[info]['display_string'] }}
-                </div>
-
-              </div>
+            <!-- Icon -->
+            <div class="w-20 h-20 rounded-2xl bg-slate-50 dark:bg-slate-800 text-slate-400 group-hover:bg-primary/10 group-hover:text-primary flex items-center justify-center text-4xl mb-6 transition-all duration-300 group-hover:rotate-6 shadow-inner">
+                <i class="{{ all_info[info]['fa-icon'] }}"></i>
             </div>
 
-          </a>
-        </div>
-        {% endif %}
-      {% endfor %}
+            <!-- Label -->
+            <h4 class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors tracking-tight text-lg">{{ all_info[info]['display_string'] }}</h4>
 
-    </div>
-  </div>
+            <!-- Subtitle/Path -->
+            <span class="mt-2 px-3 py-1 rounded-full bg-slate-50 dark:bg-slate-800 text-[9px] font-bold text-slate-500 uppercase tracking-[0.1em] border border-slate-100 dark:border-slate-700/50">
+                {{ all_info[info]['url_prefix'] }}
+            </span>
+
+            <!-- Arrow Indicator -->
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <i class="fas fa-chevron-right text-primary text-xs"></i>
+            </div>
+        </a>
+        {% endif %}
+    {% endfor %}
 </div>
 {% endblock %}

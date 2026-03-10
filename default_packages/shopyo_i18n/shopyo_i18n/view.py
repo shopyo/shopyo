@@ -12,6 +12,8 @@ from shopyo.api.security import get_safe_redirect
 from flask_login import login_required
 from shopyo_i18n.forms import LanguageForm
 from shopyo_i18n.models import LangRecord
+from shopyo_settings.helpers import get_setting
+from shopyo_settings.helpers import set_setting
 
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
@@ -28,7 +30,7 @@ def set_lang():
     set_to_lang = request.args.get("lang", "en")
     next_url = request.args.get("next", "/")
 
-    if LangRecord.query.filter(LangRecord.lang_code == set_to_lang).first():
+    if LangRecord.query.filter(LangRecord.lang == set_to_lang).first():
         session["yo_current_lang"] = set_to_lang
         session["yo_default_lang"] = set_to_lang
 
@@ -38,28 +40,32 @@ def set_lang():
 @module_blueprint.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
+    if request.method == "POST":
+        new_lang = request.form.get("language")
+        if new_lang:
+            set_setting("DEFAULT_LANGUAGE", new_lang)
+            flash(notify_success(f"Default language updated to {new_lang}!"))
+            return redirect(url_for("shopyo_i18n.dashboard"))
 
-    form = LanguageForm()
-
-    if form.validate_on_submit():
-        lang = LangRecord(lang_code=form.lang_code.data, lang_name=form.lang_name.data)
-        db.session.add(lang)
-        db.session.commit()
-        flash(notify_success("Language added!"))
-        return redirect(url_for("shopyo_i18n.dashboard"))
-    elif form.errors:
-        flash_errors(form)
+    languages = ["en", "fr", "es", "de", "it"]
+    current_language = get_setting("DEFAULT_LANGUAGE") or "en"
 
     context = mhelp.context()
-    context.update({"langs": LangRecord.query.all(), "form": form})
+    context.update(
+        {
+            "languages": languages,
+            "current_language": current_language,
+        }
+    )
     return mhelp.render("dashboard.html", **context)
 
 
 @module_blueprint.route("/delete/<lang_code>", methods=["POST"])
 @login_required
 def delete(lang_code):
-    lang = LangRecord.query.get(lang_code)
-    db.session.delete(lang)
+    records = LangRecord.query.filter(LangRecord.lang == lang_code).all()
+    for record in records:
+        db.session.delete(record)
     db.session.commit()
-    flash(notify_success("Language deleted!"))
+    flash(notify_success(f"All records for {lang_code} deleted!"))
     return redirect(url_for("shopyo_i18n.dashboard"))

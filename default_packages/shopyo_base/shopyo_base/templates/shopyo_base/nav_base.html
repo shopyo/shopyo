@@ -1,43 +1,51 @@
-{% set active_page = active_page|default('none') %}
+<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center gap-4">
+                <a href="{{url_for('shopyo_dashboard.index')}}" class="flex items-center gap-3 group">
+                    <img src="/static/shopyo.svg" class="w-8 h-8 group-hover:rotate-12 transition-transform" alt="Shopyo Logo">
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-black text-xl tracking-tight text-slate-900 dark:text-white uppercase">{{OUR_APP_NAME}}</span>
+                        <span class="text-slate-400 dark:text-slate-600 font-bold text-[10px] uppercase tracking-[0.2em] border-l border-slate-200 dark:border-slate-800 pl-2">
+                            {{ active_page|default('System')|capitalize }}
+                        </span>
+                    </div>
+                </a>
+            </div>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <div class="container">
-        <a class="navbar-brand font-weight-bold" href="#">
-            <img src="/static/shopyo.svg" width="30" height="30" class="d-inline-block align-top mr-2" alt="Shopyo Logo">
-            {{OUR_APP_NAME}} <span class="font-weight-light">| {{active_page.capitalize()}}</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('shopyo_dashboard.index')}}" title="Dashboard">
-                        <i class="fas fa-columns mr-1"></i> Dashboard
-                    </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                {% if (active_page != 'login') and (active_page != 'register') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('shopyo_auth.logout', next=request.url)}}" title="Logout">
-                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                        </a>
-                    </li>
+            <div class="flex items-center gap-2">
+                <!-- Dashboard Link -->
+                <a href="{{url_for('shopyo_dashboard.index')}}"
+                   class="p-2.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all hover:text-primary group"
+                   title="Go to Dashboard">
+                    <i class="fas fa-th-large text-lg group-hover:scale-110 transition-transform"></i>
+                </a>
+
+                <div class="h-8 w-px bg-slate-100 dark:bg-slate-800 mx-1"></div>
+
+                <!-- Dark Mode -->
+                <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)"
+                        class="p-2.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all group">
+                    <i class="fas" :class="darkMode ? 'fa-sun text-amber-500' : 'fa-moon'" class="text-lg group-hover:rotate-12 transition-transform"></i>
+                </button>
+
+                <!-- User Dropdown (Simplified) -->
+                {% if current_user.is_authenticated %}
+                    <div class="flex items-center gap-3 pl-2 ml-2 border-l border-slate-100 dark:border-slate-800">
+                        <div class="hidden md:block text-right">
+                            <p class="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-tighter leading-none">{{ current_user.username }}</p>
+                            <a href="{{ url_for('shopyo_auth.logout') }}" class="text-[9px] font-bold text-red-500 hover:text-red-600 uppercase tracking-widest leading-none">Logout</a>
+                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-black text-sm border border-primary/20 shadow-sm">
+                            {{ current_user.username[0]|upper }}
+                        </div>
+                    </div>
                 {% else %}
-                    {% if config['SHOPYO_BASE_NAV_LOGIN'] %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('shopyo_auth.login')}}" title="Login">Login</a>
-                    </li>
-                    {% endif %}
-
-                    {% if config['SHOPYO_BASE_NAV_REGISTER'] %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('shopyo_auth.register')}}" title="Register">Register</a>
-                    </li>
-                    {% endif %}
+                    <div class="flex gap-2 ml-4">
+                        <a href="{{url_for('shopyo_auth.login')}}" class="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-primary px-3 py-2 transition-colors">Login</a>
+                    </div>
                 {% endif %}
-            </ul>
+            </div>
         </div>
     </div>
 </nav>

@@ -3,7 +3,7 @@ name = "shopyo_settings"
 authors = [{ name = "Abdur-Rahmaan Janhangeer", email = "arj.python@gmail.com" }]
 description = "Module for managing settings in shopyo"
 # readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 # license = { file = "LICENSE.txt" }
 keywords = ["shopyo"]
 classifiers = [

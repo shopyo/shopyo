@@ -95,7 +95,7 @@ default_config = {
         "SHOPYO_AUTH_SEED_ADMIN_EMAIL", "admin@admin.com"
     ),
     "SHOPYO_AUTH_SEED_ADMIN_PASSWORD": os.environ.get(
-        "SHOPYO_AUTH_SEED_ADMIN_PASSWORD", "Pass1234!@#$"
+        "SHOPYO_AUTH_SEED_ADMIN_PASSWORD", "pass"
     ),
 }
 

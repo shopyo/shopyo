@@ -3,7 +3,7 @@ name = "shopyo_base"
 authors = [{ name = "Abdur-Rahmaan Janhangeer", email = "arj.python@gmail.com" }]
 description = "Base module containing jinja macros and templates"
 # readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 # license = { file = "LICENSE.txt" }
 keywords = ["shopyo"]
 classifiers = [
