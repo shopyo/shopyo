@@ -5,6 +5,8 @@
 {% block pagehead %}
 {{ super() }}
 <title>All Pages - Shopyo</title>
+<!-- Injecting Front-end Theme Styles as requested -->
+<link rel="stylesheet" href="{{ shopyo_theme.get_active_front_theme_styles_url() }}">
 {% endblock %}
 
 {% block sidebar %}
@@ -16,8 +18,13 @@
     <div class="card-body">
         <div class="flex justify-between items-center mb-8">
             <div>
-                <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">All Pages</h3>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Manage your site's content</p>
+                <div class="flex items-center gap-3">
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">All Pages</h3>
+                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[8px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-500/20">
+                        {{ shopyo_theme.get_active_front_theme() }} theme active
+                    </span>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Manage your site's content using front-end styling</p>
             </div>
             <a href="{{ url_for('shopyo_page.dashboard') }}" class="btn btn-primary">
                 <i class="fa fa-plus mr-2"></i> New Page
