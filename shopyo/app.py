@@ -91,7 +91,7 @@ def create_app(config_name="development"):
     # sh_theme.init_app(app)
 
     setup_flask_admin(app)
-    register_devstatic(app, modules_path)
+    register_shopyo_static(app, modules_path)
     load_blueprints(app, config_name, global_template_variables, global_configs)
     setup_theme_paths(app)
     inject_global_vars(app, global_template_variables)

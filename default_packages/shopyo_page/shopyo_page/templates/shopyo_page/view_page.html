@@ -9,7 +9,7 @@
     {% include shopyo_theme.get_active_front_theme() + '/sections/resources.html' ignore missing %}
 
     <!-- Link to Active Front-end Theme Stylesheet -->
-    <link rel="stylesheet" href="{{ shopyo_theme.get_active_front_theme_styles_url() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modules/shopyo_theme/theme/front/' + shopyo_theme.get_active_front_theme() + '/styles.css') }}">
 
     <!-- Fallback for basic icons if theme doesn't provide them -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
