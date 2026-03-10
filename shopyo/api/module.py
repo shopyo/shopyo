@@ -14,6 +14,7 @@ class ModuleHelp:
     def __init__(self, dunderfile, dundername):
         self.dirpath = os.path.dirname(os.path.abspath(dunderfile))
         self.template_folder = os.path.join(self.dirpath, "templates")
+        self.static_folder = os.path.join(self.dirpath, "static")
         self.info = {}
         self._context = {}
 
@@ -25,6 +26,7 @@ class ModuleHelp:
             "{}".format(self.info["module_name"]),
             dundername,
             template_folder=self.template_folder,
+            static_folder=self.static_folder,
             url_prefix=self.info["url_prefix"],
         )
 
