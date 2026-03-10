@@ -1,41 +1,89 @@
 {% extends "shopyo_base/module_base.html" %}
-{% set active_page = 'page' %}
+
+{% set active_page ='page' %}
+
 {% block pagehead %}
 {{ super() }}
-<title>{{active_page.capitalize()}} Revisions</title>
+<title>Revisions - {{ page.title }}</title>
 {% endblock %}
+
 {% block sidebar %}
-{%include 'shopyo_page/blocks/sidebar.html'%}
-{%endblock%}
-{% block content %}
-<br>
-<div class="container">
+    {% include 'shopyo_page/blocks/sidebar.html' %}
+{% endblock %}
+
+{% block module_content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <a href="{{ url_for('shopyo_page.view_page_dashboard', slug=page.slug) }}" class="inline-flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-primary uppercase tracking-[0.2em] transition-colors group">
+            <i class="fa fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+            Back to Edit Page
+        </a>
+    </div>
+
     <div class="card">
         <div class="card-body">
-            <a href="{{ url_for('shopyo_page.view_page_dashboard', slug=page.slug) }}">Back to Page</a>
-            <h3>Revisions for "{{ page.title }}" ({{ page.slug }})</h3>
+            <div class="mb-8">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Revisions</h3>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">History for: <span class="text-slate-600 dark:text-slate-300">{{ page.title }}</span> ({{ page.slug }})</p>
+            </div>
 
             {% if revisions %}
-            <ul class="list-group">
+            <div class="space-y-6">
                 {% for revision in revisions %}
-                <li class="list-group-item">
-                    <strong>Revision Date:</strong> {{ revision.revision_date.strftime('%Y-%m-%d %H:%M:%S') }}<br>
-                    <strong>Language:</strong> {{ revision.lang }}<br>
-                    <strong>Meta Description:</strong> {{ revision.meta_description }}<br>
-                    <strong>Meta Keywords:</strong> {{ revision.meta_keywords }}<br>
-                    <p><strong>Content:</strong></p>
-                    <div style="border: 1px solid #eee; padding: 10px; max-height: 200px; overflow-y: scroll;">
-                        {{ revision.content | safe }}
+                <div class="group relative bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 hover:border-primary/30 transition-all">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                                <i class="fa fa-history text-slate-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest">{{ revision.revision_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Language:</span>
+                                    <span class="text-[9px] font-black text-primary uppercase tracking-widest">{{ revision.lang }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form action="{{ url_for('shopyo_page.revert_page_revision', revision_id=revision.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to revert to this revision?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-warning w-full md:w-auto">
+                                <i class="fa fa-undo mr-2"></i> Revert to this version
+                            </button>
+                        </form>
                     </div>
-                    <form action="{{ url_for('shopyo_page.revert_page_revision', revision_id=revision.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to revert to this revision?');">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-warning btn-sm mt-2">Revert to this Revision</button>
-                    </form>
-                </li>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Description</p>
+                            <p class="text-[10px] text-slate-600 dark:text-slate-400 line-clamp-1">{{ revision.meta_description or 'No description' }}</p>
+                        </div>
+                        <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Keywords</p>
+                            <p class="text-[10px] text-slate-600 dark:text-slate-400 line-clamp-1">{{ revision.meta_keywords or 'No keywords' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="relative bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+                        <div class="px-3 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Content Snapshot</p>
+                        </div>
+                        <div class="p-4 max-h-48 overflow-y-auto text-xs text-slate-600 dark:text-slate-400 prose dark:prose-invert prose-sm max-w-none">
+                            {{ revision.content | safe }}
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
             {% else %}
-            <p>No revisions found for this page.</p>
+            <div class="py-12 text-center">
+                <div class="flex flex-col items-center gap-4">
+                    <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                        <i class="fa fa-history text-2xl text-slate-200 dark:text-slate-700"></i>
+                    </div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No revisions found for this page</p>
+                </div>
+            </div>
             {% endif %}
         </div>
     </div>
