@@ -403,21 +403,8 @@ def new(projname, verbose, modules, start_server, demo):
 
     if projname == "":
         projname = os.path.basename(here)
-
-        # the base/root project folder where files such as README, docs,
-        # .gitignore etc. will be stored will be same as current working
-        # directory i.e ./
         root_proj_path = here
-
-        # the current project path in which we will create the project
-        project_path = os.path.join(here, projname)
-
-        if os.path.exists(project_path):
-            click.echo(
-                f"[ ] Error: Unable to create new project. Path {project_path} exits"
-            )
-            sys.exit(1)
-
+        project_path = here
     else:
         if not is_alpha_num_underscore(projname):
             click.echo(
@@ -426,12 +413,8 @@ def new(projname, verbose, modules, start_server, demo):
             )
             sys.exit(1)
 
-        # the base/root project folder where files such as README, docs,
-        # .gitignore etc. will be stored will be ./projname
         root_proj_path = os.path.join(here, projname)
-
-        # the current project path in which we will create the project
-        project_path = os.path.join(here, projname, projname)
+        project_path = root_proj_path
 
         if os.path.exists(root_proj_path):
             click.echo(
@@ -466,6 +449,8 @@ def new(projname, verbose, modules, start_server, demo):
             "pyproject.toml",
             "modules",
             "static",
+            "cli.py",
+            "__init__.py",
         ),
     )
 
@@ -570,10 +555,8 @@ def new(projname, verbose, modules, start_server, demo):
     )
     click.echo(" " + "─" * 40)
     click.echo(" Next steps to get started:")
-    if projname == "":
-        click.secho(f"  1. cd {os.path.basename(os.getcwd())}", fg="cyan")
-    else:
-        click.secho(f"  1. cd {projname}/{projname}", fg="cyan")
+    if projname != "":
+        click.secho(f"  1. cd {projname}", fg="cyan")
     click.secho("  2. shopyo initialise (if you are using models)", fg="cyan")
     click.secho("  3. flask run --debug\n", fg="cyan")
 
@@ -598,10 +581,7 @@ def new(projname, verbose, modules, start_server, demo):
         click.echo("\n 🚀 Starting server...")
         click.echo("    Press Ctrl+C to stop\n")
 
-        if projname == "":
-            project_dir = os.path.join(here, os.path.basename(here))
-        else:
-            project_dir = os.path.join(here, projname, projname)
+        project_dir = project_path
 
         os.chdir(project_dir)
 

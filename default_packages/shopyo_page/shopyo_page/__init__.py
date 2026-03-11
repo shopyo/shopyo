@@ -34,7 +34,7 @@ class ShopyoPage:
 
         app.extensions["shopyo_page"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_PAGE_URL"])
+        app.register_blueprint(bp)
         app.jinja_env.globals["shopyo_page"] = self
 
     def get_info(self):

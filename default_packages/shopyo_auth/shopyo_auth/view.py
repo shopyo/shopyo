@@ -134,6 +134,10 @@ def forgot_password():
             )
         )
         return redirect(url_for("shopyo_auth.login"))
+    elif form.errors:
+        from shopyo.api.forms import flash_errors
+
+        flash_errors(form)
     return render_template("shopyo_auth/forgot_password.html", form=form)
 
 
@@ -157,7 +161,11 @@ def reset_password(token):
 
         flash(notify_success("Your password has been reset."))
         return redirect(url_for("shopyo_auth.login"))
-    return render_template("shopyo_auth/reset_password.html", form=form)
+    elif form.errors:
+        from shopyo.api.forms import flash_errors
+
+        flash_errors(form)
+    return render_template("shopyo_auth/reset_password.html", form=form, token=token)
 
 
 @module_blueprint.route("/login", methods=["GET", "POST"])

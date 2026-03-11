@@ -12,12 +12,28 @@ class TestShopyoPage(unittest.TestCase):
         self.app.config["TESTING"] = True
         self.app.config["WTF_CSRF_ENABLED"] = False
         self.app.config["DEBUG"] = False
+        from shopyo_auth import ShopyoAuth
+        from shopyo_i18n import Shopyoi18n
+        from shopyo_page import ShopyoPage
+        from shopyo_dashboard import ShopyoDashboard
+        from shopyo_appadmin import ShopyoAppAdmin
+        from shopyo_base import ShopyoBase
+        from shopyo_theme import ShopyoTheme
+
+        ShopyoAuth(self.app)
+        Shopyoi18n(self.app)
+        ShopyoPage(self.app)
+        ShopyoDashboard(self.app)
+        ShopyoAppAdmin(self.app)
+        ShopyoBase(self.app)
+        ShopyoTheme(self.app)
+
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
         db.create_all()
         # Add a default language for testing
-        lang = LangRecord(lang_code="en", lang_name="English")
+        lang = LangRecord(lang="en")
         db.session.add(lang)
         db.session.commit()
 
@@ -28,24 +44,24 @@ class TestShopyoPage(unittest.TestCase):
 
     def login(self, email, password):
         return self.client.post(
-            "/auth/login",
+            "/shopyo-auth/login",
             data=dict(email=email, password=password),
             follow_redirects=True,
         )
 
     def logout(self):
-        return self.client.get("/auth/logout", follow_redirects=True)
+        return self.client.get("/shopyo-auth/logout", follow_redirects=True)
 
     def create_admin_user(self):
-        # Assuming there's a way to create an admin user for testing
-        # This might involve creating a User model and assigning admin role
-        pass
+        from shopyo_auth.models import User
+
+        User.create(email="admin@example.com", password="password", is_admin=True)
 
     def test_create_page(self):
         self.create_admin_user()
         self.login("admin@example.com", "password")
         response = self.client.post(
-            "/page/check_pagecontent",
+            "/shopyo-page/check_pagecontent",
             data={
                 "title": "Test Page",
                 "slug": "test-page",
@@ -62,14 +78,15 @@ class TestShopyoPage(unittest.TestCase):
         self.assertEqual(page.title, "Test Page")
         self.assertEqual(page.meta_description, "A test meta description")
         self.assertEqual(page.meta_keywords, "test, page, keywords")
-        self.assertEqual(page.get_content(), "<p>This is a test page.</p>")
+        with self.app.test_request_context():
+            self.assertEqual(page.get_content(), "<p>This is a test page.</p>")
 
     def test_edit_page(self):
         self.create_admin_user()
         self.login("admin@example.com", "password")
         # Create a page first
         self.client.post(
-            "/page/check_pagecontent",
+            "/shopyo-page/check_pagecontent",
             data={
                 "title": "Original Page",
                 "slug": "original-page",
@@ -83,7 +100,7 @@ class TestShopyoPage(unittest.TestCase):
         page = Page.query.filter_by(slug="original-page").first()
 
         response = self.client.post(
-            "/page/edit_pagecontent",
+            "/shopyo-page/edit_pagecontent",
             data={
                 "page_id": page.id,
                 "title": "Updated Page",
@@ -101,7 +118,8 @@ class TestShopyoPage(unittest.TestCase):
         self.assertEqual(updated_page.title, "Updated Page")
         self.assertEqual(updated_page.meta_description, "Updated meta description")
         self.assertEqual(updated_page.meta_keywords, "updated, page")
-        self.assertEqual(updated_page.get_content(), "<p>Updated content.</p>")
+        with self.app.test_request_context():
+            self.assertEqual(updated_page.get_content(), "<p>Updated content.</p>")
 
     def test_upload_image(self):
         self.create_admin_user()
@@ -114,7 +132,7 @@ class TestShopyoPage(unittest.TestCase):
 
         with open(dummy_image_path, "rb") as img:
             response = self.client.post(
-                "/page/upload_image",
+                "/shopyo-page/upload_image",
                 data={"file": (img, "dummy_image.png")},
                 content_type="multipart/form-data",
             )
@@ -131,7 +149,7 @@ class TestShopyoPage(unittest.TestCase):
 
         # Create a page
         self.client.post(
-            "/page/check_pagecontent",
+            "/shopyo-page/check_pagecontent",
             data={
                 "title": "Revision Test Page",
                 "slug": "revision-test-page",
@@ -146,7 +164,7 @@ class TestShopyoPage(unittest.TestCase):
 
         # Edit the page multiple times to create revisions
         self.client.post(
-            "/page/edit_pagecontent",
+            "/shopyo-page/edit_pagecontent",
             data={
                 "page_id": page.id,
                 "title": "Revision Test Page",
@@ -160,7 +178,7 @@ class TestShopyoPage(unittest.TestCase):
         )
 
         self.client.post(
-            "/page/edit_pagecontent",
+            "/shopyo-page/edit_pagecontent",
             data={
                 "page_id": page.id,
                 "title": "Revision Test Page",
@@ -173,7 +191,7 @@ class TestShopyoPage(unittest.TestCase):
             follow_redirects=True,
         )
 
-        response = self.client.get(f"/page/dashboard/s/{page.slug}/revisions")
+        response = self.client.get(f"/shopyo-page/dashboard/s/{page.slug}/revisions")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Initial content.", response.data)
         self.assertIn(b"Second content.", response.data)
@@ -185,7 +203,7 @@ class TestShopyoPage(unittest.TestCase):
 
         # Create a page
         self.client.post(
-            "/page/check_pagecontent",
+            "/shopyo-page/check_pagecontent",
             data={
                 "title": "Revert Test Page",
                 "slug": "revert-test-page",
@@ -200,7 +218,7 @@ class TestShopyoPage(unittest.TestCase):
 
         # Edit the page to create a revision
         self.client.post(
-            "/page/edit_pagecontent",
+            "/shopyo-page/edit_pagecontent",
             data={
                 "page_id": page.id,
                 "title": "Revert Test Page",
@@ -218,12 +236,13 @@ class TestShopyoPage(unittest.TestCase):
 
         # Revert to the original revision
         response = self.client.post(
-            f"/page/revert/{original_revision.id}", follow_redirects=True
+            f"/shopyo-page/revert/{original_revision.id}", follow_redirects=True
         )
         self.assertEqual(response.status_code, 200)
 
         reverted_page = Page.query.filter_by(slug="revert-test-page").first()
-        self.assertEqual(reverted_page.get_content(), "<p>Original content.</p>")
+        with self.app.test_request_context():
+            self.assertEqual(reverted_page.get_content(), "<p>Original content.</p>")
         self.assertEqual(reverted_page.meta_description, "Original meta description")
         self.assertEqual(reverted_page.meta_keywords, "original, keywords")
 

@@ -32,27 +32,27 @@ def fake_foo_proj(tmp_path):
     """creates a fake shopyo like directory structure as shown below
 
     foo/
-        foo/
-            modules/
-                bar/
+        modules/
+            bar/
+                static/
+                    bar.css
+            baz/
+                static/
+                    baz.css
+            box__bizhelp/
+                demo/
+                    demo.py
+            box__default/
+                foo/
                     static/
-                        bar.css
-                baz/
+                        foo.css
+                foozoo/
+                    foozoo.py
+                zoo/
                     static/
-                        baz.css
-                box__bizhelp/
-                    demo/
-                        demo.py
-                box__default/
-                    foo/
-                        static/
-                            foo.css
-                    foozoo/
-                        foozoo.py
-                    zoo/
-                        static/
-                            zoo.css
-            static/
+                        zoo.css
+        static/
+        init.py
 
     Parameters
     ----------
@@ -60,10 +60,10 @@ def fake_foo_proj(tmp_path):
         built in pytest fixture which will provide a temporary directory unique
         to the test invocation, created in the base temporary directory.
     """
-    # create the tmp_path/foo/foo
-    project_path = tmp_path / "foo" / "foo"
+    # create the tmp_path/foo
+    project_path = tmp_path / "foo"
     project_path.mkdir(parents=True)
-    # create the static and modules inside foo/foo
+    # create the static and modules inside foo
     static_path = project_path / "static"
     module_path = project_path / "modules"
     static_path.mkdir()
@@ -87,6 +87,11 @@ def fake_foo_proj(tmp_path):
     foozoo_path.write_text("foozoo")
     bar_path.write_text("bar")
     baz_path.write_text("baz")
+
+    # Add init.py to resolve imports during tests
+    init_path = project_path / "init.py"
+    init_path.write_text("from flask_sqlalchemy import SQLAlchemy\ndb = SQLAlchemy()\n")
+
     # save cwd and chage to test project directory
     old = os.getcwd()
     os.chdir(project_path)

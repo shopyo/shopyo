@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard{% endblock %} - Shopyo</title>
 
-    <script src="{{ url_for('shopyo_dashboard.static', filename='shopyo_dashboard/js/tailwind.min.js') }}"></script>
-    <script defer src="{{ url_for('shopyo_dashboard.static', filename='shopyo_dashboard/js/alpine.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('shopyo_dashboard.static', filename='shopyo_dashboard/css/fontawesome.min.css') }}">
+    <script src="{{ url_for('static', filename='modules/shopyo_dashboard/shopyo_dashboard/js/tailwind.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='modules/shopyo_dashboard/shopyo_dashboard/js/alpine.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modules/shopyo_dashboard/shopyo_dashboard/css/fontawesome.min.css') }}">
 
     <script>
         tailwind.config = {

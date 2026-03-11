@@ -29,7 +29,7 @@ class ShopyoAppAdmin:
 
         app.extensions["shopyo_appadmin"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_APPADMIN_URL"])
+        app.register_blueprint(bp)
 
     def get_info(self):
         info.update({"url_prefix": current_app.config["SHOPYO_APPADMIN_URL"]})

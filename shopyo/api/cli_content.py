@@ -131,7 +131,10 @@ def get_cli_content(projname):
         - Run the sample command as ``{projname} welcome [OPTIONS] NAME``
         """
 
-        from {projname} import __version__
+        try:
+            from __init__ import __version__
+        except ImportError:
+            __version__ = "1.0.0"
         import click
 
 
@@ -247,7 +250,7 @@ def get_setup_py_content(projname):
             #   py_modules=["my_module"],
             #
             # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-            packages=["{projname}"],
+            packages=["."],
             include_package_data=True,
             python_requires=">=3.6",
             install_requires=open(
@@ -261,7 +264,7 @@ def get_setup_py_content(projname):
             }},
             entry_points={{
                 "console_scripts": [
-                    "{projname}={projname}.cli:cli"
+                    "{projname}=cli:cli"
                 ]
             }},
         )
@@ -276,10 +279,10 @@ def get_manifest_ini_content(projname):
         f"""\
         include requirements.txt
         include dev_requirements.txt
-        recursive-include {projname} *
-        recursive-exclude {projname}/instance *
-        recursive-exclude {projname}/static/modules *
-        recursive-exclude {projname}/.tox *
+        recursive-include . *
+        recursive-exclude instance *
+        recursive-exclude static/modules *
+        recursive-exclude .tox *
         recursive-exclude __pycache__ *
         """
     )
@@ -311,7 +314,6 @@ def get_tox_ini_content(projname):
         skip_missing_interpreters=true
 
         [testenv]
-        changedir = {projname}
         deps =
             -rrequirements.txt
             -rdev_requirements.txt

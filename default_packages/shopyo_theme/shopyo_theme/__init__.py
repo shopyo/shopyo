@@ -41,7 +41,7 @@ class ShopyoTheme:
 
         app.extensions["shopyo_theme"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_THEME_URL"])
+        app.register_blueprint(bp)
         app.jinja_env.globals["shopyo_theme"] = self
 
     def get_info(self):

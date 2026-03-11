@@ -5,11 +5,14 @@ import pytest
 from click.testing import CliRunner
 from unittest.mock import patch, MagicMock
 
-# Mock app module before importing cli
-sys.modules["app"] = MagicMock()
-sys.modules["app"].create_app = MagicMock(return_value=MagicMock())
-sys.modules["shopyo.app"] = MagicMock()
-sys.modules["shopyo.app"].create_app = sys.modules["app"].create_app
+
+@pytest.fixture(autouse=True)
+def mock_app_module():
+    mock_app = MagicMock()
+    mock_app.create_app = MagicMock(return_value=MagicMock())
+    with patch.dict(sys.modules, {"app": mock_app, "shopyo.app": mock_app}):
+        yield mock_app
+
 
 from shopyo.api.cli import cli
 

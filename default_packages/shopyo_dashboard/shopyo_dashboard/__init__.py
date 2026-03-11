@@ -27,7 +27,7 @@ class ShopyoDashboard:
 
         app.extensions["shopyo_dashboard"] = self
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_DASHBOARD_URL"])
+        app.register_blueprint(bp)
         app.jinja_env.globals["shopyo_dashboard"] = self
 
     def get_info(self):
