@@ -4,11 +4,10 @@ authors = [{ name = "Abdur-Rahmaan Janhangeer", email = "arj.python@gmail.com" }
 description = "i18n module for Shopyo"
 # readme = "README.md"
 requires-python = ">=3.7"
-# license = { file = "LICENSE.txt" }
+license = "BSD-3-Clause"
 keywords = ["shopyo"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
 ]
 dependencies = ["shopyo"]

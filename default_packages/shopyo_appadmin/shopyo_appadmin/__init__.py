@@ -6,7 +6,7 @@ from flask import Flask
 from flask import current_app
 from shopyo_appadmin.view import module_blueprint
 
-__version__ = "1.4.1"
+__version__ = "1.5.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
