@@ -46,41 +46,19 @@ Built on top of Flask, it offers most Django features, sometimes a tidbit more w
 # Quick start
 
 ```bash
-pip install shopyo>=4.11
-mkdir blog
+pip install shopyo
+shopyo new blog
 cd blog
-shopyo new -m # -m adds static files
-cd blog
-# comment out in app.py
-# from shopyo_base import ShopyoBase
-# ...
-# sh_theme.init_app(app)
 shopyo initialise
-flask shopyo-seed
 flask run --debug
 ```
 
-If errors do (linux, use `set <VAR>` for Windows):
+Go to http://127.0.0.1:5000/dashboard with credentials `admin@domain.com` / `pass`.
 
-```
-export SHOPYO_CONFIG_PROFILE=development
-export FLASK_ENV=development # < flask 2.2.x
-export ENV=development
-export FLASK_DEBUG=development # < flask 2.2.x
-export FLASK_APP=app.py
-```
-
-`SHOPYO_CONFIG_PROFILE` is what is defined as keys of `app_config` in `config.py`
-
-It is recommended to use a venv in root folder.
-
-`python -m venv venv`
-
-If for dev install dev_requirements.txt also.
-
-`python -m pip install -r requirements/dev.txt`
-
-go to http://127.0.0.1:5000/dashboard with credentials admin@domain.com / pass
+### Why Shopyo?
+- **Flat Structure:** No more nested `proj/proj` confusion.
+- **Zero-Friction Assets:** Use standard Flask `url_for('static', filename='modules/...')`. It just works in Dev and Prod.
+- **Auto-Discovery:** Modules are detected and registered automatically.
 
 ![](https://github.com/shopyo/shopyo/blob/dev/comparison.png)
 

@@ -17,23 +17,10 @@ Create Your Project
 
 .. code-block:: bash
 
-    # Create a new project with demo modules
-    shopyo new myproject --demo
-
-    # This automatically:
-    # - Creates project structure
-    # - Initializes database
-    # - Creates admin user
-    # - Starts development server
-
-Or for more control:
-
-.. code-block:: bash
-
-    mkdir myproject
+    # Create a new project folder with a flat structure
+    shopyo new myproject
     cd myproject
-    shopyo new
-    shopyo env          # Generate .env file
+    shopyo initialise   # Sets up DB and migrations
     flask run --debug   # Start server
 
 Access Your App
