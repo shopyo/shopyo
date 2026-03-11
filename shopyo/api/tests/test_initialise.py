@@ -19,10 +19,21 @@ def test_initialise_no_modules_folder(runner, tmp_path):
     d.mkdir()
 
     with runner.isolated_filesystem(temp_dir=d):
-        # We need to mock with_appcontext or ensure it doesn't crash before our check
-        # Since initialise has @with_appcontext, it might fail even earlier if no app.py
+        # Create a dummy app.py so with_appcontext doesn't fail immediately
+        with open("app.py", "w") as f:
+            f.write(
+                "from flask import Flask\ndef create_app(config_name='development'): return Flask(__name__)\n"
+            )
 
-        result = runner.invoke(cli, ["initialise"])
+        # We also need to add current dir to sys.path so 'import app' works
+        import sys
+
+        original_path = sys.path[:]
+        sys.path.insert(0, os.getcwd())
+        try:
+            result = runner.invoke(cli, ["initialise"])
+        finally:
+            sys.path = original_path
 
         assert result.exit_code != 0
         assert "modules' folder not found" in result.output

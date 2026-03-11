@@ -2,6 +2,7 @@ from flask import jsonify
 from werkzeug.utils import secure_filename
 import os
 from flask import current_app
+from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -13,6 +14,7 @@ from shopyo_i18n.helpers import get_current_lang
 
 from .forms import PageForm
 from .models import Page
+from .models import PageRevision
 from shopyo.api.forms import flash_errors
 from shopyo.api.module import ModuleHelp
 
@@ -113,7 +115,13 @@ def check_pagecontent():
         db.session.add(toaddpage)
         db.session.flush()
         toaddpage.insert_lang(form.lang.data, form.content.data)
-        toaddpage.save()
+        toaddpage.save_revision(
+            form.lang.data,
+            form.content.data,
+            form.meta_description.data,
+            form.meta_keywords.data,
+        )
+        db.session.commit()
         return redirect(url_for(f"{module_name}.dashboard"))
 
 

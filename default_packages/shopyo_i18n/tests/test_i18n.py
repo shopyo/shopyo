@@ -7,6 +7,11 @@ from shopyo_i18n.models import LangRecord
 class Testi18n(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
+        self.app.config["TESTING"] = True
+        self.app.config["WTF_CSRF_ENABLED"] = False
+        from shopyo_i18n import Shopyoi18n
+
+        Shopyoi18n(self.app)
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
@@ -20,12 +25,12 @@ class Testi18n(unittest.TestCase):
     def test_set_lang(self):
         with self.client as c:
             # Add a language to the database
-            lang = LangRecord(lang_code="es", lang_name="Spanish")
+            lang = LangRecord(lang="es")
             db.session.add(lang)
             db.session.commit()
 
             # Test setting the language
-            response = c.get("/set-lang?lang=es", follow_redirects=True)
+            response = c.get("/shopyo-i18n/set-lang?lang=es", follow_redirects=True)
             self.assertEqual(response.status_code, 200)
             with c.session_transaction() as sess:
                 self.assertEqual(sess["yo_current_lang"], "es")

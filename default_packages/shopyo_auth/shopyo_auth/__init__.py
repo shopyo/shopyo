@@ -129,7 +129,7 @@ class ShopyoAuth:
         app.extensions["shopyo_auth"] = self
         app.cli.add_command(auth_cli)
         bp = module_blueprint
-        app.register_blueprint(bp, url_prefix=app.config["SHOPYO_AUTH_URL"])
+        app.register_blueprint(bp)
         app.jinja_env.globals["shopyo_auth"] = self
 
     def define_policy(self, name, func):

@@ -11,7 +11,7 @@ def test_get_static_debug_true():
     with app.app_context():
         with app.test_request_context():
             url = get_static("box__default/auth", "style.css")
-            assert "/devstatic/box__default/auth/f/style.css" in url
+            assert "/static/modules/box__default/auth/style.css" in url
 
 
 def test_get_static_debug_false():
