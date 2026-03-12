@@ -72,7 +72,7 @@ def view_page_dashboard(slug):
 @module_blueprint.route("/s/<slug>", methods=["GET"])
 def view_page(slug):
     context = {}
-    page = Page.query.filter(Page.slug == slug).first()
+    page = Page.query.filter(Page.slug == slug).first_or_404()
     context.update({"page": page})
 
     # Fallback order: page.template -> SHOPYO_PAGE_TEMPLATE config -> module's view_page.html
