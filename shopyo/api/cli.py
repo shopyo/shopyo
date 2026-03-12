@@ -315,24 +315,25 @@ def initialise(verbose, clear_migration, clear_db):
 
     # add a migrations folder to your application.
     click.echo(" 📁 Creating database migrations...")
+    flask_cmd = [sys.executable, "-m", "flask"]
     if verbose:
-        run(["flask", "db", "init"])
+        run(flask_cmd + ["db", "init"])
     else:
-        run(["flask", "db", "init"], stdout=PIPE, stderr=PIPE)
+        run(flask_cmd + ["db", "init"], stdout=PIPE, stderr=PIPE)
 
     # load all models available inside modules
     autoload_models(verbose=verbose)
     click.echo(" ⚙️  Generating initial migration...")
     if verbose:
-        run(["flask", "db", "migrate"])
+        run(flask_cmd + ["db", "migrate"])
     else:
-        run(["flask", "db", "migrate"], stdout=PIPE, stderr=PIPE)
+        run(flask_cmd + ["db", "migrate"], stdout=PIPE, stderr=PIPE)
 
     click.echo(" ⬆️  Upgrading database...")
     if verbose:
-        run(["flask", "db", "upgrade"])
+        run(flask_cmd + ["db", "upgrade"])
     else:
-        run(["flask", "db", "upgrade"], stdout=PIPE, stderr=PIPE)
+        run(flask_cmd + ["db", "upgrade"], stdout=PIPE, stderr=PIPE)
 
     # collect all static folders inside modules/ and add it to global
     # static/

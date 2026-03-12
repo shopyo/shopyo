@@ -72,7 +72,7 @@ def view_page_dashboard(slug):
 @module_blueprint.route("/s/<slug>", methods=["GET"])
 def view_page(slug):
     context = {}
-    page = Page.query.filter(Page.slug == slug).first()
+    page = Page.query.filter(Page.slug == slug).first_or_404()
     context.update({"page": page})
 
     # Fallback order: page.template -> SHOPYO_PAGE_TEMPLATE config -> module's view_page.html
@@ -109,6 +109,7 @@ def check_pagecontent():
         toaddpage = Page(
             slug=form.slug.data,
             title=form.title.data,
+            template=form.template.data,
             meta_description=form.meta_description.data,
             meta_keywords=form.meta_keywords.data,
         )
@@ -138,6 +139,7 @@ def edit_pagecontent():
         editpage = db.session.query(Page).get(request.form["page_id"])
         editpage.slug = form.slug.data
         editpage.title = form.title.data
+        editpage.template = form.template.data
         editpage.meta_description = form.meta_description.data
         editpage.meta_keywords = form.meta_keywords.data
 
