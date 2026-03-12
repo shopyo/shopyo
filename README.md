@@ -53,6 +53,8 @@ shopyo initialise
 flask run --debug
 ```
 
+> **Note:** You can also run `shopyo new` (without a project name) inside an existing directory to scaffold Shopyo in place.
+
 Go to http://127.0.0.1:5000/dashboard with credentials `admin@domain.com` / `pass`.
 
 ### Why Shopyo?
