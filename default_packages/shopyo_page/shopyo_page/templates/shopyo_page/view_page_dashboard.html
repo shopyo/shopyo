@@ -40,6 +40,7 @@
             <form action="{{url_for('{}.edit_pagecontent'.format(module_name))}}" method="POST" class="space-y-6">
                 <input type="hidden" name="page_id" value="{{page.id}}">
                 <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <input type="hidden" name="lang" value="{{ form.lang.data }}">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Title -->
