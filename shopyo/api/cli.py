@@ -417,12 +417,6 @@ def new(projname, verbose, modules, start_server, demo):
         root_proj_path = os.path.join(here, projname)
         project_path = root_proj_path
 
-        if os.path.exists(root_proj_path):
-            click.echo(
-                f"[ ] Error: Unable to create new project. Path {root_proj_path} exits"
-            )
-            sys.exit(1)
-
     click.echo(f"creating project {projname}...")
     click.echo(SEP_CHAR * SEP_NUM)
 
@@ -433,6 +427,7 @@ def new(projname, verbose, modules, start_server, demo):
     copytree(
         src_shopyo_shopyo,
         project_path,
+        dirs_exist_ok=True,
         ignore=ignore_patterns(
             "__main__.py",
             "app.txt",
@@ -565,12 +560,14 @@ def new(projname, verbose, modules, start_server, demo):
     copytree(
         os.path.join(src_shopyo_shopyo, "static"),
         os.path.join(project_path, "static"),
+        dirs_exist_ok=True,
     )
 
     if modules_flag:
         copytree(
             os.path.join(src_shopyo_shopyo, "modules"),
             os.path.join(project_path, "modules"),
+            dirs_exist_ok=True,
         )
         tryrmtree(os.path.join(project_path, "modules", "tests"), verbose=verbose)
         tryrmtree(os.path.join(project_path, "modules", "box__tests"), verbose=verbose)
