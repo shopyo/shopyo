@@ -551,10 +551,13 @@ def new(projname, verbose, modules, start_server, demo):
     )
     click.echo(" " + "─" * 40)
     click.echo(" Next steps to get started:")
-    if projname != "":
-        click.secho(f"  1. cd {projname}", fg="cyan")
-    click.secho("  2. shopyo initialise (if you are using models)", fg="cyan")
-    click.secho("  3. flask run --debug\n", fg="cyan")
+    step = 1
+    if projname != os.path.basename(here) or project_path != here:
+        click.secho(f"  {step}. cd {projname}", fg="cyan")
+        step += 1
+    click.secho(f"  {step}. shopyo initialise (if you are using models)", fg="cyan")
+    step += 1
+    click.secho(f"  {step}. flask run --debug\n", fg="cyan")
 
     # Always copy static folder as it contains base assets (bootstrap, jquery etc)
     copytree(
