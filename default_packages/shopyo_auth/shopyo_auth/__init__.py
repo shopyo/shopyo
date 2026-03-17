@@ -9,7 +9,7 @@ from flask.cli import with_appcontext
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-__version__ = "1.6.0"
+__version__ = "1.7.0"
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -103,6 +103,7 @@ default_config = {
 class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:
         self.policies = {}
+        self.login_redirect_url = None
         self.events = {
             "user_registered": [],
             "user_login": [],

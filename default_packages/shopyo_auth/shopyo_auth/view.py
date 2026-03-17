@@ -189,7 +189,14 @@ def login():
 
         next_url = request.form.get("next")
         if not next_url or not is_safe_redirect_url(next_url):
-            next_url = url_for("shopyo_dashboard.index")
+            if auth_ext and auth_ext.login_redirect_url:
+                if callable(auth_ext.login_redirect_url):
+                    next_url = auth_ext.login_redirect_url(user)
+                else:
+                    next_url = auth_ext.login_redirect_url
+
+            if not next_url:
+                next_url = url_for("shopyo_dashboard.index")
         return redirect(next_url)
     return render_template("shopyo_auth/login.html", **context)
 
