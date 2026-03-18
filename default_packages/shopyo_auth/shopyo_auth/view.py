@@ -49,10 +49,9 @@ def register():
 
         login_user(user)
 
-        is_disabled = False
-
-        if "EMAIL_CONFIRMATION_DISABLED" in current_app.config:
-            is_disabled = current_app.config["EMAIL_CONFIRMATION_DISABLED"]
+        is_disabled = current_app.config.get(
+            "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED", False
+        )
 
         if is_disabled is True:
             user.is_email_confirmed = True
@@ -66,7 +65,17 @@ def register():
             send_async_email(email, subject, template, **context)
             flash(notify_success("A confirmation email has been sent via email."))
 
-        return redirect(url_for("shopyo_dashboard.index"))
+        next_url = request.args.get("next")
+        if not next_url or next_url == "/" or not is_safe_redirect_url(next_url):
+            if auth_ext and auth_ext.login_redirect_url:
+                if callable(auth_ext.login_redirect_url):
+                    next_url = auth_ext.login_redirect_url(user)
+                else:
+                    next_url = auth_ext.login_redirect_url
+
+            if not next_url:
+                next_url = url_for("shopyo_dashboard.index")
+        return redirect(next_url)
 
     context["form"] = reg_form
     return render_template("shopyo_auth/register.html", **context)
@@ -188,7 +197,7 @@ def login():
             auth_ext.trigger("user_login", user)
 
         next_url = request.form.get("next")
-        if not next_url or not is_safe_redirect_url(next_url):
+        if not next_url or next_url == "/" or not is_safe_redirect_url(next_url):
             if auth_ext and auth_ext.login_redirect_url:
                 if callable(auth_ext.login_redirect_url):
                     next_url = auth_ext.login_redirect_url(user)

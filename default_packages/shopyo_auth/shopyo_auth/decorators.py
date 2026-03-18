@@ -12,7 +12,10 @@ from flask_login import current_user
 def check_confirmed(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if current_user.is_email_confirmed:
+        is_disabled = current_app.config.get(
+            "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED", False
+        )
+        if is_disabled or current_user.is_email_confirmed:
             return func(*args, **kwargs)
         return redirect(url_for("shopyo_auth.unconfirmed"))
 
@@ -72,7 +75,9 @@ def roles_required(*roles):
                 return redirect(url_for("shopyo_auth.login"))
 
             # Check if email confirmation is required and if user is confirmed
-            is_disabled = current_app.config.get("EMAIL_CONFIRMATION_DISABLED", False)
+            is_disabled = current_app.config.get(
+                "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED", False
+            )
             if not is_disabled and not user.is_email_confirmed:
                 return redirect(url_for("shopyo_auth.unconfirmed"))
 
@@ -114,7 +119,9 @@ def require(policy=None, roles=None, admin_only=False):
                 return redirect(url_for("shopyo_auth.login"))
 
             # Email confirmation check
-            is_disabled = current_app.config.get("EMAIL_CONFIRMATION_DISABLED", False)
+            is_disabled = current_app.config.get(
+                "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED", False
+            )
             if not is_disabled and not user.is_email_confirmed:
                 return redirect(url_for("shopyo_auth.unconfirmed"))
 

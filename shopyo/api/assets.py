@@ -42,9 +42,28 @@ def register_shopyo_static(app, modules_path):
         """
         Intercepts /static/modules/... and maps it to the physical module folder.
         """
+        # 0. Handle Shopyo Plugins and core library (generic: shopyo, shopyo_auth, etc.)
+        # This MUST run before app.debug check because core library assets
+        # (like the logo) are not in the project's local static folder.
+        try:
+            pkg_name = boxormodule.split("/")[0]
+            pkg = importlib.import_module(pkg_name)
+
+            # Attempt to find the static folder via the plugin's module helper if available
+            # otherwise fall back to standard package path discovery
+            if hasattr(pkg, "view") and hasattr(pkg.view, "mhelp"):
+                pkg_dir = pkg.view.mhelp.dirpath
+            else:
+                pkg_dir = os.path.dirname(pkg.__file__)
+
+            pkg_static = os.path.join(pkg_dir, "static")
+            if os.path.exists(os.path.join(pkg_static, path)):
+                return send_from_directory(pkg_static, path=path)
+        except (ImportError, AttributeError):
+            pass
+
         if not app.debug:
-            # This should technically not be reached if called correctly,
-            # but we guard for safety.
+            # Standard Flask behavior for non-library modules in production
             return app.send_static_file(f"modules/{boxormodule}/{path}")
 
         # 1. Handle Boxed Modules (e.g., box__default/auth)
@@ -55,31 +74,15 @@ def register_shopyo_static(app, modules_path):
                 box = parts[0]
                 module = parts[1]
                 module_static = os.path.join(modules_path, box, module, "static")
-                return send_from_directory(module_static, path=path)
+                if os.path.exists(module_static):
+                    return send_from_directory(module_static, path=path)
 
-        # 2. Handle Shopyo Plugins (e.g., shopyo_auth)
-        if boxormodule.startswith("shopyo_"):
-            try:
-                plugin = importlib.import_module(boxormodule)
-                # Attempt to find the static folder via the plugin's module helper
-                # Fallback to standard package path discovery
-                if hasattr(plugin, "view") and hasattr(plugin.view, "mhelp"):
-                    plugin_folder_path = plugin.view.mhelp.dirpath
-                else:
-                    plugin_folder_path = os.path.dirname(plugin.__file__)
-
-                plugin_static_folder = os.path.join(plugin_folder_path, "static")
-                return send_from_directory(plugin_static_folder, path=path)
-            except (ImportError, AttributeError):
-                pass
-
-        # 3. Handle Standard/Flat Modules
+        # 2. Handle Standard/Flat Modules (local to the project)
         module_static = os.path.join(modules_path, boxormodule, "static")
         if os.path.exists(module_static):
             return send_from_directory(module_static, path=path)
 
-        # 4. Final Fallback: Try the actual static folder
-        # (in case collectstatic was already run or it's a manual file)
+        # 3. Final Fallback: Try the actual static folder
         return send_from_directory(
             os.path.join(app.static_folder, "modules", boxormodule), path=path
         )
