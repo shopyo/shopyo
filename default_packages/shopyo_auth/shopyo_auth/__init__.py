@@ -105,6 +105,7 @@ class ShopyoAuth:
     def __init__(self, app: Any = None) -> None:
         self.policies = {}
         self.login_redirect_url = None
+        self.logout_redirect_url = None
         self.events = {
             "user_registered": [],
             "user_login": [],

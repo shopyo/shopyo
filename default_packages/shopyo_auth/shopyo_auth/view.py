@@ -224,7 +224,14 @@ def logout():
 
     next_url = request.args.get("next")
     if not next_url or not is_safe_redirect_url(next_url):
-        next_url = url_for("shopyo_dashboard.index")
+        if auth_ext and auth_ext.logout_redirect_url:
+            if callable(auth_ext.logout_redirect_url):
+                next_url = auth_ext.logout_redirect_url(user)
+            else:
+                next_url = auth_ext.logout_redirect_url
+
+        if not next_url:
+            next_url = url_for("shopyo_auth.login")
     return redirect(next_url)
 
 
