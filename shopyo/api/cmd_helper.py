@@ -198,6 +198,7 @@ def _collectstatic(target_module="modules", verbose=False):
     # Auto-discover shopyo_ plugins
     try:
         import pkgutil
+
         for loader, name, ispkg in pkgutil.iter_modules():
             if name.startswith("shopyo_") and name not in installed_packages:
                 installed_packages.append(name)
