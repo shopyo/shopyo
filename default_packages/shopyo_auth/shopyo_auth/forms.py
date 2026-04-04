@@ -2,7 +2,7 @@ import re
 
 from flask import current_app
 from flask_wtf import FlaskForm
-from wtforms import PasswordField
+from wtforms import PasswordField, BooleanField
 from wtforms.fields import EmailField
 from wtforms.validators import DataRequired
 from wtforms.validators import Email
@@ -58,6 +58,7 @@ class LoginForm(FlaskForm):
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
+    remember = BooleanField("Remember Me")
 
 
 class RegistrationForm(FlaskForm):
