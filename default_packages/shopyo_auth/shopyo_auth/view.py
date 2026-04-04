@@ -47,7 +47,8 @@ def register():
         if auth_ext:
             auth_ext.trigger("user_registered", user)
 
-        login_user(user)
+        remember = login_form.remember.data if hasattr(login_form, "remember") else False
+        login_user(user, remember=remember)
 
         is_disabled = current_app.config.get(
             "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED", False
@@ -190,7 +191,8 @@ def login():
         if user is None or not user.check_password(password):
             flash(notify_danger("please check your user id and password"))
             return redirect(url_for("shopyo_auth.login"))
-        login_user(user)
+        remember = login_form.remember.data if hasattr(login_form, "remember") else False
+        login_user(user, remember=remember)
 
         auth_ext = current_app.extensions.get("shopyo_auth")
         if auth_ext:
@@ -207,7 +209,8 @@ def login():
             if not next_url:
                 next_url = url_for("shopyo_dashboard.index")
         return redirect(next_url)
-    return render_template("shopyo_auth/login.html", **context)
+    login_template = current_app.config.get("SHOPYO_AUTH_LOGIN_TEMPLATE", "shopyo_auth/login.html")
+    return render_template(login_template, **context)
 
 
 @module_blueprint.route("/logout", methods=["GET"])
