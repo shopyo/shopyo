@@ -418,10 +418,10 @@ def new(projname, verbose, modules, start_server, demo):
         project_path = root_proj_path
 
         if os.path.exists(project_path):
-            click.echo("[ ] Error: Unable to create new project, directory already exists")
+            click.echo(
+                "[ ] Error: Unable to create new project, directory already exists"
+            )
             sys.exit(1)
-
-
 
     click.echo(f"creating project {projname}...")
     click.echo(SEP_CHAR * SEP_NUM)
