@@ -54,11 +54,11 @@ class LoginForm(FlaskForm):
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
     password = PasswordField(
-    remember = BooleanField("Remember Me")
         "Password",
         [DataRequired()],
         render_kw={"class": "form-control", "autocomplete": "off"},
     )
+    remember = BooleanField("Remember Me")
 
 
 class RegistrationForm(FlaskForm):
@@ -70,7 +70,6 @@ class RegistrationForm(FlaskForm):
     )
 
     password = PasswordField(
-    remember = BooleanField("Remember Me")
         "New Password",
         validators=[
             InputRequired("Password is required"),
@@ -119,7 +118,6 @@ class ForgotPasswordForm(FlaskForm):
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField(
-    remember = BooleanField("Remember Me")
         "New Password",
         validators=[
             InputRequired("Password is required"),
