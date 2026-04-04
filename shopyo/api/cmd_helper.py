@@ -193,10 +193,17 @@ def _collectstatic(target_module="modules", verbose=False):
     try:
         from init import installed_packages
     except ImportError:
-        click.secho(
-            "  ⚠️  Warning: init.py does not contain 'installed_packages'.", fg="yellow"
-        )
-        sys.exit()
+        installed_packages = []
+
+    # Auto-discover shopyo_ plugins
+    try:
+        import pkgutil
+
+        for loader, name, ispkg in pkgutil.iter_modules():
+            if name.startswith("shopyo_") and name not in installed_packages:
+                installed_packages.append(name)
+    except Exception:
+        pass
     for plugin in installed_packages:
         try:
             plugin_mod = importlib.import_module(plugin)

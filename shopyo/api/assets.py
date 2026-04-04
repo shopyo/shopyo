@@ -46,19 +46,23 @@ def register_shopyo_static(app, modules_path):
         # This MUST run before app.debug check because core library assets
         # (like the logo) are not in the project's local static folder.
         try:
-            pkg_name = boxormodule.split("/")[0]
+            parts = boxormodule.split("/")
+            pkg_name = parts[0]
             pkg = importlib.import_module(pkg_name)
 
-            # Attempt to find the static folder via the plugin's module helper if available
-            # otherwise fall back to standard package path discovery
             if hasattr(pkg, "view") and hasattr(pkg.view, "mhelp"):
                 pkg_dir = pkg.view.mhelp.dirpath
             else:
                 pkg_dir = os.path.dirname(pkg.__file__)
 
             pkg_static = os.path.join(pkg_dir, "static")
-            if os.path.exists(os.path.join(pkg_static, path)):
-                return send_from_directory(pkg_static, path=path)
+
+            # Reconstruct the correct path within pkg_static
+            # if boxormodule is pkg_name/extra/path, we need extra/path + path
+            sub_path = os.path.join(*parts[1:], path) if len(parts) > 1 else path
+
+            if os.path.exists(os.path.join(pkg_static, sub_path)):
+                return send_from_directory(pkg_static, path=sub_path)
         except (ImportError, AttributeError):
             pass
 
