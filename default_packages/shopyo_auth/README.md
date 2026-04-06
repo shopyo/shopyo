@@ -47,6 +47,8 @@ You can customize the behavior of `shopyo_auth` using the following config varia
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `SHOPYO_AUTH_URL` | The base URL prefix for all authentication routes. | `/shopyo-auth` |
+| `SHOPYO_AUTH_LOGIN_TEMPLATE` | Path to a custom template for the login page. | `shopyo_auth/login.html` |
+| `SHOPYO_AUTH_REGISTER_TEMPLATE` | Path to a custom template for the registration page. | `shopyo_auth/register.html` |
 | `EMAIL_CONFIRMATION_DISABLED` | Set to `True` to allow users to log in without verifying their email. | `False` |
 | `SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED` | Set to `True` to enforce strong password requirements (min 12 chars, upper, lower, digit, special). | `False` |
 | `SHOPYO_AUTH_RATE_LIMIT_ENABLED` | Set to `True` to enable brute-force protection using Flask-Limiter. | `False` |
