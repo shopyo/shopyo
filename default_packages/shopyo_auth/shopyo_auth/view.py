@@ -78,7 +78,9 @@ def register():
         return redirect(next_url)
 
     context["form"] = reg_form
-    register_template = current_app.config.get("SHOPYO_AUTH_REGISTER_TEMPLATE", "shopyo_auth/register.html")
+    register_template = current_app.config.get(
+        "SHOPYO_AUTH_REGISTER_TEMPLATE", "shopyo_auth/register.html"
+    )
     return render_template(register_template, **context)
 
 
