@@ -86,7 +86,9 @@ with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as 
 
 default_config = {
     "SHOPYO_AUTH_URL": "/shopyo-auth",
+    "SHOPYO_AUTH_LOGIN_TEMPLATE": "shopyo_auth/login.html",
     "SHOPYO_AUTH_REGISTER": True,
+    "SHOPYO_AUTH_REGISTER_TEMPLATE": "shopyo_auth/register.html",
     "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED": False,
     "SHOPYO_AUTH_LOGIN_FORGET_PASSWORD": True,
     "SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED": False,
