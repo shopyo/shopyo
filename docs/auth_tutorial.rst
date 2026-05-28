@@ -56,19 +56,19 @@ Rate Limiting
 Rate limiting is **enabled by default** (``SHOPYO_AUTH_RATE_LIMIT_ENABLED`` defaults
 to ``True``). Each auth endpoint has its own configurable limit:
 
-+--------------------------------------+------------------+------------------------------------------+
-| Config Key                           | Default          | Endpoint                                 |
-+======================================+==================+==========================================+
-| ``SHOPYO_AUTH_RATE_LIMIT``           | ``10 per minute``| Global fallback                          |
-+--------------------------------------+------------------+------------------------------------------+
-| ``SHOPYO_AUTH_RATE_LIMIT_LOGIN``     | ``10 per minute``| ``/shopyo-auth/login``                   |
-+--------------------------------------+------------------+------------------------------------------+
-| ``SHOPYO_AUTH_RATE_LIMIT_REGISTER``  | ``3 per minute`` | ``/shopyo-auth/register``                |
-+--------------------------------------+------------------+------------------------------------------+
-| ``SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD`` | ``3 per minute`` | ``/shopyo-auth/forgot``           |
-+--------------------------------------+------------------+------------------------------------------+
-| ``SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD``  | ``3 per minute`` | ``/shopyo-auth/reset``            |
-+--------------------------------------+------------------+------------------------------------------+
++------------------------------------------------+------------------+----------------------------+
+| Config Key                                     | Default          | Endpoint                   |
++================================================+==================+============================+
+| ``SHOPYO_AUTH_RATE_LIMIT``                     | ``10 per minute``| Global fallback            |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_LOGIN``               | ``10 per minute``| ``/shopyo-auth/login``     |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_REGISTER``            | ``3 per minute`` | ``/shopyo-auth/register``  |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD``     | ``3 per minute`` | ``/shopyo-auth/forgot``    |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD``      | ``3 per minute`` | ``/shopyo-auth/reset``     |
++------------------------------------------------+------------------+----------------------------+
 
 Set ``SHOPYO_AUTH_RATE_LIMIT_ENABLED = False`` to disable rate limiting entirely
 (e.g., during testing).
@@ -79,13 +79,13 @@ Password Complexity
 Password complexity validation is **enabled by default**
 (``SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED`` defaults to ``True``).
 
-+--------------------------------------+----------+----------------------------------------------------+
-| Config Key                           | Default  | Description                                        |
-+======================================+==========+====================================================+
-| ``SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED`` | ``True``  | Enable uppercase, digit, and special-char checks   |
-+--------------------------------------+----------+----------------------------------------------------+
-| ``SHOPYO_AUTH_MIN_PASSWORD_LENGTH``  | ``12``   | Minimum password length (always enforced)           |
-+--------------------------------------+----------+----------------------------------------------------+
++------------------------------------------------+----------+----------------------------------------------------+
+| Config Key                                     | Default  | Description                                        |
++================================================+==========+====================================================+
+| ``SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED``    | ``True`` | Enable uppercase, digit, and special-char checks   |
++------------------------------------------------+----------+----------------------------------------------------+
+| ``SHOPYO_AUTH_MIN_PASSWORD_LENGTH``            | ``12``   | Minimum password length (always enforced)          |
++------------------------------------------------+----------+----------------------------------------------------+
 
 When complexity is enabled, passwords must contain at least one:
 - Uppercase letter (``A-Z``)

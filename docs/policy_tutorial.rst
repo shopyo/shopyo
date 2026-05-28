@@ -61,8 +61,8 @@ Core Concepts
   The main entry point. It manages role-permission mappings and
   custom policies, and provides the ``@require()`` decorator for views.
 
-Setup
------
+Engine Setup
+------------
 
 Create a global engine instance, typically in your app factory:
 
@@ -139,15 +139,15 @@ many-to-many relationship with ``Role``:
 **Important:** Creating a role in the database and granting permissions to
 that role name in the Policy Engine are two separate steps:
 
-+--------------------------------+---------------------------------------+
-| Step                           | Where                                |
-+================================+=======================================+
-| ``Role.create(name="mod")``    | Database — creates the role record   |
-+--------------------------------+---------------------------------------+
-| ``engine.grant("mod", ...)``   | Code — maps role name to permissions |
-+--------------------------------+---------------------------------------+
-| ``user.roles.append(mod_role)``| Database — assigns role to user      |
-+--------------------------------+---------------------------------------+
++------------------------------------+---------------------------------------+
+| Step                               | Where                                 |
++====================================+=======================================+
+| ``Role.create(name="mod")``        | Database — creates the role record    |
++------------------------------------+---------------------------------------+
+| ``engine.grant("mod", ...)``       | Code — maps role name to permissions  |
++------------------------------------+---------------------------------------+
+| ``user.roles.append(mod_role)``    | Database — assigns role to user       |
++------------------------------------+---------------------------------------+
 
 All three are required for role-based access to work:
 
@@ -259,22 +259,21 @@ Migration from ``is_admin``
 
 Replace direct ``is_admin`` checks with equivalent permission checks:
 
-+---------------------------------------------+----------------------------------------------------+
-| Before                                      | After                                              |
-+=============================================+====================================================+
-| ``current_user.is_admin``                   | ``engine.has_permission(current_user,              |
-|                                             |     Permission.ADMIN_PANEL_ACCESS)``               |
-+---------------------------------------------+----------------------------------------------------+
-| ``@admin_required``                         | ``@engine.require(Permission.ADMIN_PANEL_ACCESS)`` |
-+---------------------------------------------+----------------------------------------------------+
-| ``@require(admin_only=True)``               | ``@engine.require(Permission.ADMIN_PANEL_ACCESS)`` |
-+---------------------------------------------+----------------------------------------------------+
-| ``@roles_required("admin")``                | ``engine.grant("admin", Perm.ADMIN_PANEL_ACCESS)`` |
-|                                             | ``@engine.require(Permission.ADMIN_PANEL_ACCESS)`` |
-+---------------------------------------------+----------------------------------------------------+
++---------------------------------------------+------------------------------------------------------------------------+
+| Before                                      | After                                                                  |
++=============================================+========================================================================+
+| ``current_user.is_admin``                   | ``engine.has_permission(current_user, Permission.ADMIN_PANEL_ACCESS)`` |
++---------------------------------------------+------------------------------------------------------------------------+
+| ``@admin_required``                         | ``@engine.require(Permission.ADMIN_PANEL_ACCESS)``                     |
++---------------------------------------------+------------------------------------------------------------------------+
+| ``@require(admin_only=True)``               | ``@engine.require(Permission.ADMIN_PANEL_ACCESS)``                     |
++---------------------------------------------+------------------------------------------------------------------------+
+| ``@roles_required("admin")``                | ``engine.grant("admin", Perm.ADMIN_PANEL_ACCESS)``                     |
+|                                             | ``@engine.require(Permission.ADMIN_PANEL_ACCESS)``                     |
++---------------------------------------------+------------------------------------------------------------------------+
 
-Testing
--------
+Testing Policies
+----------------
 
 Since the PolicyEngine is framework-agnostic, you can unit test it
 without setting up Flask:

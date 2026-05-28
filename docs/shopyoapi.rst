@@ -147,8 +147,11 @@ Policy-based authorization system replacing ``is_admin`` checks with a
 .. automodule:: shopyo.api.perms
     :members:
     :undoc-members:
-    :inherited-members:
-    :show-inheritance:
+    :exclude-members: Policy
+
+.. autoclass:: shopyo.api.perms.Policy
+    :members:
+    :noindex:
 
 
 api.security
