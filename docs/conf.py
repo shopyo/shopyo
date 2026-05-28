@@ -49,6 +49,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_tabs.tabs",
     "sphinx_wagtail_theme",
+    "ablog",
 ]
 
 # autosectionlabel_prefix_document = True
@@ -82,6 +83,17 @@ html_logo = "shopyo.png"
 # a list of builtin themes.
 #
 html_theme = "sphinx_wagtail_theme"
+
+# -- Ablog configuration ---------------------------------------------------
+
+blog_title = "Shopyo Blog"
+blog_path = "blog"
+blog_post_pattern = "blog/*.rst"
+blog_baseurl = "https://shopyo.readthedocs.io/en/latest/"
+blog_feed_fulltext = True
+blog_feed_subtitle = "Building large Flask apps without losing your sanity"
+post_redirect_index = "blog"
+fontawesome_included = True
 # html_theme_options = {
 #     "github_repo": "shopyo/shopyo",
 # }

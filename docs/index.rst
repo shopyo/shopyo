@@ -105,6 +105,12 @@ Get Started
 
 .. toctree::
    :maxdepth: 2
+   :caption: Blog
+
+   blog/index
+
+.. toctree::
+   :maxdepth: 2
    :caption: Community
 
    contrib
