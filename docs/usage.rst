@@ -180,6 +180,47 @@ always returns ``False``), so unauthenticated users silently bypassed the check.
 The fix splits the guard into a proper unauthenticated redirect followed by a
 policy-based authorization check.
 
+Cross-Site Request Forgery (CSRF) Protection
+=============================================
+
+CSRF protection is handled globally by **Flask-WTF** ``CSRFProtect``, which is
+initialised in ``shopyo/init.py`` and protects all unsafe HTTP methods
+(POST, PUT, PATCH, DELETE) on form-based routes.
+
+**For HTML forms** — include the CSRF token in every form:
+
+.. code-block:: html
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        ...
+    </form>
+
+Flask-WTF forms automatically include a hidden CSRF field when using
+``form.hidden_tag()``.
+
+**For API clients** — send the CSRF token via:
+
+- The ``X-CSRFToken`` header, or
+- The ``csrf_token`` form field, or
+- The ``csrf_token`` key in a JSON request body
+
+To get the CSRF token programmatically:
+
+.. code-block:: python
+
+    from shopyo.api.security import generate_csrf_token, validate_csrf_token
+
+    # Obtain the current token
+    token = generate_csrf_token()
+
+    # Validate a token submitted by a client
+    if validate_csrf_token(submitted_token):
+        ...
+
+The legacy ``@csrf_protect`` decorator has been removed — it was redundant
+with Flask-WTF's global ``CSRFProtect`` middleware.
+
 Email Configuration
 ===================
 

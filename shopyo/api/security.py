@@ -1,17 +1,23 @@
 from urllib.parse import urljoin
 from urllib.parse import urlparse
-from functools import wraps
 import secrets
-from flask import request, session, abort, g
+from flask import request, session, g
 
 """
 Security utilities for Shopyo.
 
 Includes:
 - Safe URL redirection (`is_safe_redirect_url`, `get_safe_redirect`)
-- CSRF protection: token generation, validation, and decorator for Flask views
-  (`generate_csrf_token`, `validate_csrf_token`, `get_csrf_token_from_request`, `csrf_protect`)
+- CSRF token generation and validation (`generate_csrf_token`, `validate_csrf_token`)
 - Jinja2 context processor helper (`inject_csrf_token`)
+
+CSRF protection for form-based routes is handled globally by Flask-WTF's
+``CSRFProtect`` (initialised in ``shopyo/init.py``). API clients can use
+``generate_csrf_token`` and ``validate_csrf_token`` directly, or send the
+token via the ``X-CSRFToken`` header or ``csrf_token`` form field.
+
+The legacy ``csrf_protect`` decorator has been removed — it was redundant
+with Flask-WTF's global protection.
 """
 
 
@@ -99,66 +105,6 @@ def validate_csrf_token(token):
         return False
     # Constant-time comparison to prevent timing attacks
     return secrets.compare_digest(session_token, token)
-
-
-def get_csrf_token_from_request():
-    """Extract CSRF token from request.
-
-    Tries to extract CSRF token from headers, form, or JSON in that order.
-
-    Returns
-    -------
-    str or None
-        The CSRF token if found, None otherwise.
-    """
-    # 1. Check header
-    token = request.headers.get(CSRF_TOKEN_HEADER)
-    if token:
-        return token
-    # 2. Check form
-    token = request.form.get(CSRF_TOKEN_FORM_KEY)
-    if token:
-        return token
-    # 3. Check JSON
-    if request.is_json:
-        json_data = request.get_json(silent=True)
-        if json_data and CSRF_TOKEN_FORM_KEY in json_data:
-            return json_data[CSRF_TOKEN_FORM_KEY]
-    return None
-
-
-def csrf_protect(view_func):
-    """Decorator to protect endpoints against CSRF attacks.
-
-    Checks for a valid CSRF token in header, form, or JSON for unsafe methods
-    (POST, PUT, PATCH, DELETE).
-
-    Parameters
-    ----------
-    view_func : function
-        The view function to protect.
-
-    Returns
-    -------
-    function
-        The wrapped view function with CSRF protection.
-
-    Raises
-    ------
-    werkzeug.exceptions.Forbidden
-        If CSRF token is missing or invalid.
-    """
-
-    @wraps(view_func)
-    def wrapped_view(*args, **kwargs):
-        # Only protect unsafe methods
-        if request.method in ("POST", "PUT", "PATCH", "DELETE"):
-            token = get_csrf_token_from_request()
-            if not validate_csrf_token(token):
-                abort(403, description="CSRF token missing or invalid.")
-        return view_func(*args, **kwargs)
-
-    return wrapped_view
 
 
 def inject_csrf_token():

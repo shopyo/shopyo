@@ -11,6 +11,7 @@
 - **API token hashing upgraded:** `generate_api_token()` now uses `hashlib.pbkdf2_hmac` with a per-token 32-byte random salt (600K iterations) instead of unsalted `sha256`. A `token_salt` column was added to the `UserToken` model.
 - **Rate limiting enabled by default:** `SHOPYO_AUTH_RATE_LIMIT_ENABLED` now defaults to `True`. Added endpoint-specific rate limits (`SHOPYO_AUTH_RATE_LIMIT_LOGIN`, `SHOPYO_AUTH_RATE_LIMIT_REGISTER`, `SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD`, `SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD`) so each auth endpoint can be tuned independently.
 - **Password complexity enabled by default:** `SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED` now defaults to `True`. Added `SHOPYO_AUTH_MIN_PASSWORD_LENGTH` (default 12). Minimum length is always enforced regardless of the complexity flag.
+- **CSRF protection unified:** Removed the custom ``csrf_protect`` decorator from ``shopyo/api/security.py``. Flask-WTF's ``CSRFProtect`` (initialised globally in ``shopyo/init.py``) now handles all form-based CSRF validation. API clients can still use ``generate_csrf_token()`` and ``validate_csrf_token()`` directly.
 
 ## v4.17.0 (2026-03-11)
 
