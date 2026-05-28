@@ -33,7 +33,7 @@ module_blueprint = globals()[mhelp.blueprint_str]
 
 
 @module_blueprint.route("/register", methods=["GET", "POST"])
-@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT_REGISTER"])
 def register():
     context = {}
     reg_form = RegistrationForm()
@@ -124,7 +124,7 @@ def unconfirmed():
 
 
 @module_blueprint.route("/forgot-password", methods=["GET", "POST"])
-@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD"])
 def forgot_password():
     if current_user.is_authenticated:
         return redirect(url_for("shopyo_dashboard.index"))
@@ -154,7 +154,7 @@ def forgot_password():
 
 
 @module_blueprint.route("/reset-password/<token>", methods=["GET", "POST"])
-@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD"])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for("shopyo_dashboard.index"))
@@ -181,7 +181,7 @@ def reset_password(token):
 
 
 @module_blueprint.route("/login", methods=["GET", "POST"])
-@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT"])
+@limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT_LOGIN"])
 def login():
     context = {}
     login_form = LoginForm()

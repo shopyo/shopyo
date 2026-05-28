@@ -7,6 +7,7 @@
 - **Development secret key warning:** `DevelopmentConfig` emits a `DeprecationWarning` when `SECRET_KEY` is unset or uses the default `"secret"` value.
 - **Seed admin defaults removed:** `SHOPYO_AUTH_SEED_ADMIN_EMAIL` and `SHOPYO_AUTH_SEED_ADMIN_PASSWORD` default to `None`. Seeding is skipped when both are unset.
 - **API token hashing upgraded:** `generate_api_token()` now uses `hashlib.pbkdf2_hmac` with a per-token 32-byte random salt (600K iterations) instead of unsalted `sha256`. A `token_salt` column was added to the `UserToken` model.
+- **Rate limiting enabled by default:** `SHOPYO_AUTH_RATE_LIMIT_ENABLED` now defaults to `True`. Added endpoint-specific rate limits (`SHOPYO_AUTH_RATE_LIMIT_LOGIN`, `SHOPYO_AUTH_RATE_LIMIT_REGISTER`, `SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD`, `SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD`) so each auth endpoint can be tuned independently.
 
 ## v4.17.0 (2026-03-11)
 

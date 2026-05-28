@@ -76,6 +76,7 @@ def base_app():
             "WTF_CSRF_ENABLED": False,  # Essential for programmatic testing
             "PRESERVE_CONTEXT_ON_EXCEPTION": False,
             "EMAIL_CONFIRMATION_DISABLED": True,
+            "SHOPYO_AUTH_RATE_LIMIT_ENABLED": False,
         }
     )
 
