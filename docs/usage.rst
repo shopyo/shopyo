@@ -164,6 +164,22 @@ These defaults are set in ``BaseConfig`` and inherited by all environments. You 
     class MyConfig(ProductionConfig):
         SESSION_COOKIE_SAMESITE = "Strict"  # even stricter cross-site policy
 
+Admin Panel Security
+====================
+
+Shopyo's admin panel uses the policy engine (see :doc:`policy_tutorial`) to gate access:
+
+- Unauthenticated users are redirected to the login page.
+- Authenticated users without ``ADMIN_PANEL_ACCESS`` permission receive a ``403 Forbidden``.
+- ``DefaultModelView`` classes in the admin require both ``is_authenticated`` and ``is_admin`` on the ``User`` model.
+
+The ``DefaultModelView.is_accessible()`` method has been hardened to fix a
+previously unreachable guard: the old ``not current_user.is_authenticated and
+current_user.is_admin`` condition could never be true (``AnonymousUser.is_admin``
+always returns ``False``), so unauthenticated users silently bypassed the check.
+The fix splits the guard into a proper unauthenticated redirect followed by a
+policy-based authorization check.
+
 Email Configuration
 ===================
 
