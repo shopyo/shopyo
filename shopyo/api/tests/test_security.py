@@ -24,6 +24,24 @@ def test_get_safe_redirect(app):
         assert security.get_safe_redirect("http://evil.com") == "/"
 
 
+def test_get_safe_redirect_referrer(app):
+    with app.test_request_context(
+        base_url="http://example.com",
+        environ_base={"HTTP_REFERER": "http://example.com/safe"},
+    ):
+        assert (
+            security.get_safe_redirect("http://evil2.com") == "http://example.com/safe"
+        )
+
+
+def test_get_safe_redirect_referrer_unsafe(app):
+    with app.test_request_context(
+        base_url="http://example.com",
+        environ_base={"HTTP_REFERER": "http://evil.com/trap"},
+    ):
+        assert security.get_safe_redirect("http://evil2.com") == "/"
+
+
 class TestCsrfToken:
     def test_generation_persists(self, app):
         with app.test_request_context():
@@ -72,3 +90,9 @@ class TestCsrfToken:
             security.generate_csrf_token()
             assert security.validate_csrf_token("a" * 128) is False
             assert security.validate_csrf_token("b" * 256) is False
+
+
+def test_csrf_constants():
+    assert security.CSRF_TOKEN_SESSION_KEY == "_csrf_token"
+    assert security.CSRF_TOKEN_HEADER == "X-CSRFToken"
+    assert security.CSRF_TOKEN_FORM_KEY == "csrf_token"
