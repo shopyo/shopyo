@@ -48,7 +48,7 @@ def test_send_async_email_with_custom_sender(app):
                     )
 
                     assert mock_email_class.called
-                    kwargs = mock_email_class.call_args.kwargs
+                    kwargs = mock_email_class.call_args[1]
                     assert kwargs["from_email"] == "custom@example.com"
 
 
