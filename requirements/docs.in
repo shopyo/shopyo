@@ -1,5 +1,5 @@
 sphinx
-furo==2022.4.7
+sphinx-wagtail-theme==6.5.0
 sphinx-tabs>=3.4.7
 sphinx-autobuild
 setuptools
