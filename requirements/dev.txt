@@ -4,24 +4,24 @@
 #
 #    pip-compile requirements/dev.in
 #
+ablog==0.10.33.post1
+    # via -r docs.in
 alabaster==0.7.12
     # via sphinx
 alembic==1.9.1
     # via flask-migrate
 appdirs==1.4.4
-    # via
-    #   black
-    #   virtualenv
+    # via virtualenv
 argcomplete==1.12.3
     # via commitizen
 attrs==20.3.0
     # via pytest
 babel==2.9.1
     # via sphinx
-beautifulsoup4==4.9.3
-    # via furo
-black==20.8b1
-    # via -r requirements/dev.in
+black==22.12.0
+    # via -r dev.in
+blinker==1.9.0
+    # via flask
 certifi==2022.12.7
     # via requests
 cfgv==3.3.0
@@ -33,74 +33,72 @@ click==8.1.3
     #   black
     #   flask
     #   pip-tools
-codecov==2.1.11
-    # via -r requirements/dev.in
+codecov==2.1.13
+    # via -r dev.in
 colorama==0.4.4
     # via
     #   commitizen
     #   sphinx-autobuild
 commitizen==2.20.0
-    # via -r requirements/dev.in
+    # via -r dev.in
 coverage==5.5
     # via
-    #   -r requirements/tests.in
+    #   -r tests.in
     #   codecov
 decli==0.5.2
     # via commitizen
 distlib==0.3.1
     # via virtualenv
-dnspython==2.2.1
+dnspython==2.6.1
     # via email-validator
 docutils==0.16
     # via
+    #   ablog
     #   sphinx
     #   sphinx-tabs
 email-validator==1.1.3
     # via
-    #   -r requirements/requirements.txt
-    #   -r requirements/tests.in
+    #   -r requirements.txt
+    #   -r tests.in
 exceptiongroup==1.1.0
     # via pytest
 factory-boy==3.2.0
-    # via -r requirements/tests.in
+    # via -r tests.in
 faker==8.1.0
     # via factory-boy
-filelock==3.0.12
+feedgen==1.0.0
+    # via ablog
+filelock==3.20.3
     # via
     #   tox
     #   virtualenv
 flake8==3.9.1
-    # via -r requirements/dev.in
-flask==2.2.2
+    # via -r dev.in
+flask==3.1.3
     # via
-    #   -r requirements/requirements.txt
+    #   -r requirements.txt
     #   flask-admin
     #   flask-login
     #   flask-mailman
-    #   flask-marshmallow
     #   flask-migrate
     #   flask-sqlalchemy
     #   flask-wtf
 flask-admin==1.6.0
-    # via -r requirements/requirements.txt
+    # via -r requirements.txt
 flask-login==0.6.2
-    # via -r requirements/requirements.txt
+    # via -r requirements.txt
 flask-mailman==0.3.0
-    # via -r requirements/requirements.txt
-flask-marshmallow==0.14.0
-    # via -r requirements/requirements.txt
+    # via -r requirements.txt
 flask-migrate==4.0.1
-    # via -r requirements/requirements.txt
+    # via -r requirements.txt
 flask-sqlalchemy==3.0.2
     # via
-    #   -r requirements/requirements.txt
+    #   -r requirements.txt
     #   flask-migrate
 flask-wtf==1.0.1
-    # via -r requirements/requirements.txt
+    # via -r requirements.txt
 freezegun==1.1.0
-    # via -r requirements/tests.in
-furo==2022.4.7
-    # via -r requirements/docs.in
+    # via -r tests.in
 greenlet==2.0.1
     # via sqlalchemy
 identify==2.2.4
@@ -113,9 +111,11 @@ imagesize==1.2.0
     # via sphinx
 iniconfig==1.1.1
     # via pytest
+invoke==3.0.3
+    # via ablog
 isort==5.8.0
-    # via -r requirements/dev.in
-itsdangerous==2.1.2
+    # via -r dev.in
+itsdangerous==2.2.0
     # via
     #   flask
     #   flask-wtf
@@ -126,21 +126,17 @@ jinja2==3.1.2
     #   sphinx
 livereload==2.6.3
     # via sphinx-autobuild
+lxml==6.1.1
+    # via feedgen
 mako==1.2.4
     # via alembic
 markupsafe==2.1.1
     # via
+    #   flask
     #   jinja2
     #   mako
     #   werkzeug
     #   wtforms
-marshmallow==3.19.0
-    # via
-    #   -r requirements/requirements.txt
-    #   flask-marshmallow
-    #   marshmallow-sqlalchemy
-marshmallow-sqlalchemy==0.28.1
-    # via -r requirements/requirements.txt
 mccabe==0.6.1
     # via flake8
 mkdocs-material-extensions==1.1.1
@@ -152,23 +148,23 @@ nodeenv==1.6.0
 packaging==21.3
     # via
     #   commitizen
-    #   marshmallow
-    #   marshmallow-sqlalchemy
     #   pytest
     #   sphinx
     #   tox
-pathspec==0.8.1
+pathspec==1.1.1
     # via black
 pep517==0.10.0
     # via pip-tools
 pip-tools==6.1.0
-    # via -r requirements/dev.in
+    # via -r dev.in
+platformdirs==4.10.0
+    # via black
 pluggy==0.13.1
     # via
     #   pytest
     #   tox
 pre-commit==2.12.1
-    # via -r requirements/dev.in
+    # via -r dev.in
 prompt-toolkit==3.0.21
     # via questionary
 py==1.10.0
@@ -179,25 +175,26 @@ pyflakes==2.3.1
     # via flake8
 pygments==2.8.1
     # via
-    #   furo
     #   sphinx
     #   sphinx-tabs
 pyparsing==2.4.7
     # via packaging
 pytest==7.2.0
     # via
-    #   -r requirements/tests.in
+    #   -r tests.in
     #   pytest-dotenv
     #   pytest-order
 pytest-dotenv==0.5.2
-    # via -r requirements/tests.in
+    # via -r tests.in
 pytest-order==0.11.0
-    # via -r requirements/tests.in
+    # via -r tests.in
 python-dateutil==2.8.1
     # via
+    #   ablog
     #   faker
+    #   feedgen
     #   freezegun
-python-dotenv==0.17.0
+python-dotenv==1.2.2
     # via pytest-dotenv
 pytz==2021.1
     # via babel
@@ -207,33 +204,33 @@ pyyaml==5.4.1
     #   pre-commit
 questionary==1.10.0
     # via commitizen
-regex==2021.4.4
-    # via black
 requests==2.25.1
     # via
     #   codecov
     #   sphinx
 six==1.15.0
     # via
-    #   flask-marshmallow
     #   livereload
     #   python-dateutil
     #   tox
     #   virtualenv
 snowballstemmer==2.1.0
     # via sphinx
-soupsieve==2.2.1
-    # via beautifulsoup4
 sphinx==4.5.0
     # via
-    #   -r requirements/docs.in
-    #   furo
+    #   -r docs.in
+    #   ablog
     #   sphinx-autobuild
+    #   sphinx-copybutton
     #   sphinx-tabs
 sphinx-autobuild==2021.3.14
-    # via -r requirements/docs.in
+    # via -r docs.in
+sphinx-copybutton==0.5.2
+    # via sphinx-wagtail-theme
 sphinx-tabs==3.4.7
-    # via -r requirements/docs.in
+    # via -r docs.in
+sphinx-wagtail-theme==6.5.0
+    # via -r docs.in
 sphinxcontrib-applehelp==1.0.2
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
@@ -248,50 +245,49 @@ sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 sqlalchemy==1.4.46
     # via
-    #   -r requirements/requirements.txt
+    #   -r requirements.txt
     #   alembic
     #   flask-sqlalchemy
-    #   marshmallow-sqlalchemy
 termcolor==1.1.0
     # via commitizen
 text-unidecode==1.3
     # via faker
 toml==0.10.2
     # via
-    #   black
     #   pep517
     #   pre-commit
     #   tox
 tomli==2.0.1
-    # via pytest
+    # via
+    #   black
+    #   pytest
 tomlkit==0.7.2
     # via commitizen
-tornado==6.1
+tornado==6.5.5
     # via livereload
 tox==3.23.0
-    # via -r requirements/dev.in
-typed-ast==1.4.3
-    # via black
-typing-extensions==3.7.4.3
-    # via black
+    # via -r dev.in
 urllib3==1.26.5
     # via requests
 virtualenv==20.4.3
     # via
     #   pre-commit
     #   tox
+watchdog==6.0.0
+    # via ablog
 wcwidth==0.2.5
     # via prompt-toolkit
-werkzeug==2.2.2
+werkzeug==3.1.8
     # via
-    #   -r requirements/requirements.txt
+    #   -r requirements.txt
     #   flask
     #   flask-login
 wtforms==3.0.1
     # via
-    #   -r requirements/requirements.txt
+    #   -r requirements.txt
     #   flask-admin
     #   flask-wtf
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
+# setuptools
