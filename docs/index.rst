@@ -76,6 +76,7 @@ Get Started
    :caption: Tutorials
 
    auth_tutorial
+   policy_tutorial
    polls_tutorial
    shopyo_theme_tutorial
 
