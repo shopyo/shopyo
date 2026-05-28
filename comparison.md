@@ -1,3 +1,5 @@
+> **Note:** This comparison was written during Shopyo's earlier positioning phase. The current README explains the trade-offs with Django and Flask more honestly and contextually.
+
 # Comparison 🟢🟡🟠🔴
 
 | ByDefault             | Shopyo     | Django     | Masonite   |

@@ -61,35 +61,7 @@ def create_app(config_name="development"):
     load_plugins(app, global_template_variables, global_configs, config_name)
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
-    # create_config_json()
     load_extensions(app)
-
-    # from shopyo_base import ShopyoBase
-    # from shopyo_auth import ShopyoAuth
-    # from shopyo_appadmin import ShopyoAppAdmin
-    # from shopyo_dashboard import ShopyoDashboard
-    # from shopyo_page import ShopyoPage
-    # from shopyo_i18n import Shopyoi18n
-    # from shopyo_settings import ShopyoSettings
-    # from shopyo_theme import ShopyoTheme
-
-    # sh_base = ShopyoBase()
-    # sh_auth = ShopyoAuth()
-    # sh_appadmin = ShopyoAppAdmin()
-    # sh_dashboard = ShopyoDashboard()
-    # sh_page = ShopyoPage()
-    # sh_i18n = Shopyoi18n()
-    # sh_settings = ShopyoSettings()
-    # sh_theme = ShopyoTheme()
-
-    # sh_base.init_app(app)
-    # sh_auth.init_app(app)
-    # sh_appadmin.init_app(app)
-    # sh_dashboard.init_app(app)
-    # sh_page.init_app(app)
-    # sh_i18n.init_app(app)
-    # sh_settings.init_app(app)
-    # sh_theme.init_app(app)
 
     setup_flask_admin(app)
     register_shopyo_static(app, modules_path)
@@ -231,10 +203,9 @@ def setup_theme_paths(app):
 def inject_global_vars(app, global_template_variables):
     @app.context_processor
     def inject_global_vars():
-        APP_NAME = "dwdwefw"
-
         base_context = {
-            "APP_NAME": APP_NAME,
+            "APP_NAME": "My App",
+            "OUR_APP_NAME": "My App",
             "len": len,
             "current_user": current_user,
             "get_static": get_static,

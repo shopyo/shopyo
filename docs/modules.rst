@@ -51,15 +51,15 @@ create modules inside a box. For example first run
 
 .. code:: bash
 
-   shopyo startapp product box__ecommerce
+   shopyo startapp subscriptions box__billing
 
-This will create the box ``box__ecommerce`` if it does not exist and then create the module
-``product`` insides it. If now you want another module, for example, ``marketplace`` inside ``box__ecommerce``,
+This will create the box ``box__billing`` if it does not exist and then create the module
+``subscriptions`` insides it. If now you want another module, for example, ``invoices`` inside ``box__billing``,
 then you can run:
 
 .. code:: bash
 
-   shopyo startapp marketplace box__ecommerce
+   shopyo startapp invoices box__billing
 
 With this your modules structure will look like this:
 
@@ -67,12 +67,12 @@ With this your modules structure will look like this:
 .. code:: none
 
    modules/
-   ├── box__ecommerce/
-   │   ├── product/
-   │   └── marketplace/
+   ├── box__billing/
+   │   ├── subscriptions/
+   │   └── invoices/
    └── ...
 
-You can now access the ``/product`` and ``/marketplace`` endpoints
+You can now access the ``/subscriptions`` and ``/invoices`` endpoints
 
 See :ref:`startapp` for more details on command usage. You might find the
 EuroPython talk under the `Education Section <education.html>`_ insightful

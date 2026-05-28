@@ -36,9 +36,6 @@ Real-World Use Cases
 🔧 **Internal Enterprise Tools**
    Organize internal tools with multiple modules and role-based access.
 
-🛒 **E-commerce Platforms**
-   Product management, orders, customers, inventory - all as independent modules.
-
 🎓 **Educational Platforms**
    Course management, student progress, content delivery - modular and scalable.
 

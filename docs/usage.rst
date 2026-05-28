@@ -63,10 +63,10 @@ A box groups related modules:
 .. code-block:: text
 
     modules/
-    ├── box__ecommerce/
-    │   ├── products/
-    │   ├── orders/
-    │   └── customers/
+    ├── box__billing/
+    │   ├── subscriptions/
+    │   ├── invoices/
+    │   └── payments/
     └── box__blog/
         ├── posts/
         └── comments/
