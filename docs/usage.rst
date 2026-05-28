@@ -135,11 +135,18 @@ Environment Variables
 
 Shopyo can be configured using environment variables. This is especially useful for production deployments.
 
+.. warning::
+   The ``ProductionConfig`` **requires** ``SECRET_KEY`` and
+   ``SQLALCHEMY_DATABASE_URI`` to be set via environment variables.
+   If either is missing, the application will refuse to boot with a
+   ``RuntimeError``. Hardcoded defaults are not allowed in production.
+
 Essential Variables
 ===================
 
-- ``SECRET_KEY``: A long random string used to secure session cookies and other crypto needs.
-- ``SQLALCHEMY_DATABASE_URI``: The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
+- ``SECRET_KEY`` (**required in production**): A long random string used to secure session cookies and other crypto needs.
+- ``SQLALCHEMY_DATABASE_URI`` (**required in production**): The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
+- ``PASSWORD_SALT``: Salt for token signing. Auto-generated as a random 64-char hex string if not set.
 
 Email Configuration
 ===================
@@ -157,8 +164,8 @@ Seeding Configuration
 
 These variables are used during the ``shopyo initialise`` command to create the initial admin user:
 
-- ``SHOPYO_AUTH_SEED_ADMIN_EMAIL``: Email for the default admin user (defaults to ``admin@domain.com``).
-- ``SHOPYO_AUTH_SEED_ADMIN_PASSWORD``: Password for the default admin user (defaults to ``Pass1234!@#$``).
+- ``SHOPYO_AUTH_SEED_ADMIN_EMAIL``: Email for the seed admin user (no default — seeding is skipped if unset).
+- ``SHOPYO_AUTH_SEED_ADMIN_PASSWORD``: Password for the seed admin user (no default — seeding is skipped if unset).
 
 Why Not Plain Flask?
 --------------------

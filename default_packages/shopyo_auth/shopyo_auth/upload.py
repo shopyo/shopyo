@@ -9,6 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 def add_admin(email, password, verbose=False):
+    if not email or not password:
+        if verbose:
+            logger.info("[ ] Seed admin credentials not configured, skipping")
+        return
     user = User.query.filter_by(email=email).first()
     if user:
         if verbose:

@@ -1,3 +1,14 @@
+## Unreleased
+
+### Security
+
+- **Enforce environment-only secrets:** `ProductionConfig` now raises `RuntimeError` if `SECRET_KEY` or `SQLALCHEMY_DATABASE_URI` are not set via environment variables. `PASSWORD_SALT` defaults to a random 64-char hex if not provided.
+- **Hardened session cookies:** `BaseConfig` now sets `SESSION_COOKIE_HTTPONLY = True` and `SESSION_COOKIE_SAMESITE = "Lax"`. `ProductionConfig` additionally sets `SESSION_COOKIE_SECURE = True`.
+- **Development secret key warning:** `DevelopmentConfig` emits a `DeprecationWarning` when `SECRET_KEY` is unset or uses the default `"secret"` value.
+- **Seed admin defaults removed:** `SHOPYO_AUTH_SEED_ADMIN_EMAIL` and `SHOPYO_AUTH_SEED_ADMIN_PASSWORD` default to `None`. Seeding is skipped when both are unset.
+- **Fixed dead auth guard:** `MyAdminIndexView.index()` no longer uses the unreachable `not current_user.is_authenticated and current_user.is_admin` condition. Unauthenticated users are redirected to login; unauthorized users get 403.
+- **Policy Engine:** Added `shopyo.api.perms` with `Permission` enum, `Policy` dataclass, and `PolicyEngine` for replacing `is_admin` checks.
+
 ## v4.17.0 (2026-03-11)
 
 ### Feat
