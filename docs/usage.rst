@@ -148,6 +148,22 @@ Essential Variables
 - ``SQLALCHEMY_DATABASE_URI`` (**required in production**): The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
 - ``PASSWORD_SALT``: Salt for token signing. Auto-generated as a random 64-char hex string if not set.
 
+Session Security
+===================
+
+By default, Shopyo applies the following session cookie hardening flags:
+
+- ``SESSION_COOKIE_HTTPONLY = True`` — prevents JavaScript access to the session cookie (mitigates XSS-based session theft).
+- ``SESSION_COOKIE_SAMESITE = "Lax"`` — prevents the cookie from being sent in cross-site requests (mitigates CSRF).
+- ``SESSION_COOKIE_SECURE = True`` — only sent over HTTPS (set in ``ProductionConfig`` only; development/testing use HTTP).
+
+These defaults are set in ``BaseConfig`` and inherited by all environments. You can override them in your app's config:
+
+.. code-block:: python
+
+    class MyConfig(ProductionConfig):
+        SESSION_COOKIE_SAMESITE = "Strict"  # even stricter cross-site policy
+
 Email Configuration
 ===================
 

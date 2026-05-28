@@ -2,6 +2,8 @@
 
 ### Security
 
+- **Policy-based authorization engine:** Introduced `shopyo/api/perms.py` with `Permission` enum, `Policy` dataclass, and `PolicyEngine` supporting `define`/`grant`/`has_permission`/`require` decorator. Replaces ad-hoc `is_admin` checks with role-based and policy-based access control.
+- **Fixed dead auth guard in admin panel:** `shopyo_admin.py:87` had an unreachable `not current_user.is_authenticated and current_user.is_admin` condition. Split into proper unauthenticated redirect + 403 for missing `ADMIN_PANEL_ACCESS`. Removed duplicate `indexs()` method.
 - **Enforce environment-only secrets:** `ProductionConfig` now raises `RuntimeError` if `SECRET_KEY` or `SQLALCHEMY_DATABASE_URI` are not set via environment variables. `PASSWORD_SALT` defaults to a random 64-char hex if not provided.
 - **Hardened session cookies:** `BaseConfig` now sets `SESSION_COOKIE_HTTPONLY = True` and `SESSION_COOKIE_SAMESITE = "Lax"`. `ProductionConfig` additionally sets `SESSION_COOKIE_SECURE = True`.
 - **Development secret key warning:** `DevelopmentConfig` emits a `DeprecationWarning` when `SECRET_KEY` is unset or uses the default `"secret"` value.
