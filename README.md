@@ -1,49 +1,70 @@
-<h1 align="center">
-  <br>
-  <a href="https://github.com/shopyo"><img src="https://github.com/shopyo/shopyo/blob/dev/assets/github_banner.png" alt="shopyo" width="" height=""></a>
+<p align="center">
+  <a href="https://github.com/shopyo/shopyo"><img src="https://github.com/shopyo/shopyo/blob/dev/assets/github_banner.png" alt="shopyo" width=""></a>
+</p>
 
-</h1>
+<p align="center">
+  <b>Build large Flask apps without losing your sanity.</b><br>
+  Auth, admin panel, modular architecture — all the batteries, none of the boilerplate.
+</p>
 
-[![Downloads](https://static.pepy.tech/badge/shopyo/month)](https://pepy.tech/project/shopyo) [![Codecov](https://codecov.io/gh/shopyo/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS)](https://codecov.io/gh/shopyo/shopyo) ![Tests](https://github.com/shopyo/shopyo/actions/workflows/tests.yaml/badge.svg) [![PyPI version shields.io](https://img.shields.io/pypi/v/shopyo.svg)](https://pypi.python.org/pypi/shopyo/) [![Documentation Status](https://readthedocs.org/projects/shopyo/badge/?version=latest)](https://shopyo.readthedocs.io/en/latest/?badge=latest) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5350/badge)](https://bestpractices.coreinfrastructure.org/projects/5350) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/shopyo/shopyo/badge)](https://api.securityscorecards.dev/projects/github.com/shopyo/shopyo)
+<p align="center">
+  <a href="https://pepy.tech/project/shopyo"><img src="https://static.pepy.tech/badge/shopyo/month" alt="Downloads"></a>
+  <a href="https://codecov.io/gh/shopyo/shopyo"><img src="https://codecov.io/gh/shopyo/shopyo/branch/dev/graph/badge.svg?token=J4TL2MDTSS" alt="Codecov"></a>
+  <a href="https://github.com/shopyo/shopyo/actions/workflows/tests.yaml"><img src="https://github.com/shopyo/shopyo/actions/workflows/tests.yaml/badge.svg" alt="Tests"></a>
+  <a href="https://pypi.python.org/pypi/shopyo/"><img src="https://img.shields.io/pypi/v/shopyo.svg" alt="PyPI"></a>
+  <a href="https://shopyo.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/shopyo/badge/?version=latest" alt="Docs"></a>
+  <a href="https://bestpractices.coreinfrastructure.org/projects/5350"><img src="https://bestpractices.coreinfrastructure.org/projects/5350/badge" alt="CII"></a>
+  <a href="https://api.securityscorecards.dev/projects/github.com/shopyo/shopyo"><img src="https://api.securityscorecards.dev/projects/github.com/shopyo/shopyo/badge" alt="OpenSSF"></a>
+</p>
 
-Featured on [Weekly Python issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) 🌟
+<p align="center">
+  <a href="https://shopyo.readthedocs.io/en/latest/">📖 Docs</a> •
+  <a href="https://discord.gg/k37Ef6w">💬 Discord</a> •
+  <a href="https://shopyo.readthedocs.io/en/latest/contrib.html">🎯 Contribute</a> •
+  <a href="https://twitter.com/shopyoproject">🐦 Twitter</a>
+</p>
 
-A 45 mins talk was dedicated to it at [EuroPython](https://youtu.be/rkzXQOC1T0Q) 🌟
+---
 
-Must watch: [Shopyo: Your Mega Flask Machine](https://youtu.be/pvwvRi6iMds) (short vid)
+**Your Flask app works. Until it doesn't.**
 
-E-commerce modules transferred to [ShopCube](https://github.com/shopyo/shopcube)
+You start with a single `app.py`. Then you add auth. Then an admin panel. Then a few blueprints. Suddenly you have 5,000 lines and no idea where anything lives. You think about Django — but you chose Flask for a reason.
 
-**[ [DOCS](https://shopyo.readthedocs.io/en/latest/) | [DISCORD](https://discord.gg/k37Ef6w) | [CONTRIBUTE](https://shopyo.readthedocs.io/en/latest/contrib.html) | [TWITTER](https://twitter.com/shopyoproject)]**
+Shopyo is the answer. It gives you the **modular architecture**, **auth**, **admin dashboard**, **CLI scaffolding**, and **project structure** that Flask is missing — in one `pip install`.
 
-# What?
+```bash
+pip install shopyo
+shopyo new myapp
+cd myapp && shopyo initialise && flask run --debug
+# → Working app with auth, admin panel, and dashboard at localhost:5000
+```
 
-Your next-level modular web framework. Get organisation & scalability from day 1.
+Featured on [Python Weekly issue 436](https://newsletry.com/Home/Python%20Weekly/9a578693-14ba-47c5-8a8e-08d7b0139fe7) and presented at [EuroPython 2023](https://youtu.be/rkzXQOC1T0Q).
 
-Built on top of Flask, it offers most Django features, sometimes a tidbit more with far more flexibility.
+---
 
-# Why?
+## Why Shopyo?
 
-| Perk |  |
-|:--|:--:|
-| 🥏 No learning  | Does not get into the way, uses common flask-packages. You only need to know Flask. |
-| 🏗️ Architecture | Never think about architecture of your app, just build & integrate extensions. |
-| 🏢 Scalable | As your app grows, Shopyo caters for your codebase with powerful features. |
-| 🥢 Good practices | Testing, docs etc are covered. Don't make those afterthoughts. |
-| 🔧 Ease your life | We've been there. Awesome utils to ease development. |
-| 🪜 Scaffolding | Don't waste time writing boilerplate code. We've got you covered. |
-| 🖍️ Theming system | You need theme in your apps? We integrate a default theme system. |
+| Instead of this... | You get this |
+|---|---|
+| Wiring up Flask-Login, Flask-Admin, Flask-Migrate, Flask-WTF, and 5 other extensions separately | One `pip install` with everything working together |
+| Manually registering blueprints and hoping you didn't miss one | Auto-discovery: drop a module in `modules/` and it just works |
+| Googling "how to structure a large Flask app" for the 10th time | A proven architecture that scales from day one |
+| Configuring static files differently for dev and prod | Zero-friction assets: one `url_for()` call works everywhere |
+| Writing the same user management UI for every project | Built-in admin dashboard and user management |
 
-# Features
+## Features
 
-- ⚛️ i18n setup
-- 🔐 Login & Auth
-- 📧 Email
-- 📦 2-level modularity
-- 🪐 Designed for really BIG apps
-- 🌅 Assets management
+- **🔐 Auth built-in** — Login, registration, password reset, email confirmation, API tokens, rate limiting, password complexity, roles, and an events system. Drop-in, no wiring required.
+- **📦 2-level modularity** — Organize features as **modules** and group them into **boxes**. Add, remove, or replace parts without touching the rest of your app.
+- **🖥️ Admin dashboard** — User management, settings, and a customizable admin panel. Works out of the box, fully hackable.
+- **🪜 CLI scaffolding** — `shopyo new` creates a project. `shopyo startapp` creates a module. `shopyo startbox` creates a box. No boilerplate to write.
+- **🌅 Zero-friction assets** — Use standard Flask `url_for('static', ...)` in development and production. Transparent static shadowing handles the rest.
+- **⚛️ i18n ready** — Internationalization setup included.
+- **🎨 Theme system** — Front-end and back-end theming with pluggable CSS themes.
+- **🔧 Production-ready** — Session hardening, CSRF protection, environment-enforced secrets, rate limiting, multi-platform CI/CD, 71%+ test coverage.
 
-# Quick start
+## Quick start
 
 ```bash
 pip install shopyo
@@ -53,99 +74,76 @@ shopyo initialise
 flask run --debug
 ```
 
-> **Note:** You can also run `shopyo new` (without a project name) inside an existing directory to scaffold Shopyo in place.
+Open http://localhost:5000/dashboard — credentials: `admin@domain.com` / `pass`.
 
-Go to http://127.0.0.1:5000/dashboard with credentials `admin@domain.com` / `pass`.
+> You can also run `shopyo new` inside an existing directory to scaffold Shopyo in place.
 
-### Why Shopyo?
-- **Flat Structure:** No more nested `proj/proj` confusion.
-- **Zero-Friction Assets:** Use standard Flask `url_for('static', filename='modules/...')`. It just works in Dev and Prod.
-- **Auto-Discovery:** Modules are detected and registered automatically.
+## What does "modular" mean?
 
-![](https://github.com/shopyo/shopyo/blob/dev/comparison.png)
+Every feature in Shopyo is a **module**. Modules are self-contained Flask blueprints with their own models, views, forms, templates, and static assets.
 
--   Not framework docs but docs for the project you are building.
+```
+myproject/
+├── modules/
+│   ├── www/              # Homepage, public routes
+│   ├── blog/             # Blog module (you create this)
+│   ├── analytics/        # Analytics module (you create this)
+│   └── box__billing/     # Box: group of related modules
+│       ├── subscriptions/
+│       └── invoices/
+├── config.py
+├── app.py
+└── requirements.txt
+```
 
-# First time contributing?
+Add a module by dropping a folder into `modules/`. Shopyo auto-discovers and registers it. No blueprint registration, no configuration files to update.
 
-We have a 100% first-timers friendly policy. Check out the [testimonials](https://github.com/shopyo/shopyo/discussions/307).
+## Who uses Shopyo?
 
-> Thank you! One of the best onboarding experiences I've had. Learned a lot too (Ramon from Codesee.io)
+| Site | Description |
+|---|---|
+| [Maurilearn.com](https://maurilearn.com) | Elearning platform |
+| [Linkolearn.com](https://linkolearn.com) | Learn by links |
+| [FlaskCon.com](https://flaskcon.com) | Conference software |
 
-# Glimpse
+**Built something with Shopyo?** [Let us know](https://github.com/shopyo/shopyo/discussions) and we'll add you to the list.
 
-![](https://github.com/shopyo/shopyo/raw/dev/assets/comparison.png)
+## Why not Django?
 
-# Who uses Shopyo?
+Django is excellent for Django-shaped problems. But if you want:
+- Flask's **flexibility** (swap SQLAlchemy for Peewee, Jinja for Mako)
+- A **flat project structure** (no nested `proj/proj`)
+- **Granular modularity** (modules and boxes, not Django "apps")
+- **Zero boilerplate** (auto-discovery, no manual registration)
 
-|   site name    |    description     |
-| :------------: | :----------------: |
-| Maurilearn.com | Elearning platform |
-| Linkolearn.com |   Learn By links   |
-|  FlaskCon.com  |  Conference soft   |
+...then Shopyo gives you Django's batteries without Django's constraints.
 
-# Big??
+## Why not plain Flask?
 
-Powered by apps / modules. Add as many as you like.
+Flask is perfect for small projects. As you grow, you need:
+- A **project architecture** that doesn't collapse at 10k lines
+- **Auth** that works out of the box (not 6 extensions you wire up yourself)
+- An **admin panel** that isn't an afterthought
+- **CLI commands** for scaffolding, not copy-paste from Stack Overflow
 
-Apps are not enough, organise them in boxes and get the ultimate order you need.
+Shopyo gives you all of this while keeping 100% Flask compatibility. Every Shopyo project is still a Flask project.
 
-You need a customised Django? This is the project. You need to build an ERP? This is the project.
+## First time contributing?
 
-# Linux??
+We have a **100% first-timers friendly policy**. Check out the [testimonials](https://github.com/shopyo/shopyo/discussions/307).
 
-Hackable to the core. Even the dashboard is but a module.
+> *"One of the best onboarding experiences I've had. Learned a lot too."* — Ramon from Codesee.io
 
-Don't need our modules? Nuke them. Look boring? modify them
+👉 [Get started contributing](https://shopyo.readthedocs.io/en/latest/contrib.html)
+👉 [Join the Discord](https://discord.gg/k37Ef6w)
 
-# Reliable?
+## License
 
-We don't maintain middlewares. We rely on battle tested batteries like:
+MIT — see [LICENSE](LICENSE).
 
--   flask_sqlalchemy
--   flask_login & co
+## Contact
 
-Heck remove them if you don't want. Want to use Peewee? You can.
-
-# Rich Flask API
-
-Common flask patterns are integrated, the structure is over the moon.
-
-Common flask tasks are provided with an API: custom notifications, bulk form errors
-
-# Back office feel & Theme
-
-All looks are 100% customisable with themes ~ Backend, bootstrap included by default.
-
-Again blow it up & use what you want. It's possible
-
-# Transparent: Code your own web distro
-
-Everything is clear, not hidden. You can 100% customise whatever you want.
-
-We did not hardcode our choices. Our APIS are incremental. You can always use barebones.
-
-# Plug & Play
-
-The modules are put by copy paste. No blueprint codes to write.
-
-# Contribute
-
-We follow a 100% first-timers friendly policy.
-
-👉 Get started [here](https://shopyo.readthedocs.io/en/latest/contrib.html)
-
-👉 Join the [Discord](https://discord.gg/k37Ef6w), ask questions & learn about Flask tricks during our dev talks!
-
-# 📚 Docs
-
-👉 Link: [shopyo.readthedocs.io/](https://shopyo.readthedocs.io/en/latest/)
-
-# 📞 Contact (inlcuding in case of vulns)
-
-Support team if you are stuck
-
--   [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) - arj.python@gmail.com
--   [Nathan](https://github.com/blips5) -
--   [Arthur Nangai](https://github.com/arthurarty) - arthurnangaiarty@yahoo.co.uk
--   [Shamsuddin Rehmani](https://github.com/rehmanis) - rehmani@usc.edu
+- [Abdur-Rahmaan Janhangeer](https://github.com/Abdur-rahmaanJ) — arj.python@gmail.com
+- [Nathan](https://github.com/blips5)
+- [Arthur Nangai](https://github.com/arthurarty) — arthurnangaiarty@yahoo.co.uk
+- [Shamsuddin Rehmani](https://github.com/rehmanis) — rehmani@usc.edu

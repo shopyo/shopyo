@@ -62,7 +62,7 @@ shopyo rename old_name new_name  # Rename module
 ```bash
 shopyo startapp blog
 # or with box
-shopyo startapp blog box__ecommerce
+shopyo startapp blog box__billing
 ```
 
 Creates:

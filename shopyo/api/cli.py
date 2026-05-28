@@ -155,7 +155,7 @@ def create_module(modulename, boxname, verbose, interactive):
             fg="red",
             bold=True,
         )
-        click.echo("    Example: box__ecommerce")
+        click.echo("    Example: box__billing")
         sys.exit(1)
 
     if modulename.startswith("box_"):
