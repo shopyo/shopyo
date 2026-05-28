@@ -13,6 +13,10 @@
 - **Password complexity enabled by default:** `SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED` now defaults to `True`. Added `SHOPYO_AUTH_MIN_PASSWORD_LENGTH` (default 12). Minimum length is always enforced regardless of the complexity flag.
 - **CSRF protection unified:** Removed the custom ``csrf_protect`` decorator from ``shopyo/api/security.py``. Flask-WTF's ``CSRFProtect`` (initialised globally in ``shopyo/init.py``) now handles all form-based CSRF validation. API clients can still use ``generate_csrf_token()`` and ``validate_csrf_token()`` directly.
 
+### Testing
+
+- **Increased test coverage to 71%** (up from 70%): Added 20 new tests across ``test_assets.py`` (10 tests, coverage 23%→79%), ``test_shopyo_admin.py`` (10 tests, coverage 59%→91%), and ``test_templates.py`` (5 tests, coverage 65%→71%).
+
 ## v4.17.0 (2026-03-11)
 
 ### Feat
