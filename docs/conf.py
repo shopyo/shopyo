@@ -48,6 +48,7 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.napoleon",
     "sphinx_tabs.tabs",
+    "sphinx_wagtail_theme",
 ]
 
 # autosectionlabel_prefix_document = True
@@ -80,7 +81,7 @@ html_logo = "shopyo.png"
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "furo"
+html_theme = "sphinx_wagtail_theme"
 # html_theme_options = {
 #     "github_repo": "shopyo/shopyo",
 # }
