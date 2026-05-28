@@ -135,11 +135,91 @@ Environment Variables
 
 Shopyo can be configured using environment variables. This is especially useful for production deployments.
 
+.. warning::
+   The ``ProductionConfig`` **requires** ``SECRET_KEY`` and
+   ``SQLALCHEMY_DATABASE_URI`` to be set via environment variables.
+   If either is missing, the application will refuse to boot with a
+   ``RuntimeError``. Hardcoded defaults are not allowed in production.
+
 Essential Variables
 ===================
 
-- ``SECRET_KEY``: A long random string used to secure session cookies and other crypto needs.
-- ``SQLALCHEMY_DATABASE_URI``: The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
+- ``SECRET_KEY`` (**required in production**): A long random string used to secure session cookies and other crypto needs.
+- ``SQLALCHEMY_DATABASE_URI`` (**required in production**): The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
+- ``PASSWORD_SALT``: Salt for token signing. Auto-generated as a random 64-char hex string if not set.
+
+Session Security
+===================
+
+By default, Shopyo applies the following session cookie hardening flags:
+
+- ``SESSION_COOKIE_HTTPONLY = True`` — prevents JavaScript access to the session cookie (mitigates XSS-based session theft).
+- ``SESSION_COOKIE_SAMESITE = "Lax"`` — prevents the cookie from being sent in cross-site requests (mitigates CSRF).
+- ``SESSION_COOKIE_SECURE = True`` — only sent over HTTPS (set in ``ProductionConfig`` only; development/testing use HTTP).
+
+These defaults are set in ``BaseConfig`` and inherited by all environments. You can override them in your app's config:
+
+.. code-block:: python
+
+    class MyConfig(ProductionConfig):
+        SESSION_COOKIE_SAMESITE = "Strict"  # even stricter cross-site policy
+
+Admin Panel Security
+====================
+
+Shopyo's admin panel uses the policy engine (see :doc:`policy_tutorial`) to gate access:
+
+- Unauthenticated users are redirected to the login page.
+- Authenticated users without ``ADMIN_PANEL_ACCESS`` permission receive a ``403 Forbidden``.
+- ``DefaultModelView`` classes in the admin require both ``is_authenticated`` and ``is_admin`` on the ``User`` model.
+
+The ``DefaultModelView.is_accessible()`` method has been hardened to fix a
+previously unreachable guard: the old ``not current_user.is_authenticated and
+current_user.is_admin`` condition could never be true (``AnonymousUser.is_admin``
+always returns ``False``), so unauthenticated users silently bypassed the check.
+The fix splits the guard into a proper unauthenticated redirect followed by a
+policy-based authorization check.
+
+Cross-Site Request Forgery (CSRF) Protection
+=============================================
+
+CSRF protection is handled globally by **Flask-WTF** ``CSRFProtect``, which is
+initialised in ``shopyo/init.py`` and protects all unsafe HTTP methods
+(POST, PUT, PATCH, DELETE) on form-based routes.
+
+**For HTML forms** — include the CSRF token in every form:
+
+.. code-block:: html
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        ...
+    </form>
+
+Flask-WTF forms automatically include a hidden CSRF field when using
+``form.hidden_tag()``.
+
+**For API clients** — send the CSRF token via:
+
+- The ``X-CSRFToken`` header, or
+- The ``csrf_token`` form field, or
+- The ``csrf_token`` key in a JSON request body
+
+To get the CSRF token programmatically:
+
+.. code-block:: python
+
+    from shopyo.api.security import generate_csrf_token, validate_csrf_token
+
+    # Obtain the current token
+    token = generate_csrf_token()
+
+    # Validate a token submitted by a client
+    if validate_csrf_token(submitted_token):
+        ...
+
+The legacy ``@csrf_protect`` decorator has been removed — it was redundant
+with Flask-WTF's global ``CSRFProtect`` middleware.
 
 Email Configuration
 ===================
@@ -157,8 +237,8 @@ Seeding Configuration
 
 These variables are used during the ``shopyo initialise`` command to create the initial admin user:
 
-- ``SHOPYO_AUTH_SEED_ADMIN_EMAIL``: Email for the default admin user (defaults to ``admin@domain.com``).
-- ``SHOPYO_AUTH_SEED_ADMIN_PASSWORD``: Password for the default admin user (defaults to ``Pass1234!@#$``).
+- ``SHOPYO_AUTH_SEED_ADMIN_EMAIL``: Email for the seed admin user (no default — seeding is skipped if unset).
+- ``SHOPYO_AUTH_SEED_ADMIN_PASSWORD``: Password for the seed admin user (no default — seeding is skipped if unset).
 
 Why Not Plain Flask?
 --------------------

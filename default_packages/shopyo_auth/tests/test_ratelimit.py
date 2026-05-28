@@ -32,7 +32,7 @@ class TestRateLimiting:
     def test_limiter_blocks_excessive_requests(self, test_client, flask_app):
         """Verify system throttles after reaching the configured limit."""
         flask_app.config["SHOPYO_AUTH_RATE_LIMIT_ENABLED"] = True
-        flask_app.config["SHOPYO_AUTH_RATE_LIMIT"] = "3 per minute"
+        flask_app.config["SHOPYO_AUTH_RATE_LIMIT_LOGIN"] = "3 per minute"
         limiter.enabled = True
 
         # 1-3: Success
@@ -54,7 +54,8 @@ class TestRateLimiting:
     def test_limiter_isolation_per_endpoint(self, test_client, flask_app):
         """Verify that hitting the limit on one endpoint doesn't block others."""
         flask_app.config["SHOPYO_AUTH_RATE_LIMIT_ENABLED"] = True
-        flask_app.config["SHOPYO_AUTH_RATE_LIMIT"] = "2 per minute"
+        flask_app.config["SHOPYO_AUTH_RATE_LIMIT_LOGIN"] = "2 per minute"
+        flask_app.config["SHOPYO_AUTH_RATE_LIMIT_REGISTER"] = "10 per minute"
         limiter.enabled = True
 
         # Exhaust login

@@ -5,9 +5,17 @@ All pytest fixtures local only to the api/tests are placed here
 
 import os
 import shutil
+import sys
 import tempfile
 
 import pytest
+
+# Ensure shopyo/ is on sys.path so that `from init import db` works
+_shopyo_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+if _shopyo_root not in sys.path:
+    sys.path.insert(0, _shopyo_root)
 
 
 @pytest.fixture

@@ -44,11 +44,58 @@ Enable the extension in your `app.py`. You can also configure security features:
        app.config.update({
            "SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED": True,
            "SHOPYO_AUTH_RATE_LIMIT_ENABLED": True,
-           "SHOPYO_AUTH_RATE_LIMIT": "5 per minute",
+           "SHOPYO_AUTH_RATE_LIMIT": "10 per minute",
        })
 
        sh_auth = ShopyoAuth(app)
        return app
+
+Rate Limiting
+~~~~~~~~~~~~~
+
+Rate limiting is **enabled by default** (``SHOPYO_AUTH_RATE_LIMIT_ENABLED`` defaults
+to ``True``). Each auth endpoint has its own configurable limit:
+
++------------------------------------------------+------------------+----------------------------+
+| Config Key                                     | Default          | Endpoint                   |
++================================================+==================+============================+
+| ``SHOPYO_AUTH_RATE_LIMIT``                     | ``10 per minute``| Global fallback            |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_LOGIN``               | ``10 per minute``| ``/shopyo-auth/login``     |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_REGISTER``            | ``3 per minute`` | ``/shopyo-auth/register``  |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD``     | ``3 per minute`` | ``/shopyo-auth/forgot``    |
++------------------------------------------------+------------------+----------------------------+
+| ``SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD``      | ``3 per minute`` | ``/shopyo-auth/reset``     |
++------------------------------------------------+------------------+----------------------------+
+
+Set ``SHOPYO_AUTH_RATE_LIMIT_ENABLED = False`` to disable rate limiting entirely
+(e.g., during testing).
+
+Password Complexity
+~~~~~~~~~~~~~~~~~~~
+
+Password complexity validation is **enabled by default**
+(``SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED`` defaults to ``True``).
+
++------------------------------------------------+----------+----------------------------------------------------+
+| Config Key                                     | Default  | Description                                        |
++================================================+==========+====================================================+
+| ``SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED``    | ``True`` | Enable uppercase, digit, and special-char checks   |
++------------------------------------------------+----------+----------------------------------------------------+
+| ``SHOPYO_AUTH_MIN_PASSWORD_LENGTH``            | ``12``   | Minimum password length (always enforced)          |
++------------------------------------------------+----------+----------------------------------------------------+
+
+When complexity is enabled, passwords must contain at least one:
+- Uppercase letter (``A-Z``)
+- Lowercase letter (``a-z``)
+- Digit (``0-9``)
+- Special character (e.g. ``!@#$%^&*``)
+
+The minimum length is **always enforced** regardless of the complexity flag.
+Set ``SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED = False`` to skip the character-class
+rules while retaining the minimum-length check.
 
 CLI Management
 --------------
@@ -127,6 +174,17 @@ Users can manage tokens via the built-in API endpoints:
 * `POST /shopyo-auth/api/tokens`: Create a token.
 * `GET /shopyo-auth/api/tokens`: List tokens.
 * `DELETE /shopyo-auth/api/tokens/<id>`: Revoke a token.
+
+.. note::
+   Tokens are hashed using **PBKDF2-HMAC-SHA256** with a per-token 32-byte
+   random salt (600,000 iterations) before storage. The raw token is returned
+   only once at creation time. This prevents brute-force recovery even if the
+   token database is leaked.
+
+   Previously, tokens were hashed with an unsalted ``sha256``, making them
+   trivially reversible through rainbow tables. Existing tokens remain valid
+   but new tokens created after the upgrade use the PBKDF2 scheme. To fully
+   benefit, regenerate all existing tokens.
 
 Auth Events System
 ------------------

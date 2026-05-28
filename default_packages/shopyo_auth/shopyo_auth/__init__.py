@@ -91,14 +91,17 @@ default_config = {
     "SHOPYO_AUTH_REGISTER_TEMPLATE": "shopyo_auth/register.html",
     "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED": False,
     "SHOPYO_AUTH_LOGIN_FORGET_PASSWORD": True,
-    "SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED": False,
-    "SHOPYO_AUTH_RATE_LIMIT_ENABLED": False,
-    "SHOPYO_AUTH_RATE_LIMIT": "5 per minute",
-    "SHOPYO_AUTH_SEED_ADMIN_EMAIL": os.environ.get(
-        "SHOPYO_AUTH_SEED_ADMIN_EMAIL", "admin@admin.com"
-    ),
+    "SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED": True,
+    "SHOPYO_AUTH_MIN_PASSWORD_LENGTH": 12,
+    "SHOPYO_AUTH_RATE_LIMIT_ENABLED": True,
+    "SHOPYO_AUTH_RATE_LIMIT": "10 per minute",
+    "SHOPYO_AUTH_RATE_LIMIT_FORGOT_PASSWORD": "3 per minute",
+    "SHOPYO_AUTH_RATE_LIMIT_RESET_PASSWORD": "3 per minute",
+    "SHOPYO_AUTH_RATE_LIMIT_LOGIN": "10 per minute",
+    "SHOPYO_AUTH_RATE_LIMIT_REGISTER": "3 per minute",
+    "SHOPYO_AUTH_SEED_ADMIN_EMAIL": os.environ.get("SHOPYO_AUTH_SEED_ADMIN_EMAIL"),
     "SHOPYO_AUTH_SEED_ADMIN_PASSWORD": os.environ.get(
-        "SHOPYO_AUTH_SEED_ADMIN_PASSWORD", "pass"
+        "SHOPYO_AUTH_SEED_ADMIN_PASSWORD"
     ),
 }
 
@@ -129,7 +132,7 @@ class ShopyoAuth:
         # Always init, but it will only throttle if enabled via config
         limiter.init_app(app)
         # Enable/Disable based on config
-        limiter.enabled = app.config.get("SHOPYO_AUTH_RATE_LIMIT_ENABLED", False)
+        limiter.enabled = app.config.get("SHOPYO_AUTH_RATE_LIMIT_ENABLED", True)
 
         app.extensions["shopyo_auth"] = self
         app.cli.add_command(auth_cli)

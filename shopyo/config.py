@@ -16,8 +16,14 @@ configs = {
 """
 
 import os
+import warnings
 
 base_path = os.path.dirname(os.path.abspath(__file__))
+
+PRODUCTION_REQUIRED_ENV_KEYS = [
+    "SECRET_KEY",
+    "SQLALCHEMY_DATABASE_URI",
+]
 
 
 class BaseConfig:
@@ -30,6 +36,9 @@ class BaseConfig:
     STATIC = os.path.join(base_path, "static")
     UPLOADED_PATH_IMAGE = os.path.join(STATIC, "uploads", "images")
     UPLOADED_PATH_THUMB = os.path.join(STATIC, "uploads", "thumbs")
+
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
 
     SEED_SETTINGS = {
         "APP_NAME": "Demo",
@@ -46,6 +55,8 @@ class ProductionConfig(BaseConfig):
     ENV = "production"
     SECRET_KEY = os.environ.get("SECRET_KEY")
 
+    SESSION_COOKIE_SECURE = True
+
     # control email confirmation for user registration
     EMAIL_CONFIRMATION_DISABLED = False
 
@@ -59,9 +70,16 @@ class ProductionConfig(BaseConfig):
     MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
 
     # database configs
-    SQLALCHEMY_DATABASE_URI = (
-        os.environ.get("SQLALCHEMY_DATABASE_URI") or "sqlite:///shopyo.db"
-    )
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+
+    PASSWORD_SALT = os.environ.get("PASSWORD_SALT", os.urandom(32).hex())
+
+    def __init__(self):
+        missing = [k for k in PRODUCTION_REQUIRED_ENV_KEYS if not os.environ.get(k)]
+        if missing:
+            raise RuntimeError(
+                f"Production boot blocked: required env vars not set: {missing}"
+            )
 
 
 class DevelopmentConfig(BaseConfig):
@@ -71,7 +89,15 @@ class DevelopmentConfig(BaseConfig):
     ENV = "development"
     DEBUG = True
     LOGIN_DISABLED = False
-    SECRET_KEY = "secret"
+    SECRET_KEY = os.environ.get("SECRET_KEY") or "secret"
+
+    def __init__(self):
+        if os.environ.get("SECRET_KEY", "").lower() in ("", "secret"):
+            warnings.warn(
+                "SECRET_KEY is unset or default. Set SHOPYO_SECRET_KEY env var.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
     # control email confirmation for user registration
     EMAIL_CONFIRMATION_DISABLED = False
@@ -88,12 +114,11 @@ class DevelopmentConfig(BaseConfig):
     # database configs
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
 
-    # unknown configs
-    PASSWORD_SALT = "some pasword salt"
+    PASSWORD_SALT = os.environ.get("PASSWORD_SALT") or "some pasword salt"
 
 
 class TestingConfig(BaseConfig):
-    """Configurations for testsing"""
+    """Configurations for testing"""
 
     # built in flask configs
     ENV = "testing"

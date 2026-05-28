@@ -59,11 +59,12 @@ class TestPasswordComplexity:
         validator = PasswordComplexity()
 
         class Field:
-            data = "simple"
+            data = "twelvechar12"  # meets minimum length, no complexity
 
         with flask_app.app_context():
             flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = False
-            # Should pass despite being non-compliant
+            flask_app.config["SHOPYO_AUTH_MIN_PASSWORD_LENGTH"] = 12
+            # Should pass despite being non-compliant on uppercase/digit/special
             validator(None, Field())
 
 
@@ -86,6 +87,7 @@ class TestRegistrationFormIntegration:
         """Verify form accepts simple password when complexity is disabled."""
         with flask_app.test_request_context():
             flask_app.config["SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED"] = False
+            flask_app.config["SHOPYO_AUTH_MIN_PASSWORD_LENGTH"] = 6
 
             data = MultiDict(
                 {

@@ -7,6 +7,7 @@
 import datetime
 import hashlib
 import logging
+import os
 import secrets
 
 from flask import current_app
@@ -179,18 +180,36 @@ class User(UserMixin, PkModel):
     def generate_api_token(self, name):
         """Generates a new API token for the user."""
         token = secrets.token_urlsafe(32)
-        token_hash = hashlib.sha256(token.encode()).hexdigest()
-        UserToken.create(user_id=self.id, name=name, token_hash=token_hash)
+        salt = os.urandom(32)
+        token_hash = hashlib.pbkdf2_hmac(
+            "sha256",
+            token.encode(),
+            salt=salt,
+            iterations=600_000,
+        ).hex()
+        UserToken.create(
+            user_id=self.id,
+            name=name,
+            token_hash=token_hash,
+            token_salt=salt.hex(),
+        )
         return token  # Return the raw token ONLY ONCE
 
     @staticmethod
     def verify_api_token(token):
-        token_hash = hashlib.sha256(token.encode()).hexdigest()
-        user_token = UserToken.query.filter_by(token_hash=token_hash).first()
-        if user_token:
-            user_token.last_used_at = datetime.datetime.now()
-            user_token.update()
-            return user_token.user
+        user_tokens = UserToken.query.all()
+        for user_token in user_tokens:
+            salt = bytes.fromhex(user_token.token_salt)
+            token_hash = hashlib.pbkdf2_hmac(
+                "sha256",
+                token.encode(),
+                salt=salt,
+                iterations=600_000,
+            ).hex()
+            if token_hash == user_token.token_hash:
+                user_token.last_used_at = datetime.datetime.now()
+                user_token.update()
+                return user_token.user
         return None
 
 
@@ -211,6 +230,7 @@ class UserToken(PkModel):
     )
     name = db.Column(db.String(100), nullable=False)
     token_hash = db.Column(db.String(64), unique=True, index=True, nullable=False)
+    token_salt = db.Column(db.String(64), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     last_used_at = db.Column(db.DateTime)
 

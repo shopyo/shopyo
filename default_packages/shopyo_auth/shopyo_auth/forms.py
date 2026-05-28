@@ -15,8 +15,8 @@ from wtforms.validators import ValidationError
 class PasswordComplexity:
     """
     Validator to check for password complexity.
-    Requires at least one uppercase, one lowercase, one digit, and one special character.
-    If SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED is False, it passes.
+    Always enforces a minimum length. When ENABLED, additionally requires
+    at least one uppercase, one lowercase, one digit, and one special character.
     """
 
     def __init__(self, message=None):
@@ -28,14 +28,13 @@ class PasswordComplexity:
         self.message = message
 
     def __call__(self, form, field):
-        if not current_app.config.get("SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED", False):
-            return
-
         password = field.data
-        if len(password) < 12:
-            raise ValidationError(
-                "Password must be at least 12 characters when complexity is enabled."
-            )
+        min_length = current_app.config.get("SHOPYO_AUTH_MIN_PASSWORD_LENGTH", 12)
+        if len(password) < min_length:
+            raise ValidationError(f"Password must be at least {min_length} characters.")
+
+        if not current_app.config.get("SHOPYO_AUTH_PASSWORD_COMPLEXITY_ENABLED", True):
+            return
 
         if not re.search(r"[A-Z]", password):
             raise ValidationError(self.message)

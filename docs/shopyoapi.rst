@@ -114,6 +114,46 @@ api.module
     :show-inheritance:
 
 
+api.perms
+-----------------
+
+Policy-based authorization system replacing ``is_admin`` checks with a
+``Permission`` + ``PolicyEngine`` approach.
+
+**Usage:**
+
+.. code-block:: python
+
+    from shopyo.api.perms import PolicyEngine, Permission
+
+    engine = PolicyEngine()
+
+    # Grant permissions to roles
+    engine.grant("admin", Permission.ADMIN_PANEL_ACCESS, Permission.USER_MANAGE)
+    engine.grant("editor", Permission.CONTENT_MANAGE)
+
+    # Define custom policy checks
+    engine.define("perm.CONTENT_PUBLISH", lambda user, resource: user.id == resource.owner_id)
+
+    # Use as a decorator on views
+    @engine.require(Permission.ADMIN_PANEL_ACCESS)
+    def dashboard():
+        return "Admin dashboard"
+
+    # Programmatic check
+    if engine.has_permission(current_user, Permission.USER_MANAGE):
+        ...
+
+.. automodule:: shopyo.api.perms
+    :members:
+    :undoc-members:
+    :exclude-members: Policy
+
+.. autoclass:: shopyo.api.perms.Policy
+    :members:
+    :noindex:
+
+
 api.security
 -----------------
 
