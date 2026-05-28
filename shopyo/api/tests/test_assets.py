@@ -113,9 +113,15 @@ def test_shopyo_static_plugin_with_mhelp(tmp_path):
         assert resp.status_code == 200
     finally:
         if not existing and os.path.exists(logo_path):
-            os.remove(logo_path)
+            try:
+                os.remove(logo_path)
+            except PermissionError:
+                pass
         if os.path.exists(pkg_static) and not os.listdir(pkg_static):
-            os.rmdir(pkg_static)
+            try:
+                os.rmdir(pkg_static)
+            except PermissionError:
+                pass
 
 
 def test_shopyo_static_plugin_import_error(tmp_path):
