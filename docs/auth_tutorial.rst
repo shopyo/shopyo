@@ -128,6 +128,12 @@ Users can manage tokens via the built-in API endpoints:
 * `GET /shopyo-auth/api/tokens`: List tokens.
 * `DELETE /shopyo-auth/api/tokens/<id>`: Revoke a token.
 
+.. note::
+   Tokens are hashed using **PBKDF2-HMAC-SHA256** with a per-token 32-byte
+   random salt (600,000 iterations) before storage. The raw token is returned
+   only once at creation time. This prevents brute-force recovery even if the
+   token database is leaked.
+
 Auth Events System
 ------------------
 Synchronize your application logic with authentication actions using events.

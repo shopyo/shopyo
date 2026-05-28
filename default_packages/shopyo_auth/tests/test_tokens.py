@@ -66,7 +66,7 @@ class TestAPITokens:
         assert user.tokens.count() == 0
 
     def test_token_hashing(self, active_user):
-        """Verify tokens are never stored in plaintext."""
+        """Verify tokens are hashed with pbkdf2 and per-token salt."""
         user = active_user()
         token = user.generate_api_token("secret")
         from init import db
@@ -75,4 +75,26 @@ class TestAPITokens:
 
         db_token = UserToken.query.filter_by(user_id=user.id).first()
         assert db_token.token_hash != token
-        assert len(db_token.token_hash) == 64  # SHA-256
+        assert len(db_token.token_hash) == 64  # pbkdf2-hmac-sha256 = 32 bytes = 64 hex
+        assert db_token.token_salt is not None
+        assert len(db_token.token_salt) == 64  # 32 bytes = 64 hex
+
+    def test_token_hash_is_pbkdf2(self, active_user):
+        """Verify tokens cannot be brute-forced without the salt."""
+        user = active_user()
+        token = user.generate_api_token("protected")
+        import hashlib
+        from init import db
+
+        db.session.commit()
+
+        db_token = UserToken.query.filter_by(user_id=user.id).first()
+        # Plain sha256 should NOT match the stored hash
+        sha256_hash = hashlib.sha256(token.encode()).hexdigest()
+        assert sha256_hash != db_token.token_hash
+        # Re-computing with the stored salt should match
+        salt = bytes.fromhex(db_token.token_salt)
+        pbkdf2_hash = hashlib.pbkdf2_hmac(
+            "sha256", token.encode(), salt=salt, iterations=600_000
+        ).hex()
+        assert pbkdf2_hash == db_token.token_hash

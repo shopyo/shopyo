@@ -6,6 +6,7 @@
 - **Hardened session cookies:** `BaseConfig` now sets `SESSION_COOKIE_HTTPONLY = True` and `SESSION_COOKIE_SAMESITE = "Lax"`. `ProductionConfig` additionally sets `SESSION_COOKIE_SECURE = True`.
 - **Development secret key warning:** `DevelopmentConfig` emits a `DeprecationWarning` when `SECRET_KEY` is unset or uses the default `"secret"` value.
 - **Seed admin defaults removed:** `SHOPYO_AUTH_SEED_ADMIN_EMAIL` and `SHOPYO_AUTH_SEED_ADMIN_PASSWORD` default to `None`. Seeding is skipped when both are unset.
+- **API token hashing upgraded:** `generate_api_token()` now uses `hashlib.pbkdf2_hmac` with a per-token 32-byte random salt (600K iterations) instead of unsalted `sha256`. A `token_salt` column was added to the `UserToken` model.
 
 ## v4.17.0 (2026-03-11)
 
