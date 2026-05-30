@@ -1,5 +1,5 @@
-sphinx
-ablog
+sphinx>=5.0.0,<8
+ablog>=0.11.0,<0.11.9
 sphinx-wagtail-theme==6.5.0
 sphinx-tabs>=3.4.7
 sphinx-autobuild
