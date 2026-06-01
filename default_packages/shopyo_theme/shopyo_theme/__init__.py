@@ -6,7 +6,6 @@ from flask import current_app
 from shopyo_theme.view import module_blueprint
 from .helpers import *
 
-
 __version__ = "1.4.0"
 
 info = {}

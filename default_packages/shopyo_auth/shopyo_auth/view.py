@@ -26,7 +26,6 @@ from shopyo.api.html import notify_warning
 from shopyo.api.module import ModuleHelp
 from shopyo.api.security import is_safe_redirect_url
 
-
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]

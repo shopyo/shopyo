@@ -16,7 +16,6 @@ from shopyo_auth.models import Role
 from shopyo_auth.models import role_user_bridge
 from shopyo_auth.models import User
 
-
 dirpath = os.path.dirname(os.path.abspath(__file__))
 module_path = os.path.dirname(dirpath)
 
