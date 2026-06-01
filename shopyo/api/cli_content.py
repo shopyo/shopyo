@@ -2,8 +2,7 @@ import textwrap
 
 
 def get_module_view_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         from shopyo.api.module import ModuleHelp
         from flask import render_template
         # from flask import url_for
@@ -38,15 +37,13 @@ def get_module_view_content():
         #     return render_template(
         #         "{}/dashboard.html".format(mhelp.info["module_name"]), **context
         #     )
-        """
-    )
+        """)
 
     return content
 
 
 def get_index_html_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         <!DOCTYPE html>
         <html>
         <head>
@@ -56,15 +53,13 @@ def get_index_html_content():
             <h1>{{ info['display_string'] }}</h1>
         </body>
         </html>
-        """
-    )
+        """)
 
     return content
 
 
 def get_dashboard_html_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         <!DOCTYPE html>
         <html>
         <head>
@@ -79,15 +74,13 @@ def get_dashboard_html_content():
             </div>
         </body>
         </html>
-        """
-    )
+        """)
 
     return content
 
 
 def get_global_py_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
 
         # global templates variables in here
         # available_everywhere = {
@@ -106,15 +99,13 @@ def get_global_py_content():
         #         "CONFIG_VAR": "TESTVALUE"
         #     }
         # }
-        """
-    )
+        """)
 
     return content
 
 
 def get_cli_content(projname):
-    content = textwrap.dedent(
-        f'''\
+    content = textwrap.dedent(f'''\
         """
         file: cli.py
         description: Add your custom cli commands here
@@ -158,26 +149,22 @@ def get_cli_content(projname):
 
             if verbose:
                 click.echo("See you soon")
-        '''
-    )
+        ''')
 
     return content
 
 
 def get_init_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         version_info = (1, 0, 0)
         __version__ = ".".join([str(v) for v in version_info])
-        """
-    )
+        """)
 
     return content
 
 
 def get_setup_py_content(projname):
-    content = textwrap.dedent(
-        f'''\
+    content = textwrap.dedent(f'''\
         """
         A setuptools based setup module.
         See:
@@ -268,15 +255,13 @@ def get_setup_py_content(projname):
                 ]
             }},
         )
-        '''
-    )
+        ''')
 
     return content
 
 
 def get_manifest_ini_content(projname):
-    content = textwrap.dedent(
-        f"""\
+    content = textwrap.dedent(f"""\
         include requirements.txt
         include dev_requirements.txt
         recursive-include . *
@@ -284,27 +269,23 @@ def get_manifest_ini_content(projname):
         recursive-exclude static/modules *
         recursive-exclude .tox *
         recursive-exclude __pycache__ *
-        """
-    )
+        """)
 
     return content
 
 
 def get_pytest_ini_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         [pytest]
         env_files =
             .test.prod.env
-        """
-    )
+        """)
 
     return content
 
 
 def get_tox_ini_content(projname):
-    content = textwrap.dedent(
-        f"""\
+    content = textwrap.dedent(f"""\
         [tox]
         envlist =
             py39
@@ -318,15 +299,13 @@ def get_tox_ini_content(projname):
             -rrequirements.txt
             -rdev_requirements.txt
         commands = python -m pytest {{posargs}}
-        """
-    )
+        """)
 
     return content
 
 
 def get_dev_req_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         flake8==3.8.4
         black==20.8b1
         isort==5.6.4
@@ -339,15 +318,13 @@ def get_dev_req_content():
         factory-boy==3.2.0
         freezegun==1.1.0
         pytest-dotenv
-        """
-    )
+        """)
 
     return content
 
 
 def get_gitignore_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         # Byte-compiled / optimized / DLL files
         __pycache__/
         *.py[cod]
@@ -473,15 +450,13 @@ def get_gitignore_content():
 
         # modules in static since present in modules
         shopyo/static/modules/
-        """
-    )
+        """)
 
     return content
 
 
 def get_index_rst_content(projname):
-    content = textwrap.dedent(
-        f"""\
+    content = textwrap.dedent(f"""\
         Welcome to {projname} docs!
         ============================
 
@@ -498,15 +473,13 @@ def get_index_rst_content(projname):
         * :ref:`genindex`
         * :ref:`modindex`
         * :ref:`search`
-        """
-    )
+        """)
 
     return content
 
 
 def get_docs_rst_content():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         .. :tocdepth:: 5
 
         Documentation
@@ -520,15 +493,13 @@ def get_docs_rst_content():
             sphinx-build . _build
 
         to generate html pages in docs
-        """
-    )
+        """)
 
     return content
 
 
 def get_sphinx_conf_py(projname):
-    content = textwrap.dedent(
-        f"""\
+    content = textwrap.dedent(f"""\
         # Configuration file for the Sphinx documentation builder.
         #
         # This file only contains a selection of the most common options. For a full
@@ -599,15 +570,13 @@ def get_sphinx_conf_py(projname):
         # relative to this directory. They are copied after the builtin static files,
         # so a file named "default.css" will overwrite the builtin "default.css".
         html_static_path = ["_static"]
-        """
-    )
+        """)
 
     return content
 
 
 def get_sphinx_makefile():
-    content = textwrap.dedent(
-        """\
+    content = textwrap.dedent("""\
         # Minimal makefile for Sphinx documentation
         #
 
@@ -629,7 +598,6 @@ def get_sphinx_makefile():
         %: Makefile
             @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-        """
-    )
+        """)
 
     return content

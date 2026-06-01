@@ -10,7 +10,6 @@ import pytest
 from flask import request
 from flask import url_for
 
-
 # class TestDashboardInvalidAccess:
 #     """
 #     Test all dashboard routes for correct user authentication
