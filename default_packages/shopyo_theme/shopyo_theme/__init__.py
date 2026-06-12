@@ -25,7 +25,9 @@ def _ensure_themes(app):
             continue
         try:
             shopyo = importlib.import_module("shopyo")
-            src = os.path.join(os.path.dirname(shopyo.__file__), "static", "themes", kind)
+            src = os.path.join(
+                os.path.dirname(shopyo.__file__), "static", "themes", kind
+            )
             if os.path.exists(src):
                 os.makedirs(os.path.join(app.static_folder, "themes"), exist_ok=True)
                 trycopytree(src, dest, verbose=False)
