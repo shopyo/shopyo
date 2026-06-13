@@ -62,7 +62,14 @@ Featured on [Python Weekly issue 436](https://newsletry.com/Home/Python%20Weekly
 - **🌅 Zero-friction assets** — Use standard Flask `url_for('static', ...)` in development and production. Transparent static shadowing handles the rest.
 - **⚛️ i18n ready** — Internationalization setup included.
 - **🎨 Theme system** — Front-end and back-end theming with pluggable CSS themes.
-- **🔧 Production-ready** — Session hardening, CSRF protection, environment-enforced secrets, rate limiting, multi-platform CI/CD, 71%+ test coverage.
+- **🔧 Production-ready** — Session hardening, CSRF protection, environment-enforced secrets, rate limiting, multi-platform CI/CD, 75%+ test coverage.
+- **🔑 Policy-based authorization** — Role-based access control with fine-grained permissions, grant/revoke semantics, and a `require` decorator for protecting views.
+- **🔄 Persistent login** — Optional "remember me" functionality with configurable cookie duration.
+- **📝 Customizable auth pages** — Override login and registration templates via config without touching package internals.
+- **🧩 Modular packages** — Auth, dashboard, page, i18n, settings, theme, and appadmin extracted as independent packages with URL override support.
+- **⚡ Modern UI** — Tailwind CSS, AlpineJS, and FontAwesome 6.5.1 bundled locally for offline reliability.
+- **🖊️ Rich text editing** — Quill editor integrated for a lightweight writing experience.
+- **🎯 Demo scaffolding** — `shopyo new --demo` creates a project pre-loaded with demo apps.
 
 ## Quick start
 
@@ -77,6 +84,8 @@ flask run --debug
 Open http://localhost:5000/dashboard — credentials: `admin@domain.com` / `pass`.
 
 > You can also run `shopyo new` inside an existing directory to scaffold Shopyo in place.
+> Note: `shopyo new .` does **not** work — the project name must be alphanumeric.
+> Use `shopyo new` (no argument) instead to create the project in the current directory.
 
 ## What does "modular" mean?
 
