@@ -13,9 +13,49 @@ PYTHON="$ROOT_DIR/venv/bin/python"
 TWINE="$ROOT_DIR/venv/bin/twine"
 
 # Safety check for venv and twine
-if [ ! -f "$PYTHON" ] || [ ! -f "$TWINE" ]; then
-    echo "❌ Error: Virtual environment or twine not found in ./venv"
+if [ ! -f "$PYTHON" ]; then
+    echo "❌ Error: Virtual environment not found in ./venv"
     exit 1
+fi
+
+# Ensure twine is installed and up-to-date (supports both uv and pip)
+if command -v uv &> /dev/null; then
+    uv pip install --quiet --upgrade twine 2>/dev/null
+else
+    "$PYTHON" -m pip install --quiet --upgrade twine 2>/dev/null
+fi
+
+# Parse optional package filter argument
+FILTER="$1"
+
+# Build the list of packages to process
+PACKAGES=()
+if [ -z "$FILTER" ]; then
+    # No filter: build all packages (root + default_packages)
+    PACKAGES+=(".")
+    for d in default_packages/*; do
+        if [ -d "$d" ]; then
+            PACKAGES+=("$d")
+        fi
+    done
+elif [ "$FILTER" == "shopyo" ]; then
+    # Only the root shopyo package
+    PACKAGES+=(".")
+else
+    # Match shopyo-* pattern against default_packages directory names
+    for d in default_packages/*; do
+        if [ -d "$d" ]; then
+            pkg_basename=$(basename "$d")
+            if [ "$pkg_basename" == "$FILTER" ]; then
+                PACKAGES+=("$d")
+                break
+            fi
+        fi
+    done
+    if [ ${#PACKAGES[@]} -eq 0 ]; then
+        echo "❌ Error: No package found matching '$FILTER' in default_packages/"
+        exit 1
+    fi
 fi
 
 # Create a clean unified dist directory
@@ -23,16 +63,12 @@ FINAL_DIST="$ROOT_DIR/all_dist"
 rm -rf "$FINAL_DIST"
 mkdir -p "$FINAL_DIST"
 
-echo "📦 Building all packages..."
+if [ -z "$FILTER" ]; then
+    echo "📦 Building all packages..."
+else
+    echo "📦 Building: $FILTER"
+fi
 echo "--------------------------"
-
-# List of all package directories to build (default_packages + root)
-PACKAGES=(".")
-for d in default_packages/*; do
-    if [ -d "$d" ]; then
-        PACKAGES+=("$d")
-    fi
-done
 
 for pkg in "${PACKAGES[@]}"; do
     # Check if it's a valid python package
