@@ -35,16 +35,17 @@ def _create_shopyo_app():
 
         create_app = app.create_app
     except ImportError as e:
+        error_msg = str(e)
         click.secho(
-            f" ❌ Error: Could not find 'app' module.",
+            f" ❌ Error: {error_msg}",
             fg="red",
             bold=True,
         )
-        click.echo(f"    Details: {e}")
-        click.echo("\n 💡 Make sure you are in your Shopyo project root directory.")
-        click.echo(
-            "    Your project should have an 'app.py' file with a 'create_app' function."
-        )
+        if error_msg.startswith("No module named 'app'"):
+            click.echo("\n 💡 Make sure you are in your Shopyo project root directory.")
+            click.echo(
+                "    Your project should have an 'app.py' file with a 'create_app' function."
+            )
         sys.exit(1)
     except AttributeError as e:
         click.secho(

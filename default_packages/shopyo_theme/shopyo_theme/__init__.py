@@ -9,7 +9,7 @@ from .helpers import *
 from shopyo.api.file import trycopytree
 
 
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
