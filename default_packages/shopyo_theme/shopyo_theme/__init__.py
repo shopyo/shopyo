@@ -1,10 +1,12 @@
 from typing import Any
+import importlib
 import os
 import json
 from flask import Flask
 from flask import current_app
 from shopyo_theme.view import module_blueprint
 from .helpers import *
+from shopyo.api.file import trycopytree
 
 
 __version__ = "1.4.0"
@@ -14,6 +16,23 @@ with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as 
     info = json.load(f)
 
 default_config = {"SHOPYO_THEME_URL": "/shopyo-theme"}
+
+
+def _ensure_themes(app):
+    for kind in ("front", "back"):
+        dest = os.path.join(app.static_folder, "themes", kind)
+        if os.path.exists(dest):
+            continue
+        try:
+            shopyo = importlib.import_module("shopyo")
+            src = os.path.join(
+                os.path.dirname(shopyo.__file__), "static", "themes", kind
+            )
+            if os.path.exists(src):
+                os.makedirs(os.path.join(app.static_folder, "themes"), exist_ok=True)
+                trycopytree(src, dest, verbose=False)
+        except (ImportError, AttributeError):
+            pass
 
 
 class ShopyoTheme:
@@ -43,6 +62,8 @@ class ShopyoTheme:
         bp = module_blueprint
         app.register_blueprint(bp)
         app.jinja_env.globals["shopyo_theme"] = self
+        with app.app_context():
+            _ensure_themes(app)
 
     def get_info(self):
         info.update({"url_prefix": current_app.config["SHOPYO_THEME_URL"]})

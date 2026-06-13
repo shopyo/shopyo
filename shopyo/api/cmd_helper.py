@@ -207,7 +207,10 @@ def _collectstatic(target_module="modules", verbose=False):
     for plugin in installed_packages:
         try:
             plugin_mod = importlib.import_module(plugin)
-            plugin_folder_path = plugin_mod.view.mhelp.dirpath
+            if hasattr(plugin_mod, "view") and hasattr(plugin_mod.view, "mhelp"):
+                plugin_folder_path = plugin_mod.view.mhelp.dirpath
+            else:
+                plugin_folder_path = os.path.dirname(plugin_mod.__file__)
             plugin_static_folder = os.path.join(plugin_folder_path, "static")
 
             if os.path.exists(plugin_static_folder):
