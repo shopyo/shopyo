@@ -1,13 +1,18 @@
 import json
 import os
 
+from flask import current_app
 from flask import url_for
 from init import themes_path
 from shopyo_settings.helpers import get_setting
 
 
 def get_front_theme_dir():
-    active_theme = get_setting("ACTIVE_FRONT_THEME") or "blogus"
+    active_theme = (
+        get_setting("ACTIVE_FRONT_THEME")
+        or current_app.config["SHOPYO_THEME_DEFAULT"]
+        or current_app.config["SHOPYO_THEME_FRONT_DEFAULT"]
+    )
     theme_dir = os.path.join(themes_path, "front", active_theme)
     return theme_dir
 
@@ -20,7 +25,11 @@ def get_front_theme_info_data():
 
 
 def get_active_front_theme():
-    return get_setting("ACTIVE_FRONT_THEME") or "blogus"
+    return (
+        get_setting("ACTIVE_FRONT_THEME")
+        or current_app.config["SHOPYO_THEME_DEFAULT"]
+        or current_app.config["SHOPYO_THEME_FRONT_DEFAULT"]
+    )
 
 
 def get_active_front_theme_version():
@@ -36,7 +45,10 @@ def get_active_front_theme_styles_url():
 
 
 def get_back_theme_dir():
-    active_theme = get_setting("ACTIVE_BACK_THEME") or "mistrello"
+    active_theme = (
+        get_setting("ACTIVE_BACK_THEME")
+        or current_app.config["SHOPYO_THEME_BACK_DEFAULT"]
+    )
     theme_dir = os.path.join(themes_path, "back", active_theme)
     return theme_dir
 
@@ -49,7 +61,10 @@ def get_back_theme_info_data():
 
 
 def get_active_back_theme():
-    return get_setting("ACTIVE_BACK_THEME") or "mistrello"
+    return (
+        get_setting("ACTIVE_BACK_THEME")
+        or current_app.config["SHOPYO_THEME_BACK_DEFAULT"]
+    )
 
 
 def get_active_back_theme_version():

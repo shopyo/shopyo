@@ -9,13 +9,18 @@ from .helpers import *
 from shopyo.api.file import trycopytree
 
 
-__version__ = "1.4.0"
+__version__ = "1.6.0"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
     info = json.load(f)
 
-default_config = {"SHOPYO_THEME_URL": "/shopyo-theme"}
+default_config = {
+    "SHOPYO_THEME_URL": "/shopyo-theme",
+    "SHOPYO_THEME_DEFAULT": "blogus",
+    "SHOPYO_THEME_FRONT_DEFAULT": "blogus",
+    "SHOPYO_THEME_BACK_DEFAULT": "mistrello",
+}
 
 
 def _ensure_themes(app):
