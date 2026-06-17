@@ -74,9 +74,9 @@ Get Started
 
    auth_tutorial
    policy_tutorial
-   polls_tutorial
-   theme_tutorial
-theme_conventions
+    polls_tutorial
+    theme_tutorial
+    theme_conventions
 
 .. toctree::
    :maxdepth: 2
