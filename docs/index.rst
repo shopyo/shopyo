@@ -72,11 +72,11 @@ Get Started
    :maxdepth: 2
    :caption: Tutorials
 
-    auth_tutorial
-    policy_tutorial
-    polls_tutorial
-    theme_tutorial
-    theme_conventions
+   auth_tutorial
+   policy_tutorial
+   polls_tutorial
+   theme_tutorial
+   theme_conventions
 
 .. toctree::
    :maxdepth: 2
