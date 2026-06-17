@@ -28,7 +28,11 @@ def index():
             current_app.extensions[plugin], "get_info"
         ):
             try:
-                all_info[plugin] = current_app.extensions[plugin].get_info()
+                ext_info = current_app.extensions[plugin].get_info()
+                if isinstance(ext_info, dict) and "modules" in ext_info:
+                    all_info.update(ext_info["modules"])
+                else:
+                    all_info[plugin] = ext_info
             except Exception:
                 continue
 
