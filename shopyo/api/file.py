@@ -99,6 +99,14 @@ def trycopytree(source, dest, verbose=False):
     None
     """
     try:
+        abs_source = os.path.abspath(source)
+        abs_dest = os.path.abspath(dest)
+        if abs_dest.startswith(abs_source + os.sep) or abs_source == abs_dest:
+            click.echo(
+                f"[ ] unable to copy directory tree. destination is inside source.",
+                err=True,
+            )
+            return
         shutil.copytree(source, dest)
         if verbose:
             click.echo(f"[x] done copying {source} to {dest}")

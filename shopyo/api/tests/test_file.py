@@ -80,6 +80,26 @@ def test_trycopytree_fail(tmp_path, capsys):
     assert "unable to copy directory tree" in captured.err
 
 
+def test_trycopytree_dest_inside_source(tmp_path, capsys):
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "file.txt").write_text("content")
+    dest = src / "nested" / "dest"
+    file_utils.trycopytree(str(src), str(dest), verbose=True)
+    captured = capsys.readouterr()
+    assert "destination is inside source" in captured.err
+    assert not dest.exists()
+
+
+def test_trycopytree_source_equals_dest(tmp_path, capsys):
+    d = tmp_path / "folder"
+    d.mkdir()
+    (d / "file.txt").write_text("content")
+    file_utils.trycopytree(str(d), str(d), verbose=True)
+    captured = capsys.readouterr()
+    assert "destination is inside source" in captured.err
+
+
 def test_trycopy(tmp_path, capsys):
     src = tmp_path / "src.txt"
     src.write_text("content")
