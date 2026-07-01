@@ -34,6 +34,7 @@ globals()["{}_blueprint".format(module_info["module_name"])] = Blueprint(
     "{}".format(module_info["module_name"]),
     __name__,
     template_folder="templates",
+    static_folder="static",
     url_prefix=module_info["url_prefix"],
 )
 

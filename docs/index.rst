@@ -75,7 +75,8 @@ Get Started
    auth_tutorial
    policy_tutorial
    polls_tutorial
-   shopyo_theme_tutorial
+   theme_tutorial
+   theme_conventions
 
 .. toctree::
    :maxdepth: 2

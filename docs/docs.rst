@@ -19,7 +19,7 @@
 
    auth_tutorial
    polls_tutorial
-   shopyo_theme_tutorial
+   theme_tutorial
 
 .. toctree::
    :maxdepth: 2
