@@ -299,11 +299,12 @@ def initialise(verbose, clear_migration, clear_db, force, db_only, static_only, 
 
     if not force and not any(exclusive_flags):
         click.secho(
-            " 🚀 This will reset your database and migrations. Continue?",
+            " 🚀 This will initialise the project.",
             fg="yellow",
             bold=True,
         )
-        click.confirm("    Proceed?", default=False, abort=True)
+        click.confirm("    Do you want to reinitialise db?", default=False, abort=True)
+        clear_migration = click.confirm("    Do you want to clear the migration folder?")
 
     if os.environ.get("SHOPYO_QUIET") != "True":
         click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
