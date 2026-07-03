@@ -11,6 +11,11 @@ from flask.cli import FlaskGroup
 from flask.cli import pass_script_info
 from flask.cli import with_appcontext
 
+from shopyo.api.cli_output import cli_error
+from shopyo.api.cli_output import cli_info
+from shopyo.api.cli_output import cli_step
+from shopyo.api.cli_output import cli_success
+from shopyo.api.cli_output import cli_warning
 from shopyo.api.cmd_helper import _audit
 from shopyo.api.cmd_helper import _clean
 from shopyo.api.cmd_helper import _collectstatic
@@ -36,33 +41,24 @@ def _create_shopyo_app():
         create_app = app.create_app
     except ImportError as e:
         error_msg = str(e)
-        click.secho(
-            f" ❌ Error: {error_msg}",
-            fg="red",
-            bold=True,
-        )
         if error_msg.startswith("No module named 'app'"):
-            click.echo("\n 💡 Make sure you are in your Shopyo project root directory.")
-            click.echo(
-                "    Your project should have an 'app.py' file with a 'create_app' function."
+            cli_error(
+                error_msg,
+                hint="Make sure you are in your Shopyo project root directory.\n"
+                "    Your project should have an 'app.py' file with a 'create_app' function.",
             )
-        sys.exit(1)
+        cli_error(error_msg)
     except AttributeError as e:
-        click.secho(
-            f" ❌ Error: Could not find 'create_app' in 'app.py'.",
-            fg="red",
-            bold=True,
+        cli_error(
+            "Could not find 'create_app' in 'app.py'.",
+            hint=f"Details: {e}\n"
+            "    Your 'app.py' should define a 'create_app(config_name)' function.\n"
+            "    Example:\n"
+            "        def create_app(config_name='development'):\n"
+            "            app = Flask(__name__)\n"
+            "            # ... initialize extensions and modules\n"
+            "            return app",
         )
-        click.echo(f"    Details: {e}")
-        click.echo(
-            "\n 💡 Your 'app.py' should define a 'create_app(config_name)' function."
-        )
-        click.echo("    Example:")
-        click.echo("        def create_app(config_name='development'):")
-        click.echo("            app = Flask(__name__)")
-        click.echo("            # ... initialize extensions and modules")
-        click.echo("            return app")
-        sys.exit(1)
 
     config_name = os.environ.get("SHOPYO_CONFIG_PROFILE") or "development"
     return create_app(config_name=config_name)
@@ -100,19 +96,13 @@ def create_box(boxname, verbose, interactive):
             show_default=True,
         )
         if not boxname.startswith("box__"):
-            click.secho(
-                " ⚠️  Box name should start with 'box__' prefix. Adding automatically...",
-                fg="yellow",
-            )
+            cli_warning("Box name should start with 'box__' prefix. Adding automatically...")
             boxname = "box__" + boxname
 
     path = os.path.join("modules", boxname)
 
     if os.path.exists(os.path.join("modules", boxname)):
-        click.secho(
-            f" ❌ Error: Box '{path}' already exists!", fg="red", bold=True, err=True
-        )
-        sys.exit(1)
+        cli_error(f"Box '{path}' already exists!")
 
     _create_box(boxname, verbose=verbose)
 
@@ -151,47 +141,30 @@ def create_module(modulename, boxname, verbose, interactive):
                 )
 
     if boxname != "" and not boxname.startswith("box__"):
-        click.secho(
-            f" ❌ Error: Invalid BOXNAME '{boxname}'. It should start with 'box__' prefix.",
-            fg="red",
-            bold=True,
+        cli_error(
+            f"Invalid BOXNAME '{boxname}'. It should start with 'box__' prefix.",
+            hint="Example: box__billing",
         )
-        click.echo("    Example: box__billing")
-        sys.exit(1)
 
     if modulename.startswith("box_"):
-        click.secho(
-            f" ❌ Error: Invalid MODULENAME '{modulename}'. It cannot start with 'box_' prefix.",
-            fg="red",
-            bold=True,
+        cli_error(
+            f"Invalid MODULENAME '{modulename}'. It cannot start with 'box_' prefix."
         )
-        sys.exit(1)
 
     if not is_alpha_num_underscore(modulename):
-        click.secho(
-            f" ❌ Error: MODULENAME '{modulename}' is not valid. Use alphanumeric and underscore only.",
-            fg="red",
-            bold=True,
+        cli_error(
+            f"MODULENAME '{modulename}' is not valid. Use alphanumeric and underscore only."
         )
-        sys.exit(1)
 
     if boxname != "" and not is_alpha_num_underscore(boxname):
-        click.secho(
-            f" ❌ Error: BOXNAME '{boxname}' is not valid. Use alphanumeric and underscore only.",
-            fg="red",
-            bold=True,
+        cli_error(
+            f"BOXNAME '{boxname}' is not valid. Use alphanumeric and underscore only."
         )
-        sys.exit(1)
 
     module_path = get_module_path_if_exists(modulename)
 
     if module_path is not None:
-        click.secho(
-            f" ❌ Error: Module '{modulename}' already exists at {module_path}",
-            fg="red",
-            bold=True,
-        )
-        sys.exit(1)
+        cli_error(f"Module '{modulename}' already exists at {module_path}")
 
     if boxname != "":
         box_path = get_module_path_if_exists(boxname)
