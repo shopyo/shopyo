@@ -119,6 +119,25 @@ You can also skip migration folder deleting and db clearing.
 
    Show all hidden outputs in terminal
 
+.. option:: -y, --yes
+
+   Skip the confirmation prompt before resetting the database.
+
+.. option:: --db-only
+
+   Only run database steps (migrate + upgrade). Cannot be combined
+   with ``--static-only`` or ``--seed-only``.
+
+.. option:: --static-only
+
+   Only collect static assets. Cannot be combined with ``--db-only``
+   or ``--seed-only``.
+
+.. option:: --seed-only
+
+   Only seed database data. Cannot be combined with ``--db-only``
+   or ``--static-only``.
+
 .. option:: --help
 
    Show the command usage/help message and exit
