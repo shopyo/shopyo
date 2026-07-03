@@ -249,26 +249,61 @@ def clean(verbose, clear_migration, clear_db):
 @click.option(
     "--clear-db/--no-clear-db", "clear_db", "-cdb", is_flag=True, default=True
 )
-@click.option("--verbose", "-v", is_flag=True, default=False)
+@click.option(
+    "--yes",
+    "-y",
+    "force",
+    is_flag=True,
+    default=False,
+    help="Skip confirmation prompts",
+)
+@click.option(
+    "--db-only",
+    is_flag=True,
+    default=False,
+    help="Only run database steps (migrate + upgrade)",
+)
+@click.option(
+    "--static-only",
+    is_flag=True,
+    default=False,
+    help="Only collect static assets",
+)
+@click.option(
+    "--seed-only",
+    is_flag=True,
+    default=False,
+    help="Only seed database data",
+)
 @with_appcontext
-def initialise(verbose, clear_migration, clear_db):
+def initialise(verbose, clear_migration, clear_db, force, db_only, static_only, seed_only):
+    """
+    Creates ``db``, ``migration/``, adds default users, add settings
+    """
     import os
 
     if os.environ.get("SHOPYO_QUIET") == "True":
         verbose = False
-    """
-    Creates ``db``, ``migration/``, adds default users, add settings
-    """
+
+    exclusive_flags = [db_only, static_only, seed_only]
+    if sum(exclusive_flags) > 1:
+        cli_error(
+            "Only one of --db-only, --static-only, --seed-only can be used at a time."
+        )
+
     if not os.path.exists("modules"):
+        cli_error(
+            "'modules' folder not found. Are you in the project root?",
+            hint="Try running 'shopyo new <project_name>' first.",
+        )
+
+    if not force and not any(exclusive_flags):
         click.secho(
-            " ❌ Error: 'modules' folder not found. Are you in the project root?",
-            fg="red",
+            " 🚀 This will reset your database and migrations. Continue?",
+            fg="yellow",
             bold=True,
         )
-        click.secho(
-            "    Try running 'shopyo new <project_name>' first.", fg="bright_black"
-        )
-        sys.exit(1)
+        click.confirm("    Proceed?", default=False, abort=True)
 
     if os.environ.get("SHOPYO_QUIET") != "True":
         click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
@@ -277,18 +312,31 @@ def initialise(verbose, clear_migration, clear_db):
         from flask import current_app
 
         db_uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
-        click.secho(f" 🗄️  Using database: {db_uri}", fg="bright_black")
+        cli_info(f"Using database: {db_uri}")
     except RuntimeError:
         pass
 
-    # drop db, remove mirgration/ and shopyo.db
+    if seed_only:
+        _upload_data(verbose=verbose)
+        cli_success("Database seeded successfully!")
+        return
+
+    if static_only:
+        _collectstatic(verbose=verbose)
+        cli_success("Static assets collected successfully!")
+        return
+
+    # drop db, remove migrations/ and shopyo.db
     _clean(verbose=verbose, clear_migration=clear_migration, clear_db=clear_db)
+
+    if db_only:
+        cli_info("Skipping static collection and data seeding (--db-only)")
 
     # load all models available inside modules
     autoload_models(verbose=verbose)
 
     # add a migrations folder to your application.
-    click.echo(" 📁 Creating database migrations...")
+    cli_step("Creating database migrations...")
     flask_cmd = [sys.executable, "-m", "flask"]
     if verbose:
         run(flask_cmd + ["db", "init"])
@@ -297,28 +345,27 @@ def initialise(verbose, clear_migration, clear_db):
 
     # load all models available inside modules
     autoload_models(verbose=verbose)
-    click.echo(" ⚙️  Generating initial migration...")
+    cli_step("Generating initial migration...")
     if verbose:
         run(flask_cmd + ["db", "migrate"])
     else:
         run(flask_cmd + ["db", "migrate"], stdout=PIPE, stderr=PIPE)
 
-    click.echo(" ⬆️  Upgrading database...")
+    cli_step("Upgrading database...")
     if verbose:
         run(flask_cmd + ["db", "upgrade"])
     else:
         run(flask_cmd + ["db", "upgrade"], stdout=PIPE, stderr=PIPE)
 
-    # collect all static folders inside modules/ and add it to global
-    # static/
-    _collectstatic(verbose=verbose)
+    if not db_only:
+        # collect all static folders inside modules/ and add it to global
+        # static/
+        _collectstatic(verbose=verbose)
 
-    # Upload models data in upload.py files inside each module
-    _upload_data(verbose=verbose)
+        # Upload models data in upload.py files inside each module
+        _upload_data(verbose=verbose)
 
-    click.secho(
-        "\n ✅ Initialization complete! Ready to develop.", fg="green", bold=True
-    )
+    cli_success("Initialization complete! Ready to develop.")
     click.echo("    Run 'flask run --debug' to start the server.\n")
 
 
@@ -382,20 +429,15 @@ def new(projname, verbose, modules, start_server, demo):
         project_path = here
     else:
         if not is_alpha_num_underscore(projname):
-            click.echo(
-                "[ ] Error: PROJNAME is not valid, please use alphanumeric "
-                "and underscore only"
+            cli_error(
+                "PROJNAME is not valid, please use alphanumeric and underscore only."
             )
-            sys.exit(1)
 
         root_proj_path = os.path.join(here, projname)
         project_path = root_proj_path
 
         if os.path.exists(project_path):
-            click.echo(
-                "[ ] Error: Unable to create new project, directory already exists"
-            )
-            sys.exit(1)
+            cli_error("Unable to create new project, directory already exists.")
 
     click.echo(f"creating project {projname}...")
     click.echo(SEP_CHAR * SEP_NUM)
