@@ -1,11 +1,9 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page ='page' %}
 
-{% block pagehead %}
-{{ super() }}
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-<title>Edit Page - Shopyo</title>
-{% endblock %}
+{% block title %}Edit Page{% endblock %}
+{% block pagehead %}{{ super() }}
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">{% endblock %}
 
 {% block sidebar %}
     {% include 'shopyo_page/blocks/sidebar.html' %}

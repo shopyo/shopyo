@@ -2,10 +2,7 @@
 
 {% set active_page ='page' %}
 
-{% block pagehead %}
-{{ super() }}
-<title>Revisions - {{ page.title }}</title>
-{% endblock %}
+{% block title %}Revisions - {{ page.title }}{% endblock %}
 
 {% block sidebar %}
     {% include 'shopyo_page/blocks/sidebar.html' %}

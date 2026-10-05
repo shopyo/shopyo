@@ -67,7 +67,7 @@ def test_trycopytree(tmp_path, capsys):
     assert dest.exists()
     assert (dest / "file.txt").exists()
     captured = capsys.readouterr()
-    assert f"[x] done copying {src} to {dest}" in captured.out
+    assert f"Done copying {src} to {dest}" in captured.out
 
 
 def test_trycopytree_fail(tmp_path, capsys):
@@ -77,7 +77,7 @@ def test_trycopytree_fail(tmp_path, capsys):
         verbose=True,
     )
     captured = capsys.readouterr()
-    assert "unable to copy directory tree" in captured.err
+    assert "Unable to copy directory tree" in captured.err
 
 
 def test_trycopytree_dest_inside_source(tmp_path, capsys):
@@ -87,7 +87,9 @@ def test_trycopytree_dest_inside_source(tmp_path, capsys):
     dest = src / "nested" / "dest"
     file_utils.trycopytree(str(src), str(dest), verbose=True)
     captured = capsys.readouterr()
-    assert "destination is inside source" in captured.err
+    assert "Skipping copy" in captured.err
+    assert "destination" in captured.err
+    assert "source" in captured.err
     assert not dest.exists()
 
 
@@ -97,7 +99,9 @@ def test_trycopytree_source_equals_dest(tmp_path, capsys):
     (d / "file.txt").write_text("content")
     file_utils.trycopytree(str(d), str(d), verbose=True)
     captured = capsys.readouterr()
-    assert "destination is inside source" in captured.err
+    assert "Skipping copy" in captured.err
+    assert "destination" in captured.err
+    assert "source" in captured.err
 
 
 def test_trycopy(tmp_path, capsys):

@@ -2,9 +2,7 @@
 
 {% set active_page = "Email Confirmation" %}
 
-{% block pagehead %}
-    <title>{{ active_page.capitalize() }}</title>
-{% endblock %}
+{% block title %}{{ active_page.capitalize() }}{% endblock %}
 
 {% block content %}
 	<div class="container col-md-6 mb-4 off-set-2 text-center">

@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard{% endblock %} - Shopyo</title>
+    <meta name="description" content="{% block description %}{{ config.get('SHOPYO_DASHBOARD_DESCRIPTION') or 'Shopyo application' }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Shopyo">
+    <meta property="og:title" content="{{ self.title() }} - Shopyo">
+    <meta property="og:description" content="{{ self.description() }}">
+    <meta property="og:image" content="{% block og_image %}{{ config.get('SHOPYO_DASHBOARD_OG_IMAGE') or url_for('static', filename='shopyo.png', _external=True) }}{% endblock %}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ self.title() }} - Shopyo">
+    <meta name="twitter:description" content="{{ self.description() }}">
+    <meta name="twitter:image" content="{{ self.og_image() }}">
 
     <script src="{{ url_for('static', filename='modules/shopyo_dashboard/shopyo_dashboard/js/tailwind.min.js') }}"></script>
     <script defer src="{{ url_for('static', filename='modules/shopyo_dashboard/shopyo_dashboard/js/alpine.min.js') }}"></script>
@@ -30,6 +40,7 @@
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     </style>
     {% block pagehead %}{% endblock %}
+    {% block module_styles %}{% endblock %}
 </head>
 <body class="bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col" x-cloak>
 
