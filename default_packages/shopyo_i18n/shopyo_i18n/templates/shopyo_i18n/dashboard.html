@@ -1,10 +1,7 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page ='i18n' %}
 
-{% block pagehead %}
-{{ super() }}
-<title>Internationalization - Shopyo</title>
-{% endblock %}
+{% block title %}Internationalization{% endblock %}
 
 {% block sidebar %}
     {% include 'shopyo_i18n/blocks/sidebar.html' %}

@@ -2,13 +2,14 @@ from typing import Any
 import os
 import json
 from flask import Flask
+from flask import current_app
 from shopyo_i18n.view import module_blueprint
 
 # global templates variables in here
 from .helpers import get_current_lang
 from .helpers import get_default_lang
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
@@ -34,8 +35,11 @@ class Shopyoi18n:
 
         app.extensions["shopyo_i18n"] = self
         bp = module_blueprint
-        app.register_blueprint(bp)
+        app.register_blueprint(
+            bp, url_prefix=app.config.get("SHOPYO_I18N_URL") or bp.url_prefix
+        )
         app.jinja_env.globals["shopyo_i18n"] = self
 
     def get_info(self):
+        info.update({"url_prefix": current_app.config["SHOPYO_I18N_URL"]})
         return info

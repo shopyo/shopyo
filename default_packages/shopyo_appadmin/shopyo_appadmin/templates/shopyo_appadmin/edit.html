@@ -1,10 +1,7 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page = "admin" %}
 
-{% block pagehead %}
-{{ super() }}
-<title>Edit User</title>
-{% endblock %}
+{% block title %}Edit User{% endblock %}
 
 {% block sidebar %}
     {% include 'shopyo_appadmin/blocks/sidebar.html' %}

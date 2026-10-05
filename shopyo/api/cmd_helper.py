@@ -14,9 +14,11 @@ except ImportError:
     from importlib_metadata import version
 from subprocess import run
 
+import sys
 import click
 from flask import current_app
 
+from shopyo.api.cli_output import cli_error
 from shopyo.api.cli_content import get_dashboard_html_content
 from shopyo.api.cli_content import get_global_py_content
 from shopyo.api.cli_content import get_module_view_content
@@ -119,6 +121,10 @@ def _collectstatic(target_module="modules", verbose=False):
     """
     click.secho(" 📦 Collecting static assets...", fg="bright_black")
 
+    def _progress():
+        click.echo(".", nl=False)
+        sys.stdout.flush()
+
     root_path = os.getcwd()
     static_path = os.path.join(root_path, "static")
 
@@ -144,14 +150,16 @@ def _collectstatic(target_module="modules", verbose=False):
 
     # terminate if modules_path (i.e. src to copy static from) does not exist
     if not os.path.exists(modules_path):
-        click.secho(f"  ❌ Error: Path '{modules_path}' does not exist", fg="red")
-        sys.exit(1)
+        cli_error(f"Path '{modules_path}' does not exist.")
 
     # clear ./static/modules before coping to it
     tryrmtree(modules_path_in_static, verbose=verbose)
 
     # look for static folders in all project
-    for folder in get_folders(modules_path):
+    module_count = len(get_folders(modules_path))
+    for idx, folder in enumerate(get_folders(modules_path), 1):
+        if not verbose:
+            _progress()
         if folder.startswith("box__"):
             box_path = os.path.join(modules_path, folder)
             for subfolder in get_folders(box_path):
@@ -227,6 +235,9 @@ def _collectstatic(target_module="modules", verbose=False):
         except Exception as e:
             if verbose:
                 click.secho(f"  ❌ Error collecting static for {plugin}: {e}", fg="red")
+
+    if not verbose:
+        click.echo(" ✅ done")
 
 
 def _upload_data(verbose=False):
@@ -779,4 +790,4 @@ def _rename_app(old_app_name, new_app_name):
         )
     except Exception as e:
         click.secho(f" ❌ Error during rename: {e}", fg="red", bold=True)
-        raise e
+        sys.exit(1)

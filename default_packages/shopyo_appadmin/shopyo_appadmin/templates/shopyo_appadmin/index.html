@@ -1,10 +1,7 @@
 {% extends "shopyo_base/module_base.html" %}
 {% set active_page ='admin' %}
 
-{% block pagehead %}
-{{ super() }}
-<title>{{active_page.capitalize()}}</title>
-{% endblock %}
+{% block title %}{{active_page.capitalize()}}{% endblock %}
 
 {% block sidebar %}
     {% include 'shopyo_appadmin/blocks/sidebar.html' %}

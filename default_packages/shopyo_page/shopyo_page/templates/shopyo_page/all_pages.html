@@ -2,12 +2,9 @@
 
 {% set active_page ='page' %}
 
-{% block pagehead %}
-{{ super() }}
-<title>All Pages - Shopyo</title>
-<!-- Injecting Front-end Theme Styles as requested -->
-<link rel="stylesheet" href="{{ shopyo_theme.get_active_front_theme_styles_url() }}">
-{% endblock %}
+{% block title %}All Pages{% endblock %}
+{% block pagehead %}{{ super() }}<!-- Injecting Front-end Theme Styles as requested -->
+<link rel="stylesheet" href="{{ shopyo_theme.get_active_front_theme_styles_url() }}">{% endblock %}
 
 {% block sidebar %}
     {% include 'shopyo_page/blocks/sidebar.html' %}

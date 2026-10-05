@@ -9,7 +9,7 @@ from .helpers import *
 from shopyo.api.file import trycopytree
 
 
-__version__ = "1.7.0"
+__version__ = "1.7.1"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
@@ -65,7 +65,9 @@ class ShopyoTheme:
 
         app.extensions["shopyo_theme"] = self
         bp = module_blueprint
-        app.register_blueprint(bp)
+        app.register_blueprint(
+            bp, url_prefix=app.config.get("SHOPYO_THEME_URL") or bp.url_prefix
+        )
         app.jinja_env.globals["shopyo_theme"] = self
         with app.app_context():
             _ensure_themes(app)

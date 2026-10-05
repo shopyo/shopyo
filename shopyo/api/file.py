@@ -4,6 +4,9 @@ import uuid
 
 import click
 
+from shopyo.api.cli_output import cli_warning
+from shopyo.api.cli_output import cli_success
+
 # from werkzeug.utils import secure_filename
 
 
@@ -102,16 +105,15 @@ def trycopytree(source, dest, verbose=False):
         abs_source = os.path.abspath(source)
         abs_dest = os.path.abspath(dest)
         if abs_dest.startswith(abs_source + os.sep) or abs_source == abs_dest:
-            click.echo(
-                f"[ ] unable to copy directory tree. destination is inside source.",
-                err=True,
+            cli_warning(
+                f"Skipping copy: destination '{dest}' is inside source '{source}'."
             )
             return
         shutil.copytree(source, dest)
         if verbose:
-            click.echo(f"[x] done copying {source} to {dest}")
+            cli_success(f"Done copying {source} to {dest}")
     except Exception as e:
-        click.echo(f"[ ] unable to copy directory tree. {e}", err=True)
+        cli_warning(f"Unable to copy directory tree: {e}")
 
 
 def trycopy(source, dest, verbose=False):

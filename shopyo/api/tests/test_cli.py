@@ -125,8 +125,8 @@ def test_clean(mock_clean, runner):
 def test_initialise(
     mock_upload, mock_collect, mock_run, mock_autoload, mock_clean, mock_exists, runner
 ):
-    result = runner.invoke(cli, ["initialise"])
-    assert result.exit_code == 0
+    result = runner.invoke(cli, ["initialise", "--yes"])
+    assert result.exit_code == 0, result.output
     mock_clean.assert_called_once()
     assert mock_autoload.call_count == 2
     assert mock_run.call_count == 3  # init, migrate, upgrade
