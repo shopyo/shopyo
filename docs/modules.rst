@@ -122,6 +122,14 @@ The app comes with several default modules now shipped as separate packages in `
 * shopyo_settings
 * shopyo_theme
 
+.. note::
+
+   ``shopyo_i18n`` guards its management routes with ``@admin_required``:
+   ``/shopyo-i18n/dashboard`` (changes the site's default language) and
+   ``POST /shopyo-i18n/delete/<lang_code>`` (deletes every ``LangRecord``
+   for a language, including the page content stored by ``shopyo_page``)
+   are reachable by admin accounts only.
+
 www
 ---
 This is the default public facing module located in ``shopyo/modules/www``.

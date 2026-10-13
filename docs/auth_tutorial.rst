@@ -50,6 +50,18 @@ Enable the extension in your `app.py`. You can also configure security features:
        sh_auth = ShopyoAuth(app)
        return app
 
+Registration
+~~~~~~~~~~~~
+
+Self-service registration is **open by default**
+(``SHOPYO_AUTH_REGISTER`` defaults to ``True``). Set it to ``False`` to
+close signups — ``/shopyo-auth/register`` then returns ``404`` for both
+GET and POST:
+
+.. code-block:: python
+
+   app.config["SHOPYO_AUTH_REGISTER"] = False
+
 Rate Limiting
 ~~~~~~~~~~~~~
 
