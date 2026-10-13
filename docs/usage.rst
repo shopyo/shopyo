@@ -141,12 +141,18 @@ Shopyo can be configured using environment variables. This is especially useful 
    If either is missing, the application will refuse to boot with a
    ``RuntimeError``. Hardcoded defaults are not allowed in production.
 
+   Outside the ``testing`` profile, ``create_app()`` **fails closed**:
+   it refuses to start when ``SECRET_KEY`` is unset or set to a known
+   default value (such as ``secret`` or
+   ``dev-secret-key-change-in-production``). Run ``shopyo env`` to
+   generate a ``.env`` with a fresh random key.
+
 Essential Variables
 ===================
 
-- ``SECRET_KEY`` (**required in production**): A long random string used to secure session cookies and other crypto needs.
+- ``SECRET_KEY`` (**required in every non-testing profile**): A long random string used to secure session cookies and other crypto needs. Generate one with ``shopyo env``; known default values are rejected at boot.
 - ``SQLALCHEMY_DATABASE_URI`` (**required in production**): The database connection URI (e.g., ``sqlite:///shopyo.db`` or ``postgresql://user:Pass1234!@#$@localhost/dbname``).
-- ``PASSWORD_SALT``: Salt for token signing. Auto-generated as a random 64-char hex string if not set.
+- ``PASSWORD_SALT``: Salt for token signing. Read from the environment; if not set, a random 64-char hex string is generated at boot (development only — set it explicitly if password-reset/confirmation links must survive restarts).
 
 Session Security
 ===================

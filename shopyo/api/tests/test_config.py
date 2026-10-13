@@ -109,10 +109,11 @@ class TestDevelopmentConfig:
         cfg = config.DevelopmentConfig()
         assert cfg.SECRET_KEY == "dev-secret"
 
-    def test_secret_key_default(self):
+    def test_secret_key_no_hardcoded_default(self):
         config = _import_config()
         cfg = config.DevelopmentConfig()
-        assert cfg.SECRET_KEY == "secret"
+        # no hardcoded fallback key: unset means unset (app boot then fails closed)
+        assert cfg.SECRET_KEY is None
 
     def test_password_salt_from_env(self):
         os.environ["PASSWORD_SALT"] = "dev-salt"
@@ -123,7 +124,9 @@ class TestDevelopmentConfig:
     def test_password_salt_fallback(self):
         config = _import_config()
         cfg = config.DevelopmentConfig()
-        assert cfg.PASSWORD_SALT == "some pasword salt"
+        # random per-boot salt, never a hardcoded value
+        assert cfg.PASSWORD_SALT != "some pasword salt"
+        assert len(cfg.PASSWORD_SALT) == 64
 
 
 class TestBaseConfig:
@@ -131,3 +134,45 @@ class TestBaseConfig:
         config = _import_config()
         assert config.BaseConfig.SESSION_COOKIE_HTTPONLY is True
         assert config.BaseConfig.SESSION_COOKIE_SAMESITE == "Lax"
+
+
+class TestEnforceSecretKey:
+    """create_app must refuse to boot with an empty or known default key."""
+
+    def _make_app(self, secret):
+        from flask import Flask
+
+        app = Flask(__name__)
+        app.config["SECRET_KEY"] = secret
+        return app
+
+    def test_unset_secret_key_raises(self):
+        from shopyo.app import enforce_secret_key
+
+        with pytest.raises(RuntimeError, match="SECRET_KEY"):
+            enforce_secret_key(self._make_app(None), "development")
+
+    def test_known_default_secret_key_raises(self):
+        from shopyo.app import enforce_secret_key
+
+        with pytest.raises(RuntimeError, match="SECRET_KEY"):
+            enforce_secret_key(self._make_app("secret"), "development")
+
+        with pytest.raises(RuntimeError, match="SECRET_KEY"):
+            enforce_secret_key(
+                self._make_app("dev-secret-key-change-in-production"), "production"
+            )
+
+    def test_random_secret_key_allowed(self):
+        from shopyo.app import enforce_secret_key
+
+        enforce_secret_key(self._make_app("a" * 64), "development")
+
+    def test_testing_profile_exempt(self):
+        from shopyo.app import enforce_secret_key
+
+        enforce_secret_key(self._make_app(None), "testing")
+
+        app = self._make_app(None)
+        app.config["TESTING"] = True
+        enforce_secret_key(app, "development")

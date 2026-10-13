@@ -28,6 +28,7 @@ from shopyo.api.file import trycopy
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, base_path)
+from config import INSECURE_SECRET_KEYS
 from config import app_config
 
 # from init import db
@@ -60,6 +61,7 @@ def create_app(config_name="development"):
     load_plugins(app, global_template_variables, global_configs, config_name)
     load_config_from_obj(app, config_name)
     load_config_from_instance(app, config_name)
+    enforce_secret_key(app, config_name)
     load_extensions(app)
 
     setup_flask_admin(app)
@@ -137,7 +139,26 @@ def load_config_from_obj(app, config_name):
         )
         sys.exit(1)
 
-    app.config.from_object(configuration)
+    # instantiate so config __init__ guards (production env checks, dev
+    # warnings) actually run; passing the class skips them entirely
+    app.config.from_object(configuration())
+
+
+def enforce_secret_key(app, config_name):
+    """Fail closed when SECRET_KEY is unset or a known default value.
+
+    Tests (config_name ``testing`` or ``TESTING = True``) are exempt.
+    """
+    if config_name == "testing" or app.config.get("TESTING"):
+        return
+
+    secret = app.config.get("SECRET_KEY")
+    if not secret or secret in INSECURE_SECRET_KEYS:
+        raise RuntimeError(
+            "Refusing to start: SECRET_KEY is unset or set to a known default "
+            "value. Set the SECRET_KEY environment variable "
+            "(run `shopyo env` to generate a .env with a random key)."
+        )
 
 
 def load_config_from_instance(app, config_name):
