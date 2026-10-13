@@ -267,6 +267,46 @@ Run a local development server.
 
 same as ``app.run(debug=False)``
 
+env
+***
+
+.. _shopyo env usage:
+
+*Usage*
+
+.. code:: bash
+
+   shopyo env [OPTIONS]
+
+or
+
+.. code:: bash
+
+   python manage.py env [OPTIONS]
+
+Generate a ``.env`` file with the required environment variables.
+
+.. code:: bash
+
+   shopyo env --profile production
+
+.. option:: --profile, -p
+
+   Config profile to use: ``development`` (default), ``production`` or
+   ``testing``.
+
+The generated file always contains:
+
+- a random 64-character hexadecimal ``SECRET_KEY`` — regenerated on every
+  run, never a shared default value
+- a random 64-character hexadecimal ``PASSWORD_SALT``
+- ``FLASK_DEBUG=0`` for the ``production`` profile, ``FLASK_DEBUG=1``
+  otherwise
+
+Since the app refuses to start when ``SECRET_KEY`` is unset or set to a
+known default value (outside the ``testing`` profile), generate this file
+— or provide your own ``SECRET_KEY`` — before booting.
+
 startapp
 ********
 

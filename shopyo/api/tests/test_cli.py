@@ -212,3 +212,56 @@ def test_new_exists(mock_copytree, runner):
         result = runner.invoke(cli, ["new", "myproj"])
         assert result.exit_code == 1
         assert "Unable to create new project" in result.output
+
+
+def _read_env(tmp_path):
+    return (tmp_path / ".env").read_text()
+
+
+def test_env_production_generates_random_key_and_no_debug(runner, tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    result = runner.invoke(cli, ["env", "--profile", "production"])
+    assert result.exit_code == 0, result.output
+
+    content = _read_env(tmp_path)
+    assert "FLASK_DEBUG=0" in content
+    assert "SHOPYO_CONFIG_PROFILE=production" in content
+    assert "dev-secret-key-change-in-production" not in content
+
+    secret_line = next(
+        line for line in content.splitlines() if line.startswith("SECRET_KEY=")
+    )
+    secret_key = secret_line.split("=", 1)[1]
+    assert len(secret_key) == 64
+    assert secret_key != "dev-secret-key-change-in-production"
+
+    salt_line = next(
+        line for line in content.splitlines() if line.startswith("PASSWORD_SALT=")
+    )
+    password_salt = salt_line.split("=", 1)[1]
+    assert len(password_salt) == 64
+
+
+def test_env_production_key_differs_per_run(runner, tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    runner.invoke(cli, ["env", "--profile", "production"])
+    first = _read_env(tmp_path)
+    (tmp_path / ".env").unlink()
+
+    runner.invoke(cli, ["env", "--profile", "production"])
+    second = _read_env(tmp_path)
+
+    assert first != second
+
+
+def test_env_development_keeps_debug(runner, tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    result = runner.invoke(cli, ["env", "--profile", "development"])
+    assert result.exit_code == 0, result.output
+
+    content = _read_env(tmp_path)
+    assert "FLASK_DEBUG=1" in content
+    assert "SECRET_KEY=dev-secret-key-change-in-production" not in content
