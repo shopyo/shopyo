@@ -6,7 +6,7 @@ from flask import Flask
 from flask import current_app
 from shopyo_base.view import module_blueprint
 
-__version__ = "1.7.1"
+__version__ = "1.7.2"
 
 
 info = {}

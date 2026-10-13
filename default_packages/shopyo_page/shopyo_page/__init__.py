@@ -6,7 +6,7 @@ from flask import current_app
 from shopyo_page.view import module_blueprint
 from .helpers import get_pages
 
-__version__ = "1.5.1"
+__version__ = "1.5.2"
 
 info = {}
 with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + "info.json") as f:
