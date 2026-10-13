@@ -16,6 +16,7 @@ configs = {
 """
 
 import os
+import secrets
 import warnings
 
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -24,6 +25,15 @@ PRODUCTION_REQUIRED_ENV_KEYS = [
     "SECRET_KEY",
     "SQLALCHEMY_DATABASE_URI",
 ]
+
+# Keys that have shipped in shopyo and are public knowledge. Never usable.
+INSECURE_SECRET_KEYS = frozenset(
+    {
+        "",
+        "secret",
+        "dev-secret-key-change-in-production",
+    }
+)
 
 
 class BaseConfig:
@@ -80,6 +90,16 @@ class ProductionConfig(BaseConfig):
             raise RuntimeError(
                 f"Production boot blocked: required env vars not set: {missing}"
             )
+        # resolve env at instantiation time so the guard cannot be skipped by
+        # passing the class around (e.g. app.config.from_object)
+        self.SECRET_KEY = os.environ["SECRET_KEY"]
+        self.SQLALCHEMY_DATABASE_URI = os.environ["SQLALCHEMY_DATABASE_URI"]
+        self.PASSWORD_SALT = os.environ.get("PASSWORD_SALT") or os.urandom(32).hex()
+        if self.SECRET_KEY in INSECURE_SECRET_KEYS:
+            raise RuntimeError(
+                "Production boot blocked: SECRET_KEY is a known default value. "
+                "Generate a fresh one with `shopyo env --profile production`."
+            )
 
 
 class DevelopmentConfig(BaseConfig):
@@ -89,12 +109,17 @@ class DevelopmentConfig(BaseConfig):
     ENV = "development"
     DEBUG = True
     LOGIN_DISABLED = False
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "secret"
+    SECRET_KEY = os.environ.get("SECRET_KEY")
 
     def __init__(self):
-        if os.environ.get("SECRET_KEY", "").lower() in ("", "secret"):
+        # resolve env at instantiation time so the checks cannot be skipped by
+        # passing the class around (e.g. app.config.from_object)
+        self.SECRET_KEY = os.environ.get("SECRET_KEY")
+        self.PASSWORD_SALT = os.environ.get("PASSWORD_SALT") or secrets.token_hex(32)
+        if not self.SECRET_KEY or self.SECRET_KEY in INSECURE_SECRET_KEYS:
             warnings.warn(
-                "SECRET_KEY is unset or default. Set SHOPYO_SECRET_KEY env var.",
+                "SECRET_KEY is unset or default. Set the SECRET_KEY env var "
+                "(run `shopyo env` to generate a .env).",
                 DeprecationWarning,
                 stacklevel=2,
             )
@@ -114,7 +139,7 @@ class DevelopmentConfig(BaseConfig):
     # database configs
     SQLALCHEMY_DATABASE_URI = "sqlite:///shopyo.db"
 
-    PASSWORD_SALT = os.environ.get("PASSWORD_SALT") or "some pasword salt"
+    PASSWORD_SALT = os.environ.get("PASSWORD_SALT")
 
 
 class TestingConfig(BaseConfig):
