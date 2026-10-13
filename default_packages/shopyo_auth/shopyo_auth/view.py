@@ -1,5 +1,6 @@
 import datetime
 
+from flask import abort
 from flask import current_app
 from flask import flash
 from flask import jsonify
@@ -35,6 +36,9 @@ module_blueprint = globals()[mhelp.blueprint_str]
 @module_blueprint.route("/register", methods=["GET", "POST"])
 @limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT_REGISTER"])
 def register():
+    if not current_app.config.get("SHOPYO_AUTH_REGISTER", True):
+        abort(404)
+
     context = {}
     reg_form = RegistrationForm()
 
