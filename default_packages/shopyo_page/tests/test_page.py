@@ -1,3 +1,4 @@
+import secrets
 import unittest
 from shopyo.app import create_app
 from shopyo.api.models import db
@@ -8,6 +9,10 @@ import os
 
 class TestShopyoPage(unittest.TestCase):
     def setUp(self):
+        # dev config fails closed without a real SECRET_KEY (outside tests
+        # the key must come from the environment)
+        self._prev_secret_key = os.environ.get("SECRET_KEY")
+        os.environ["SECRET_KEY"] = secrets.token_hex(32)
         self.app = create_app()
         self.app.config["TESTING"] = True
         self.app.config["WTF_CSRF_ENABLED"] = False
@@ -41,6 +46,10 @@ class TestShopyoPage(unittest.TestCase):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+        if self._prev_secret_key is None:
+            os.environ.pop("SECRET_KEY", None)
+        else:
+            os.environ["SECRET_KEY"] = self._prev_secret_key
 
     def login(self, email, password):
         return self.client.post(
