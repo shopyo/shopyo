@@ -233,9 +233,7 @@ def index():
             "website":"",
             "mail":""
         }}
-}}""".format(
-        modulename.capitalize(), modulename
-    )
+}}""".format(modulename.capitalize(), modulename)
     trymkfile(f"{base_path}/info.json", info_json_content)
 
     trymkdir(f"{base_path}/templates/{modulename}/blocks")
@@ -301,9 +299,7 @@ def create_box(name):
             "website":"",
             "mail":""
         }}
-    }}""".format(
-            name.capitalize(), name
-        )
+    }}""".format(name.capitalize(), name)
         trymkfile(f"{base_path}/box_info.json", info_json_content)
 
 

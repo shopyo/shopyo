@@ -96,7 +96,9 @@ def create_box(boxname, verbose, interactive):
             show_default=True,
         )
         if not boxname.startswith("box__"):
-            cli_warning("Box name should start with 'box__' prefix. Adding automatically...")
+            cli_warning(
+                "Box name should start with 'box__' prefix. Adding automatically..."
+            )
             boxname = "box__" + boxname
 
     path = os.path.join("modules", boxname)
@@ -276,7 +278,9 @@ def clean(verbose, clear_migration, clear_db):
     help="Only seed database data",
 )
 @with_appcontext
-def initialise(verbose, clear_migration, clear_db, force, db_only, static_only, seed_only):
+def initialise(
+    verbose, clear_migration, clear_db, force, db_only, static_only, seed_only
+):
     """
     Creates ``db``, ``migration/``, adds default users, add settings
     """
@@ -304,7 +308,9 @@ def initialise(verbose, clear_migration, clear_db, force, db_only, static_only, 
             bold=True,
         )
         click.confirm("    Do you want to reinitialise db?", default=False, abort=True)
-        clear_migration = click.confirm("    Do you want to clear the migration folder?")
+        clear_migration = click.confirm(
+            "    Do you want to clear the migration folder?"
+        )
 
     if os.environ.get("SHOPYO_QUIET") != "True":
         click.secho(" 🚀 Initializing project...\n", fg="cyan", bold=True)
