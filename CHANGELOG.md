@@ -1,3 +1,21 @@
+## v4.19.0 (2026-10-13)
+
+- ✨ Security: `shopyo_i18n` dashboard and delete routes are admin-only (`@admin_required`) — a logged-in non-admin can no longer change the default language or delete every `LangRecord` (and with it all `shopyo_page` content) for a language (GHSA-fcg6-4h43-fghp)
+- ✨ Security: `SHOPYO_AUTH_REGISTER = False` now actually closes `/shopyo-auth/register` (returns 404); the setting was previously defined but never read
+- ✨ Security: ⚠️ Breaking — `create_app()` now fails closed outside the `testing` profile: it refuses to boot when `SECRET_KEY` is unset or a known default (`secret`, `dev-secret-key-change-in-production`). Run `shopyo env` to generate a `.env` with a random key
+- ✨ Security: config classes are instantiated on load, so the `ProductionConfig` env-var guard and `DevelopmentConfig` warning actually run (they were skipped by `from_object(class)`)
+- ✨ Security: development `PASSWORD_SALT` no longer falls back to a hardcoded value — a random 64-char hex string is generated per boot; set it explicitly if reset/confirmation links must survive restarts
+- ✨ Security: `shopyo env` writes a random `SECRET_KEY` and `PASSWORD_SALT` (64-char hex, regenerated each run) and `FLASK_DEBUG=0` for `--profile production`
+- 🔥 Added `--yes`, `--db-only`, `--static-only`, `--seed-only` flags to `shopyo initialise`
+- 🔥 Added `SHOPYO_THEME_DEFAULT` and `SHOPYO_THEME_FRONT_DEFAULT` config
+- 🔥 Standardized CLI output helpers (`cli_error`, `cli_warning`, `cli_success`, `cli_info`, `cli_step`)
+- 🔥 i18n plugin testapp scaffold (`default_packages/shopyo_i18n/testapp`) with `ShopyoSettings` + `Shopyoi18n` wired in `create_app()`
+- 🔧 Theme fixes: auto-copy default themes when missing, theme assets loaded from package, dashboard package loading
+- 🔧 `get_folders` and `plugin_folder_path` handle missing paths instead of crashing
+- 🔧 Fixed self-recursive file copy
+- 🔧 Error messages now point at the exact traceback
+- 📚 Documented `shopyo env`, the fail-closed `SECRET_KEY` behaviour, `SHOPYO_AUTH_REGISTER`, and admin-only i18n routes
+
 ## v4.18.1 (2026-06-13)
 
 - 🔧 Auto-copy default themes from `shopyo` package when missing
