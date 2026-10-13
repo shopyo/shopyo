@@ -27,7 +27,6 @@ from shopyo.api.debug import is_yo_debug
 from shopyo.api.file import trycopy
 from shopyo_theme import ShopyoTheme
 
-
 base_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, base_path)
 from config import app_config

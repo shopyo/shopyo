@@ -3,7 +3,6 @@ from flask import render_template
 from shopyo.api.module import ModuleHelp
 from shopyo.api.templates import yo_render
 
-
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]

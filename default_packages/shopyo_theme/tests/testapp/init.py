@@ -6,7 +6,6 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
-
 root_path = os.path.dirname(os.path.abspath(__file__))  # don't remove
 static_path = os.path.join(root_path, "static")  # don't remove
 modules_path = os.path.join(root_path, "modules")  # don't remove

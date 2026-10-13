@@ -1,5 +1,6 @@
 import datetime
 
+from flask import abort
 from flask import current_app
 from flask import flash
 from flask import jsonify
@@ -26,7 +27,6 @@ from shopyo.api.html import notify_warning
 from shopyo.api.module import ModuleHelp
 from shopyo.api.security import is_safe_redirect_url
 
-
 mhelp = ModuleHelp(__file__, __name__)
 globals()[mhelp.blueprint_str] = mhelp.blueprint
 module_blueprint = globals()[mhelp.blueprint_str]
@@ -35,6 +35,9 @@ module_blueprint = globals()[mhelp.blueprint_str]
 @module_blueprint.route("/register", methods=["GET", "POST"])
 @limiter.limit(lambda: current_app.config["SHOPYO_AUTH_RATE_LIMIT_REGISTER"])
 def register():
+    if not current_app.config.get("SHOPYO_AUTH_REGISTER", True):
+        abort(404)
+
     context = {}
     reg_form = RegistrationForm()
 

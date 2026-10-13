@@ -10,6 +10,7 @@ from shopyo.api.models import db
 from shopyo.api.module import ModuleHelp
 from shopyo.api.security import get_safe_redirect
 from flask_login import login_required
+from shopyo_appadmin.admin import admin_required
 from shopyo_i18n.forms import LanguageForm
 from shopyo_i18n.models import LangRecord
 from shopyo_settings.helpers import get_setting
@@ -39,6 +40,7 @@ def set_lang():
 
 @module_blueprint.route("/dashboard", methods=["GET", "POST"])
 @login_required
+@admin_required
 def dashboard():
     if request.method == "POST":
         new_lang = request.form.get("language")
@@ -62,6 +64,7 @@ def dashboard():
 
 @module_blueprint.route("/delete/<lang_code>", methods=["POST"])
 @login_required
+@admin_required
 def delete(lang_code):
     records = LangRecord.query.filter(LangRecord.lang == lang_code).all()
     for record in records:

@@ -8,7 +8,6 @@ from shopyo_theme.view import module_blueprint
 from .helpers import *
 from shopyo.api.file import trycopytree
 
-
 __version__ = "1.7.2"
 
 info = {}
