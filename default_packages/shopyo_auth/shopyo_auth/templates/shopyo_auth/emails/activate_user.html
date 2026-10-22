@@ -3,11 +3,11 @@
 <p>Welcome to <b>Shopyo</b>!</p>
 
 <p>
-    To confirm your account please <a href="{{ url_for('shopyo_auth.confirm', token=token, _external=True) }}">click here</a>.
+    To confirm your account please <a href="{{ absolute_url('shopyo_auth.confirm', token=token) }}">click here</a>.
 </p>
 
 <p>Alternatively, you can paste the following link in your browser's address bar:</p>
-<p>{{ url_for('shopyo_auth.confirm', token=token, _external=True) }}</p>
+<p>{{ absolute_url('shopyo_auth.confirm', token=token) }}</p>
 
 <p>Sincerely,</p>
 

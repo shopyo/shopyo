@@ -237,6 +237,12 @@ If you have email confirmation enabled, you must configure the following:
 - ``MAIL_USERNAME``: Username for the email server.
 - ``MAIL_PASSWORD``: Password for the email server.
 - ``MAIL_DEFAULT_SENDER``: Email address used as the sender.
+- ``APP_URL``: Canonical base URL of the deployment (e.g.,
+  ``https://example.com``). Links in outbound emails (password reset,
+  account confirmation) are built from it, so they never depend on the
+  request ``Host`` header. **Set this in production.** When unset,
+  links fall back to ``SERVER_NAME`` (if configured) and otherwise to
+  the request host (fine for development only).
 
 Seeding Configuration
 =====================
