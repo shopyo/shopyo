@@ -1,12 +1,22 @@
 from unittest.mock import patch, MagicMock
+import sys
 import pytest
 from flask import Flask
 from shopyo.init import load_extensions, load_user, db as real_db
 
 
-def test_load_user():
+def test_load_user_falls_back_without_shopyo_auth():
+    # shopyo_auth unavailable (as in the core tox env): the loader falls
+    # back to None (nobody can log in without it anyway)
+    with patch.dict(sys.modules, {"shopyo_auth.models": None}):
+        assert load_user("any_id") is None
+
+
+def test_load_user_delegates_to_shopyo_auth():
     # init's loader delegates to shopyo_auth's loader (which enforces
-    # the password-change session check) when the auth package exists
+    # the password-change session check); only meaningful when the
+    # auth package is installed
+    pytest.importorskip("shopyo_auth.models")
     with patch("shopyo_auth.models.load_user") as mock_auth_loader:
         mock_auth_loader.return_value = None
         assert load_user("any_id") is None
