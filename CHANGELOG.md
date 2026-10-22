@@ -1,11 +1,3 @@
-## v4.19.1 (2026-10-22)
-
-- ✨ Security (`shopyo_auth`): password-reset and account-confirmation tokens now use distinct purpose-bound salts — a token received in one email can no longer be replayed for the other flow
-- ✨ Security (`shopyo_auth`): password-reset tokens are single use — the token payload is bound to the current password state, so completing a reset (or any password change) instantly invalidates every outstanding reset link; previously links stayed valid (and reusable) for up to an hour after the password had already been changed
-- ✨ Security (`shopyo_auth`): login sessions no longer survive a password change — sessions are stamped with the password state at login and the user loader refuses stale sessions, forcing a re-login; the three competing `user_loader` registrations (`shopyo.init`, `shopyo_appadmin.admin`, `shopyo_auth.models`) now delegate to one canonical loader so import order cannot shadow the check
-- ✨ Security (`shopyo_auth`): outbound email links (reset, confirmation) are built from the new `APP_URL` config instead of the request `Host` header; set `APP_URL` in production (falls back to `SERVER_NAME`, then the request host for development)
-- 📚 Documented `APP_URL` in the email configuration docs
-
 ## v4.19.0 (2026-10-13)
 
 - ✨ Security: `shopyo_i18n` dashboard and delete routes are admin-only (`@admin_required`) — a logged-in non-admin can no longer change the default language or delete every `LangRecord` (and with it all `shopyo_page` content) for a language (GHSA-fcg6-4h43-fghp)
