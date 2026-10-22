@@ -6,6 +6,7 @@
 
 import datetime
 import hashlib
+import hmac
 import logging
 import os
 import secrets
@@ -25,6 +26,17 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from shopyo.api.models import PkModel
+
+# Purpose-bound salts: a token minted for one purpose must never verify
+# for another (account confirmation vs password reset).
+CONFIRM_TOKEN_SALT = "email-confirm"
+RESET_TOKEN_SALT = "password-reset"
+
+
+def _token_salt(purpose):
+    """Serializer salt bound to both PASSWORD_SALT and the token purpose."""
+    return f"{current_app.config['PASSWORD_SALT']}:{purpose}"
+
 
 role_user_bridge = db.Table(
     "role_user_bridge",
@@ -130,6 +142,22 @@ class User(UserMixin, PkModel):
     def check_password(self, password):
         return check_password_hash(self._password, password)
 
+    def password_stamp(self):
+        """Current password state, bound into the login identity."""
+        if self.last_password_change is None:
+            return ""
+        return self.last_password_change.isoformat()
+
+    def get_id(self):
+        """Flask-Login identity carrying the password state.
+
+        Stored in the session by login_user() and embedded verbatim in
+        remember-me cookies, so load_user can reject any identity
+        issued before the last password change — for sessions and
+        remembered logins alike.
+        """
+        return f"{self.id}|{self.password_stamp()}"
+
     @classmethod
     def get_by_email(cls, email):
         """Case-insensitive user lookup by email."""
@@ -137,7 +165,7 @@ class User(UserMixin, PkModel):
 
     def generate_confirmation_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
+        return serializer.dumps(self.email, salt=_token_salt(CONFIRM_TOKEN_SALT))
 
     def confirm_token(self, token, expiration=3600):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
@@ -145,7 +173,7 @@ class User(UserMixin, PkModel):
         try:
             email = serializer.loads(
                 token,
-                salt=current_app.config["PASSWORD_SALT"],
+                salt=_token_salt(CONFIRM_TOKEN_SALT),
                 max_age=expiration,
             )
         except Exception as e:
@@ -160,22 +188,52 @@ class User(UserMixin, PkModel):
         self.update()
         return True
 
+    def _reset_fingerprint(self):
+        """Fingerprint of the current credential state.
+
+        Included in reset token payloads so tokens stop verifying as soon
+        as the password changes (hash changes on every password set).
+        """
+        changed = (
+            self.last_password_change.isoformat() if self.last_password_change else ""
+        )
+        material = f"{self._password or ''}|{changed}"
+        return hashlib.sha256(material.encode("utf-8")).hexdigest()
+
     def generate_reset_password_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
+        payload = {
+            "email": self.email,
+            "fp": self._reset_fingerprint(),
+        }
+        return serializer.dumps(payload, salt=_token_salt(RESET_TOKEN_SALT))
 
     @staticmethod
     def verify_reset_password_token(token, expiration=3600):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
         try:
-            email = serializer.loads(
+            payload = serializer.loads(
                 token,
-                salt=current_app.config["PASSWORD_SALT"],
+                salt=_token_salt(RESET_TOKEN_SALT),
                 max_age=expiration,
             )
         except Exception:
             return None
-        return User.get_by_email(email)
+
+        # only the structured payload issued by
+        # generate_reset_password_token is acceptable
+        if not isinstance(payload, dict):
+            return None
+
+        user = User.get_by_email(payload.get("email") or "")
+        if user is None:
+            return None
+
+        issued_fp = str(payload.get("fp") or "")
+        if not hmac.compare_digest(issued_fp, user._reset_fingerprint()):
+            # password changed after the token was issued -> already used
+            return None
+        return user
 
     def generate_api_token(self, name):
         """Generates a new API token for the user."""
@@ -215,7 +273,29 @@ class User(UserMixin, PkModel):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    """Canonical user loader: rejects identities issued before a password change.
+
+    ``user_id`` is whatever Flask-Login stored: the session's
+    ``_user_id`` (set by login_user) or the decoded remember-me cookie
+    payload — both are ``User.get_id()`` output, ``"<id>|<stamp>"``.
+    An identity whose stamp no longer matches the user's password state
+    is refused, so neither sessions nor remember cookies survive a
+    password change. Bare ids (legacy, unverifiable) are refused too.
+
+    Delegated to from ``shopyo.init`` and ``shopyo_appadmin.admin`` so
+    no import order can shadow this check.
+    """
+    raw_id, sep, stamp = str(user_id).rpartition("|")
+    if not sep or not raw_id.isdigit():
+        # no credential state attached -> cannot verify, force re-login
+        return None
+    user = User.query.get(int(raw_id))
+    if user is None:
+        return None
+    if stamp != user.password_stamp():
+        # password changed after this identity was issued -> force re-login
+        return None
+    return user
 
 
 login_manager.login_view = "shopyo_auth.login"

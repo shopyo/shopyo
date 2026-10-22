@@ -9,7 +9,9 @@ from flask.cli import with_appcontext
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-__version__ = "1.10.2"
+from shopyo.api.urls import absolute_url
+
+__version__ = "1.10.4"
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -141,6 +143,8 @@ class ShopyoAuth:
             bp, url_prefix=app.config.get("SHOPYO_AUTH_URL") or bp.url_prefix
         )
         app.jinja_env.globals["shopyo_auth"] = self
+        # host-stable absolute URLs for outbound email links
+        app.jinja_env.globals["absolute_url"] = absolute_url
 
     def define_policy(self, name, func):
         """

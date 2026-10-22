@@ -678,6 +678,10 @@ SECRET_KEY={secret_key}
 # Password salt (randomly generated, keep it secret!)
 PASSWORD_SALT={password_salt}
 
+# Canonical base URL used in outbound email links (recommended in
+# production; links otherwise inherit the request Host header)
+# APP_URL=https://example.com
+
 # Optional: Email configuration
 # MAIL_SERVER=smtp.gmail.com
 # MAIL_PORT=587

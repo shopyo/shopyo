@@ -22,7 +22,15 @@ csrf = CSRFProtect()
 
 @login_manager.user_loader
 def load_user(user_id):
-    return None
+    # Delegate to shopyo_auth's loader so the password-change session
+    # check applies regardless of which module registers last. Falls
+    # back to None when shopyo_auth is not installed (nobody can log
+    # in without it anyway).
+    try:
+        from shopyo_auth.models import load_user as auth_load_user
+    except ImportError:
+        return None
+    return auth_load_user(user_id)
 
 
 import importlib

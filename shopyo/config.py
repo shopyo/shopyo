@@ -50,6 +50,12 @@ class BaseConfig:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
 
+    # Canonical base URL for outbound links (e.g. password-reset
+    # emails). When unset, generated links fall back to the request
+    # host (or SERVER_NAME). Set it in production so emails never
+    # inherit a client-supplied Host header.
+    APP_URL = os.environ.get("APP_URL")
+
     SEED_SETTINGS = {
         "APP_NAME": "Demo",
         "ACTIVE_FRONT_THEME": "blogus",
