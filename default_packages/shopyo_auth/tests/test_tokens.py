@@ -17,7 +17,7 @@ class TestAPITokens:
 
         # 1. Create token
         with test_client.session_transaction() as sess:
-            sess["_user_id"] = user.id
+            sess["_user_id"] = user.get_id()
 
         response = test_client.post(
             url_for("shopyo_auth.create_token"), json={"name": "test-token"}

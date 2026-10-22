@@ -1,16 +1,19 @@
 """
-Existing login sessions must not survive a password change.
+Password changes must kill every existing login: sessions and
+remember-me cookies alike.
 
-The user loader compares a session stamp captured at login time against
-the user's current password state; a mismatch (password changed after
-the session was created) forces a re-login.
+Flask-Login's identity (``User.get_id()``) embeds the password state —
+``"<id>|<stamp>"``. login_user stores it in the session, remember-me
+cookies carry it verbatim (the cookie payload is exactly get_id()), and
+load_user re-verifies the stamp on every load. Stale identities and
+bare ids without any credential state are refused.
 """
 
 import pytest
 from flask import g
 from flask import url_for
+from flask_login.utils import encode_cookie
 from init import db
-from shopyo_auth.models import PWD_CHANGE_SESSION_KEY
 
 
 def _clear_login_cache():
@@ -26,14 +29,13 @@ def _clear_login_cache():
 
 
 def _login_session(test_client, user):
-    """Put into the session exactly what the login view does.
+    """Put into the session exactly what login_user writes.
 
     The HTTP login route is avoided on purpose: the in-memory rate
     limiter is a process-wide singleton that other tests exhaust.
     """
     with test_client.session_transaction() as sess:
-        sess["_user_id"] = user.id
-        sess[PWD_CHANGE_SESSION_KEY] = user.password_stamp()
+        sess["_user_id"] = user.get_id()
 
 
 def _get_tokens(test_client):
@@ -42,7 +44,7 @@ def _get_tokens(test_client):
 
 
 @pytest.mark.usefixtures("flask_app")
-class TestSessionInvalidationOnPasswordChange:
+class TestPasswordChangeInvalidatesLogins:
     def test_session_dies_when_password_changes(self, test_client, active_user):
         user = active_user(email="sess-die@auth.com", password="Pass1234!@#$")
         _login_session(test_client, user)
@@ -71,22 +73,31 @@ class TestSessionInvalidationOnPasswordChange:
         for _ in range(2):
             assert _get_tokens(test_client).status_code == 200
 
-    def test_unstamped_session_is_pinned_then_invalidated(
-        self, test_client, active_user
-    ):
-        # legacy / remember-me sessions carry no stamp: they work, but
-        # become pinned to the current password state on first use
-        user = active_user(email="sess-pin@auth.com", password="Pass1234!@#$")
+    def test_bare_identity_is_refused(self, test_client, active_user):
+        # ids without credential state (legacy sessions, hand-built
+        # sessions) cannot be verified -> forced re-login
+        user = active_user(email="sess-bare@auth.com", password="Pass1234!@#$")
 
         with test_client.session_transaction() as sess:
             sess["_user_id"] = user.id
 
-        assert _get_tokens(test_client).status_code == 200
+        assert _get_tokens(test_client).status_code in (302, 401)
 
-        with test_client.session_transaction() as sess:
-            assert PWD_CHANGE_SESSION_KEY in sess
+    def test_remember_cookie_dies_when_password_changes(
+        self, flask_app, active_user
+    ):
+        user = active_user(email="remember@auth.com", password="Pass1234!@#$")
+        # flask_login's remember path signs get_id() into the cookie and
+        # later feeds the decoded payload straight into the loader
+        cookie = encode_cookie(user.get_id())
+        client = flask_app.test_client()
+        client.set_cookie("remember_token", cookie, domain="localhost.com")
+
+        # the remembered login works while the password is unchanged
+        assert _get_tokens(client).status_code == 200
 
         user.password = "ANewPass1234!@#$"
         db.session.commit()
 
-        assert _get_tokens(test_client).status_code in (302, 401)
+        # the pre-change cookie is refused from then on
+        assert _get_tokens(client).status_code in (302, 401)
