@@ -6,6 +6,7 @@
 
 import datetime
 import hashlib
+import hmac
 import logging
 import os
 import secrets
@@ -171,22 +172,52 @@ class User(UserMixin, PkModel):
         self.update()
         return True
 
+    def _reset_fingerprint(self):
+        """Fingerprint of the current credential state.
+
+        Included in reset token payloads so tokens stop verifying as soon
+        as the password changes (hash changes on every password set).
+        """
+        changed = (
+            self.last_password_change.isoformat() if self.last_password_change else ""
+        )
+        material = f"{self._password or ''}|{changed}"
+        return hashlib.sha256(material.encode("utf-8")).hexdigest()
+
     def generate_reset_password_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(self.email, salt=_token_salt(RESET_TOKEN_SALT))
+        payload = {
+            "email": self.email,
+            "fp": self._reset_fingerprint(),
+        }
+        return serializer.dumps(payload, salt=_token_salt(RESET_TOKEN_SALT))
 
     @staticmethod
     def verify_reset_password_token(token, expiration=3600):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
         try:
-            email = serializer.loads(
+            payload = serializer.loads(
                 token,
                 salt=_token_salt(RESET_TOKEN_SALT),
                 max_age=expiration,
             )
         except Exception:
             return None
-        return User.get_by_email(email)
+
+        # only the structured payload issued by
+        # generate_reset_password_token is acceptable
+        if not isinstance(payload, dict):
+            return None
+
+        user = User.get_by_email(payload.get("email") or "")
+        if user is None:
+            return None
+
+        issued_fp = str(payload.get("fp") or "")
+        if not hmac.compare_digest(issued_fp, user._reset_fingerprint()):
+            # password changed after the token was issued -> already used
+            return None
+        return user
 
     def generate_api_token(self, name):
         """Generates a new API token for the user."""
