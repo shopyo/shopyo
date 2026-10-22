@@ -26,6 +26,17 @@ from werkzeug.security import generate_password_hash
 
 from shopyo.api.models import PkModel
 
+# Purpose-bound salts: a token minted for one purpose must never verify
+# for another (account confirmation vs password reset).
+CONFIRM_TOKEN_SALT = "email-confirm"
+RESET_TOKEN_SALT = "password-reset"
+
+
+def _token_salt(purpose):
+    """Serializer salt bound to both PASSWORD_SALT and the token purpose."""
+    return f"{current_app.config['PASSWORD_SALT']}:{purpose}"
+
+
 role_user_bridge = db.Table(
     "role_user_bridge",
     db.Column(
@@ -137,7 +148,7 @@ class User(UserMixin, PkModel):
 
     def generate_confirmation_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
+        return serializer.dumps(self.email, salt=_token_salt(CONFIRM_TOKEN_SALT))
 
     def confirm_token(self, token, expiration=3600):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
@@ -145,7 +156,7 @@ class User(UserMixin, PkModel):
         try:
             email = serializer.loads(
                 token,
-                salt=current_app.config["PASSWORD_SALT"],
+                salt=_token_salt(CONFIRM_TOKEN_SALT),
                 max_age=expiration,
             )
         except Exception as e:
@@ -162,7 +173,7 @@ class User(UserMixin, PkModel):
 
     def generate_reset_password_token(self):
         serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        return serializer.dumps(self.email, salt=current_app.config["PASSWORD_SALT"])
+        return serializer.dumps(self.email, salt=_token_salt(RESET_TOKEN_SALT))
 
     @staticmethod
     def verify_reset_password_token(token, expiration=3600):
@@ -170,7 +181,7 @@ class User(UserMixin, PkModel):
         try:
             email = serializer.loads(
                 token,
-                salt=current_app.config["PASSWORD_SALT"],
+                salt=_token_salt(RESET_TOKEN_SALT),
                 max_age=expiration,
             )
         except Exception:
