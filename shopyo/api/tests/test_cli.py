@@ -218,7 +218,9 @@ def _read_env(tmp_path):
     return (tmp_path / ".env").read_text()
 
 
-def test_env_production_generates_random_key_and_no_debug(runner, tmp_path, monkeypatch):
+def test_env_production_generates_random_key_and_no_debug(
+    runner, tmp_path, monkeypatch
+):
     monkeypatch.chdir(tmp_path)
 
     result = runner.invoke(cli, ["env", "--profile", "production"])
