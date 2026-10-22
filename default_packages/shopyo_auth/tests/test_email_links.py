@@ -40,9 +40,7 @@ class TestEmailLinksUseAppUrl:
         self, test_client, active_user, flask_app, monkeypatch
     ):
         user = active_user(email="links-reset@auth.com")
-        captured, fake_send = self._capture_emails(
-            test_client, monkeypatch, flask_app
-        )
+        captured, fake_send = self._capture_emails(test_client, monkeypatch, flask_app)
 
         with patch("shopyo_auth.view.send_async_email", side_effect=fake_send):
             response = test_client.post(
@@ -62,9 +60,7 @@ class TestEmailLinksUseAppUrl:
     def test_confirmation_email_link_uses_app_url(
         self, test_client, flask_app, monkeypatch
     ):
-        captured, fake_send = self._capture_emails(
-            test_client, monkeypatch, flask_app
-        )
+        captured, fake_send = self._capture_emails(test_client, monkeypatch, flask_app)
 
         with patch("shopyo_auth.view.send_async_email", side_effect=fake_send):
             response = test_client.post(
