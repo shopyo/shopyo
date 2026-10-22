@@ -83,9 +83,7 @@ class TestPasswordChangeInvalidatesLogins:
 
         assert _get_tokens(test_client).status_code in (302, 401)
 
-    def test_remember_cookie_dies_when_password_changes(
-        self, flask_app, active_user
-    ):
+    def test_remember_cookie_dies_when_password_changes(self, flask_app, active_user):
         user = active_user(email="remember@auth.com", password="Pass1234!@#$")
         # flask_login's remember path signs get_id() into the cookie and
         # later feeds the decoded payload straight into the loader
