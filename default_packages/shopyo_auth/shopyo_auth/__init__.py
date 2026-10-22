@@ -11,7 +11,7 @@ from flask_limiter.util import get_remote_address
 
 from shopyo.api.urls import absolute_url
 
-__version__ = "1.10.3"
+__version__ = "1.10.4"
 
 limiter = Limiter(key_func=get_remote_address)
 
