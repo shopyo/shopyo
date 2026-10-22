@@ -12,6 +12,8 @@ import os
 import secrets
 
 from flask import current_app
+from flask import has_request_context
+from flask import session
 from flask_login import AnonymousUserMixin
 from flask_login import UserMixin
 
@@ -31,6 +33,11 @@ from shopyo.api.models import PkModel
 # for another (account confirmation vs password reset).
 CONFIRM_TOKEN_SALT = "email-confirm"
 RESET_TOKEN_SALT = "password-reset"
+
+# Session key holding the password-state stamp captured at login; a
+# mismatch at user-load time means the password changed since the
+# session was created and the session is refused.
+PWD_CHANGE_SESSION_KEY = "auth_pwd_change"
 
 
 def _token_salt(purpose):
@@ -141,6 +148,16 @@ class User(UserMixin, PkModel):
 
     def check_password(self, password):
         return check_password_hash(self._password, password)
+
+    def password_stamp(self):
+        """Current password state, used as a session freshness stamp."""
+        if self.last_password_change is None:
+            return ""
+        return self.last_password_change.isoformat()
+
+    def stamp_session(self):
+        """Bind the current session to the current password state."""
+        session[PWD_CHANGE_SESSION_KEY] = self.password_stamp()
 
     @classmethod
     def get_by_email(cls, email):
@@ -257,7 +274,28 @@ class User(UserMixin, PkModel):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    """Canonical user loader: refuses sessions that predate a password change.
+
+    Delegated to from ``shopyo.init`` and ``shopyo_appadmin.admin`` so the
+    check applies no matter which module registers its loader last.
+    """
+    user = User.query.get(user_id)
+    if user is None:
+        return None
+
+    if not has_request_context():
+        return user
+
+    stamp = session.get(PWD_CHANGE_SESSION_KEY)
+    current_stamp = user.password_stamp()
+    if stamp is not None and stamp != current_stamp:
+        # password changed after this session was created -> force re-login
+        return None
+    if stamp is None:
+        # legacy/remember-me session with no stamp yet: pin it to the
+        # current password state so the next change invalidates it
+        session[PWD_CHANGE_SESSION_KEY] = current_stamp
+    return user
 
 
 login_manager.login_view = "shopyo_auth.login"

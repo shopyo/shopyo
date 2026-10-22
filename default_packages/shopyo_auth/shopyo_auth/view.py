@@ -51,6 +51,7 @@ def register():
             auth_ext.trigger("user_registered", user)
 
         login_user(user)
+        user.stamp_session()
 
         is_disabled = current_app.config.get(
             "SHOPYO_AUTH_EMAIL_CONFIRMATION_DISABLED", False
@@ -200,6 +201,7 @@ def login():
             login_form.remember.data if hasattr(login_form, "remember") else False
         )
         login_user(user, remember=remember)
+        user.stamp_session()
 
         auth_ext = current_app.extensions.get("shopyo_auth")
         if auth_ext:

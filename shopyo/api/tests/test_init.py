@@ -5,7 +5,12 @@ from shopyo.init import load_extensions, load_user, db as real_db
 
 
 def test_load_user():
-    assert load_user("any_id") is None
+    # init's loader delegates to shopyo_auth's loader (which enforces
+    # the password-change session check) when the auth package exists
+    with patch("shopyo_auth.models.load_user") as mock_auth_loader:
+        mock_auth_loader.return_value = None
+        assert load_user("any_id") is None
+        mock_auth_loader.assert_called_once_with("any_id")
 
 
 def test_load_extensions_basic():
