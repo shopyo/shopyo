@@ -1,3 +1,18 @@
+## v4.20.0 (2026-11-26)
+
+- 🔥 Added `shopyo --version` — Flask's own version flag is disabled so this reports the Shopyo version instead of Flask's
+- 🔥 Added a one-time first-run prompt asking users to star the project (`https://github.com/shopyo/shopyo`); it is skipped when output is not a terminal and can be disabled with `SHOPYO_NO_STAR` or `SHOPYO_QUIET`
+- 🔧 `shopyo --help` and unknown-command handling no longer load the app, so both work outside a project and in a project with an unset `SECRET_KEY`; the banner now appears on `--help` instead of before every command
+- 🔧 Unknown commands report `Error: No such command 'x'.` and exit 2 instead of dumping a traceback (`shopyo neww`, `shopyo new list commands`)
+- 🔧 A missing `app.py`, a missing `create_app()` or a missing `SECRET_KEY` now produces a one-line, actionable message instead of a traceback
+- 🔧 `shopyo initialise` now checks the return code of `flask db init/migrate/upgrade` and reports the failing step and its output instead of continuing to a false "Initialization complete!"
+- 🔧 `shopyo new` prints its success message and next steps only after `static/` and `modules/` are copied, and lists `shopyo env` first so a fresh project can actually boot
+- 🔧 `shopyo new --start` creates `.env` with a random `SECRET_KEY` before initialising and invokes the current `initialise` command (previously failed with `ModuleNotFoundError: No module named 'init'`)
+- 🔧 `shopyo startapp` and `shopyo startbox` report where the module/box was created and the URL it serves; `startapp` no longer suggests `shopyo initialise` to "register" a module — modules are discovered on the next app start and `initialise` recreates the database
+- 🔧 `shopyo collectstatic` no longer reports a missing static folder for single-module plugins and no longer copies the project's own `static/` directory as plugin static
+- 🔧 Seed data is uploaded once per `shopyo initialise` run instead of twice
+- 🔧 `shopyo clean` no longer swallows unrelated exceptions with a bare `except:`
+
 ## v4.19.0 (2026-10-13)
 
 - ✨ Security: `shopyo_i18n` dashboard and delete routes are admin-only (`@admin_required`) — a logged-in non-admin can no longer change the default language or delete every `LangRecord` (and with it all `shopyo_page` content) for a language (GHSA-fcg6-4h43-fghp)

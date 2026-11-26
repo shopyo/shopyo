@@ -8,10 +8,13 @@ from subprocess import PIPE
 from subprocess import run
 
 import click
+from flask import current_app
 from flask.cli import FlaskGroup
+from flask.cli import ScriptInfo
 from flask.cli import pass_script_info
 from flask.cli import with_appcontext
 
+from shopyo import __version__
 from shopyo.api.cli_output import cli_error
 from shopyo.api.cli_output import cli_info
 from shopyo.api.cli_output import cli_step
@@ -25,10 +28,9 @@ from shopyo.api.cmd_helper import _create_module
 from shopyo.api.cmd_helper import _rename_app
 from shopyo.api.cmd_helper import _run_app
 from shopyo.api.cmd_helper import _upload_data
-from shopyo.api.constants import SEP_CHAR
-from shopyo.api.constants import SEP_NUM
 from shopyo.api.database import autoload_models
 from shopyo.api.file import tryrmtree
+from shopyo.api.info import print_star_message
 from shopyo.api.info import printinfo
 from shopyo.api.validators import get_module_path_if_exists
 from shopyo.api.validators import is_alpha_num_underscore
@@ -43,35 +45,104 @@ def _create_shopyo_app():
     except ImportError as e:
         error_msg = str(e)
         if error_msg.startswith("No module named 'app'"):
-            cli_error(
-                error_msg,
-                hint="Make sure you are in your Shopyo project root directory.\n"
-                "    Your project should have an 'app.py' file with a 'create_app' function.",
-            )
-        cli_error(error_msg)
+            raise click.ClickException(
+                "No 'app.py' found in the current directory.\n"
+                "Run this command from your Shopyo project root, or create a "
+                "project with 'shopyo new <project_name>'."
+            ) from None
+        raise click.ClickException(error_msg) from None
     except AttributeError as e:
-        cli_error(
-            "Could not find 'create_app' in 'app.py'.",
-            hint=f"Details: {e}\n"
-            "    Your 'app.py' should define a 'create_app(config_name)' function.\n"
-            "    Example:\n"
-            "        def create_app(config_name='development'):\n"
-            "            app = Flask(__name__)\n"
-            "            # ... initialize extensions and modules\n"
-            "            return app",
-        )
+        raise click.ClickException(
+            "Could not find 'create_app' in 'app.py'.\n" f"Details: {e}"
+        ) from None
 
     config_name = os.environ.get("SHOPYO_CONFIG_PROFILE") or "development"
-    return create_app(config_name=config_name)
+    try:
+        return create_app(config_name=config_name)
+    except RuntimeError as e:
+        # Configuration errors (for example a missing SECRET_KEY) are
+        # actionable messages, not bugs: show them without a traceback.
+        raise click.ClickException(str(e)) from None
 
 
-@click.group(cls=FlaskGroup, create_app=_create_shopyo_app)
+class ShopyoGroup(FlaskGroup):
+    """FlaskGroup that keeps help working when the app cannot be loaded.
+
+    Flask's group loads the app while listing commands (so on --help) and
+    when resolving an unknown command. In a fresh or misconfigured
+    project that turned a simple typo into a full traceback.
+    """
+
+    def list_commands(self, ctx):
+        self._load_plugin_commands()
+        commands = set(super(FlaskGroup, self).list_commands(ctx))
+        try:
+            info = ctx.ensure_object(ScriptInfo)
+            commands.update(info.load_app().cli.list_commands(ctx))
+        except Exception:
+            # Help is still useful without the app-provided commands.
+            pass
+        return sorted(commands)
+
+    def get_command(self, ctx, name):
+        self._load_plugin_commands()
+        command = super(FlaskGroup, self).get_command(ctx, name)
+        if command is not None:
+            return command
+
+        try:
+            info = ctx.ensure_object(ScriptInfo)
+            app = info.load_app()
+        except Exception:
+            # Let Click report a clean "No such command" error.
+            return None
+
+        if not current_app or current_app._get_current_object() is not app:
+            ctx.with_resource(app.app_context())
+
+        return app.cli.get_command(ctx, name)
+
+    def format_help(self, ctx, formatter):
+        printinfo()
+        super().format_help(ctx, formatter)
+
+
+def _show_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(f"shopyo {__version__}")
+    ctx.exit()
+
+
+_version_option = click.Option(
+    ["--version"],
+    is_flag=True,
+    expose_value=False,
+    is_eager=True,
+    callback=_show_version,
+    help="Show the Shopyo version and exit.",
+)
+
+
+@click.group(
+    cls=ShopyoGroup,
+    create_app=_create_shopyo_app,
+    add_version_option=False,
+    params=[_version_option],
+    epilog=(
+        "Quick start: shopyo new myproject && cd myproject && "
+        "shopyo env && shopyo initialise && flask run --debug"
+    ),
+)
 @click.option("--config", default="development", help="Flask app configuration type")
 @pass_script_info
-def cli(info, **parmams):
-    """CLI for shopyo"""
-    printinfo()
-    config_name = parmams["config"]
+def cli(info, **params):
+    """CLI for shopyo."""
+    # Ask for a star once, after the command has done its work, so it
+    # never breaks up the output (e.g. between 'shopyo new' and its next
+    # steps). print_star_message() handles the once-only/no-tty cases.
+    click.get_current_context().call_on_close(print_star_message)
+    config_name = params["config"]
     info.data["config"] = config_name
     os.environ["FLASK_APP"] = f"app:create_app('{config_name}')"
     os.environ["FLASK_ENV"] = config_name
@@ -346,24 +417,43 @@ def initialise(
     # add a migrations folder to your application.
     cli_step("Creating database migrations...")
     flask_cmd = [sys.executable, "-m", "flask"]
-    if verbose:
-        run(flask_cmd + ["db", "init"])
-    else:
-        run(flask_cmd + ["db", "init"], stdout=PIPE, stderr=PIPE)
+
+    def _run_db_step(*args):
+        cmd = flask_cmd + list(args)
+        if verbose:
+            result = run(cmd)
+        else:
+            result = run(cmd, stdout=PIPE, stderr=PIPE)
+
+        returncode = getattr(result, "returncode", 0)
+        if not isinstance(returncode, int) or returncode == 0:
+            return
+
+        details = ""
+        for stream in ("stderr", "stdout"):
+            value = getattr(result, stream, b"")
+            if isinstance(value, bytes):
+                value = value.decode(errors="replace")
+            elif not isinstance(value, str):
+                value = ""
+            if value.strip():
+                details = value.strip()
+                break
+
+        cli_error(
+            f"'flask {' '.join(args)}' failed (exit code {returncode}).",
+            hint=details or None,
+        )
+
+    _run_db_step("db", "init")
 
     # load all models available inside modules
     autoload_models(verbose=verbose)
     cli_step("Generating initial migration...")
-    if verbose:
-        run(flask_cmd + ["db", "migrate"])
-    else:
-        run(flask_cmd + ["db", "migrate"], stdout=PIPE, stderr=PIPE)
+    _run_db_step("db", "migrate")
 
     cli_step("Upgrading database...")
-    if verbose:
-        run(flask_cmd + ["db", "upgrade"])
-    else:
-        run(flask_cmd + ["db", "upgrade"], stdout=PIPE, stderr=PIPE)
+    _run_db_step("db", "upgrade")
 
     if not db_only:
         # collect all static folders inside modules/ and add it to global
@@ -447,8 +537,7 @@ def new(projname, verbose, modules, start_server, demo):
         if os.path.exists(project_path):
             cli_error("Unable to create new project, directory already exists.")
 
-    click.echo(f"creating project {projname}...")
-    click.echo(SEP_CHAR * SEP_NUM)
+    click.secho(f" 🚀 Creating project '{projname}'...", fg="cyan", bold=True)
 
     # the shopyo src path that the new project will mimic
     src_shopyo_shopyo = Path(__file__).parent.parent.absolute()
@@ -576,19 +665,6 @@ def new(projname, verbose, modules, start_server, demo):
         verbose=verbose,
     )
 
-    click.secho(
-        f"\n ✨ Project '{projname}' created successfully!", fg="green", bold=True
-    )
-    click.echo(" " + "─" * 40)
-    click.echo(" Next steps to get started:")
-    step = 1
-    if projname != os.path.basename(here) or project_path != here:
-        click.secho(f"  {step}. cd {projname}", fg="cyan")
-        step += 1
-    click.secho(f"  {step}. shopyo initialise (if you are using models)", fg="cyan")
-    step += 1
-    click.secho(f"  {step}. flask run --debug\n", fg="cyan")
-
     # Always copy static folder as it contains base assets (bootstrap, jquery etc)
     copytree(
         os.path.join(src_shopyo_shopyo, "static"),
@@ -608,22 +684,55 @@ def new(projname, verbose, modules, start_server, demo):
         # empty modules folder
         trymkdir(os.path.join(project_path, "modules"), verbose=verbose)
 
+    # Report success only after every file is in place, so a failure can
+    # never happen after a "created successfully" message.
+    click.echo("")
+    click.secho(
+        f" ✨ Project '{projname}' is ready at {project_path}",
+        fg="green",
+        bold=True,
+    )
+    click.echo("")
+
+    if not start_server:
+        click.echo(" Start it with:")
+        click.echo("")
+        if project_path != here:
+            click.echo(f"   cd {projname}")
+        click.echo("   shopyo env          # creates .env with a secret key")
+        click.echo("   shopyo initialise   # creates the database")
+        click.echo("   flask run --debug")
+        click.echo("")
+        start_cmd = (
+            f"shopyo new {projname} --start"
+            if project_path != here
+            else "shopyo new --start"
+        )
+        click.secho(f" Tip: '{start_cmd}' does all of this for you.", fg="bright_black")
+        click.echo("")
+
     if start_server:
-        click.echo("\n 🚀 Starting server...")
+        click.echo(" 🚀 Starting server...")
         click.echo("    Press Ctrl+C to stop\n")
 
         project_dir = project_path
 
         os.chdir(project_dir)
 
+        # A new project refuses to start without a SECRET_KEY, so create
+        # the .env before running initialise or the server.
+        if not os.path.exists(".env"):
+            with open(".env", "w") as f:
+                f.write(_env_content("development"))
+            click.secho(" ✅ Created .env with a random SECRET_KEY", fg="green")
+
         os.environ["SHOPYO_CONFIG_PROFILE"] = "development"
         os.environ["FLASK_APP"] = "app.py"
 
-        from shopyo.api.cmd import initialise as run_initialise
         from click.testing import CliRunner
 
         runner = CliRunner()
-        result = runner.invoke(run_initialise, [], obj={})
+        result = runner.invoke(cli, ["initialise", "--yes"])
 
         if result.exit_code != 0:
             click.secho(f" ⚠️  Initialise warning: {result.output}", fg="yellow")
@@ -645,22 +754,13 @@ def runserver():
     _run_app("production")
 
 
-@cli.command("env", with_appcontext=False)
-@click.option(
-    "--profile",
-    "-p",
-    default="development",
-    type=click.Choice(["development", "production", "testing"]),
-    help="Config profile to use",
-)
-def generate_env(profile):
-    """Generate a .env file with required environment variables"""
+def _env_content(profile):
     is_production = profile == "production"
     secret_key = secrets.token_hex(32)
     password_salt = secrets.token_hex(32)
     flask_debug = "0" if is_production else "1"
 
-    env_content = f"""# Shopyo Environment Configuration
+    return f"""# Shopyo Environment Configuration
 # Generated by shopyo
 
 # Flask configuration
@@ -690,13 +790,24 @@ PASSWORD_SALT={password_salt}
 # MAIL_PASSWORD=your-password
 """
 
+
+@cli.command("env", with_appcontext=False)
+@click.option(
+    "--profile",
+    "-p",
+    default="development",
+    type=click.Choice(["development", "production", "testing"]),
+    help="Config profile to use",
+)
+def generate_env(profile):
+    """Generate a .env file with required environment variables"""
     if os.path.exists(".env"):
         if not click.confirm(" ⚠️  .env already exists. Overwrite?"):
             click.echo("Aborted.")
             return
 
     with open(".env", "w") as f:
-        f.write(env_content)
+        f.write(_env_content(profile))
 
     click.secho(" ✅ .env file created!", fg="green", bold=True)
     click.echo("    You can now run: flask run --debug")

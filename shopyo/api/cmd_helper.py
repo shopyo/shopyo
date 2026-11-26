@@ -23,8 +23,6 @@ from shopyo.api.cli_content import get_dashboard_html_content
 from shopyo.api.cli_content import get_global_py_content
 from shopyo.api.cli_content import get_module_view_content
 from shopyo.api.cli_content import get_index_html_content
-from shopyo.api.constants import SEP_CHAR
-from shopyo.api.constants import SEP_NUM
 from shopyo.api.file import get_folders
 from shopyo.api.file import last_part_of_path
 from shopyo.api.file import path_exists
@@ -59,7 +57,7 @@ def _clean(verbose=False, clear_migration=True, clear_db=True):
     click.secho(" 🧹 Cleaning workspace...", fg="bright_black")
     try:
         db = current_app.extensions["sqlalchemy"].db
-    except:
+    except AttributeError:
         db = current_app.extensions["sqlalchemy"]
 
     if clear_db:
@@ -156,8 +154,7 @@ def _collectstatic(target_module="modules", verbose=False):
     tryrmtree(modules_path_in_static, verbose=verbose)
 
     # look for static folders in all project
-    module_count = len(get_folders(modules_path))
-    for idx, folder in enumerate(get_folders(modules_path), 1):
+    for folder in get_folders(modules_path):
         if not verbose:
             _progress()
         if folder.startswith("box__"):
@@ -217,9 +214,20 @@ def _collectstatic(target_module="modules", verbose=False):
             plugin_mod = importlib.import_module(plugin)
             if hasattr(plugin_mod, "view") and hasattr(plugin_mod.view, "mhelp"):
                 plugin_folder_path = plugin_mod.view.mhelp.dirpath
-            else:
+            elif getattr(plugin_mod, "__path__", None):
                 plugin_folder_path = os.path.dirname(plugin_mod.__file__)
+            else:
+                # A single-module plugin (for example shopyo_admin.py) has
+                # no static folder of its own. Without this, its folder is
+                # the project root and the project's own static/ dir gets
+                # mistaken for plugin static.
+                continue
             plugin_static_folder = os.path.join(plugin_folder_path, "static")
+
+            if os.path.abspath(plugin_static_folder) == os.path.abspath(
+                os.path.join(root_path, "static")
+            ):
+                continue
 
             if os.path.exists(plugin_static_folder):
                 plugin_in_static_dir = os.path.join(modules_path_in_static, plugin)
@@ -304,24 +312,6 @@ def _upload_data(verbose=False):
                         fg="red",
                     )
 
-    # load packages from app.extensions (manually initialized)
-
-    for ext_name, ext_obj in current_app.extensions.items():
-        if ext_name.startswith("shopyo_"):
-            try:
-                if hasattr(ext_obj, "upload"):
-                    ext_obj.upload()
-                    if verbose:
-                        click.secho(
-                            f"  ✅ Uploaded data from extension {ext_name}", fg="green"
-                        )
-            except Exception as e:
-                if verbose:
-                    click.secho(
-                        f"  ❌ Error uploading data for extension {ext_name}: {e}",
-                        fg="red",
-                    )
-
 
 def _create_box(boxname, verbose=False):
     base_path = os.path.join("modules", boxname)
@@ -341,11 +331,10 @@ def _create_box(boxname, verbose=False):
     if verbose:
         click.secho(f"  📄 Created box config at {box_info}", fg="bright_black")
 
-    click.secho(f" ✅ Box '{boxname}' created successfully!", fg="green", bold=True)
-    click.echo(f"    📁 Location: modules/{boxname}/")
+    click.secho(f" ✅ Box '{boxname}' created", fg="green", bold=True)
+    click.echo(f"    📁 modules/{boxname}/")
     click.echo("")
-    click.secho("   Next steps:", fg="cyan")
-    click.echo(f"    1. Run 'shopyo startapp -i' to create modules in this box")
+    click.echo(f" ▶ Add a module to it: shopyo startapp <module_name> {boxname}")
     click.echo("")
 
 
@@ -364,8 +353,6 @@ def _create_module(modulename, base_path=None, verbose=False):
     None
 
     """
-
-    click.secho(f" 📦 Creating module '{modulename}'...", fg="cyan", bold=True)
 
     if base_path is None:
         base_path = os.path.join("modules", modulename)
@@ -444,17 +431,26 @@ def _create_module(modulename, base_path=None, verbose=False):
         os.path.join(base_path, "global.py"), get_global_py_content(), verbose=verbose
     )
 
-    click.secho(
-        f" ✅ Module '{modulename}' created successfully!", fg="green", bold=True
+    click.secho(f" ✅ Module '{modulename}' created", fg="green", bold=True)
+    click.echo(
+        f"    📁 {base_path}/ · view.py, models.py, forms.py, "
+        f"templates/{modulename}/"
     )
-    click.echo(f"    📁 Location: {base_path}/")
-    click.echo(f"    🔗 URL prefix: /{modulename}")
     click.echo("")
-    click.secho("   Next steps:", fg="cyan")
-    click.echo(f"    1. Add your model definitions to {modulename}/models.py")
-    click.echo(f"    2. Add your views to {modulename}/view.py")
-    click.echo(f"    3. Add your forms to {modulename}/forms.py")
-    click.echo(f"    4. Run 'shopyo initialise' to register the module")
+
+    # A module is registered on the next app start, so the generated page
+    # is already reachable. The only missing piece is .env in a brand new
+    # project, which is where Flask gets its SECRET_KEY from.
+    env_hint = ""
+    if not os.path.exists(os.path.join(os.getcwd(), ".env")):
+        env_hint = "shopyo env && "
+    click.echo(
+        f" ▶ {env_hint}flask run --debug  →  " f"http://127.0.0.1:5000/{modulename}/"
+    )
+    click.echo(
+        "   Adding models? 'shopyo initialise' creates the tables "
+        "(and recreates the database)."
+    )
     click.echo("")
 
 

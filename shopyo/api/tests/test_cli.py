@@ -14,6 +14,7 @@ def mock_app_module():
         yield mock_app
 
 
+from shopyo import __version__
 from shopyo.api.cli import cli
 
 
@@ -26,6 +27,32 @@ def test_testok(runner):
     result = runner.invoke(cli, ["testok"])
     assert result.exit_code == 0
     assert "test ok!" in result.output
+    # The banner belongs to --help, not to every command.
+    assert "Shopyo v" not in result.output
+
+
+def test_version_reports_shopyo(runner):
+    result = runner.invoke(cli, ["--version"])
+    assert result.exit_code == 0
+    assert result.output.strip() == f"shopyo {__version__}"
+
+
+def test_help_works_when_app_cannot_load(runner):
+    with patch.object(cli, "create_app", side_effect=RuntimeError("missing key")):
+        result = runner.invoke(cli, ["--help"])
+
+    assert result.exit_code == 0
+    assert "Usage:" in result.output
+    assert "Traceback" not in result.output
+
+
+def test_unknown_command_is_concise(runner):
+    with patch.object(cli, "create_app", side_effect=RuntimeError("missing key")):
+        result = runner.invoke(cli, ["neww"])
+
+    assert result.exit_code == 2
+    assert "No such command 'neww'" in result.output
+    assert "Traceback" not in result.output
 
 
 @patch("shopyo.api.cli._create_box")
@@ -195,12 +222,14 @@ def test_new(mock_rmtree, mock_mkdir, mock_mkfile, mock_copytree, runner):
             print(result.exception)
 
         assert result.exit_code == 0
-        assert "creating project" in result.output
+        assert "Creating project 'tmp'" in result.output
 
         # Test with project name
         result = runner.invoke(cli, ["new", "myproj"])
         assert result.exit_code == 0
-        assert "creating project myproj" in result.output
+        assert "Creating project 'myproj'" in result.output
+        # A new project cannot initialise before SECRET_KEY exists.
+        assert "shopyo env" in result.output
 
 
 @patch("shopyo.api.cli.copytree")
